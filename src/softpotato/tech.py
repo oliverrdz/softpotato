@@ -89,7 +89,7 @@ class Step:
 
 
 
-class Construct_wf:
+class Construct:
     """ 
     
     Returns t and E for a customised potential waveform.
