@@ -1,6 +1,6 @@
 # Script version of Soft Potato, the electrochemistry simulator.
 
-For more info, visit [Soft Potato](https://oliverrdz.xyz/soft-potato).
+For more info, visit [Soft Potato](https://oliverrdz.xyz/soft-potato). To see Jupyter Notebook examples, visit [Examples](https://github.com/oliverrdz/softpotato_examples).
 
 ## Install
 ``` python
