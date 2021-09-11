@@ -89,7 +89,7 @@ class Step:
 
 
 
-class Construct:
+class Custom:
     """ 
     
     Returns t and E for a customised potential waveform.

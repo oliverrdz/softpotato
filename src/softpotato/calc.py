@@ -55,7 +55,7 @@ class MicroDisc:
 
     '''
     
-    def __init__(self, a=5e-4, n=1, DO=1e-5, DR=1e-6, CO=1e-6, E0=0, k0=1e8, alpha=0.5, T=298, noise=0):
+    def __init__(self, a=5e-4, n=1, DO=1e-5, DR=1e-5, CO=1e-6, E0=0, k0=1e8, alpha=0.5, T=298, noise=0):
         self.a = a
         self.n = n
         self.DO = DO

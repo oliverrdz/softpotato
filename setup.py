@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='softpotato',
-    version='0.0.5',
+    version='0.0.13',
     license='GPL3',
     author='Oliver Rodriguez',
     author_email='oliver.rdz@gmail.com',
@@ -12,5 +12,6 @@ setup(
     keywords='Electrochemistry',
     install_requires=[
         'numpy',
+        'matplotlib',
     ],
 )
