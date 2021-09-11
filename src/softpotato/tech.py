@@ -85,7 +85,7 @@ class Step:
         self.nt = int(self.ttot/self.dt)
 
         self.E = np.ones([self.nt])*self.Es
-        self.t = np.linspace(0, self.ttot, self.nt)
+        self.t = np.linspace(dt, self.ttot + dt, self.nt)
 
 
 

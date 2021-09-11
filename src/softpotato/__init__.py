@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 """
 Soft Potato pip version
 
 """
 
-__version__ = "0.13"
+__version__ = "0.16"
 __author__ = 'Oliver Rodriguez'
 
 __all__ = ['tech', 'calc', 'plot']

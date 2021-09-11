@@ -4,6 +4,21 @@ F = 96485 # C/mol
 R = 8.3145 # J/(mol K)
 
 
+class Macro:
+    '''
+    '''
+
+    def __init__(self, n=1, A=1, CO=1e-6, DO=1e-5):
+        self.n = n
+        self.A = A
+        self.CO = CO
+        self.DO = DO
+
+    def Cottrell(self, t):
+        return self.n*F*self.A*self.CO*np.sqrt(self.DO/(np.pi*t))
+
+
+
 class MicroDisc:
     '''
     ----------
