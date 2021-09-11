@@ -8,14 +8,18 @@ class Macro:
     '''
     '''
 
-    def __init__(self, n=1, A=1, CO=1e-6, DO=1e-5):
+    def __init__(self, n=1, A=1, CO=1e-6, DO=1e-5, T=298):
         self.n = n
         self.A = A
         self.CO = CO
         self.DO = DO
+        self.T = 298
 
     def Cottrell(self, t):
-        return self.n*F*self.A*self.CO*np.sqrt(self.DO/(np.pi*t))
+        return -self.n*F*self.A*self.CO*np.sqrt(self.DO/(np.pi*t))
+
+    def RandlesSevcik(self, sr):
+        return -0.4463*self.n*F*self.A*self.CO*np.sqrt(self.n*F*sr*self.DO/(R*self.T))
 
 
 
