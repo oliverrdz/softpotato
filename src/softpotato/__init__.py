@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Soft Potato pip version
 
