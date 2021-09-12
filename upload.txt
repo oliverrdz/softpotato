@@ -1,0 +1,2 @@
+p setup.py sdist;
+p -m twine upload dist/*;
