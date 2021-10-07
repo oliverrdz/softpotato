@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.linalg import solve_banded
 
 F = 96485 # C/mol, Faraday constant    
 R = 8.315 # J/mol K, Gas constant
