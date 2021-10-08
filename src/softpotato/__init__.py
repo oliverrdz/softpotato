@@ -3,7 +3,12 @@ Soft Potato pip version
 
 """
 
-__version__ = "0.19"
+from .calculate import *
+from .simulate import *
+from .plotting import *
+from .technique import *
+
+__version__ = "0.23"
 __author__ = 'Oliver Rodriguez'
 
-__all__ = ['tech', 'calc', 'plot', 'sim']
+__all__ = ['technique', 'calculate', 'plotting', 'simulate']
