@@ -29,25 +29,43 @@ class Sweep:
 
     """
 
-    def __init__(self, Eini=-0.5, Efin=0.5, sr=0.1, dE=0.01, ns=2):
+    def __init__(self, Eini=0, Eupp=0.5, Elow=-0.5, sr=0.1, dE=0.01, ns=2): # Modified class to include upper and lower vertex potentials
         self.Eini = Eini
-        self.Efin = Efin
+        self.Eupp = Eupp # Changed the Efin to upper vertex potential
+        self.Elow = Elow # Added a lower vertex potential
         self.sr = sr
         self.dE = dE
         self.ns = ns
 
-        Ewin = abs(self.Efin-self.Eini)
+        Ewin = abs(self.Eupp-self.Elow) # Adapted Ewin to accomodate upper and lower vertex potentials
         tsw = Ewin/self.sr # total time for one sweep
         nt = int(Ewin/self.dE)
+        ntupper = int(((Eupp - Eini)/Ewin)*nt) # Added ntupper and ntlower parameters to allow for asymmetric waveforms
+        ntlower = int(((Eini - Elow)/Ewin)*nt)
 
         self.E = np.array([])
         self.t = np.linspace(0, tsw*self.ns, nt*self.ns)
 
+        if Eini == Eupp or Eini == Elow: # Accomodates for situations in which initial potential is same as uppoer or lower vertex
+            segments = 2
+        else:
+            segments = 3
+            
         for n in range(1, self.ns+1):
-            if (n%2 == 1):
-                self.E = np.append(self.E, np.linspace(self.Eini, self.Efin, nt))
-            else:
-                self.E = np.append(self.E, np.linspace(self.Efin, self.Eini, nt))
+            if (segments == 3) and (abs(dE) == dE):
+                self.E = np.append(self.E, np.linspace(self.Eini, self.Eupp, ntupper))
+                self.E = np.append(self.E, np.linspace(self.Eupp, self.Elow, nt))
+                self.E = np.append(self.E, np.linspace(self.Elow, self.Eini, ntlower))
+            elif (segments == 3) and (abs(dE) != dE): # When absolute of dE is not equal to dE it means the scan is negative
+                self.E = np.append(self.E, np.linspace(self.Eini, self.Elow, ntlower))
+                self.E = np.append(self.E, np.linspace(self.Elow, self.Eupp, nt))
+                self.E = np.append(self.E, np.linspace(self.Eupp, self.Eini, ntupper))
+            elif (segments == 2) and (Eini == Eupp):
+                self.E = np.append(self.E, np.linspace(self.Eini, self.Elow, nt))
+                self.E = np.append(self.E, np.linspace(self.Elow, self.Eupp, nt))
+            elif (segments == 2) and  (Eini == Elow):
+                self.E = np.append(self.E, np.linspace(self.Eini, self.Eupp, nt))
+                self.E = np.append(self.E, np.linspace(self.Eupp, self.Elow, nt))
 
 
 
