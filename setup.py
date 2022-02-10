@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='softpotato',
-    version='0.0.23',
+    version='0.0.24',
     license='GPL3',
     author='Oliver Rodriguez',
     author_email='oliver.rdz@gmail.com',
