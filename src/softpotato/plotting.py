@@ -1,16 +1,18 @@
 import matplotlib.pyplot as plt
 
-def format(xlab, ylab, legend, show):
+def format(xlab, ylab, legend, show, fileName=0):
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     plt.xlabel(xlab, fontsize=18)
     plt.ylabel(ylab, fontsize=18)
     plt.grid()
     plt.tight_layout()
+    if fileName:
+        plt.savefig(fileName + '.png')
     if show:
         plt.show()
 
-def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=0, fig=1, show=False):
+def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=0, fig=1, show=False, fileName=0):
     '''
         Function to plot curves without all the hassle. By default, y is a list 
         and mark is a string. To use different markers for each curve, include them as 
