@@ -1,5 +1,52 @@
 import numpy as np
 
+class Sweep2:
+    """
+
+    Returns t and E for a sweep potential waveform.
+    All the parameters are given a default value.
+
+    ----------
+    Parameters:
+    Eini:   V, initial potential [-0.5 V]
+    Efin:   V, final potential [0.5 V]
+    sr:     V/s, scan rate [0.1 V/s]
+    dE:     V, potential increment [0.01 V]
+    ns:     number of sweeps [2]
+
+    ----------
+    Returns:
+    self.t: s, time numpy array
+    self.E: V, potential numpy array
+
+    ----------
+    Examples:
+    > import softpotato as sp
+    > cv = sp.technique.Sweep(sr=0.001) # Changing only the scan rate
+    print(cv.E)
+    print(cv.t)
+
+    """
+
+    def __init__(self, Eini=-0.5, Efin=0.5, sr=0.1, dE=0.01, ns=2):
+        self.Eini = Eini
+        self.Efin = Efin
+        self.sr = sr
+        self.dE = dE
+        self.ns = ns
+
+        Ewin = abs(self.Efin-self.Eini)
+        tsw = Ewin/self.sr # total time for one sweep
+        nt = int(Ewin/self.dE)
+
+        self.E = np.array([])
+        self.t = np.linspace(0, tsw*self.ns, nt*self.ns)
+
+        for n in range(1, self.ns+1):
+            if (n%2 == 1):
+                self.E = np.append(self.E, np.linspace(self.Eini, self.Efin, nt))
+            else:
+                self.E = np.append(self.E, np.linspace(self.Efin, self.Eini, nt))
 
 class Sweep:
     """ 
@@ -144,3 +191,8 @@ class Custom:
         self.t = t[1:]
         self.E = E[1:]
         
+
+if __name__ == '__main__':
+    cv = Sweep2()
+    print(cv.E)
+    print(cv.t)
