@@ -43,9 +43,9 @@ def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=0, fig=1, show=F
     for n in range(ny):
         plt.plot(x, y[n], mark[n], label=legend[n])
     if legend[0]:
-        print(legend)
+        #print(legend)
         plt.legend()
-    format(xlab, ylab, legend, show)
+    format(xlab, ylab, legend, show, fileName)
 
 
 if __name__ == '__main__':
