@@ -111,8 +111,8 @@ class Simulate:
             # Boundary condition, Butler-Volmer:
             CR1kb = sE.CR[k-1,1]
             CO1kb = sE.CO[k-1,1]
-            sE.CR[k,0] = (CR1kb + xgrid.dX*sE.Ke*np.exp(-sE.alpha*sE.eps[k]
-                         )*(CO1kb + CR1kb/sE.DOR))/(1 + xgrid.dX*sE.Ke*(
+            sE.CR[k,0] = (CR1kb + self.xgrid.dX*sE.Ke*np.exp(-sE.alpha*sE.eps[k]
+                         )*(CO1kb + CR1kb/sE.DOR))/(1 + self.xgrid.dX*sE.Ke*(
                          np.exp((1-sE.alpha)*sE.eps[k])+np.exp(
                          -sE.alpha*sE.eps[k])/sE.DOR))
             sE.CO[k,0] = CO1kb + (CR1kb - sE.CR[k,0])/sE.DOR

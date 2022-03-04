@@ -8,7 +8,7 @@ from .simulate import *
 from .plotting import *
 from .technique import *
 
-__version__ = "0.0.31"
+__version__ = "0.0.32"
 __author__ = 'Oliver Rodriguez'
 
 __all__ = ['technique', 'calculate', 'plotting', 'simulate']
