@@ -107,7 +107,7 @@ class Simulate:
         nC = self.nC[0]
         sE = self.species[nE]
         sC = self.species[nC]
-        for k in range(1, tgrid.nT):
+        for k in range(1, self.tgrid.nT):
             # Boundary condition, Butler-Volmer:
             CR1kb = sE.CR[k-1,1]
             CO1kb = sE.CO[k-1,1]
@@ -209,7 +209,7 @@ if __name__ == '__main__':
          legend=['E', 'EC'], fig=1, show=0)
 
     # CA
-    wf = Step(Es=-0.4, dt=0.002)
+    wf = Step(Es=-0.4, dt=0.01)
     twf = wf.t
     Ewf = wf.E
     tgrid = TGrid(twf, Ewf)
