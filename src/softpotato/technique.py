@@ -1,6 +1,6 @@
 import numpy as np
 
-class Sweep2:
+class Sweep:
     """
 
     Returns t and E for a sweep potential waveform.
@@ -48,7 +48,7 @@ class Sweep2:
             else:
                 self.E = np.append(self.E, np.linspace(self.Efin, self.Eini, nt))
 
-class Sweep:
+class Sweep2:
     """ 
 
     Returns t and E for a sweep potential waveform.

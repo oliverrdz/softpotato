@@ -5,6 +5,11 @@ R = 8.315 # J/mol K, Gas constant
 
 
 class Macro:
+    pass
+    
+
+
+class Macro2:
 	
     def __init__(self, wf):
         self.E = wf.E
@@ -98,3 +103,7 @@ class Macro:
         self.x = self.X*self.delta
         self.cR = cR
         self.cO = cO
+
+
+if __name__ == '__main__':
+    pass
