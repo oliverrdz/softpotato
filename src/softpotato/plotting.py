@@ -12,7 +12,7 @@ def format(xlab, ylab, legend, show, fileName=0):
     if show:
         plt.show()
 
-def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=0, fig=1, show=False, fileName=0):
+def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=False, fig=1, show=False, fileName=False):
     '''
         Function to plot curves without all the hassle. By default, y is a list 
         and mark is a string. To use different markers for each curve, include them as 
