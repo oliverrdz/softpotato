@@ -1,16 +1,15 @@
 # Script version of Soft Potato, the electrochemistry simulator.
 
-For more info, visit [Soft Potato](https://softpotato.xyz). To see Jupyter Notebook examples, visit [Examples](https://github.com/oliverrdz/softpotato_examples).
+For more info, visit [Soft Potato](https://softpotato.xyz). 
 
 ## Install
 ``` python
-pip3 install softpotato
+pip install softpotato
 
 ```
 
 ## Usage
 ``` python
-from softpotato import *
 import softpotato as sp
 
 disc = sp.calc.MicroDisc(a=1e-4)
