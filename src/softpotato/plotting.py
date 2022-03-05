@@ -1,12 +1,14 @@
 import matplotlib.pyplot as plt
 
-def format(xlab, ylab, legend, show, fileName=0):
+def format(xlab, ylab, legend=False, show=False, fileName=False):
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     plt.xlabel(xlab, fontsize=18)
     plt.ylabel(ylab, fontsize=18)
     plt.grid()
     plt.tight_layout()
+    if legend[0]:
+        plt.legend()
     if fileName:
         plt.savefig(fileName + '.png')
     if show:
@@ -42,9 +44,7 @@ def plot(x, y, xlab='$E$ / V', ylab='$i$ / A', mark='-', legend=False, fig=1, sh
     plt.figure(fig)
     for n in range(ny):
         plt.plot(x, y[n], mark[n], label=legend[n])
-    if legend[0]:
-        #print(legend)
-        plt.legend()
+    
     format(xlab, ylab, legend, show, fileName)
 
 
