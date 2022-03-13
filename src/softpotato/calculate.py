@@ -8,12 +8,13 @@ class Macro:
     '''
     '''
 
-    def __init__(self, n=1, A=1, C=1e-6, D=1e-5, T=298):
+    def __init__(self, n=1, A=1, C=1e-6, D=1e-5, T=298, noise=0):
         self.n = n
         self.A = A
         self.C = C
         self.D = D
         self.T = 298
+        self.noise = noise
 
     def Cottrell(self, t):
         i =  self.n*F*self.A*self.C*np.sqrt(self.D/(np.pi*t))
