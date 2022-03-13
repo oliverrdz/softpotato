@@ -16,11 +16,14 @@ class Macro:
         self.T = 298
 
     def Cottrell(self, t):
-        return self.n*F*self.A*self.C*np.sqrt(self.D/(np.pi*t))
+        i =  self.n*F*self.A*self.C*np.sqrt(self.D/(np.pi*t))
+        return i + np.random.normal(size=t.size, scale=self.noise)
+
 
     def RandlesSevcik(self, sr):
         i = 0.4463*self.n*F*self.A*self.C*np.sqrt(self.n*F*sr*self.D/(R*self.T))
-        return i
+        return i + np.random.normal(size=sr.size, scale=self.noise)
+
 
 
 class MicroDisc:
@@ -112,28 +115,33 @@ class MicroDisc:
         kf = self.k0*np.exp(self.alphaf*self.n*self.FRT*(E-self.E0))
         kb = self.k0*np.exp(self.alphab*self.n*self.FRT*(E-self.E0))
         if self.sign == -1:
-            k = kf
+            self.k = kf
         else:
-            k = kb
+            self.k = kb
         theta=1+self.DODR*np.exp(-self.sign*self.n*F*(E-self.E0)/(R*self.T))
-        kappa = np.pi*k*self.a/(4*self.D)
+        kappa = np.pi*self.k*self.a/(4*self.D)
         i = (self.iLim/theta)/(1 + 
             (np.pi/(kappa*theta))*((2*kappa*theta+
             3*np.pi)/(4*kappa*theta+3*np.pi**2)))
-        return i
+        return i + np.random.normal(size=E.size, scale=self.noise)
 
-    def CA2(self, t, Es=-1):
-        self.t = t
-        self.Es = Es
-        fO = self.fun(self.DO)
-        fR = self.fun(self.DR)
-        Theta = 1 + (self.DO*fO/(self.DR*fR))*np.exp(self.n*F*(self.Es-self.E0)/(R*self.T))
-        kappa = (self.k0*self.a/(self.DO*fO))*np.exp(-self.alpha*self.n*F*(self.Es-self.E0)/(R*self.T))
-        ca = -(np.pi*self.n*F*self.DO*self.CO*self.a*fO/Theta)/(1+(np.pi/(kappa*Theta))*((2*kappa*Theta+3*np.pi)/(4*kappa*Theta+3*np.pi**2)))
-        return ca + np.random.normal(size=self.t.size, scale=self.noise)
+    def CA(self, t, E=-1):
+        t = np.array(t)
+        if self.sign == -1:
+            fOfR = self.fun(t,self.DO)/self.fun(t,self.DR)
+        else:
+            fOfR = self.fun(t,self.DR)/self.fun(t,self.DO)
+        _ = self.LSV(E)
+        theta=1+self.DODR*fOfR*np.exp(-self.sign*self.n*F*(E-self.E0)/(R*self.T))
+        kappa = self.k*self.a/(self.D*self.fun(t,self.D))
+        self.im0 = self.sign*np.pi*self.n*F*self.D*self.C*self.a*self.fun(t,self.D)
+        i = (self.im0/theta)/(1 + 
+            (np.pi/(kappa*theta))*((2*kappa*theta+
+            3*np.pi)/(4*kappa*theta+3*np.pi**2)))
+        return i + np.random.normal(size=t.size, scale=self.noise)
 
-    def fun2(self, D):
-        s = D*self.t/self.a**2
+    def fun(self, t, D):
+        s = D*t/self.a**2
         f1 = 1/np.sqrt(np.pi*s) + 1 + np.sqrt(s/(4*np.pi)) - 3*s/25 + 3*s**(3/2)/226
         f2 = 4/np.pi + 8/np.sqrt(s*np.pi**5) + 25/(2792*s**(3/2)) - 1/(3880*s**(5/2)) - 1/(4500*s**(7/2))
         # Fancy if statement using boolean operations:
@@ -142,13 +150,19 @@ class MicroDisc:
 if __name__ == '__main__':
     import plotting
     print('Running from main')
-    ox = 1
+    noise = 0
+    ox = 0
     if ox:
-        disc = MicroDisc(cOb=0, cRb=1e-6, k0=1e-3, alpha=0.5)
+        disc = MicroDisc(cOb=0, cRb=1e-6, k0=1e-3, alpha=0.5, noise=noise)
     else:
-        disc = MicroDisc(cOb=1e-6, cRb=0, k0=1e-3, alpha=0.5)
+        disc = MicroDisc(cOb=1e-6, cRb=0, k0=1e-3, alpha=0.5, noise=noise)
     print(disc.iLim)
     E = np.linspace(1,-1)
-    i = disc.LSV(E)
-    plotting.plot(E,i,show=1)
+    t = np.linspace(0.001,1,1000)
+    nt = t.size
+    nE = E.size
+    i = np.zeros([nt,nE])
+    for x in range(nE):
+        i[:,x] = disc.CA(t,E[x])
+    plotting.plot(E,-i.T/i[:,-1],ylab='$i_{norm}$', show=1)
 
