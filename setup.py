@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='softpotato',
-    version="1.0.6",
+    version="1.0.7",
     license='GPL3',
     author='Oliver Rodriguez',
     author_email='oliver.rdz@softpotato.xyz',
