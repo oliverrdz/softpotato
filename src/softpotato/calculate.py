@@ -93,7 +93,7 @@ class MicroDisc:
         self.FRT = F/(R*T)
         self.noise = noise
         if self.cOb > 0 and self.cRb == 0:
-            print('Reduction')
+            #print('Reduction')
             self.C = self.cOb
             self.D = self.DO
             self.alphaf = -alpha
@@ -101,7 +101,7 @@ class MicroDisc:
             self.DODR = DO/DR
             self.sign = -1
         elif self.cOb == 0 and self.cRb > 0:
-            print('Oxidation')
+            #print('Oxidation')
             self.C = self.cRb
             self.D = self.DR
             self.DODR = DR/DO
@@ -147,6 +147,17 @@ class MicroDisc:
         f2 = 4/np.pi + 8/np.sqrt(s*np.pi**5) + 25/(2792*s**(3/2)) - 1/(3880*s**(5/2)) - 1/(4500*s**(7/2))
         # Fancy if statement using boolean operations:
         return (s<1.281)*f1 + (s>=1.281)*f2
+
+
+class MicroBand:
+    '''
+    '''
+
+    def __init__(self, t=1, n=1, DO=1e-5, DR=1e-5, cOb=1e-6, cRb=0, 
+                 w=5e-4, l=500e-4):
+        self.A = w*l
+        self.iLim = 2*np.pi*n*F*self.A*D*C/(w*np.log(64*D*t/w**2))
+
 
 if __name__ == '__main__':
     import plotting
