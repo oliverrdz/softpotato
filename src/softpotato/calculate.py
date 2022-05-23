@@ -20,7 +20,6 @@ class Macro:
         i =  self.n*F*self.A*self.C*np.sqrt(self.D/(np.pi*t))
         return i + np.random.normal(size=t.size, scale=self.noise)
 
-
     def RandlesSevcik(self, sr):
         i = 0.4463*self.n*F*self.A*self.C*np.sqrt(self.n*F*sr*self.D/(R*self.T))
         return i + np.random.normal(size=sr.size, scale=self.noise)
@@ -153,8 +152,7 @@ class MicroBand:
     '''
     '''
 
-    def __init__(self, t=1, n=1, DO=1e-5, DR=1e-5, cOb=1e-6, cRb=0, 
-                 w=5e-4, l=500e-4):
+    def __init__(self, t=1, n=1, D=1e-5, cb=1e-6, w=5e-4, l=500e-4):
         self.A = w*l
         self.iLim = 2*np.pi*n*F*self.A*D*C/(w*np.log(64*D*t/w**2))
 
