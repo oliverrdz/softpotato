@@ -109,7 +109,10 @@ class MicroDisc:
             self.sign = 1
         else:
             print('Error. Either CO or CR should be zero.') 
-        self.iLim = self.sign*4*n*F*self.D*self.C*self.a
+        self.A = np.pi*a**2
+        self.m0 = 4*self.D/(np.pi*self.a)
+        self.km = self.m0
+        self.iLim = n*F*self.A*self.m0*self.C
 
     def LSV(self, E):
         kf = self.k0*np.exp(self.alphaf*self.n*self.FRT*(E-self.E0))
@@ -154,25 +157,15 @@ class MicroBand:
 
     def __init__(self, t=1, n=1, D=1e-5, cb=1e-6, w=5e-4, l=500e-4):
         self.A = w*l
-        self.iLim = 2*np.pi*n*F*self.A*D*C/(w*np.log(64*D*t/w**2))
+        self.m0 = 2*np.pi*D/(w*np.log(64*D*t/w**2))
+        self.km = self.m0
+        self.iLim = n*F*self.A*self.m0*cb
 
 
 if __name__ == '__main__':
-    import plotting
     print('Running from main')
-    noise = 0
-    ox = 0
-    if ox:
-        disc = MicroDisc(cOb=0, cRb=1e-6, k0=1e-3, alpha=0.5, noise=noise)
-    else:
-        disc = MicroDisc(cOb=1e-6, cRb=0, k0=1e-3, alpha=0.5, noise=noise)
+    disc = MicroDisc()
     print(disc.iLim)
-    E = np.linspace(1,-1)
-    t = np.linspace(0.001,1,1000)
-    nt = t.size
-    nE = E.size
-    i = np.zeros([nt,nE])
-    for x in range(nE):
-        i[:,x] = disc.CA(t,E[x])
-    plotting.plot(E,-i.T/i[:,-1],ylab='$i_{norm}$', show=1)
-
+    band = MicroBand()
+    print(band.iLim)
+    
