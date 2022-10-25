@@ -71,6 +71,7 @@ class E:
             D = self.DO
             c = self.cOb
         self.i = self.n*F*self.A*D*c*I/(2*self.dX*self.delta)
+        self.E = self.wf.E
 
         self.cR = self.CR*self.cRb
         self.cO = self.CO*self.cOb
