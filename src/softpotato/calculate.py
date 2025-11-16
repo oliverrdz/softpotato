@@ -6,6 +6,19 @@ R = 8.3145 # J/(mol K)
 
 class Macro:
     '''
+    ----------
+    Description:
+    Builds a macroelectrode object
+
+    ----------
+    Parameters:
+    n:      1, number of electrons transferred (default: 1)
+    A:      cm^2, electrode geometric area (default: 1 cm^2)
+    C:      M, bulk concentration of species (default: 1e-6 M)
+    D:      cm^2/s, diffusion coefficient of species (default: 1e-5 cm^2/s)
+    T:      K, temperature (default: 298 K)
+    noise:  1, noise scale (default: 0)
+
     '''
 
     def __init__(self, n=1, A=1, C=1e-6, D=1e-5, T=298, noise=0):
