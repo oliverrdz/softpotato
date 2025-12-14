@@ -21,7 +21,7 @@ Naming alignment (SoftPotato v3.0):
 - [x] Establish `src/softpotato/` package layout for the engine module
 - [x] Add `pytest` harness + smoke tests
 - [x] Configure linting (ruff / black)
-- [ ] GitHub Actions: tests + lint on PR/push
+- [x] GitHub Actions: tests + lint on PR/push
 - [ ] Initial docs skeleton (`README.md`, `docs/`)
 
 ### Acceptance criteria
