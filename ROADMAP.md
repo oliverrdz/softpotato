@@ -17,8 +17,8 @@ Naming alignment (SoftPotato v3.0):
 **Goal:** installable SoftPotato v3 module with CI gates.
 
 ### Tasks
-- [ ] Create `pyproject.toml` for `softpotato` / `softpotato.core` (PEP 517/518)
-- [ ] Establish `src/softpotato/` package layout for the engine module
+- [x] Create `pyproject.toml` for `softpotato` / `softpotato.core` (PEP 517/518)
+- [x] Establish `src/softpotato/` package layout for the engine module
 - [ ] Add `pytest` harness + smoke tests
 - [ ] Configure linting (ruff / black)
 - [ ] GitHub Actions: tests + lint on PR/push
