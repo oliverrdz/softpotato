@@ -25,9 +25,9 @@ Naming alignment (SoftPotato v3.0):
 - [ ] Initial docs skeleton (`README.md`, `docs/`)
 
 ### Acceptance criteria
-- `pip install -e .` succeeds
-- `pytest` passes on clean checkout
-- CI green on main
+- [x] `pip install -e .` succeeds
+- [x] `pytest` passes on clean checkout
+- [ ] CI green on main
 
 ---
 
