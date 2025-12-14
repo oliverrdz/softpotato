@@ -35,6 +35,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "black>=24.0",
   "pytest>=8",
   "pytest-cov>=5",
   "ruff>=0.6",
@@ -81,8 +82,40 @@ target-version = "py310"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM"]
-ignore = []
+select = [
+  # Core correctness
+  "E",    # pycodestyle errors
+  "F",    # pyflakes (undefined names, unused imports, etc.)
+
+  # Imports & modern Python
+  "I",    # import sorting
+  "UP",   # pyupgrade
+
+  # Bug-prone patterns (excellent for simulation code)
+  "B",    # bugbear (mutable defaults, loop gotchas, etc.)
+
+  # NumPy-specific best practices (low-noise, high-value)
+  "NPY",  # numpy rules
+
+  # Ruff “meta” hygiene (keeps lint directives honest)
+  "RUF",  # e.g., unused noqa, ambiguous patterns
+
+  # Performance micro-pitfalls (kept minimal; generally not noisy)
+  "PERF", # common avoidable slow patterns
+
+  # Readability simplifications (kept; usually safe)
+  "SIM",
+]
+
+ignore = [
+  "E501",     # line length (Black owns this)
+  "NPY002",   # allow np.random.* legacy calls (common in sims); switch later if you want Generator-only
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "B018",   # “useless expression” (common with pytest patterns)
+]
 
 [tool.mypy]
 python_version = "3.10"

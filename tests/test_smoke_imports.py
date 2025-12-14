@@ -30,4 +30,3 @@ def test_exposes_version_attribute() -> None:
 @pytest.mark.parametrize("dep", ["numpy", "scipy", "matplotlib"])
 def test_runtime_dependencies_import(dep: str) -> None:
     importlib.import_module(dep)
-

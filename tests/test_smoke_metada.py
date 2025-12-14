@@ -32,4 +32,3 @@ def test_distribution_version_nonempty() -> None:
 
     assert isinstance(version, str)
     assert version.strip() != ""
-

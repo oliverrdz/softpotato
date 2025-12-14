@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
-
 try:
     __version__ = version("softpotato")
 except PackageNotFoundError:  # pragma: no cover
@@ -18,4 +17,3 @@ except PackageNotFoundError:  # pragma: no cover
 
 
 __all__ = ["__version__"]
-

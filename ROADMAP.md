@@ -19,8 +19,8 @@ Naming alignment (SoftPotato v3.0):
 ### Tasks
 - [x] Create `pyproject.toml` for `softpotato` / `softpotato.core` (PEP 517/518)
 - [x] Establish `src/softpotato/` package layout for the engine module
-- [ ] Add `pytest` harness + smoke tests
-- [ ] Configure linting (ruff / black)
+- [x] Add `pytest` harness + smoke tests
+- [x] Configure linting (ruff / black)
 - [ ] GitHub Actions: tests + lint on PR/push
 - [ ] Initial docs skeleton (`README.md`, `docs/`)
 
