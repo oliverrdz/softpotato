@@ -135,11 +135,11 @@ Planned sections:
 Contributions are welcome once core APIs stabilize.
 
 Guidelines:
-Open an issue before major changes
-Follow numerical and physical conventions
-Include tests and justification
-Keep APIs explicit and readable
-CI enforces linting, formatting, and typing.
+* Open an issue before major changes
+* Follow numerical and physical conventions
+* Include tests and justification
+* Keep APIs explicit and readable
+* CI enforces linting, formatting, and typing.
 
 ---
 
