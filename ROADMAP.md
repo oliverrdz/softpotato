@@ -22,12 +22,12 @@ Naming alignment (SoftPotato v3.0):
 - [x] Add `pytest` harness + smoke tests
 - [x] Configure linting (ruff / black)
 - [x] GitHub Actions: tests + lint on PR/push
-- [ ] Initial docs skeleton (`README.md`, `docs/`)
+- [x] Initial docs skeleton (`README.md`, `docs/`)
 
 ### Acceptance criteria
 - [x] `pip install -e .` succeeds
 - [x] `pytest` passes on clean checkout
-- [ ] CI green on main
+- [x] CI green on main
 
 ---
 
