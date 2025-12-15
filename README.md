@@ -1,166 +1,159 @@
-# 🥔 SoftPotato v3.0
+# SoftPotato v3.0
 
-**SoftPotato** is an open-source **electrochemistry simulator and toolbox** focused on
-**mass transport and electrode kinetics**, designed for researchers, educators,
-and developers working with **voltammetry and diffusion–reaction systems**.
+**SoftPotato** is an open-source electrochemical simulation framework written in Python.
 
-Version **v3.0** is a **ground-up rewrite** centered on a **robust 1D planar finite-difference engine**
-with **explicit electrochemical mechanisms** (E / EC / CE / EE / general E–C networks).
+This repository currently hosts **SoftPotato v3.0 – M0**, which is a **project skeleton release**.
+No scientific simulation functionality is implemented yet.
 
-> _A software potentiostat for theory._
-
----
-
-## 🚧 Project Status
-
-⚠️ **Alpha (v3.0.0)**  
-The numerical core is under active development. APIs may change until v3.0 stabilizes.
-
-Current state:
-- ✔️ Packaging, linting, typing, and test scaffolding
-- ✔️ CI-ready project layout
-- 🚧 Numerical solvers and mechanisms in progress
-- ❌ Not yet feature-complete vs SoftPotato v2.x
-
-See the **Roadmap** section for detailed milestones and acceptance criteria.
+> ⚠️ This is an **alpha-stage structural milestone**, intended to validate packaging, testing,
+> documentation structure, and development workflow.
 
 ---
 
-## ✨ Key Features (v3 Design Goals)
+## What Is SoftPotato?
 
-- **1D Planar diffusion** (Fick’s laws, finite differences)
-- **Implicit time integration**
-  - Crank–Nicolson (default)
-  - Backward Euler
-- **Electrochemical mechanisms**
-  - E (Nernst, Butler–Volmer)
-  - EC / CE
-  - EE and arbitrary E–C networks
-- **Waveform-driven simulations**
-  - Cyclic voltammetry (CV)
-  - Linear sweep voltammetry (LSV)
-  - Potential steps
-- **Multi-species support**
-- **Physically explicit boundary conditions**
-- **Scientifically testable outputs**
-  - mass balance
-  - limiting cases
-  - convergence checks
+SoftPotato aims to become a modular, extensible platform for simulating
+electrochemical experiments (e.g. cyclic voltammetry, chronoamperometry)
+using physically motivated numerical models.
 
-Planned (post v3.0):
-- Additional geometries (spherical, thin-layer)
-- IR drop and double-layer capacitance
-- Numba / JAX acceleration paths
-- GUI / wizard-based experiment builders
+In **M0**, SoftPotato does *not* perform simulations.
+Only the project structure is established.
 
 ---
 
-## 📦 Installation
+## Current Status (M0: Project Skeleton)
 
-### From source (recommended)
+**Available today**
+- Python package installs successfully
+- Version metadata is exposed
+- Test suite runs and passes
+- Documentation, roadmap, and architecture files exist
 
+**Not available yet**
+- No electrochemical mechanisms
+- No diffusion solvers
+- No kinetics models
+- No waveform generators
+- No plotting
+- No CLI or GUI
+
+This is intentional.
+
+---
+
+## Quickstart
+
+### Installation (development mode)
 ```bash
-git clone https://github.com/oliverrdz/softpotato.git
-cd softpotato
 pip install -e .
 ```
 
-## Development installation
+### Verify installation
 ```bash
-pip install -e ".[dev,docs]"
+python -c "import softpotato; print(softpotato.__version__)"
 ```
-Python >= 3.10 is required.
-
----
-# Development Workflow
+Expected output (example):
 ```bash
-# Run tests
+v3.0.0-alpha0
+```
+### Run tests
+```bash
 pytest
-
-# Lint & formatting
-ruff check .
-black .
-
-# Static typing
-mypy src/softpotato
 ```
-Linting and typing are intentionally strict avoid silent numerical bugs.
+All tests should pass.
 
 ---
 
-# Project Philosophy
+## Developer Setup
 
-SoftPotato v3 prioritizes physical transparency and numerical robustness.
+### Requirements
 
-Core principles:
-* Explicit mass transport
-* Explicit reaction steps
-* Explicit assumptions
-* Stable, implicit solvers
-* Reproducible simulations
+- Python 3.10 or newer
+- pip
+- virtualenv or equivalent (recommended)
 
-If a model cannot be explained on a whiteboard, it does not belong in the core.
+### Clone the repository
+```bash
+git clone https://github.com/<your-org>/softpotato.git  
+cd softpotato
+```
+### Create and activate a virtual environment
+```bash
+python -m venv .venv  
+source .venv/bin/activate
+```
+### Install in editable mode with dev dependencies
+```bash
+pip install -e ".[dev]"
+```
+### Run the test suite
+```bash
+pytest
+```
+---
 
-# Roadmap (Soft Potato v3.0)
-Development is milestone-driven with clear acceptance criteria:
+## Public API (Current)
 
-* SP3-M0 — Repository scaffolding & CI
-* SP3-M1 — Potential waveforms
-* SP3-M2 — Planar 1D grid & diffusion operator
-* SP3-M3 — Implicit diffusion engine
-* SP3-M4 — Reversible E (Nernst)
-* SP3-M5 — Butler–Volmer kinetics
-* SP3-M6 — Bulk chemical steps (EC / CE)
-* SP3-M7 — Mechanism compiler
-* SP3-M8 — Multi-electron systems (EE)
-* SP3-M9 — General E–C reaction networks
+There is **no stable scientific API** in M0.
 
-See [ROADMAP.md](https://github.com/oliverrdz/softpotato/blob/v3.0/ROADMAP.md)
- for full details, tests, and example plots.
+The only supported public interaction is:
 
- ---
+import softpotato
 
- # Documentation
- Documentation will be built using MkDocs once the public API stabilizes.
-
-Planned sections:
-* Governing equations & assumptions
-* Numerical methods
-* Mechanism builder API
-* Validation and benchmark cases
+No classes, solvers, functions, or CLI entry points are exposed yet.
 
 ---
 
-# Contributing
-Contributions are welcome once core APIs stabilize.
+## Documentation Structure
 
-Guidelines:
-* Open an issue before major changes
-* Follow numerical and physical conventions
-* Include tests and justification
-* Keep APIs explicit and readable
-* CI enforces linting, formatting, and typing.
+- `README.md` — project overview and quickstart
+- `ROADMAP.md` — milestone-based development plan
+- `ARCHITECTURE.md` — high-level system design
+- `docs/` — future user and developer documentation
 
 ---
 
-#  License
+## Roadmap
 
-MIT License
-© Oliver Rodriguez
+Development follows **explicit milestones**.
+
+You are currently looking at:
+
+**M0 – Project Skeleton**
+
+Upcoming milestones will introduce:
+- Electrochemical mechanisms
+- Numerical solvers
+- Scientific APIs
+- Visualization tools
+
+See `ROADMAP.md` for details.
 
 ---
 
-# Name Origin
+## Common Pitfalls
 
-SoftPotato is a nod to:
-* software potentiostats
-* potato batteries
-* and solving hard electrochemical problems the soft way
+- **Expecting simulation features**  
+  None exist yet. M0 is structural only.
+
+- **Assuming API stability**  
+  The API will change rapidly during alpha milestones.
+
+- **Using SoftPotato for research now**  
+  Do not use M0 for scientific work.
 
 ---
 
-# Links
+## Versioning and Stability
 
-* Homepage: https://softpotato.xyz
-* Repository: https://github.com/oliverrdz/softpotato
-* Issues: https://github.com/oliverrdz/softpotato/issues
+SoftPotato follows semantic versioning with milestone-based pre-releases.
+
+- `v3.0.0-alpha0` — structural skeleton
+- Future alpha versions may break APIs without notice
+
+---
+
+## License
+
+See `LICENSE` for details.
+

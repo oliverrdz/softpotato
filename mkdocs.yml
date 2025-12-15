@@ -1,0 +1,7 @@
+site_name: SoftPotato
+site_description: SoftPotato v3.0 documentation (skeleton)
+theme:
+  name: mkdocs
+nav:
+  - Home: index.md
+
