@@ -80,7 +80,8 @@ def test_imports_and_exposes_version_string() -> None:
     assert isinstance(v, str), "__version__ must be a string"
     assert v.strip(), "__version__ must be non-empty"
     assert re.match(
-        r"^\d+\.\d+\.\d+([.-][0-9A-Za-z.]+)?$", v
+        r"^\d+\.\d+\.\d+(" r"(a|b|rc)\d+|" r"([.-][0-9A-Za-z.]+)" r")?$",
+        v,
     ), f"Unexpected version: {v}"
 
 
@@ -183,7 +184,10 @@ def test_pyproject_declares_hatchling_and_python310_plus() -> None:
     AC:
       - Constraints: Python >=3.10, packaging via PEP 517/518 (hatchling).
     """
-    import tomllib
+    try:
+        import tomllib  # py>=3.11
+    except ModuleNotFoundError:  # py<=3.10
+        import tomli as tomllib
 
     root = _repo_root()
     pyproject = root / "pyproject.toml"
