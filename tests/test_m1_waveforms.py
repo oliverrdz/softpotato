@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
@@ -48,7 +49,9 @@ def test_waveform_from_arrays_happy_path() -> None:
         ([0.0, 1.0], [0.0, float("inf")], "finite"),
     ],
 )
-def test_waveform_from_arrays_rejects_invalid_inputs(E, t, match: str) -> None:
+def test_waveform_from_arrays_rejects_invalid_inputs(
+    E: Any, t: Any, match: str
+) -> None:
     """
     AC: From-arrays constructor rejects mismatched length, non-1D, non-finite, non-monotonic time.
     """

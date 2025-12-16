@@ -109,20 +109,29 @@ def uniform_time_grid(
         t = t_start + dt * np.arange(n, dtype=np.float64)
         return TimeGrid(t=t)
 
-    # t_end provided
-    if not np.isfinite(t_end):
+    # t_end provided (n is None here)
+    if t_end is None:
+        # Defensive; logically unreachable due to XOR check above.
+        raise ValueError("t_end must be provided when n is None.")
+
+    t_end_f: float = float(t_end)
+
+    if not np.isfinite(t_end_f):
         raise ValueError("t_end must be finite.")
-    if t_end < t_start:
+    if t_end_f < t_start:
         raise ValueError("t_end must be >= t_start.")
-    span = float(t_end - t_start)
+
+    span = float(t_end_f - t_start)
     # Require exact integer number of steps for reliability.
     steps = span / float(dt) if span != 0.0 else 0.0
     k = int(np.round(steps))
+
     if not np.isclose(steps, k, rtol=0.0, atol=1e-12):
         raise ValueError(
             "t_end must satisfy (t_end - t_start) / dt being an integer "
-            f"(got {(t_end - t_start) / dt:.16g})."
+            f"(got {(t_end_f - t_start) / dt:.16g})."
         )
+
     n_calc = k + 1
     t = t_start + dt * np.arange(n_calc, dtype=np.float64)
     return TimeGrid(t=t)

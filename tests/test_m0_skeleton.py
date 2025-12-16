@@ -4,6 +4,8 @@ import re
 import sys
 from importlib import metadata, resources
 from pathlib import Path
+from types import ModuleType
+from typing import Any
 
 import pytest
 
@@ -24,7 +26,7 @@ def _ensure_src_on_path() -> None:
         sys.path.insert(0, str(src))
 
 
-def _import_softpotato():
+def _import_softpotato() -> ModuleType:
     try:
         import softpotato  # type: ignore
 
@@ -184,16 +186,17 @@ def test_pyproject_declares_hatchling_and_python310_plus() -> None:
     AC:
       - Constraints: Python >=3.10, packaging via PEP 517/518 (hatchling).
     """
+
     try:
-        import tomllib  # py>=3.11
+        import tomllib  # type: ignore[import-not-found]  # py>=3.11
     except ModuleNotFoundError:  # py<=3.10
-        import tomli as tomllib
+        import tomli as tomllib  # type: ignore[import-not-found]
 
     root = _repo_root()
     pyproject = root / "pyproject.toml"
     assert pyproject.is_file(), "pyproject.toml missing"
 
-    data = tomllib.loads(_read_text(pyproject))
+    data: dict[str, Any] = tomllib.loads(_read_text(pyproject))
 
     build = data.get("build-system", {})
     assert (
