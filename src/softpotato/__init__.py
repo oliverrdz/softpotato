@@ -36,16 +36,13 @@ from .waveforms import (
 )
 
 __all__ = [
-    "__version__",
-    # Time
     "TimeGrid",
-    "uniform_time_grid",
-    # Waveforms
-    "lsv",
+    "__version__",
     "cv",
+    "lsv",
     "step",
-    "waveform_from_arrays",
-    # Validation
+    "uniform_time_grid",
     "validate_time",
     "validate_waveform",
+    "waveform_from_arrays",
 ]

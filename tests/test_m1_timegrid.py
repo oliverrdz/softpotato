@@ -59,7 +59,7 @@ def test_uniform_time_grid_with_t_end_is_inclusive_and_exact_steps() -> None:
     assert np.allclose(np.diff(t), dt, rtol=0.0, atol=1e-12)
 
     # n should be (t_end/dt) + 1 for inclusive endpoint
-    expected_n = int(round(t_end / dt)) + 1
+    expected_n = round(t_end / dt) + 1
     assert tg.n == expected_n
 
 
