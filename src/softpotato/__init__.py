@@ -15,7 +15,7 @@ from importlib.metadata import PackageNotFoundError, version
 try:
     __version__ = version("softpotato")
 except PackageNotFoundError:  # pragma: no cover
-    __version__ = "0.0.0"
+    __version__ = "3.0.0-alpha1"
 
 # Time ------------------------------------------------------------------------
 

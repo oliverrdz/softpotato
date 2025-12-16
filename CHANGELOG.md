@@ -1,3 +1,23 @@
+## [3.0.0-alpha1] — 2025-12-16
+
+### Added
+- Time grid utilities providing a validated, reusable time base for simulated electrochemical experiments.
+- Potential waveform generators (M1) built on top of time grids (e.g. linear sweep–style waveforms).
+- Input validation layer to enforce argument consistency and array shapes early.
+
+### Documentation
+- Expanded MkDocs documentation including quickstart, API references for time grids and waveforms, and runnable examples.
+- Cross-linked tests and documentation for traceability of acceptance criteria.
+
+### Quality
+- Test coverage for M0 project skeleton and M1 time grids and waveforms.
+- CI and documentation builds expected to pass on the release tag.
+
+### Notes
+- This is an **alpha** release. APIs may change as diffusion, kinetics, and reaction mechanism milestones are implemented.
+
+---
+
 ## [3.0.0-alpha0] — 2025-12-15
 
 **Status:** Alpha (M0 – project skeleton)
