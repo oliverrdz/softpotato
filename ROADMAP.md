@@ -35,11 +35,11 @@ Naming alignment (SoftPotato v3.0):
 **Goal:** waveform generators return `np.ndarray (n,2)` with columns `[E, t]`.
 
 ### Tasks
-- [ ] Linear sweep (LSV)
-- [ ] Cyclic voltammetry (CV, multi-cycle)
-- [ ] Potential step
-- [ ] Validation utilities (shape, monotonic time)
-- [ ] From-arrays constructor
+- [x] Linear sweep (LSV)
+- [x] Cyclic voltammetry (CV, multi-cycle)
+- [x] Potential step
+- [x] Validation utilities (shape, monotonic time)
+- [x] From-arrays constructor
 
 ### Acceptance criteria
 **Tests**
