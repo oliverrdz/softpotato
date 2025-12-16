@@ -1,159 +1,81 @@
 # SoftPotato v3.0
 
-**SoftPotato** is an open-source electrochemical simulation framework written in Python.
+SoftPotato is a scientific Python library for building electrochemical experiments as **validated time grids and potential waveforms**.
 
-This repository currently hosts **SoftPotato v3.0 – M0**, which is a **project skeleton release**.
-No scientific simulation functionality is implemented yet.
+**M1 introduces the first stable, user-facing scientific API**: time grids and potential waveform generators.
 
-> ⚠️ This is an **alpha-stage structural milestone**, intended to validate packaging, testing,
-> documentation structure, and development workflow.
-
----
-
-## What Is SoftPotato?
-
-SoftPotato aims to become a modular, extensible platform for simulating
-electrochemical experiments (e.g. cyclic voltammetry, chronoamperometry)
-using physically motivated numerical models.
-
-In **M0**, SoftPotato does *not* perform simulations.
-Only the project structure is established.
+This milestone provides **data generators only**.
+No physics, no solvers, no plotting.
 
 ---
 
-## Current Status (M0: Project Skeleton)
+## Installation
 
-**Available today**
-- Python package installs successfully
-- Version metadata is exposed
-- Test suite runs and passes
-- Documentation, roadmap, and architecture files exist
-
-**Not available yet**
-- No electrochemical mechanisms
-- No diffusion solvers
-- No kinetics models
-- No waveform generators
-- No plotting
-- No CLI or GUI
-
-This is intentional.
-
----
-
-## Quickstart
-
-### Installation (development mode)
+### Install (user)
 ```bash
-pip install -e .
+pip install softpotato
 ```
-
-### Verify installation
-```bash
-python -c "import softpotato; print(softpotato.__version__)"
-```
-Expected output (example):
-```bash
-v3.0.0-alpha0
-```
-### Run tests
-```bash
-pytest
-```
-All tests should pass.
-
----
-
-## Developer Setup
-
-### Requirements
-
-- Python 3.10 or newer
-- pip
-- virtualenv or equivalent (recommended)
-
-### Clone the repository
-```bash
-git clone https://github.com/<your-org>/softpotato.git  
-cd softpotato
-```
-### Create and activate a virtual environment
-```bash
-python -m venv .venv  
-source .venv/bin/activate
-```
-### Install in editable mode with dev dependencies
+### Install (development)
 ```bash
 pip install -e ".[dev]"
 ```
-### Run the test suite
+---
+
+## What exists in M1
+
+You can now:
+
+- Create validated **uniform time grids**
+- Generate **potential waveforms**
+  - Linear sweep voltammetry (LSV)
+  - Cyclic voltammetry (CV)
+  - Step waveforms
+- Validate time arrays and waveform arrays
+- Work with a **canonical waveform format**: `(n, 2)` → `[E, t]`
+
+---
+
+## What does NOT exist yet
+
+The following are explicitly **out of scope** for M1:
+
+- Diffusion models
+- Electrochemical mechanisms (E, EC, CE, …)
+- Current calculation
+- Experiment orchestration objects
+- Adaptive or nonuniform time grids
+- Plotting helpers
+- CLI or GUI
+
+Docs do not reference these concepts.
+
+---
+
+## Minimal example
+
+### Create a time grid and waveform
 ```bash
-pytest
+python -c "import softpotato as sp; tg=sp.uniform_time_grid(0.1,n=5); w=sp.lsv(0.0,1.0,scan_rate=1.0,dt=0.1); print(w)"
 ```
----
+Expected behavior:
 
-## Public API (Current)
-
-There is **no stable scientific API** in M0.
-
-The only supported public interaction is:
-
-import softpotato
-
-No classes, solvers, functions, or CLI entry points are exposed yet.
+- Output is a NumPy array of shape `(n, 2)`
+- Column 0: potential `E` (volts)
+- Column 1: time `t` (seconds)
+- Time is strictly increasing and finite
 
 ---
 
-## Documentation Structure
+## Public API (M1)
 
-- `README.md` — project overview and quickstart
-- `ROADMAP.md` — milestone-based development plan
-- `ARCHITECTURE.md` — high-level system design
-- `docs/` — future user and developer documentation
+Stable, user-facing symbols:
 
----
-
-## Roadmap
-
-Development follows **explicit milestones**.
-
-You are currently looking at:
-
-**M0 – Project Skeleton**
-
-Upcoming milestones will introduce:
-- Electrochemical mechanisms
-- Numerical solvers
-- Scientific APIs
-- Visualization tools
-
-See `ROADMAP.md` for details.
-
----
-
-## Common Pitfalls
-
-- **Expecting simulation features**  
-  None exist yet. M0 is structural only.
-
-- **Assuming API stability**  
-  The API will change rapidly during alpha milestones.
-
-- **Using SoftPotato for research now**  
-  Do not use M0 for scientific work.
-
----
-
-## Versioning and Stability
-
-SoftPotato follows semantic versioning with milestone-based pre-releases.
-
-- `v3.0.0-alpha0` — structural skeleton
-- Future alpha versions may break APIs without notice
-
----
-
-## License
-
-See `LICENSE` for details.
+- softpotato.TimeGrid
+- softpotato.uniform_time_grid(...)
+- softpotato.lsv(...)
+- softpotato.cv(...)
+- softpotato.step(...)
+- softpotato.waveform_from_arrays(E, t)
+- softpotato.validate_time(t, ...)
+- softpotato.validate_waveform(w)
 

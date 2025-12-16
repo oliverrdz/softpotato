@@ -2,48 +2,63 @@
 
 Welcome to the SoftPotato v3.0 documentation.
 
-This documentation currently reflects **M0: Project Skeleton**.
-Scientific content will be added in later milestones.
+This documentation currently covers:
+
+- **M0 — Project Skeleton**
+- **M1 — Time Grids & Potential Waveforms**
+
+Later milestones will introduce diffusion, kinetics, and electrochemical mechanisms.
 
 ---
 
 ## What Exists Today
 
+### M0: Project Skeleton
 - Installable Python package
-- Testable project skeleton
-- Defined roadmap and architecture
-- Clear milestone boundaries
+- Version metadata
+- Passing test suite
+- Roadmap and architecture defined
+
+### M1: Time Grids & Waveforms
+- Validated time grids
+- Potential waveform generators
+- Canonical waveform data format
+- Validation helpers
 
 ---
 
 ## What Does Not Exist Yet
 
-- Electrochemical models
-- Numerical solvers
-- User-facing APIs
-- Tutorials
-- CLI or GUI tools
+- Electrochemical mechanisms (E, EC, CE, …)
+- Diffusion solvers
+- Kinetics models
+- Current calculations
+- Plotting utilities
+- CLI or GUI
+- File I/O
 
 ---
 
 ## How to Get Started
 
-See the **Quickstart** section in the top-level README.
+See `docs/quickstart.md` for the M1 workflow.
 
 ---
 
 ## Roadmap
 
-Refer to `ROADMAP.md` to understand how functionality will be introduced.
+Development follows explicit milestones.
+Refer to `ROADMAP.md` for scope and sequencing.
 
 ---
 
 ## Audience
 
-This project is designed for:
+SoftPotato is designed for:
+
 - Electrochemists
 - Physical chemists
-- Scientific Python developers
+- Scientific Python users
 
-No prior knowledge of the internal codebase is required.
+No knowledge of the internal codebase is required.
 
