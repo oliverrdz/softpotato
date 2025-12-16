@@ -56,8 +56,8 @@ Docs do not reference these concepts.
 ### Create a time grid and waveform
 ```python
 import softpotato as sp
-tg=sp.uniform_time_grid(0.1,n=5)
-w=sp.lsv(0.0,1.0,scan_rate=1.0,dt=0.1)
+tg = sp.uniform_time_grid(0.1, n=5)
+w = sp.lsv(0.0, 1.0, scan_rate=1.0, dt=0.1)
 print(w)
 ```
 Expected behavior:
