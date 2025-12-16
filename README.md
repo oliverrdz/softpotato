@@ -54,8 +54,11 @@ Docs do not reference these concepts.
 ## Minimal example
 
 ### Create a time grid and waveform
-```bash
-python -c "import softpotato as sp; tg=sp.uniform_time_grid(0.1,n=5); w=sp.lsv(0.0,1.0,scan_rate=1.0,dt=0.1); print(w)"
+```python
+import softpotato as sp
+tg=sp.uniform_time_grid(0.1,n=5)
+w=sp.lsv(0.0,1.0,scan_rate=1.0,dt=0.1)
+print(w)
 ```
 Expected behavior:
 
