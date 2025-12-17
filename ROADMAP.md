@@ -34,6 +34,15 @@ Naming alignment (SoftPotato v3.0):
 ## SP3-M1 — Waveforms (Potential Programs)
 **Goal:** waveform generators return `np.ndarray (n,2)` with columns `[E, t]`.
 
+### M1: Time grids & potential waveforms (update)
+
+- Provide deterministic potential waveform generators that return `np.ndarray (n,2)` with columns `[E, t]`.
+- Scan waveforms (LSV/CV) are specified by potential resolution `dE` and `scan_rate`, and derive time internally via:
+  - `dt_step = dE / scan_rate`
+- Step waveforms are specified by time resolution `dt` and `t_end`, and derive the uniform time array internally.
+- No adaptive stepping, smoothing, iR-drop, or capacitance in M1.
+
+
 ### Tasks
 - [x] Linear sweep (LSV)
 - [x] Cyclic voltammetry (CV, multi-cycle)

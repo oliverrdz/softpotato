@@ -1,206 +1,249 @@
 # SoftPotato v3.0
 
-**SoftPotato** is a Python library for building electrochemical simulations.  
-Version 3.0 is a ground-up rewrite with a strict milestone-driven roadmap and strong guarantees around API stability, testing, and documentation.
+SoftPotato is a **modular electrochemistry simulation toolkit** designed for scientists who want transparent, deterministic, and testable numerical experiments.
 
-This repository currently contains **M0** and **M1** only.
+Version 3.0 is a ground-up rewrite focused on **clean scientific APIs**, strict validation, and a milestone-driven roadmap.
 
----
-
-## Project Status
-
-| Milestone | Status | Description |
-|---------|--------|------------|
-| M0 | ✅ Complete | Project skeleton, packaging, CI, versioning |
-| M1 | ✅ Complete | Time grids and potential waveform generators |
-| M2+ | ⏳ Planned | Transport, kinetics, mechanisms, solvers |
-
-Current release stage: **pre-alpha**  
-No scientific simulation is performed yet.
+This README documents the project state at **Milestone M0 and Milestone M1**.
 
 ---
 
-## Supported Python Versions
+## Project status
 
-* Python **3.10+**
+- Version: v3.0 (pre-release)
+- Current milestone: **M1 – Time Grids & Potential Waveforms**
+- License: MIT
+- Intended audience: electrochemists, physical chemists, scientific Python users
 
 ---
 
 ## Installation
 
-### Development / local install
+### Development install
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[dev]
 ```
-### User install (once published)
-```bash
-pip install softpotato
-```
----
 
-## Versioning
-
-SoftPotato follows **semantic versioning**.
-
-### Runtime version check
-
-```python
-import softpotato
-print(softpotato.__version__)
-```
+This installs SoftPotato in editable mode together with linting, typing, and test dependencies.
 
 ---
 
-## What Exists Today
+## Milestone overview
 
-### M0 – Project Skeleton
+### M0 – Project Skeleton (Completed)
 
-M0 establishes the foundations required for all future work.
+M0 establishes the **non-scientific foundation** of the project.
 
-#### Included in M0
-- Installable Python package (pyproject.toml)
-- Version metadata wired to distribution
-- Continuous integration (tests + lint)
-- Test harness and smoke tests
-- Documentation skeleton
-- Roadmap and architecture documents
+#### Goals
 
-#### Explicitly excluded in M0
-- No electrochemistry
-- No numerics
+- Create a valid, installable Python package
+- Establish versioning, licensing, and repository structure
+- Set up CI-compatible tooling (lint, type-check, tests)
+- Provide no scientific behavior yet
+
+#### What exists in M0
+
+- Importable `softpotato` package
+- Exposed version string
+- Project metadata in `pyproject.toml`
+- Empty but structured `src/`, `tests/`, and `docs/`
+- ROADMAP and CHANGELOG scaffolding
+
+#### What does NOT exist in M0
+
+- No electrochemical models
 - No solvers
-- No plotting
-- No CLI
+- No waveforms
+- No time grids
+- No numerical results
+
+M0 is purely structural.
 
 ---
 
-### M1 – Time Grids & Potential Waveforms
+### M1 – Time Grids & Potential Waveforms (Completed)
 
-M1 introduces the **first scientific building blocks**, without solving any equations.
+M1 introduces the **first scientific API**: deterministic experiment definitions.
 
-#### Time Grids
-
-Time grids are validated, immutable representations of experiment time.
-
-##### Public API
-- uniform_time_grid(...)
-
-##### Characteristics
-- Monotonic increasing time
-- Explicit time step handling
-- Validation enforced at construction
+The goal of M1 is to provide a **single, validated representation of time and potential** that later solvers can consume.
 
 ---
 
-#### Potential Waveforms
+## Scientific API (as of M1)
 
-Waveforms generate **potential vs time** arrays on a supplied time grid.
+All scientific outputs are NumPy arrays of shape `(n, 2)`:
 
-##### Public API
-- lsv(...) — linear sweep voltammetry
-- cv(...) — cyclic voltammetry
+- Column 0: potential `E`
+- Column 1: time `t`
 
-##### Characteristics
-- Stateless
-- Deterministic
-- Fully defined by parameters + time grid
+Time is **always strictly increasing**.
 
 ---
 
-## Public API (as of M1)
+### Potential waveforms
 
-Only the following symbols are considered user-facing and stable:
+#### Linear Sweep Voltammetry (LSV)
 
-- softpotato.__version__
-- softpotato.uniform_time_grid
-- softpotato.lsv
-- softpotato.cv
-
-Anything else is internal and may change without notice.
-
----
-
-## Minimal Working Example
-
-### Example usage
-
-Import SoftPotato, create a time grid, and generate a waveform:
 ```python
-import softpotato as sp  
-tg = sp.uniform_time_grid(dt=0.01, n=5)  
-waveform = sp.lsv(0.0, 1.0, time_grid=tg)  
-print(waveform.shape)  
-print(waveform[:2])
+lsv(E_start, E_end, dE, scan_rate)
 ```
-### Expected behavior
-- waveform is a NumPy array
-- Shape is (n, 2)
-- Column 0: time
-- Column 1: potential
+
+- Users specify potential resolution via `dE`
+- Time step is derived internally:
+
+dt_step = dE / scan_rate
+
+- Exact endpoint enforcement
+- Supports increasing and decreasing sweeps
 
 ---
 
-## Running Tests
+#### Cyclic Voltammetry (CV)
 
-### Run the test suite
-```bash
-pytest
+```python
+cv(E_start, E_vertex, scan_rate, dE, E_end=None, cycles=1)
 ```
-All tests must pass before any release tag is created.
+
+- Forward and reverse scans constructed deterministically
+- No duplicated vertex points
+- No duplicated samples between cycles
+- Time strictly increasing across cycles
+
+---
+
+#### Potential Step
+
+```python
+step(E_before, E_after, dt, t_end)
+```
+
+- Uniform time grid with explicit `dt`
+- Instantaneous step at `t = 0`
+- No snapping to `t_end`
+- Final time sample satisfies:
+
+t[-1] ≤ t_end and t[-1] > t_end − dt
+
+---
+
+## Example usage
+
+### Linear sweep
+
+```python
+import softpotato as sp
+w = sp.lsv(0.0, 1.0, dE=0.25, scan_rate=0.5)
+print(w)
+```
+
+---
+
+### Cyclic voltammetry
+
+```python
+import softpotato as sp
+w = sp.cv(0.0, 1.0, scan_rate=0.5, dE=0.5)
+print(w)
+```
+
+---
+
+### Potential step
+
+```python
+import softpotato as sp
+w = sp.step(0.0, 1.0, dt=0.01, t_end=0.04)
+print(w)
+```
+
+---
+
+## Validation guarantees (M1)
+
+All waveform constructors enforce:
+
+- Finite numeric inputs
+- Positive `dE`, `scan_rate`, `dt`, and `t_end`
+- Integer `cycles ≥ 1`
+- Deterministic output
+- Strictly increasing time
+
+Invalid inputs raise clear `TypeError` or `ValueError`.
+
+---
+
+## What is intentionally out of scope (≤ M1)
+
+- Diffusion solvers
+- Butler–Volmer kinetics
+- Double-layer capacitance
+- iR drop
+- Adaptive or non-uniform grids
+- Mechanism definitions (E, EC, CE, etc.)
+
+These are planned for later milestones.
+
+---
+
+## Roadmap snapshot
+
+- M0: Project skeleton ✔
+- M1: Time grids & potential waveforms ✔
+- M2: 1D diffusion solvers
+- M3: Electrode kinetics
+- M4: Mechanism composition
+- M5: Validation against analytical solutions
+
+See `ROADMAP.md` for full details.
 
 ---
 
 ## Documentation
 
-Documentation lives in the docs/ directory and is built with **MkDocs**.
+- `docs/waveforms.md` – Detailed waveform behavior and examples
+- `ROADMAP.md` – Milestone plan and scope
+- `CHANGELOG.md` – Versioned changes
 
-### Local documentation preview
+---
+
+## Development workflow
+
+### Lint
+
 ```bash
-mkdocs serve
+ruff check .
+ruff format .
 ```
+
+### Type-check
+
+```bash
+mypy .
+```
+
+### Tests
+
+```bash
+pytest
+```
+
 ---
 
-## Project Structure
+## Design philosophy
 
-### Repository layout
-```
-src/softpotato/  
-  __init__.py  
-  timegrid.py  
-  waveforms.py  
-  validation.py  
+SoftPotato prioritizes:
 
-tests/  
-  test_m0_skeleton.py  
-  test_m1_timegrid.py  
-  test_m1_waveforms.py  
+- Determinism over convenience
+- Explicit validation over silent assumptions
+- Electrochemistry-first terminology
+- Testability at every milestone
 
-docs/  
-README.md  
-ROADMAP.md  
-ARCHITECTURE.md  
-CHANGELOG.md  
-```
----
-
-## Roadmap Discipline
-
-SoftPotato follows a **milestone-gated development model**:
-
-- No milestone advances without:
-  - Passing tests
-  - Updated documentation
-  - Explicit public API declaration
-- No features are backfilled into earlier milestones
-- Each release maps directly to a roadmap milestone
-
-See ROADMAP.md for details.
+The project is designed so each milestone produces **scientifically meaningful, reviewable behavior**.
 
 ---
 
 ## License
 
-MIT License  
-See LICENSE for details.
+MIT License. See `LICENSE` for details.
 

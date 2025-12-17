@@ -4,10 +4,5 @@ theme:
   name: mkdocs
 nav:
   - Home: index.md
-  - Quickstart: quickstart.md
   - Waveforms: waveforms.md
-  - API: api_reference.md
-  - Pitfalls: common_pitfalls.md
-  - Timegrid: tutorial_timegrid_to_waveform.md
-  - Traceability: traceability.md
 

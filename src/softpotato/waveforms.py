@@ -1,240 +1,134 @@
-"""
-Potential waveform generators for M1.
-
-Canonical representation:
-  - NumPy array with shape (n, 2)
-  - columns are [E, t]
-"""
-
 from __future__ import annotations
 
 import numpy as np
-from numpy.typing import ArrayLike, NDArray
 
-from .timegrid import TimeGrid, uniform_time_grid
-from .validation import validate_time, validate_waveform
+from .validation import (
+    build_potential_segment,
+    validate_cycles,
+    validate_finite_float,
+    validate_positive_float,
+)
 
 
-def waveform_from_arrays(E: ArrayLike, t: ArrayLike) -> NDArray[np.float64]:
+def lsv(E_start: float, E_end: float, dE: float, scan_rate: float) -> np.ndarray:
     """
-    Build a canonical waveform from arrays.
+    Linear sweep voltammetry (LSV): single monotonic ramp E_start -> E_end.
 
-    Parameters
-    ----------
-    E:
-        Potential array (volts), length n.
-    t:
-        Time array (seconds), length n, strictly increasing.
+    Sampling:
+      - Potential samples use nominal increment dE (direction inferred).
+      - Endpoint is enforced exactly (E_end).
+      - Time is derived from scan_rate: dt_step = dE / scan_rate
+      - t[i] = i * dt_step
 
     Returns
     -------
-    ndarray
-        Shape (n, 2) with columns [E, t].
+    np.ndarray
+        Array shape (n, 2) with columns [E, t].
     """
-    tt = validate_time(t, strictly_increasing=True)
-    EE = np.asarray(E, dtype=float).astype(np.float64, copy=False)
-    if EE.ndim != 1:
-        raise ValueError(
-            f"E must be a 1D array; got ndim={EE.ndim} and shape={EE.shape}."
-        )
-    if EE.size != tt.size:
-        raise ValueError(f"E and t must have same length; got {EE.size} and {tt.size}.")
-    if not np.all(np.isfinite(EE)):
-        raise ValueError("E must contain only finite values.")
-    w = np.column_stack((EE, tt)).astype(np.float64, copy=False)
-    validate_waveform(w)
-    return w
+    validate_finite_float(E_start, name="E_start")
+    validate_finite_float(E_end, name="E_end")
+    validate_positive_float(dE, name="dE")
+    validate_positive_float(scan_rate, name="scan_rate")
 
+    E = build_potential_segment(E_start, E_end, dE, drop_first=False)
+    dt_step = dE / scan_rate
+    t = dt_step * np.arange(E.size, dtype=float)
 
-def _resolve_time(
-    *,
-    t: ArrayLike | None = None,
-    time_grid: TimeGrid | None = None,
-    dt: float | None = None,
-    n: int | None = None,
-    t_end: float | None = None,
-    t_start: float = 0.0,
-) -> NDArray[np.float64]:
-    if time_grid is not None:
-        return time_grid.as_array()
-    if t is not None:
-        return validate_time(t, strictly_increasing=True)
-
-    # Construct from dt + (n or t_end)
-    if dt is None:
-        raise ValueError("Provide one of: time_grid, t, or dt (with n or t_end).")
-    tg = uniform_time_grid(dt, n=n, t_end=t_end, t_start=t_start)
-    return tg.as_array()
-
-
-def lsv(
-    E_start: float,
-    E_end: float,
-    *,
-    time_grid: TimeGrid | None = None,
-    t: ArrayLike | None = None,
-    dt: float | None = None,
-    n: int | None = None,
-    t_end: float | None = None,
-    scan_rate: float | None = None,
-    t_start: float = 0.0,
-) -> NDArray[np.float64]:
-    """
-    Linear sweep voltammetry (LSV): a single linear ramp from E_start to E_end.
-
-    Time can be provided by:
-      - time_grid, or
-      - t array, or
-      - dt with n/t_end, or
-      - scan_rate with dt (duration inferred from |E_end - E_start| / |scan_rate|)
-
-    Returns canonical waveform (n, 2) [E, t].
-    """
-    if scan_rate is not None:
-        if not np.isfinite(scan_rate) or scan_rate == 0.0:
-            raise ValueError("scan_rate must be finite and non-zero.")
-        if dt is None:
-            raise ValueError("When using scan_rate, dt must be provided.")
-        duration = abs(float(E_end) - float(E_start)) / abs(float(scan_rate))
-        tt = _resolve_time(
-            t=None, time_grid=None, dt=dt, t_end=duration, t_start=t_start
-        )
-    else:
-        tt = _resolve_time(
-            t=t, time_grid=time_grid, dt=dt, n=n, t_end=t_end, t_start=t_start
-        )
-
-    if tt.size == 1:
-        EE = np.array([float(E_start)], dtype=np.float64)
-    else:
-        # Ensure exact endpoints in potential space for determinism.
-        EE = np.linspace(float(E_start), float(E_end), tt.size, dtype=np.float64)
-    return waveform_from_arrays(EE, tt)
-
-
-def step(
-    E_before: float,
-    E_after: float,
-    t_step: float,
-    *,
-    time_grid: TimeGrid | None = None,
-    t: ArrayLike | None = None,
-    dt: float | None = None,
-    n: int | None = None,
-    t_end: float | None = None,
-    t_start: float = 0.0,
-) -> NDArray[np.float64]:
-    """
-    Potential step: E_before for t < t_step, then E_after for t >= t_step.
-
-    Time can be provided by:
-      - time_grid, or
-      - t array, or
-      - dt with n/t_end
-    """
-    if not np.isfinite(t_step):
-        raise ValueError("t_step must be finite.")
-    tt = _resolve_time(
-        t=t, time_grid=time_grid, dt=dt, n=n, t_end=t_end, t_start=t_start
-    )
-    if float(t_step) < float(tt[0]) or float(t_step) > float(tt[-1]):
-        raise ValueError("t_step must lie within [t_start, t_end] of the time grid.")
-
-    EE = np.full(tt.shape, float(E_before), dtype=np.float64)
-    EE[tt >= float(t_step)] = float(E_after)
-    return waveform_from_arrays(EE, tt)
+    wave = np.column_stack([E, t])
+    return wave
 
 
 def cv(
     E_start: float,
     E_vertex: float,
-    *,
-    E_return: float | None = None,
+    scan_rate: float,
+    dE: float,
+    E_end: float | None = None,
     cycles: int = 1,
-    time_grid: TimeGrid | None = None,
-    t: ArrayLike | None = None,
-    dt: float | None = None,
-    n: int | None = None,
-    t_end: float | None = None,
-    scan_rate: float | None = None,
-    t_start: float = 0.0,
-) -> NDArray[np.float64]:
+) -> np.ndarray:
     """
-    Cyclic voltammetry (CV): triangular waveform.
+    Cyclic voltammetry (CV): repeat a cycle path with constant dE and derived time.
 
-    One "cycle" is defined as:
-      E_start -> E_vertex -> E_return
-    where E_return defaults to E_start.
+    One cycle:
+      Segment A: E_start -> E_vertex
+      Segment B: E_vertex -> E_end_cycle
+        where E_end_cycle = E_end if provided else E_start
 
-    Time can be provided by:
-      - time_grid, or
-      - t array (interpreted as total timeline for the entire multi-cycle waveform), or
-      - dt with n/t_end, or
-      - scan_rate with dt (duration inferred per segment)
+    Join-point de-duplication:
+      - Do not repeat E_vertex at A/B boundary.
+      - When repeating cycles, drop the first sample of the next cycle if it would
+        duplicate the previous cycle's last sample (within tolerance).
 
-    Notes
-    -----
-    If you provide a time array / grid explicitly, the potential is generated by mapping
-    phase progress across the full timeline for the requested number of cycles.
+    Time:
+      - dt_step = dE / scan_rate
+      - Each potential sample advances by dt_step
+      - Time is strictly increasing across the full waveform.
+
+    Returns
+    -------
+    np.ndarray
+        Array shape (n, 2) with columns [E, t].
     """
-    if E_return is None:
-        E_return = float(E_start)
-    if not isinstance(cycles, int) or cycles < 1:
-        raise ValueError("cycles must be an integer >= 1.")
+    validate_finite_float(E_start, name="E_start")
+    validate_finite_float(E_vertex, name="E_vertex")
+    if E_end is not None:
+        validate_finite_float(E_end, name="E_end")
+    validate_positive_float(dE, name="dE")
+    validate_positive_float(scan_rate, name="scan_rate")
+    validate_cycles(cycles)
 
-    if scan_rate is not None:
-        if not np.isfinite(scan_rate) or scan_rate == 0.0:
-            raise ValueError("scan_rate must be finite and non-zero.")
-        if dt is None:
-            raise ValueError("When using scan_rate, dt must be provided.")
-        seg1 = abs(float(E_vertex) - float(E_start)) / abs(float(scan_rate))
-        seg2 = abs(float(E_return) - float(E_vertex)) / abs(float(scan_rate))
-        duration_one = seg1 + seg2
-        total = duration_one * float(cycles)
-        tt = _resolve_time(t=None, time_grid=None, dt=dt, t_end=total, t_start=t_start)
-    else:
-        tt = _resolve_time(
-            t=t, time_grid=time_grid, dt=dt, n=n, t_end=t_end, t_start=t_start
-        )
+    E_end_cycle = E_start if E_end is None else float(E_end)
 
-    if tt.size == 1:
-        return waveform_from_arrays([float(E_start)], tt)
+    E_all: list[np.ndarray] = []
 
-    # Map each timepoint into a cycle phase in [0, 1).
-    total_span = float(tt[-1] - tt[0])
-    if total_span <= 0.0:
-        raise ValueError("Time grid must span a positive duration for CV with n>1.")
+    for k in range(cycles):
+        seg_a = build_potential_segment(E_start, E_vertex, dE, drop_first=False)
+        seg_b = build_potential_segment(E_vertex, E_end_cycle, dE, drop_first=True)
+        E_cycle = np.concatenate([seg_a, seg_b])
 
-    # Normalized progress 0..1 across total timeline
-    u = (tt - tt[0]) / total_span  # [0, 1]
-    # Scale by cycles; get per-cycle position
-    uc = u * float(cycles)
-    frac = uc - np.floor(uc)  # [0,1)
-    # Two-segment triangle: first half ramps start->vertex, second half ramps vertex->return
-    # Use a split at seg_ratio based on potential distances to keep scan-rate-consistent phase.
-    d1 = abs(float(E_vertex) - float(E_start))
-    d2 = abs(float(E_return) - float(E_vertex))
-    if d1 == 0.0 and d2 == 0.0:
-        EE = np.full(tt.shape, float(E_start), dtype=np.float64)
-        return waveform_from_arrays(EE, tt)
+        # Avoid duplicating boundary sample between cycles if it matches.
+        if k > 0 and E_all:
+            prev_last = E_all[-1][-1]
+            if np.isclose(E_cycle[0], prev_last, atol=1e-12, rtol=0.0):
+                E_cycle = E_cycle[1:]
 
-    seg_ratio = d1 / (d1 + d2)  # portion of cycle spent on segment 1
-    EE = np.empty_like(tt, dtype=np.float64)
+        E_all.append(E_cycle)
 
-    m1 = frac < seg_ratio
-    # Segment 1: frac in [0, seg_ratio] -> alpha in [0,1]
-    if np.any(m1):
-        alpha1 = frac[m1] / seg_ratio if seg_ratio > 0.0 else 0.0
-        EE[m1] = float(E_start) + alpha1 * (float(E_vertex) - float(E_start))
+    E = np.concatenate(E_all) if E_all else np.array([float(E_start)], dtype=float)
+    dt_step = dE / scan_rate
+    t = dt_step * np.arange(E.size, dtype=float)
 
-    # Segment 2: frac in [seg_ratio, 1) -> beta in [0,1)
-    m2 = ~m1
-    if np.any(m2):
-        beta = (frac[m2] - seg_ratio) / (1.0 - seg_ratio) if seg_ratio < 1.0 else 0.0
-        EE[m2] = float(E_vertex) + beta * (float(E_return) - float(E_vertex))
+    wave = np.column_stack([E, t])
+    return wave
 
-    # Force last sample to land exactly at the intended final point of the last cycle.
-    # For u==1.0 (the last timepoint), frac==0.0; so set explicitly:
-    EE[-1] = float(E_return)
 
-    return waveform_from_arrays(EE, tt)
+def step(E_before: float, E_after: float, dt: float, t_end: float) -> np.ndarray:
+    """
+    Potential step waveform.
+
+    Time grid:
+      - n = floor(t_end / dt) + 1
+      - t = [0, dt, 2dt, ..., (n-1)dt]
+      - No snapping: t[-1] <= t_end and t[-1] > t_end - dt
+
+    Potential:
+      - Instantaneous step at t = 0 (recommended spec):
+        E[0] = E_after and E is constant E_after for all samples.
+
+    Returns
+    -------
+    np.ndarray
+        Array shape (n, 2) with columns [E, t].
+    """
+    validate_finite_float(E_before, name="E_before")
+    validate_finite_float(E_after, name="E_after")
+    validate_positive_float(dt, name="dt")
+    validate_positive_float(t_end, name="t_end")
+
+    n = int(np.floor(t_end / dt)) + 1
+    t = dt * np.arange(n, dtype=float)
+
+    E = np.full(n, float(E_after), dtype=float)
+
+    wave = np.column_stack([E, t])
+    return wave
