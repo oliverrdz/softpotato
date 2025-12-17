@@ -22,7 +22,7 @@ This README documents the project state at **Milestone M0 and Milestone M1**.
 ### Development install
 
 ```bash
-pip install -e ".[dev]
+pip install -e ".[dev]"
 ```
 
 This installs SoftPotato in editable mode together with linting, typing, and test dependencies.
