@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "softpotato"
-version = "3.0.0-alpha1"
+version = "3.0.0-alpha2"
 description = "Electrochemistry simulator and toolbox (Soft Potato)."
 readme = "README.md"
 license = { file = "LICENSE" }

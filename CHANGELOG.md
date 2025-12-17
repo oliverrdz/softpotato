@@ -1,3 +1,29 @@
+## v3.0.0-alpha2 — 2025-12-17
+
+### Changed (breaking)
+- Simplified M1 waveform generation to be **resolution-driven** rather than requiring a user-provided time grid.
+- Updated public waveform APIs:
+  - `lsv(E_start, E_end, dE, scan_rate)`
+  - `cv(E_start, E_vertex, scan_rate, dE, E_end=None, cycles=1)`
+  - `step(E_before, E_after, dt, t_end)`
+
+### Behavior
+- Scan waveforms (`lsv`, `cv`) now deterministically derive the time array from `dE` and `scan_rate`, with exact endpoint enforcement.
+- Step waveforms now construct a uniform time grid using `dt` up to `t_end`.
+- All waveform generators return `np.ndarray (n, 2)` with columns `[E, t]` and strictly increasing time.
+
+### Documentation
+- Updated waveform documentation and examples to reflect the new resolution-based API.
+- Clarified parameter meanings, units, and deterministic sampling rules.
+
+### Tests
+- Updated M1 waveform tests to validate the new public signatures and derived time behavior.
+
+### Notes
+- This release introduces **breaking changes** relative to `v3.0.0-alpha1`.
+- Users migrating from `alpha1` should replace time-grid-based inputs with `dE` (scan waveforms) or `dt` (step waveforms).
+
+
 ## [3.0.0-alpha1] — 2025-12-16
 
 ### Added

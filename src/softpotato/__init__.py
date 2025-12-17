@@ -17,7 +17,7 @@ from .waveforms import cv, lsv, step
 try:
     __version__ = version("softpotato")
 except PackageNotFoundError:  # pragma: no cover
-    __version__ = "3.0.0-alpha1"
+    __version__ = "3.0.0-alpha2"
 
 __all__ = [
     "cv",
