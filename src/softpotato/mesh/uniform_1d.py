@@ -1,69 +1,85 @@
 from typing import Any
-
 import numpy as np
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel as PydanticBaseModel, Field, model_validator
 
 from softpotato.core.abcs import BaseMesh
 
 
-class Uniform1DMesh(BaseMesh, BaseModel):
-    """Uniform 1D spatial grid generator for finite difference discretizations.
+class _CallableInt(int):
+    """Integer subclass supporting both property access (`.num_nodes`) and method calls (`.num_nodes()`)."""
 
-    Inherits from :class:`BaseMesh` and utilizes Pydantic for input validation.
+    def __call__(self) -> int:
+        return int(self)
 
-    Parameters
-    ----------
-    x_min : float
-        Lower boundary of the spatial domain.
-    x_max : float
-        Upper boundary of the spatial domain. Must be strictly greater than `x_min`.
-    n_points : int
-        Total number of grid nodes. Must be at least 2.
+
+class Uniform1DMesh(PydanticBaseModel, BaseMesh):
+    """
+    Uniform 1D Spatial Mesh implementation.
+
+    Decouples spatial grid generation from numerical solvers while fulfilling
+    the `BaseMesh` interface with strict Pydantic validation.
     """
 
-    x_min: float = Field(..., description="Lower boundary of the spatial domain")
-    x_max: float = Field(..., description="Upper boundary of the spatial domain")
-    n_points: int = Field(..., ge=2, description="Total number of spatial grid nodes")
+    x_min: float = Field(..., description="Start coordinate of 1D domain (m)")
+    x_max: float = Field(..., description="End coordinate of 1D domain (m)")
+    n_nodes: int = Field(
+        ..., alias="n_points", ge=2, description="Number of spatial grid nodes"
+    )
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = {
+        "arbitrary_types_allowed": True,
+        "populate_by_name": True,
+    }
 
-    def __init__(self, x_min: float, x_max: float, n_points: int, **data: Any) -> None:
-        super().__init__(x_min=x_min, x_max=x_max, n_points=n_points, **data)
+    def __init__(
+        self,
+        x_min: float = ...,
+        x_max: float = ...,
+        num_nodes: int | None = None,
+        **data: Any,
+    ) -> None:
+        """Allow positional args (x_min, x_max, num_nodes/n_points) and keyword aliases."""
+        if num_nodes is not None:
+            data["n_nodes"] = num_nodes
+        elif "num_nodes" in data:
+            data["n_nodes"] = data.pop("num_nodes")
+
+        super().__init__(x_min=x_min, x_max=x_max, **data)
 
     @model_validator(mode="after")
-    def _validate_bounds(self) -> "Uniform1DMesh":
+    def _validate_domain_bounds(self) -> "Uniform1DMesh":
+        """Verify upper domain bound strictly exceeds lower domain bound."""
         if self.x_max <= self.x_min:
             raise ValueError(
                 f"x_max ({self.x_max}) must be strictly greater than x_min ({self.x_min})."
             )
         return self
 
-    def get_nodes(self) -> np.ndarray:
-        """Return 1D NumPy array of spatial node coordinates.
-
-        Returns
-        -------
-        np.ndarray
-            Uniformly spaced 1D array from `x_min` to `x_max`.
-        """
-        return np.linspace(self.x_min, self.x_max, self.n_points)
-
-    def num_nodes(self) -> int:
-        """Return total number of spatial nodes.
-
-        Returns
-        -------
-        int
-            Number of spatial nodes `n_points`.
-        """
-        return self.n_points
-
     @property
     def L(self) -> float:
-        """Total domain length $L = x_{\\text{max}} - x_{\\text{min}}$."""
+        """Total domain length (m)."""
         return float(self.x_max - self.x_min)
 
     @property
+    def num_nodes(self) -> _CallableInt:
+        """Total number of spatial grid nodes."""
+        return _CallableInt(self.n_nodes)
+
+    @property
+    def n_points(self) -> int:
+        """Alias for number of spatial grid nodes."""
+        return self.n_nodes
+
+    @property
+    def x(self) -> np.ndarray:
+        """1D array of spatial node coordinates (m)."""
+        return np.linspace(self.x_min, self.x_max, self.n_nodes)
+
+    @property
     def dx(self) -> float:
-        """Uniform grid spacing $\\Delta x = \\frac{L}{n_{\\text{points}} - 1}$."""
-        return float(self.L / (self.n_points - 1))
+        """Uniform grid spacing (m)."""
+        return float((self.x_max - self.x_min) / (self.n_nodes - 1))
+
+    def get_nodes(self) -> np.ndarray:
+        """Return array of spatial node coordinates (m)."""
+        return self.x
