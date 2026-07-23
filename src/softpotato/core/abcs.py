@@ -2,19 +2,73 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 import numpy as np
+import scipy.sparse as sp
+
+from softpotato.core.abcs import BaseModel
 
 
 class BaseMesh(ABC):
-    """Abstract interface for 1D/2D/3D spatial grids."""
+    """Abstract Base Class for spatial grids."""
 
-    @abstractmethod
-    def get_nodes(self) -> np.ndarray:
-        """Return coordinate array of spatial grid nodes."""
-
+    @property
     @abstractmethod
     def num_nodes(self) -> int:
-        """Return total number of spatial nodes."""
+        """Total number of spatial nodes."""
+        pass
 
+    @property
+    @abstractmethod
+    def x(self) -> np.ndarray:
+        """1D array of node coordinates."""
+        pass
+
+    @property
+    @abstractmethod
+    def dx(self) -> float | np.ndarray:
+        """Grid spacing (step size)."""
+        pass
+
+
+class BaseDiscretizer(ABC):
+    """Abstract Base Class for spatial discretization operators."""
+
+    @abstractmethod
+    def build_laplacian_matrix(self, mesh: BaseMesh) -> sp.csc_matrix:
+        """
+        Construct second-order spatial derivative operator matrix for 1D diffusion.
+
+        Parameters
+        ----------
+        mesh : BaseMesh
+            Spatial mesh definition.
+
+        Returns
+        -------
+        sp.csc_matrix
+            Sparse spatial derivative operator matrix (N x N).
+        """
+        pass
+
+    @abstractmethod
+    def build_system_matrix(
+        self, mesh: BaseMesh, model: BaseModel
+    ) -> sp.csc_matrix:
+        """
+        Construct block-diagonal system operator matrix combining all species.
+
+        Parameters
+        ----------
+        mesh : BaseMesh
+            Spatial mesh definition.
+        model : BaseModel
+            Species and transport model containing diffusion coefficients.
+
+        Returns
+        -------
+        sp.csc_matrix
+            Sparse system matrix of size (num_species * N, num_species * N).
+        """
+        pass
 
 class BaseBoundaryCondition(ABC):
     """Abstract interface for boundary fluxes or concentrations."""
@@ -58,15 +112,6 @@ class BaseModel(ABC):
         Dict[str, np.ndarray]
             Mapping of species names to concentration arrays ($mol/m^3$).
         """
-
-
-class BaseDiscretizer(ABC):
-    """Abstract interface for converting symbolic equations into system matrices."""
-
-    @abstractmethod
-    def assemble(self, model: BaseModel, mesh: BaseMesh) -> tuple[Any, np.ndarray]:
-        """Build spatial differential operator matrices."""
-
 
 class BaseSolver(ABC):
     """Abstract interface for time integration engines."""
