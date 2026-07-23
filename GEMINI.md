@@ -62,12 +62,12 @@ softpotato/
 
 ## Current development phase: Phase 1 MVP
 
-[X] Repository initialization (src/ layout + pyproject.toml)
-[X] Core contract enforcement (src/softpotato/core/abcs.py)
-[ ] Active Task: Implement 1D Non-Uniform Mesh Generator (src/softpotato/mesh/mesh_1d.py)
-[ ] Next Task: Implement 1D FVM Discretizer for Fickian Diffusion
-[ ] Next Task: Implement Butler-Volmer Boundary Condition
-[ ] Next Task: Complete first end-to-end Cyclic Voltammetry simulation test
+* [X] Repository initialization (src/ layout + pyproject.toml)
+* [X] Core contract enforcement (src/softpotato/core/abcs.py)
+* [ ] Active Task: Implement 1D Non-Uniform Mesh Generator (src/softpotato/mesh/mesh_1d.py)
+* [ ] Next Task: Implement 1D FVM Discretizer for Fickian Diffusion
+* [ ] Next Task: Implement Butler-Volmer Boundary Condition
+* [ ] Next Task: Complete first end-to-end Cyclic Voltammetry simulation test
 
 ## Prompting rules for AI collaborators
 
