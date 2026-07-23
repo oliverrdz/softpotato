@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict, List
 
 import numpy as np
 
@@ -27,11 +27,41 @@ class BaseBoundaryCondition(ABC):
 
 
 class BaseModel(ABC):
-    """Abstract interface for symbolic PDE physics and species definitions."""
+    """Abstract Base Class for physical and transport models in Soft Potato."""
+
+    @property
+    @abstractmethod
+    def species_names(self) -> List[str]:
+        """Return the list of species identifiers managed by this model."""
+        pass
+
+    @property
+    @abstractmethod
+    def num_species(self) -> int:
+        """Return the total number of species in the transport system."""
+        pass
 
     @abstractmethod
-    def get_species(self) -> dict[str, Any]:
-        """Return defined chemical species and transport coefficients."""
+    def get_diffusion_coefficients(self) -> Dict[str, float]:
+        """Return a mapping of species names to their diffusion coefficients ($m^2/s$)."""
+        pass
+
+    @abstractmethod
+    def get_initial_conditions(self, x_grid: np.ndarray) -> Dict[str, np.ndarray]:
+        """
+        Evaluate initial concentration distributions $C(x, t=0)$ across spatial grid coordinates.
+        
+        Parameters
+        ----------
+        x_grid : np.ndarray
+            1D array of spatial node coordinates ($m$).
+            
+        Returns
+        -------
+        Dict[str, np.ndarray]
+            Mapping of species names to concentration arrays ($mol/m^3$).
+        """
+        pass
 
 
 class BaseDiscretizer(ABC):
