@@ -48,7 +48,7 @@ class FDM1DDiscretizer(BaseDiscretizer):
         # Zero out boundary rows (node 0 and node N-1)
         main_diag[0] = 0.0
         main_diag[-1] = 0.0
-        off_diag[0] = 0.0   # Disconnect node 0 from node 1 in row 0
+        off_diag[0] = 0.0  # Disconnect node 0 from node 1 in row 0
         off_diag[-1] = 0.0  # Disconnect node N-1 from node N-2 in row N-1
 
         laplacian = sp.diags(
@@ -60,9 +60,7 @@ class FDM1DDiscretizer(BaseDiscretizer):
 
         return laplacian
 
-    def build_system_matrix(
-        self, mesh: BaseMesh, model: BaseModel
-    ) -> sp.csc_matrix:
+    def build_system_matrix(self, mesh: BaseMesh, model: BaseModel) -> sp.csc_matrix:
         """
         Construct block-diagonal system linear matrix $A$ for multi-species diffusion:
 

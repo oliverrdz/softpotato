@@ -13,19 +13,16 @@ class BaseMesh(ABC):
     @abstractmethod
     def num_nodes(self) -> int:
         """Total number of spatial nodes."""
-        pass
 
     @property
     @abstractmethod
     def x(self) -> np.ndarray:
         """1D array of node coordinates."""
-        pass
 
     @property
     @abstractmethod
     def dx(self) -> float | np.ndarray:
         """Grid spacing (step size)."""
-        pass
 
 
 class BaseDiscretizer(ABC):
@@ -46,12 +43,9 @@ class BaseDiscretizer(ABC):
         sp.csc_matrix
             Sparse spatial derivative operator matrix (N x N).
         """
-        pass
 
     @abstractmethod
-    def build_system_matrix(
-        self, mesh: BaseMesh, model: BaseModel
-    ) -> sp.csc_matrix:
+    def build_system_matrix(self, mesh: BaseMesh, model: BaseModel) -> sp.csc_matrix:
         """
         Construct block-diagonal system operator matrix combining all species.
 
@@ -67,7 +61,7 @@ class BaseDiscretizer(ABC):
         sp.csc_matrix
             Sparse system matrix of size (num_species * N, num_species * N).
         """
-        pass
+
 
 
 class BaseModel(ABC):
@@ -103,6 +97,7 @@ class BaseModel(ABC):
             Mapping of species names to concentration arrays ($mol/m^3$).
         """
 
+<<<<<<< HEAD
 class BaseBoundaryCondition(ABC):
     """Abstract interface for boundary fluxes or concentrations."""
 
@@ -112,6 +107,8 @@ class BaseBoundaryCondition(ABC):
     ) -> tuple[Any, np.ndarray]:
         """Modify system matrices or RHS vector according to boundary physics."""
 
+=======
+>>>>>>> 63314b1af10b663991771a34a90f54f62915bf15
 
 class BaseSolver(ABC):
     """Abstract interface for time integration engines."""
