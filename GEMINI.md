@@ -67,8 +67,8 @@ Target Physics:
 Task Checklist:
 - [x] Repository initialization (`src/` layout + `pyproject.toml`)
 - [x] Core contract enforcement (`src/softpotato/core/abcs.py`)
-- [ ] **Active Task:** Implement Uniform 1D Mesh (`src/softpotato/mesh/uniform_1d.py`)
-- [ ] Next Task: Implement Two-Species Transport Model for $R$ and $O$ (`src/softpotato/physics/species.py`)
+- [x] Implement Uniform 1D Mesh (`src/softpotato/mesh/uniform_1d.py`)
+- [x] Next Task: Implement Two-Species Transport Model for $R$ and $O$ (`src/softpotato/physics/species.py`)
 - [ ] Next Task: Implement 1D Finite Difference Discretizer (`src/softpotato/discretizers/fdm_1d.py`)
 - [ ] Next Task: Implement Nernstian Equilibrium Boundary Condition (`src/softpotato/physics/nernst_bc.py`)
 - [ ] Next Task: Implement ODE Solver Wrapper & Triangular Voltage Waveform (`src/softpotato/solvers/cv_solver.py`)
