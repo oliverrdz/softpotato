@@ -56,7 +56,7 @@ def test_fdm_system_matrix_assembly():
 
     # Check that diffusion coefficients scale the sub-blocks properly
     L_single = discretizer.build_laplacian_matrix(mesh)
-    
+
     block_R = A[:50, :50]
     block_O = A[50:, 50:]
 
