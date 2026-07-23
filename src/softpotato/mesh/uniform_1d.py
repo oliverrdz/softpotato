@@ -1,6 +1,8 @@
 from typing import Any
+
 import numpy as np
-from pydantic import BaseModel as PydanticBaseModel, Field, model_validator
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import Field, model_validator
 
 from softpotato.core.abcs import BaseMesh
 

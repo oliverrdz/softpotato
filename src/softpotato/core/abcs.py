@@ -1,6 +1,7 @@
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 import scipy.sparse as sp
@@ -63,7 +64,6 @@ class BaseDiscretizer(ABC):
         """
 
 
-
 class BaseModel(ABC):
     """Abstract Base Class for physical and transport models in Soft Potato."""
 
@@ -96,7 +96,8 @@ class BaseModel(ABC):
         Dict[str, np.ndarray]
             Mapping of species names to concentration arrays ($mol/m^3$).
         """
-        
+
+
 class BaseBoundaryCondition(ABC):
     """Abstract Base Class for interface flux and concentration boundary conditions."""
 
@@ -105,7 +106,6 @@ class BaseBoundaryCondition(ABC):
         self, state: np.ndarray, t: float, mesh: BaseMesh, model: BaseModel
     ) -> Any:
         """Apply boundary conditions to system state or system operators."""
-        pass
 
 
 class BaseSolver(ABC):
