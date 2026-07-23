@@ -1,12 +1,12 @@
-# GEMINI.TEXT — Soft Potato (v0.1.0) Architecture & Memory
+# Soft Potato (v0.1.0) Architecture & Memory
 
-## PROJECT OVERVIEW
+## Project overview
 Soft Potato is an open-source, extensible Python library for electrochemical
 simulations. Its core design goal is to decouple physical modeling (kinetics,
 thermodynamics, species transport) from numerical mechanics (meshing, spatial
 discretization, matrix assembly, and ODE/DAE solving).
 
-## THE 3 GOLDEN ARCHITECTURAL RULES
+## The 3 golden architecture rules
 
 1. Strict Physics-Numerics Decoupling
    - Non-developer electrochemists must be able to define chemical species,
@@ -29,7 +29,7 @@ discretization, matrix assembly, and ODE/DAE solving).
      abstract interfaces.
    - Development is managed via pyproject.toml (PEP 517/621).
 
-## DIRECTORY & SUBMODULE LAYOUT
+## Directory and submodule layout
 
 ```
 softpotato/
@@ -48,7 +48,7 @@ softpotato/
 └── tests/                         <-- Pytest unit tests (mirrors src structure)
 ```
 
-## TECHNICAL STACK & QUALITY STANDARDS
+## Technical stack and quality standards
 
 - Python Version: >= 3.11
 - Core Dependencies: numpy, scipy (sparse matrices), sympy (symbolic parsing),
@@ -60,7 +60,7 @@ softpotato/
 - Typing: Use strict type hints (typing) across all signatures and Pydantic
   models where applicable.
 
-## CURRENT DEVELOPMENT PHASE: PHASE 1 MVP
+## Current development phase: Phase 1 MVP
 
 [X] Repository initialization (src/ layout + pyproject.toml)
 [X] Core contract enforcement (src/softpotato/core/abcs.py)
@@ -69,7 +69,7 @@ softpotato/
 [ ] Next Task: Implement Butler-Volmer Boundary Condition
 [ ] Next Task: Complete first end-to-end Cyclic Voltammetry simulation test
 
-## PROMPTING RULES FOR AI COLLABORATORS
+## Prompting rules for AI collaborators
 
 When generating code for Soft Potato:
 1. Always check if the module respects src/softpotato/core/abcs.py.
