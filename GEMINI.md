@@ -9,15 +9,15 @@ Its core design goal is to decouple physical modeling (kinetics, thermodynamics,
 ## The 3 Golden Architectural Rules
 
 1. **Strict Physics-Numerics Decoupling**
-   - Non-developer electrochemists must be able to define chemical species ($R$, $O$), diffusion coefficients ($D_R$, $D_O$), and Nernstian boundary conditions symbolically without touching spatial indices or stencil operators.
+   - Non-developer electrochemists must be able to define chemical species, diffusion coefficients, and boundary kinetics symbolically (e.g., using SymPy or high-level declarative classes) without touching mesh indexing or sparse matrix operators.
 
 2. **Interface Enforcement via Core ABCs**
    - Every modular component **MUST** inherit from its corresponding Abstract Base Class in `src/softpotato/core/abcs.py`:
-     - `BaseMesh`: Uniform 1D spatial grid generator.
-     - `BaseModel`: Species transport equations ($C_R$, $C_O$) and physical constants.
-     - `BaseBoundaryCondition`: Nernstian potential-dependent concentration ratio at $x=0$ & Dirichlet bulk at $x=L$.
-     - `BaseDiscretizer`: Finite Difference Method (FDM) spatial Laplacian matrix assembly.
-     - `BaseSolver`: Time integration engine (e.g., SciPy `solve_ivp` with BDF method).
+     - `BaseMesh`: Spatial grid definitions.
+     - `BaseModel`: Symbolic PDE equations and species properties.
+     - `BaseBoundaryCondition`: Interface flux and concentration boundaries.
+     - `BaseDiscretizer`: Operator matrix assembly (e.g., Finite Volume Method).
+     - `BaseSolver`: Time integration step engines (e.g., SciPy `solve_ivp`).
 
 3. **Standard Package Layout (`src/`)**
    - All package code resides in `src/softpotato/`.
@@ -27,7 +27,7 @@ Its core design goal is to decouple physical modeling (kinetics, thermodynamics,
 ---
 
 ## Directory & Submodule Layout
-
+```
 softpotato/
 ├── GEMINI.md                      <-- AI Project Memory
 ├── pyproject.toml                 <-- Package build configuration
@@ -37,19 +37,20 @@ softpotato/
 │       ├── core/
 │       │   ├── __init__.py
 │       │   └── abcs.py            <-- Core Abstract Base Classes
-│       ├── mesh/                  <-- Uniform 1D grid generator (Uniform1DMesh)
-│       ├── physics/               <-- Species (R, O) & Nernstian BCs
-│       ├── discretizers/          <-- 1D Finite Difference operators (FDM1D)
-│       └── solvers/               <-- SciPy BDF solver wrapper & CV voltage waveform
-└── tests/                         <-- Pytest unit tests & Randles-Sevcik validation
+│       ├── mesh/                  <-- 1D/2D/3D spatial grid generators
+│       ├── physics/               <-- Species, kinetics, boundary conditions
+│       ├── discretizers/          <-- Spatial discretization operators (FDM, FVM)
+│       └── solvers/               <-- Integration engines and waveform generators
+└── tests/                         <-- Pytest unit tests & validation suites
+```
 
 ---
 
 ## Technical Stack & Quality Standards
 
 - **Python Version:** `>= 3.11`
-- **Core Dependencies:** `numpy`, `scipy` (sparse matrices & BDF ODE solver), `sympy` (symbolic parsing), `pydantic` (parameter validation)
-- **Dev Dependencies:** `pytest` (testing), `ruff` (formatting & linting), `matplotlib` (plotting cyclic voltammograms)
+- **Core Dependencies:** `numpy`, `scipy` (sparse matrices & ODE solvers), `sympy` (symbolic parsing), `pydantic` (parameter validation)
+- **Dev Dependencies:** `pytest` (testing), `ruff` (formatting & linting), `matplotlib` (visualization)
 - **Testing:** All numerical components must include unit tests in `tests/`.
 - **Typing:** Use strict type hints (`typing`) across all signatures.
 
