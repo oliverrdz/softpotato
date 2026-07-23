@@ -98,6 +98,19 @@ class BaseModel(ABC):
         """
 
 
+class BaseTechnique(ABC):
+    """Abstract Base Class for electrochemical techniques and excitation waveforms $E(t)$."""
+
+    @abstractmethod
+    def __call__(self, t: float) -> float:
+        """Evaluate electrode potential $E(t)$ at time $t$ in Volts ($V$)."""
+
+    @property
+    @abstractmethod
+    def t_span(self) -> tuple[float, float]:
+        """Return simulation time bounds $(t_{start}, t_{end})$ in seconds ($s$)."""
+
+
 class BaseBoundaryCondition(ABC):
     """Abstract Base Class for interface flux and concentration boundary conditions."""
 
