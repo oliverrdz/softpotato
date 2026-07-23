@@ -6,7 +6,6 @@ a reversible single-electron oxidation (R -> O + e-) and plot the voltammogram.
 """
 import matplotlib
 matplotlib.use("TkAgg")  # or "QtAgg"
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -42,7 +41,7 @@ def run_cv_example():
     # 3. Experimental Technique (Triangular Waveform)
     # -------------------------------------------------------------------------
     technique = CyclicVoltammetry(
-        E_start=-0.2,  # Start potential (V)
+        E_start=-0.3,  # Start potential (V)
         E_vertex1=0.3,  # Reversal potential (V)
         scan_rate=scan_rate,  # 100 mV/s
         n_cycles=1,  # Single cycle
@@ -87,7 +86,7 @@ def run_cv_example():
     potentials_mV = result.potential * 1e3  # Convert V to mV
     currents_uA = result.current * 1e6  # Convert A to µA
 
-    plt.figure(figsize=(7, 5))
+    plt.figure()
     plt.plot(potentials_mV, currents_uA, label="Simulated CV", color="navy", lw=2)
     plt.axhline(0, color="gray", linestyle="--", linewidth=0.8)
     plt.axvline(0, color="gray", linestyle="--", linewidth=0.8)
