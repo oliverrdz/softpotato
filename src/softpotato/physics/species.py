@@ -1,6 +1,6 @@
-from typing import Dict, List, Optional
 import numpy as np
-from pydantic import BaseModel as PydanticBaseModel, Field, NonNegativeFloat, PositiveFloat
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 from softpotato.core.abcs import BaseModel
 
@@ -37,8 +37,8 @@ class TwoSpeciesModel(BaseModel):
 
     def __init__(
         self,
-        species_r: Optional[Species] = None,
-        species_o: Optional[Species] = None,
+        species_r: Species | None = None,
+        species_o: Species | None = None,
         D_R: float = 1e-9,
         D_O: float = 1e-9,
         C_R_bulk: float = 1.0,
@@ -79,7 +79,7 @@ class TwoSpeciesModel(BaseModel):
         return self._species_o
 
     @property
-    def species_names(self) -> List[str]:
+    def species_names(self) -> list[str]:
         """Return list of managed species identifiers."""
         return [self._species_r.name, self._species_o.name]
 
@@ -88,14 +88,14 @@ class TwoSpeciesModel(BaseModel):
         """Return number of active species in the system."""
         return 2
 
-    def get_diffusion_coefficients(self) -> Dict[str, float]:
+    def get_diffusion_coefficients(self) -> dict[str, float]:
         """Return species diffusion coefficients ($m^2/s$)."""
         return {
             self._species_r.name: self._species_r.diffusion_coefficient,
             self._species_o.name: self._species_o.diffusion_coefficient,
         }
 
-    def get_initial_conditions(self, x_grid: np.ndarray) -> Dict[str, np.ndarray]:
+    def get_initial_conditions(self, x_grid: np.ndarray) -> dict[str, np.ndarray]:
         """
         Generate uniform bulk initial concentrations $C_R(x, 0) = C_R^*$ and $C_O(x, 0) = C_O^*$
         across spatial coordinates.
