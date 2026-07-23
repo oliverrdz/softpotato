@@ -1,4 +1,5 @@
 from typing import Any
+
 import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -64,5 +65,5 @@ class Uniform1DMesh(BaseMesh, BaseModel):
 
     @property
     def dx(self) -> float:
-        """Uniform grid spacing $\Delta x = \\frac{L}{n_{\\text{points}} - 1}$."""
+        """Uniform grid spacing $\\Delta x = \\frac{L}{n_{\\text{points}} - 1}$."""
         return float(self.L / (self.n_points - 1))
