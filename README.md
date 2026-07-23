@@ -69,21 +69,10 @@ mesh = Uniform1DMesh(x_min=0.0, x_max=1e-3, num_nodes=201)
 model = TwoSpeciesModel(D_R=1e-9, D_O=1e-9, C_R_bulk=1.0, C_O_bulk=0.0)
 
 # 4. Define Experimental Technique (Multi-cycle CV from -0.2 V to 0.3 V at 100 mV/s)
-technique = CyclicVoltammetry(
-    E_start=-0.2,
-    E_vertex1=0.3,
-    scan_rate=0.1,
-    n_cycles=2
-)
+technique = CyclicVoltammetry(E_start=-0.2, E_vertex1=0.3, scan_rate=0.1, n_cycles=2)
 
 # 5. Couple Technique to Nernstian Surface Boundary Conditions
-bc = NernstianEquilibriumBC(
-    technique=technique,
-    E0=0.0,
-    n=1,
-    T=298.15,
-    A=1e-4
-)
+bc = NernstianEquilibriumBC(technique=technique, E0=0.0, n=1, T=298.15, A=1e-4)
 
 # 6. Build Discretizer & Execute Time Integration
 discretizer = FDM1DDiscretizer()
@@ -93,9 +82,9 @@ y0 = model.get_initial_state_vector(mesh.x)
 result = solver.solve(t_span=technique.t_span, y0=y0)
 
 # 7. Access Time-Series Results
-time_array = result.t          # Time in seconds
+time_array = result.t  # Time in seconds
 potential_array = result.potential  # Applied potential E(t) in Volts
-current_array = result.current      # Faradaic response current i(t) in Amperes
+current_array = result.current  # Faradaic response current i(t) in Amperes
 ```
 
 ---
