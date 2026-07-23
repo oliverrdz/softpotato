@@ -68,11 +68,11 @@ Task Checklist:
 - [x] Repository initialization (`src/` layout + `pyproject.toml`)
 - [x] Core contract enforcement (`src/softpotato/core/abcs.py`)
 - [x] Implement Uniform 1D Mesh (`src/softpotato/mesh/uniform_1d.py`)
-- [x] Next Task: Implement Two-Species Transport Model for $R$ and $O$ (`src/softpotato/physics/species.py`)
-- [ ] Next Task: Implement 1D Finite Difference Discretizer (`src/softpotato/discretizers/fdm_1d.py`)
-- [ ] Next Task: Implement Nernstian Equilibrium Boundary Condition (`src/softpotato/physics/nernst_bc.py`)
-- [ ] Next Task: Implement ODE Solver Wrapper & Triangular Voltage Waveform (`src/softpotato/solvers/cv_solver.py`)
-- [ ] Next Task: Validation test: Verify peak current $i_p$ matches Randles-Sevcik equation ($i_p = 0.4463 n F A C^* \sqrt{\frac{n F v D}{R T}}$) in `tests/test_reversible_cv.py`
+- [x] Implement Two-Species Transport Model for $R$ and $O$ (`src/softpotato/physics/species.py`)
+- [x] Implement 1D Finite Difference Discretizer (`src/softpotato/discretizers/fdm_1d.py`)
+- [ ] Implement Nernstian Equilibrium Boundary Condition (`src/softpotato/physics/nernst_bc.py`)
+- [ ] Implement ODE Solver Wrapper & Triangular Voltage Waveform (`src/softpotato/solvers/cv_solver.py`)
+- [ ] Validation test: Verify peak current $i_p$ matches Randles-Sevcik equation ($i_p = 0.4463 n F A C^* \sqrt{\frac{n F v D}{R T}}$) in `tests/test_reversible_cv.py`
 
 ---
 
