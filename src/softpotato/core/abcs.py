@@ -1,10 +1,9 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 import scipy.sparse as sp
-
-from softpotato.core.abcs import BaseModel
 
 
 class BaseMesh(ABC):
@@ -70,15 +69,6 @@ class BaseDiscretizer(ABC):
         """
         pass
 
-class BaseBoundaryCondition(ABC):
-    """Abstract interface for boundary fluxes or concentrations."""
-
-    @abstractmethod
-    def apply(
-        self, matrix: Any, rhs: np.ndarray, mesh: BaseMesh, t: float
-    ) -> tuple[Any, np.ndarray]:
-        """Modify system matrices or RHS vector according to boundary physics."""
-
 
 class BaseModel(ABC):
     """Abstract Base Class for physical and transport models in Soft Potato."""
@@ -112,6 +102,16 @@ class BaseModel(ABC):
         Dict[str, np.ndarray]
             Mapping of species names to concentration arrays ($mol/m^3$).
         """
+
+class BaseBoundaryCondition(ABC):
+    """Abstract interface for boundary fluxes or concentrations."""
+
+    @abstractmethod
+    def apply(
+        self, matrix: Any, rhs: np.ndarray, mesh: BaseMesh, t: float
+    ) -> tuple[Any, np.ndarray]:
+        """Modify system matrices or RHS vector according to boundary physics."""
+
 
 class BaseSolver(ABC):
     """Abstract interface for time integration engines."""
