@@ -4,7 +4,9 @@ Example 01: Reversible 1D Cyclic Voltammetry Simulation
 Demonstrates assembling Soft Potato's modular components to simulate
 a reversible single-electron oxidation (R -> O + e-) and plot the voltammogram.
 """
+
 import matplotlib
+
 matplotlib.use("TkAgg")  # or "QtAgg"
 import matplotlib.pyplot as plt
 import numpy as np
