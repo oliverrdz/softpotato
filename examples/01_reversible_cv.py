@@ -46,7 +46,7 @@ def run_cv_example():
         E_start=-0.3,  # Start potential (V)
         E_vertex1=0.3,  # Reversal potential (V)
         scan_rate=scan_rate,  # 100 mV/s
-        n_cycles=1,  # Single cycle
+        n_cycles=3,  # Single cycle
     )
 
     # -------------------------------------------------------------------------
