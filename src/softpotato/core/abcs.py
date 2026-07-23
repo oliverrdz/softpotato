@@ -96,19 +96,17 @@ class BaseModel(ABC):
         Dict[str, np.ndarray]
             Mapping of species names to concentration arrays ($mol/m^3$).
         """
-
-<<<<<<< HEAD
+        
 class BaseBoundaryCondition(ABC):
-    """Abstract interface for boundary fluxes or concentrations."""
+    """Abstract Base Class for interface flux and concentration boundary conditions."""
 
     @abstractmethod
     def apply(
-        self, matrix: Any, rhs: np.ndarray, mesh: BaseMesh, t: float
-    ) -> tuple[Any, np.ndarray]:
-        """Modify system matrices or RHS vector according to boundary physics."""
+        self, state: np.ndarray, t: float, mesh: BaseMesh, model: BaseModel
+    ) -> Any:
+        """Apply boundary conditions to system state or system operators."""
+        pass
 
-=======
->>>>>>> 63314b1af10b663991771a34a90f54f62915bf15
 
 class BaseSolver(ABC):
     """Abstract interface for time integration engines."""
