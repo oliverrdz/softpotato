@@ -31,6 +31,7 @@ discretization, matrix assembly, and ODE/DAE solving).
 
 ## DIRECTORY & SUBMODULE LAYOUT
 
+```
 softpotato/
 ├── GEMINI.text                    <-- AI Project Memory
 ├── pyproject.toml                 <-- Package build configuration
@@ -45,6 +46,7 @@ softpotato/
 │       ├── discretizers/          <-- Finite Volume / Finite Difference operators
 │       └── solvers/               <-- SciPy / SUNDIALS integration wrappers
 └── tests/                         <-- Pytest unit tests (mirrors src structure)
+```
 
 ## TECHNICAL STACK & QUALITY STANDARDS
 
