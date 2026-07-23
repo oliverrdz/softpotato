@@ -1,5 +1,7 @@
 import pytest
+
 from softpotato import BaseMesh, BaseSolver
+
 
 def test_abcs_cannot_be_instantiated_directly():
     """Verify that abstract contracts block direct instantiation."""
