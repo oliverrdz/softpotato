@@ -1,0 +1,2 @@
+# softpotato
+Electrochemistry simulator
