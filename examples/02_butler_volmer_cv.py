@@ -25,14 +25,6 @@ bc = ButlerVolmerBC(
     A=1e-4,  # Electrode area (m^2)
 )
 
-# bc = NernstianEquilibriumBC(
-#     technique=technique,
-#     E0=0.0,  # Formal reduction potential (V)
-#     n=1,  # 1-electron process
-#     T=298.15,  # Temperature (K)
-#     A=1e-4,  # Electrode area (1 cm^2)
-# )
-
 # 5. Assemble discretizer and ODE solver engine
 discretizer = FDM1DDiscretizer()
 solver = ODESolver(mesh=mesh, model=model, discretizer=discretizer, bc=bc)
