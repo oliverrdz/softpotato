@@ -2,7 +2,7 @@ import numpy as np
 
 from softpotato.discretizers.fdm_1d import FDM1DDiscretizer
 from softpotato.mesh.uniform_1d import Uniform1DMesh
-from softpotato.physics.nernst_bc import NernstianEquilibriumBC
+from softpotato.physics.nernst import NernstianEquilibriumBC
 from softpotato.physics.species import TwoSpeciesModel
 from softpotato.solvers.ode_solver import ODESolver
 from softpotato.techniques import CyclicVoltammetry
