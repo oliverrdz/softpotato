@@ -25,6 +25,10 @@ softpotato/
 ├── README.md                      # Project documentation
 ├── examples/                      # Runnable simulation examples
 │   └── 01_reversible_cv.py        # 1D Reversible Cyclic Voltammetry example
+│   └── 02_butler_volmer_cv.py
+│   └── 03_chronoamperometry.py
+│   └── 04_linear_sweep_voltammetry.py
+│   └── 05_custom_waveform.py
 ├── src/
 │   └── softpotato/
 │       ├── __init__.py            # Top-level ABC exports and version info
@@ -37,13 +41,17 @@ softpotato/
 │       ├── physics/
 │       │   ├── __init__.py
 │       │   ├── species.py         # Chemical species data model & TwoSpeciesModel
-│       │   └── nernst_bc.py       # Reversible surface Nernstian kinetics
+│       │   └── nernst.py          # Reversible surface Nernstian kinetics
+|       |   └── butler_volmer.py   # Butler Volmer kinetics
 │       ├── discretizers/
 │       │   ├── __init__.py
 │       │   └── fdm_1d.py          # 2nd-order 1D Finite Difference discretizer
 │       ├── techniques/
 │       │   ├── __init__.py
 │       │   └── cyclic_voltammetry.py # Multi-cycle CV potential waveform generator
+│       │   └── chronoamperometry.py  # Single and optional double step chronoamperometry
+│       │   └── linear_sweep_voltammetry.py # Single sweep linear sweep voltammetry
+│       │   └── custom_waveform.py    # Custom waveform
 │       └── solvers/
 │           ├── __init__.py
 │           └── ode_solver.py      # SciPy solve_ivp ODE integration engine
@@ -91,10 +99,6 @@ current_array = result.current  # Faradaic response current i(t) in Amperes
 ## 🧪 Testing & Validation
 
 All numerical stencils and physical models are validated using pytest. Run `pytest` from the root directory to execute the test suite.
-
-* **`tests/test_reversible_cv.py`:** Validates simulated CV peak current i_p against the analytical Randles-Ševčík equation within **1.5%** relative error.
-* **`tests/test_techniques.py`:** Validates potential trajectory bounds and switching vertex timings for single- and multi-cycle sweeps.
-* **`tests/test_fdm_1d.py`:** Verifies second-order spatial derivative convergence against analytical trigonometric functions.
 
 ---
 
