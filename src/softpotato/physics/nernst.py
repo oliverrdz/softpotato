@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 
 from softpotato.core.abcs import (
@@ -7,14 +9,15 @@ from softpotato.core.abcs import (
     BaseTechnique,
 )
 
+# Physical constants
+F = 96485.3321  # Faraday constant (C/mol)
+R = 8.3144626  # Universal gas constant (J/(mol*K))
+
 
 class NernstianEquilibriumBC(BaseBoundaryCondition):
     """
     Reversible surface Nernstian equilibrium boundary condition for electroactive species $R$ and $O$.
     """
-
-    FARADAY_CONSTANT = 96485.3321  # C / mol
-    GAS_CONSTANT = 8.3144626  # J / (mol K)
 
     def __init__(
         self,
@@ -30,7 +33,7 @@ class NernstianEquilibriumBC(BaseBoundaryCondition):
         self.T = float(T)
         self.A = float(A)
 
-        self.f = (self.n * self.FARADAY_CONSTANT) / (self.GAS_CONSTANT * self.T)
+        self.f = (self.n * F) / (R * self.T)
 
     def get_surface_ratio(self, t: float) -> float:
         """Evaluate Nernst surface ratio $\theta(t) = C_O(0,t) / C_R(0,t)$."""
@@ -98,5 +101,5 @@ class NernstianEquilibriumBC(BaseBoundaryCondition):
 
         area = self.A if A is None else float(A)
 
-        i_faradaic = -self.n * self.FARADAY_CONSTANT * area * D_O * dC_O_dx
+        i_faradaic = -self.n * F * area * D_O * dC_O_dx
         return float(i_faradaic)
