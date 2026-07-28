@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+
 from softpotato.technique.base import Waveform
 from softpotato.technique.sweep import lsv
 
