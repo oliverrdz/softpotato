@@ -75,3 +75,80 @@ def lsv(
     E = np.linspace(E_ini, E_final, n_steps + 1)
 
     return Waveform(t=t, E=E)
+
+
+def cv(
+    E_ini: float,
+    E_v1: float,
+    E_v2: float,
+    scan_rate: float,
+    dE: float,
+    n_cycles: int = 1,
+) -> Waveform:
+    """
+    Generates a Cyclic Voltammetry (CV) potential waveform.
+
+    Parameters:
+        - E_ini: Initial potential (V)
+        - E_v1: First switching potential (V)
+        - E_v2: Second switching potential (V)
+        - scan_rate: Potential scan rate (V/s)
+        - dE: Potential increment step size (V)
+        - n_cycles: Number of potential cycles
+
+    Returns:
+        - Waveform object containing time vector t and potential vector E.
+    """
+    if scan_rate <= 0:
+        raise ValueError("Scan rate must be strictly positive.")
+    if dE <= 0:
+        raise ValueError("Potential increment dE must be strictly positive.")
+    if n_cycles < 1:
+        raise ValueError("Cycle count must be at least 1.")
+
+    segments = []
+
+    # Segment 1: Initial potential to first switching potential E_v1
+    n_pts_1 = int(np.round(abs(E_v1 - E_ini) / dE)) + 1
+    if n_pts_1 > 1:
+        seg1 = np.linspace(E_ini, E_v1, n_pts_1)
+    else:
+        seg1 = np.array([E_ini])
+    segments.append(seg1)
+
+    # Segment 2: From E_v1 to second switching potential E_v2
+    n_pts_2 = int(np.round(abs(E_v2 - E_v1) / dE)) + 1
+    if n_pts_2 > 1:
+        seg2 = np.linspace(E_v1, E_v2, n_pts_2)[
+            1:
+        ]  # Exclude start to avoid duplication
+    else:
+        seg2 = np.array([])
+
+    # Segment 3: From E_v2 back to E_v1 (completing one full cycle)
+    n_pts_3 = int(np.round(abs(E_v1 - E_v2) / dE)) + 1
+    if n_pts_3 > 1:
+        seg3 = np.linspace(E_v2, E_v1, n_pts_3)[1:]
+    else:
+        seg3 = np.array([])
+
+    # Construct cycles
+    current_cycle_segment = (
+        np.concatenate([seg2, seg3])
+        if (len(seg2) > 0 or len(seg3) > 0)
+        else np.array([])
+    )
+
+    potential_list = [segments[0]]
+    for _ in range(n_cycles):
+        if len(current_cycle_segment) > 0:
+            potential_list.append(current_cycle_segment)
+
+    E_array = np.concatenate(potential_list)
+
+    # Calculate time vector based on scan rate and cumulative potential distance
+    # dt = dE / scan_rate for uniform steps
+    dt = dE / scan_rate
+    t_array = np.arange(len(E_array)) * dt
+
+    return Waveform(t=t_array, E=E_array)
