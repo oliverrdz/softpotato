@@ -1,5 +1,5 @@
-from softpotato.mechanism.steps import ElectronTransferStep
 from softpotato.mechanism.builder import build
+from softpotato.mechanism.steps import ElectronTransferStep
 
 # ==========================================
 # 1. Defining a Single E Mechanism
@@ -9,9 +9,9 @@ e_step = ElectronTransferStep(
     ox_species="O",
     red_species="R",
     n_electrons=1,
-    e_formal=0.0,    # Volts
-    k0=0.01,         # m/s
-    alpha=0.5
+    e_formal=0.0,  # Volts
+    k0=0.01,  # m/s
+    alpha=0.5,
 )
 
 # The builder aggregates the list of steps into a unified Mechanism object
@@ -30,20 +30,12 @@ print(f"Participating Species: {e_mechanism.get_species()}\n")
 
 # First electron transfer (O to Intermediate)
 ee_step_1 = ElectronTransferStep(
-    ox_species="O",
-    red_species="I",
-    n_electrons=1,
-    e_formal=0.20,   
-    k0=0.05
+    ox_species="O", red_species="I", n_electrons=1, e_formal=0.20, k0=0.05
 )
 
 # Second electron transfer (Intermediate to R)
 ee_step_2 = ElectronTransferStep(
-    ox_species="I",
-    red_species="R",
-    n_electrons=1,
-    e_formal=-0.15,  
-    k0=0.001
+    ox_species="I", red_species="R", n_electrons=1, e_formal=-0.15, k0=0.001
 )
 
 # The builder combines both steps into a single composite Mechanism

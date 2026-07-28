@@ -4,7 +4,7 @@ Unit tests for the softpotato mechanism module.
 
 import pytest
 
-from softpotato.mechanism.steps import ElectronTransferStep
+from softpotato.mechanism.steps import ChemicalStep, ElectronTransferStep
 
 
 def test_electron_transfer_step_defaults():
@@ -58,3 +58,41 @@ def test_electron_transfer_step_invalid_alpha():
 
     with pytest.raises(ValueError, match="between 0.0 and 1.0"):
         ElectronTransferStep(ox_species="O", red_species="R", alpha=1.5)
+
+
+def test_chemical_step_defaults():
+    """Test the C step initialization with default kinetic values."""
+    c_step = ChemicalStep(reactants=["R"], products=["P"])
+
+    assert c_step.reactants == ["R"]
+    assert c_step.products == ["P"]
+    assert c_step.kf == 1.0
+    assert c_step.kb == 0.0
+
+
+def test_chemical_step_custom_parameters():
+    """Test the C step initialization with user-defined parameters."""
+    c_step = ChemicalStep(reactants=["A", "B"], products=["C"], kf=50.0, kb=0.01)
+
+    assert "B" in c_step.reactants
+    assert c_step.products == ["C"]
+    assert c_step.kf == 50.0
+    assert c_step.kb == 0.01
+
+
+def test_chemical_step_missing_species():
+    """Test that missing reactants or products raise a ValueError."""
+    with pytest.raises(ValueError, match="at least one reactant"):
+        ChemicalStep(reactants=[], products=["P"])
+
+    with pytest.raises(ValueError, match="at least one product"):
+        ChemicalStep(reactants=["R"], products=[])
+
+
+def test_chemical_step_invalid_rate_constants():
+    """Test that negative rate constants raise a ValueError."""
+    with pytest.raises(ValueError, match="must be non-negative"):
+        ChemicalStep(reactants=["R"], products=["P"], kf=-5.0)
+
+    with pytest.raises(ValueError, match="must be non-negative"):
+        ChemicalStep(reactants=["R"], products=["P"], kb=-0.1)
