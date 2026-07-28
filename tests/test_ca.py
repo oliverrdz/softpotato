@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+
 from softpotato.technique.base import Waveform
 from softpotato.technique.chrono import ca
 
@@ -12,8 +13,8 @@ class TestCAGenerator:
     def test_ca_standard_step(self) -> None:
         """Verify standard potential step without explicit initial potential."""
         E_step = 0.5  # V
-        t_tot = 5.0   # s
-        dt = 0.1      # s
+        t_tot = 5.0  # s
+        dt = 0.1  # s
 
         wf = ca(E_step=E_step, t_tot=t_tot, dt=dt)
 

@@ -1,6 +1,7 @@
 """Base data structures for experimental technique waveform generators."""
 
 from dataclasses import dataclass
+
 import numpy as np
 
 
