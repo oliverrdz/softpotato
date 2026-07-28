@@ -1,7 +1,7 @@
 """Chronoamperometry potential step waveform generator."""
 
-from typing import Optional
 import numpy as np
+
 from softpotato.technique.base import Waveform
 
 
@@ -9,7 +9,7 @@ def ca(
     E_step: float,
     t_tot: float,
     dt: float,
-    E_ini: Optional[float] = None,
+    E_ini: float | None = None,
 ) -> Waveform:
     """Generate a Chronoamperometry (CA) potential step waveform E(t).
 
@@ -43,7 +43,9 @@ def ca(
     if dt <= 0:
         raise ValueError(f"Time step dt must be positive, got {dt}.")
     if dt > t_tot:
-        raise ValueError(f"Time step dt ({dt}) cannot be greater than total time t_tot ({t_tot}).")
+        raise ValueError(
+            f"Time step dt ({dt}) cannot be greater than total time t_tot ({t_tot})."
+        )
 
     n_steps = max(int(np.round(t_tot / dt)), 1)
     t = np.linspace(0.0, t_tot, n_steps + 1)
