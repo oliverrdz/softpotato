@@ -82,3 +82,39 @@ def kinetics(
     # Future models (e.g., "MARCUS", "FIRST_ORDER") can be added here
     else:
         raise ValueError(f"Kinetic model '{model}' is not supported by the factory.")
+
+
+def nernst(e_array: np.ndarray, params: dict[str, float]) -> np.ndarray:
+    """
+    Evaluates the Nernstian equilibrium surface concentration ratio.
+
+    Calculates the required ratio of oxidized to reduced species at the
+    electrode interface (c_O / c_R) for a fully reversible electron transfer.
+
+    Parameters
+    ----------
+    e_array : np.ndarray
+        1D array of applied electrode potentials (V).
+    params : Dict[str, float]
+        Dictionary containing thermodynamic parameters:
+        - 'E0': Formal potential (V). Default is 0.0.
+        - 'n': Number of electrons transferred. Default is 1.0.
+        - 'T': Temperature (K). Default is 298.15.
+
+    Returns
+    -------
+    np.ndarray
+        1D array of the surface concentration ratio theta = c_O(0,t) / c_R(0,t).
+    """
+    # Extract parameters with physical defaults
+    e0 = params.get("E0", 0.0)
+    n = params.get("n", 1.0)
+    temp = params.get("T", 298.15)
+
+    # Thermodynamic grouping term: nF / RT
+    f_term = (n * F) / (R * temp)
+
+    # Calculate theta = exp[ (nF/RT) * (E - E0) ]
+    theta = np.exp(f_term * (e_array - e0))
+
+    return theta
