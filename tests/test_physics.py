@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from softpotato.physics.kinetics import butler_volmer, kinetics
+from softpotato.physics.kinetics import butler_volmer, kinetics, nernst
 from softpotato.physics.species import Species
 
 
@@ -98,3 +98,40 @@ def test_kinetics_factory_invalid_model():
     params = {"k0": 1e-3}
     with pytest.raises(ValueError, match="not supported"):
         kinetics("INVALID_MODEL", params)
+
+
+def test_nernst_standard_potential():
+    """
+    At the formal potential (E = E0), the Nernst equation mandates that the
+    surface concentrations of the oxidized and reduced species are perfectly equal.
+    Therefore, the ratio theta must be exactly 1.0.
+    """
+    params = {"E0": 0.0, "n": 1.0, "T": 298.15}
+    e_array = np.array([0.0])
+
+    theta = nernst(e_array, params)
+
+    np.testing.assert_allclose(
+        theta, [1.0], err_msg="Nernst ratio theta does not equal 1.0 at E=E0"
+    )
+
+
+def test_nernst_vectorization():
+    """
+    Ensures the calculation handles 1D arrays natively and that physical
+    trends hold true (theta < 1 at reducing potentials, theta > 1 at oxidizing).
+    """
+    params = {"E0": 0.0, "n": 1.0, "T": 298.15}
+
+    # Array: Negative (reducing), Standard potential, Positive (oxidizing)
+    e_array = np.array([-0.05916, 0.0, 0.05916])
+
+    theta = nernst(e_array, params)
+
+    assert theta.shape == (3,), "Output theta array shape mismatch"
+
+    # At approx 59.16 mV negative of E0, the ratio c_O/c_R should be ~0.1
+    np.testing.assert_allclose(theta[0], 0.1, rtol=1e-3)
+
+    # At approx 59.16 mV positive of E0, the ratio c_O/c_R should be ~10.0
+    np.testing.assert_allclose(theta[2], 10.0, rtol=1e-3)
