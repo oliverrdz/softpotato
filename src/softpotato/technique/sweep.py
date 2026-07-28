@@ -1,7 +1,7 @@
 """Voltammetric potential sweep waveform generators."""
 
-from typing import Optional
 import numpy as np
+
 from softpotato.technique.base import Waveform
 
 
@@ -9,8 +9,8 @@ def lsv(
     E_ini: float,
     E_final: float,
     scan_rate: float,
-    dE: Optional[float] = None,
-    dt: Optional[float] = None,
+    dE: float | None = None,
+    dt: float | None = None,
 ) -> Waveform:
     """Generate a Linear Sweep Voltammetry (LSV) potential waveform E(t).
 
