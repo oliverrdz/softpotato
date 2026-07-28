@@ -1,5 +1,7 @@
+import numpy as np
 import pytest
 
+from softpotato.physics.kinetics import butler_volmer, kinetics
 from softpotato.physics.species import Species
 
 
@@ -36,3 +38,63 @@ def test_species_invalid_concentration():
         ValueError, match="Initial bulk concentration c0 must be non-negative"
     ):
         Species(D=1e-9, c0=-1.0)
+
+
+def test_butler_volmer_standard_potential():
+    """
+    At E = E0, the overpotential is zero. Therefore, both kf and kb
+    must perfectly equal the standard rate constant k0.
+    """
+    params = {"k0": 1e-3, "alpha": 0.5, "E0": 0.0, "n": 1.0, "T": 298.15}
+    e_array = np.array([0.0])
+
+    kf, kb = butler_volmer(e_array, params)
+
+    np.testing.assert_allclose(kf, [1e-3], err_msg="kf does not equal k0 at E=E0")
+    np.testing.assert_allclose(kb, [1e-3], err_msg="kb does not equal k0 at E=E0")
+
+
+def test_butler_volmer_vectorization():
+    """
+    Ensures the calculation handles 1D arrays natively and that physical
+    trends hold true (kf increases at negative potentials, kb at positive).
+    """
+    params = {"k0": 1e-3, "alpha": 0.5, "E0": 0.0}
+    # Array: Negative potential (reduction), Standard potential, Positive potential (oxidation)
+    e_array = np.array([-0.1, 0.0, 0.1])
+
+    kf, kb = butler_volmer(e_array, params)
+
+    assert kf.shape == (3,), "Output kf array shape mismatch"
+    assert kb.shape == (3,), "Output kb array shape mismatch"
+
+    # Reduction is exponentially faster at more negative potentials
+    assert kf[0] > kf[1]
+    # Oxidation is exponentially faster at more positive potentials
+    assert kb[2] > kb[1]
+
+
+def test_kinetics_factory_instantiation():
+    """
+    Validates that the factory pattern correctly returns a callable function
+    when given a valid string identifier.
+    """
+    params = {"k0": 1e-3, "alpha": 0.5, "E0": 0.0}
+    bv_func = kinetics("BV", params)
+
+    assert callable(bv_func), "Factory did not return a callable function"
+
+    e_array = np.array([0.0])
+    kf, kb = bv_func(e_array)
+    # Assert both forward and backward rate constants equal k0 at E = E0
+    np.testing.assert_allclose(kf, [1e-3], err_msg="kf factory output mismatch")
+    np.testing.assert_allclose(kb, [1e-3], err_msg="kb factory output mismatch")
+
+
+def test_kinetics_factory_invalid_model():
+    """
+    Ensures the factory raises a clean ValueError for unsupported models.
+    """
+    params = {"k0": 1e-3}
+    with pytest.raises(ValueError, match="not supported"):
+        kinetics("INVALID_MODEL", params)
