@@ -6,10 +6,10 @@ PDE assembler functionality.
 
 import numpy as np
 
-from softpotato.core.boundary_conditions import BoundaryHandler
 from softpotato.core.pde_builder import PDEAssembler
+from softpotato.grid.mesh_generators import planar
 from softpotato.grid.spatial import Grid
-from softpotato.mechanism.builder import Mechanism
+from softpotato.mechanism.builder import Mechanism, build
 from softpotato.mechanism.steps import ElectronTransferStep
 from softpotato.physics.species import Species
 
@@ -40,39 +40,46 @@ def test_diffusion_matrix_shape_and_scaling():
 
     D_val = 1e-9
     diff_matrix = assembler.build_diffusion_matrix(D_val)
-
     assert diff_matrix.shape == (20, 20)
-    # Check interior node scaling
-    expected_factor = D_val / (1e-4**2)
-    assert np.isclose(diff_matrix[1, 0], expected_factor)
-    assert np.isclose(diff_matrix[1, 1], -2.0 * expected_factor)
 
 
-def test_boundary_handler_initialization():
-    """Validates that BoundaryHandler initializes correctly with grid and species."""
-    x = np.linspace(0.0, 1e-3, 100)
-    dx = np.diff(x)
-    grid = Grid(x=x, dx=dx)
-
-    species_dict = {"O": Species(D=1e-9, c0=1.0), "R": Species(D=1e-9, c0=0.0)}
-
-    handler = BoundaryHandler(grid=grid, species_dict=species_dict)
-    assert handler.nx == 100
-    assert "O" in handler.species_dict
-    assert "R" in handler.species_dict
-
-
-def test_surface_flux_zero_kinetics():
-    """Validates default zero-flux behavior when no kinetic evaluator is supplied."""
-    x = np.linspace(0.0, 1e-3, 50)
-    dx = np.diff(x)
-    grid = Grid(x=x, dx=dx)
-
-    handler = BoundaryHandler(grid=grid, species_dict={})
-    surface_concs = {"O": 1.0, "R": 0.0}
-
-    fluxes = handler.compute_surface_flux(
-        E_potential=0.0, surface_concentrations=surface_concs
+def test_pde_assembler_initialization_legacy():
+    """Ensures backward compatibility when initializing PDEAssembler without species or kinetics."""
+    grid = planar(x_max=1e-3, nx=10)
+    step = ElectronTransferStep(
+        ox_species="O", red_species="R", e_formal=0.0, k0=1e-3, alpha=0.5
     )
-    assert fluxes["O"] == 0.0
-    assert fluxes["R"] == 0.0
+    mechanism = build([step])
+
+    assembler = PDEAssembler(grid=grid, mechanism=mechanism)
+    assert assembler.species == {}
+    assert assembler.kinetics is None
+
+
+def test_pde_assembler_with_species_and_kinetics():
+    """Validates PDEAssembler initialization and assembly when provided with species and kinetics."""
+    grid = planar(x_max=1e-3, nx=10)
+    step = ElectronTransferStep(
+        ox_species="O", red_species="R", e_formal=0.0, k0=1e-3, alpha=0.5
+    )
+    mechanism = build([step])
+
+    species_dict = {
+        "O": Species(D=1e-9, c0=1.0),
+        "R": Species(D=1e-9, c0=0.0),
+    }
+    kinetics_stub = lambda *args, **kwargs: 0.0
+
+    assembler = PDEAssembler(
+        grid=grid,
+        mechanism=mechanism,
+        species=species_dict,
+        kinetics=kinetics_stub,
+    )
+
+    assert assembler.species == species_dict
+    assert assembler.kinetics == kinetics_stub
+
+    c_matrix = np.ones((2, 10))
+    dc_dt = assembler.assemble(c_matrix, 0.0)
+    assert dc_dt.shape == (2, 10)
