@@ -6,10 +6,12 @@ PDE assembler functionality.
 
 import numpy as np
 
+from softpotato.core.boundary_conditions import BoundaryHandler
 from softpotato.core.pde_builder import PDEAssembler
 from softpotato.grid.spatial import Grid
 from softpotato.mechanism.builder import Mechanism
 from softpotato.mechanism.steps import ElectronTransferStep
+from softpotato.physics.species import Species
 
 
 def test_pde_assembler_initialization():
@@ -44,3 +46,33 @@ def test_diffusion_matrix_shape_and_scaling():
     expected_factor = D_val / (1e-4**2)
     assert np.isclose(diff_matrix[1, 0], expected_factor)
     assert np.isclose(diff_matrix[1, 1], -2.0 * expected_factor)
+
+
+def test_boundary_handler_initialization():
+    """Validates that BoundaryHandler initializes correctly with grid and species."""
+    x = np.linspace(0.0, 1e-3, 100)
+    dx = np.diff(x)
+    grid = Grid(x=x, dx=dx)
+
+    species_dict = {"O": Species(D=1e-9, c0=1.0), "R": Species(D=1e-9, c0=0.0)}
+
+    handler = BoundaryHandler(grid=grid, species_dict=species_dict)
+    assert handler.nx == 100
+    assert "O" in handler.species_dict
+    assert "R" in handler.species_dict
+
+
+def test_surface_flux_zero_kinetics():
+    """Validates default zero-flux behavior when no kinetic evaluator is supplied."""
+    x = np.linspace(0.0, 1e-3, 50)
+    dx = np.diff(x)
+    grid = Grid(x=x, dx=dx)
+
+    handler = BoundaryHandler(grid=grid, species_dict={})
+    surface_concs = {"O": 1.0, "R": 0.0}
+
+    fluxes = handler.compute_surface_flux(
+        E_potential=0.0, surface_concentrations=surface_concs
+    )
+    assert fluxes["O"] == 0.0
+    assert fluxes["R"] == 0.0
