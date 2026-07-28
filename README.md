@@ -33,7 +33,7 @@ plt.plot(sim.x, sim.c_red)
 
 # softpotato Master System Specification & Instruction Manual
 
-This document serves as the master specification for softpotato, a modular, object-oriented electrochemical simulation engine written in Python. It details the architectural design, component responsibility matrix, governing mathematical equations, data export contracts, and guidelines for AI-assisted module development.
+This document serves as the master specification for softpotato, a modular, object-oriented electrochemical simulation engine written in Python. It details the architectural design, component responsibility matrix, governing mathematical equations, data export contracts, and guidelines for AI-assisted module development. Enforce the use of SI units.
 
 ---
 
