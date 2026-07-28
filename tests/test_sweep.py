@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from softpotato.technique.base import Waveform
-from softpotato.technique.sweep import lsv
+from softpotato.technique.sweep import cv, lsv
 
 
 class TestLSVGenerator:
@@ -81,3 +81,37 @@ class TestLSVGenerator:
         wf = lsv(E_ini=0.2, E_final=0.2, scan_rate=0.1)
         assert len(wf.t) == 1
         assert wf.E[0] == pytest.approx(0.2)
+
+
+def test_cv_generation():
+    """Test that cv generates expected waveform structure and bounds."""
+    waveform = cv(E_ini=0.0, E_v1=0.5, E_v2=-0.5, scan_rate=0.1, dE=0.01, n_cycles=1)
+
+    assert isinstance(waveform, Waveform)
+    assert len(waveform.t) == len(waveform.E)
+    assert waveform.E[0] == 0.0
+    # Check that it reaches switching potentials
+    assert np.isclose(np.max(waveform.E), 0.5)
+    assert np.isclose(np.min(waveform.E), -0.5)
+    assert waveform.E[-1] == 0.5  # Ends back at v1 for 1 cycle
+
+
+def test_cv_multi_cycle():
+    """Test that multi-cycle CV scales length correctly."""
+    wf_1 = cv(E_ini=0.0, E_v1=0.4, E_v2=-0.4, scan_rate=0.1, dE=0.05, n_cycles=1)
+    wf_2 = cv(E_ini=0.0, E_v1=0.4, E_v2=-0.4, scan_rate=0.1, dE=0.05, n_cycles=2)
+
+    # Second cycle should add extra points corresponding to the repeat segment
+    assert len(wf_2.t) > len(wf_1.t)
+
+
+def test_cv_invalid_parameters():
+    """Test that invalid physical inputs raise ValueError."""
+    import pytest
+
+    with pytest.raises(ValueError):
+        cv(E_ini=0.0, E_v1=0.5, E_v2=-0.5, scan_rate=0.0, dE=0.01)
+    with pytest.raises(ValueError):
+        cv(E_ini=0.0, E_v1=0.5, E_v2=-0.5, scan_rate=0.1, dE=-0.01)
+    with pytest.raises(ValueError):
+        cv(E_ini=0.0, E_v1=0.5, E_v2=-0.5, scan_rate=0.1, dE=0.01, n_cycles=0)
