@@ -1,29 +1,54 @@
 from softpotato.mechanism.steps import ElectronTransferStep
-import softpotato.mechanism.builder as mechanism_builder
+from softpotato.mechanism.builder import build
 
-# 1. Define a standard E step using default parameters
-# By default: n_electrons=1, e_formal=0.0 V, k0=0.01 m/s, alpha=0.5
-simple_e_step = ElectronTransferStep(
-    ox_species="Ox", 
-    red_species="Red"
+# ==========================================
+# 1. Defining a Single E Mechanism
+# ==========================================
+# A standard E mechanism consists of one electron transfer step.
+e_step = ElectronTransferStep(
+    ox_species="O",
+    red_species="R",
+    n_electrons=1,
+    e_formal=0.0,    # Volts
+    k0=0.01,         # m/s
+    alpha=0.5
 )
 
-# 2. Define a fully customized E step for a specific system
-custom_e_step = ElectronTransferStep(
-    ox_species="A",
-    red_species="B",
-    n_electrons=2,       # A two-electron transfer
-    e_formal=0.25,       # Formal potential in Volts (V)
-    k0=0.005,            # Heterogeneous standard rate constant in SI units (m/s)
-    alpha=0.3            # Charge transfer coefficient favoring oxidation
+# The builder aggregates the list of steps into a unified Mechanism object
+e_mechanism = build([e_step])
+
+print("--- E Mechanism ---")
+print(f"Total Steps: {e_mechanism.n_steps}")
+print(f"Participating Species: {e_mechanism.get_species()}\n")
+
+
+# ==========================================
+# 2. Defining a Sequential EE Mechanism
+# ==========================================
+# An EE mechanism involves two consecutive electron transfers,
+# typically forming an intermediate species (e.g., O -> I -> R).
+
+# First electron transfer (O to Intermediate)
+ee_step_1 = ElectronTransferStep(
+    ox_species="O",
+    red_species="I",
+    n_electrons=1,
+    e_formal=0.20,   
+    k0=0.05
 )
 
-# 3. Build the composite mechanism
-# The builder merges the elementary steps into an executable reaction scheme
-e_mechanism = mechanism_builder.build([custom_e_step])
+# Second electron transfer (Intermediate to R)
+ee_step_2 = ElectronTransferStep(
+    ox_species="I",
+    red_species="R",
+    n_electrons=1,
+    e_formal=-0.15,  
+    k0=0.001
+)
 
-# Display the parameters of our defined mechanism step
-print(f"Oxidized Species: {custom_e_step.ox_species}")
-print(f"Reduced Species: {custom_e_step.red_species}")
-print(f"Formal Potential (E^0): {custom_e_step.e_formal} V")
-print(f"Rate Constant (k_0): {custom_e_step.k0} m/s")
+# The builder combines both steps into a single composite Mechanism
+ee_mechanism = build([ee_step_1, ee_step_2])
+
+print("--- EE Mechanism ---")
+print(f"Total Steps: {ee_mechanism.n_steps}")
+print(f"Participating Species: {ee_mechanism.get_species()}")
