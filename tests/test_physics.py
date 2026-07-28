@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from softpotato.physics.kinetics import butler_volmer, kinetics, nernst
+from softpotato.physics.kinetics import butler_volmer, kinetics, nernst, tafel
 from softpotato.physics.species import Species
 
 
@@ -80,7 +80,7 @@ def test_kinetics_factory_instantiation():
     when given a valid string identifier.
     """
     params = {"k0": 1e-3, "alpha": 0.5, "E0": 0.0}
-    bv_func = kinetics("BV", params)
+    bv_func = kinetics("bv", params)
 
     assert callable(bv_func), "Factory did not return a callable function"
 
@@ -135,3 +135,54 @@ def test_nernst_vectorization():
 
     # At approx 59.16 mV positive of E0, the ratio c_O/c_R should be ~10.0
     np.testing.assert_allclose(theta[2], 10.0, rtol=1e-3)
+
+
+def test_tafel_standard_potential():
+    """
+    At the formal potential (E = E0), the overpotential is zero.
+    Therefore, both kf and kb must perfectly equal the standard rate constant k0.
+    """
+    params = {"k0": 1e-3, "E0": 0.0, "bc": 0.120, "ba": 0.120}
+    e_array = np.array([0.0])
+
+    kf, kb = tafel(e_array, params)
+
+    np.testing.assert_allclose(kf, [1e-3], err_msg="Tafel kf does not equal k0 at E=E0")
+    np.testing.assert_allclose(kb, [1e-3], err_msg="Tafel kb does not equal k0 at E=E0")
+
+
+def test_tafel_slope_scaling():
+    """
+    Verifies that shifting the potential by exactly one Tafel slope (e.g., 120 mV)
+    results in exactly a 10-fold (one decade) increase in the respective rate constant.
+    """
+    params = {"k0": 1e-3, "E0": 0.0, "bc": 0.120, "ba": 0.120}
+
+    # Array: One cathodic decade (-0.120V), Standard (0.0V), One anodic decade (+0.120V)
+    e_array = np.array([-0.120, 0.0, 0.120])
+
+    kf, kb = tafel(e_array, params)
+
+    # At -120 mV, kf should be 10x larger than k0 (1e-2 m/s)
+    np.testing.assert_allclose(kf[0], 1e-2, err_msg="kf did not scale by one decade")
+
+    # At +120 mV, kb should be 10x larger than k0 (1e-2 m/s)
+    np.testing.assert_allclose(kb[2], 1e-2, err_msg="kb did not scale by one decade")
+
+
+def test_kinetics_factory_tafel():
+    """
+    Validates that the factory pattern correctly returns the Tafel callable
+    when given the 'TAFEL' string identifier.
+    """
+    params = {"k0": 5e-4, "E0": 0.1, "bc": 0.060, "ba": 0.060}
+    tafel_func = kinetics("tafel", params)
+
+    assert callable(tafel_func), "Factory did not return a callable function for TAFEL"
+
+    # Test exactly at E0
+    e_array = np.array([0.1])
+    kf, kb = tafel_func(e_array)
+
+    np.testing.assert_allclose(kf, [5e-4])
+    np.testing.assert_allclose(kb, [5e-4])

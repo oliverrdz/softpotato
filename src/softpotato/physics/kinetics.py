@@ -52,36 +52,47 @@ def butler_volmer(
     return kf, kb
 
 
-def kinetics(
-    model: str, params: dict[str, float]
-) -> Callable[[np.ndarray], tuple[np.ndarray, np.ndarray]]:
+import numpy as np
+
+
+def tafel(
+    e_array: np.ndarray, params: dict[str, float]
+) -> tuple[np.ndarray, np.ndarray]:
     """
-    Factory function to instantiate kinetic rate evaluators.
+    Evaluates heterogeneous kinetic rate constants using the empirical Tafel equation.
 
     Parameters
     ----------
-    model : str
-        String identifier for the kinetic model (e.g., "BV" for Butler-Volmer).
+    e_array : np.ndarray
+        1D array of applied electrode potentials (V).
     params : Dict[str, float]
-        Dictionary of physical parameters required by the specified model.
+        Dictionary containing kinetic parameters:
+        - 'k0': Standard heterogeneous rate constant (m/s). Default is 1e-3.
+        - 'E0': Formal potential (V). Default is 0.0.
+        - 'bc': Cathodic Tafel slope (V/dec). Default is 0.120.
+        - 'ba': Anodic Tafel slope (V/dec). Default is 0.120.
 
     Returns
     -------
-    Callable[[np.ndarray], Tuple[np.ndarray, np.ndarray]]
-        A function that takes an array of potentials and returns (kf, kb).
-
-    Raises
-    ------
-    ValueError
-        If the specified model identifier is not supported.
+    Tuple[np.ndarray, np.ndarray]
+        A tuple containing two 1D arrays:
+        - kf: Forward (reduction) rate constants.
+        - kb: Backward (oxidation) rate constants.
     """
-    model_id = model.strip().upper()
+    # Extract parameters with standard physical defaults
+    k0 = params.get("k0", 1e-3)
+    e0 = params.get("E0", 0.0)
+    bc = params.get("bc", 0.120)  # Default ~120 mV/dec
+    ba = params.get("ba", 0.120)
 
-    if model_id == "BV":
-        return lambda e_array: butler_volmer(e_array, params)
-    # Future models (e.g., "MARCUS", "FIRST_ORDER") can be added here
-    else:
-        raise ValueError(f"Kinetic model '{model}' is not supported by the factory.")
+    # Overpotential
+    theta = e_array - e0
+
+    # Vectorized calculation using base-10 exponentials
+    kf = k0 * np.power(10.0, -theta / bc)
+    kb = k0 * np.power(10.0, theta / ba)
+
+    return kf, kb
 
 
 def nernst(e_array: np.ndarray, params: dict[str, float]) -> np.ndarray:
@@ -118,3 +129,38 @@ def nernst(e_array: np.ndarray, params: dict[str, float]) -> np.ndarray:
     theta = np.exp(f_term * (e_array - e0))
 
     return theta
+
+
+def kinetics(
+    model: str, params: dict[str, float]
+) -> Callable[[np.ndarray], tuple[np.ndarray, np.ndarray]]:
+    """
+    Factory function to instantiate kinetic rate evaluators.
+
+    Parameters
+    ----------
+    model : str
+        String identifier for the kinetic model (e.g., "bv", "tafel").
+    params : Dict[str, float]
+        Dictionary of physical parameters required by the specified model.
+
+    Returns
+    -------
+    Callable[[np.ndarray], Tuple[np.ndarray, np.ndarray]]
+        A function that takes an array of potentials and returns (kf, kb).
+
+    Raises
+    ------
+    ValueError
+        If the specified model identifier is not supported.
+    """
+    model_id = model.strip().lower()
+
+    if model_id == "bv":
+        # Assuming butler_volmer is already defined above
+        return lambda e_array: butler_volmer(e_array, params)
+    elif model_id == "tafel":
+        return lambda e_array: tafel(e_array, params)
+    # Future models (e.g., "MARCUS") can be added here
+    else:
+        raise ValueError(f"Kinetic model '{model}' is not supported by the factory.")
