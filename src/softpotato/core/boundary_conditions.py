@@ -6,19 +6,20 @@ for 1D diffusion-reaction systems, including surface flux at the electrode (x = 
 and fixed bulk concentrations at the far-field boundary (x = x_max).
 """
 
-from typing import Dict, List, Optional, Tuple, Union, Any
+from typing import Any
+
 import numpy as np
 
 
 class BoundaryHandler:
     """
     Enforces spatial boundary conditions for the system of PDEs.
-    
+
     Handles both Dirichlet far-field conditions and Neumann/kinetic flux boundary
     conditions at the electrode interface (x = 0).
     """
 
-    def __init__(self, grid, species_dict: Dict[str, Any]):
+    def __init__(self, grid, species_dict: dict[str, Any]):
         """
         Initializes the BoundaryHandler with spatial grid and species definitions.
 
@@ -53,11 +54,11 @@ class BoundaryHandler:
         return c_modified
 
     def compute_surface_flux(
-        self, 
-        E_potential: float, 
-        surface_concentrations: Dict[str, float], 
-        kinetic_evaluator: Optional[callable] = None
-    ) -> Dict[str, float]:
+        self,
+        E_potential: float,
+        surface_concentrations: dict[str, float],
+        kinetic_evaluator: callable | None = None,
+    ) -> dict[str, float]:
         """
         Computes the heterogeneous reaction flux at the electrode surface (x = 0).
 
@@ -80,11 +81,14 @@ class BoundaryHandler:
             kf, kb = kinetic_evaluator(np.array([E_potential]))
             # Vectorized flux evaluation based on surface concentrations and rate constants
             # Example for simple O + ne- <-> R reduction/oxidation
-            fluxes["O"] = -float(kf[0] * surface_concentrations.get("O", 0.0) - kb[0] * surface_concentrations.get("R", 0.0))
+            fluxes["O"] = -float(
+                kf[0] * surface_concentrations.get("O", 0.0)
+                - kb[0] * surface_concentrations.get("R", 0.0)
+            )
             fluxes["R"] = -fluxes["O"]
         else:
             # Default zero-flux (blocking electrode) if no kinetics provided
             for species in surface_concentrations:
                 fluxes[species] = 0.0
-                
+
         return fluxes
