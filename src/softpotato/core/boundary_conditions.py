@@ -6,6 +6,7 @@ for 1D diffusion-reaction systems, including surface flux at the electrode (x = 
 and fixed bulk concentrations at the far-field boundary (x = x_max).
 """
 
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -57,7 +58,7 @@ class BoundaryHandler:
         self,
         E_potential: float,
         surface_concentrations: dict[str, float],
-        kinetic_evaluator: callable | None = None,
+        kinetic_evaluator: Callable | None = None,
     ) -> dict[str, float]:
         """
         Computes the heterogeneous reaction flux at the electrode surface (x = 0).
