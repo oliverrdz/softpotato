@@ -1,53 +1,107 @@
 # Soft Potato 3.0 planning
 
-Ideal UI:
-
-```python
-import softpotato as sp
-
-# For an E mechanism where O + e <-> R
-
-# Define species:
-spec_R = sp.Species("R", D=1e-5, c_bulk=1e-6)
-spec_O = sp.Species("O", D=1e-5, c_bulk=1e-6)
-
-# Define the parameters for the reaction:
-parameters = {
-    "kinetics": "Butler-Volmer",
-    "k0 cm/s": 1e-3,
-    "alpha": 0.5
-}
-
-# Set the mechanism:
-mech_E = sp.Reaction([R, O], parameters)
-sp.mechanism(rxn = [mech_E])
-
-
-# Define geometry
-grid = sp.Grid{
-    "type": "uniform"
-}
-geometry = sp.geometry.macrodisc(area, grid=grid)
-
-
-# Define technique
-cv = sp.cyclic_voltammetry(E_initial=-0.5, E_vertex1=0.5, scan_rate=0.1, n_sweeps=2, dE=0.01)
-
-
-# Simulate
-sim = sp.Simulate(mechanism=mech_E, geometry=electrode, technique=cv, method="EFD")
-
-# Extract results
-t = sim.t
-i = sim.i
-x = sim.x
-c_O = sim.c["O"]
-c_R = sim.c["R"]
-```
-
 The following sub-modules would need to be implemented:
 * Species. Ability to define any species, only physical parameters such as the diffusion coefficient or the concentration are added here.
 * Reaction. This module would connect the species and define the mechanism with its kinetics. The user should be able to set any mechanism such as E, EC, CE, ECE, EE, etc. Here, the kinetics can also be selected: Butler-Volmer, Nernst, Tafel, etc.
 * Geometry. This would have sub-modules, for example macrodisc, microdisc, sphere, microdisc, RDE, thin_layer, etc. The grid is also set here, uniform, expanding.
 * Technique. This would return the time and potential arrays for potentiostatic simulations and the time and current arrays for galvanostatic ones.
 * Simulate. This is the solver, it would recieve everything that has been defined before and the solver method to use: explicit finite differences (EFD), a wrapper to the scipy.solve_ivp or any other third party solver.
+
+# Examples of how the UI would work
+
+## E Mechanism, Macroelectrode, Cyclic Voltammetry, Butler-Volmer
+```python
+import softpotato as sp
+
+# 1. Species (D in cm^2/s, c_bulk in mol/cm^3)
+spec_O = sp.core.Species(name="O", D=1e-5, c_bulk=1e-6)
+spec_R = sp.core.Species(name="R", D=1e-5, c_bulk=0.0)
+
+# 2. Kinetics & Mechanism
+# Butler-Volmer kinetics for a quasi-reversible process
+bv = sp.kinetics.ButlerVolmer(k0=1e-3, alpha=0.5)
+rxn_E = sp.core.ElectrochemicalReaction(
+    reactants=[spec_O], products=[spec_R], n_electrons=1, E0=0.0, kinetics=bv
+)
+mechanism = sp.core.Mechanism([rxn_E])
+
+# 3. Grid & Geometry
+# Planar semi-infinite diffusion. Area in cm^2.
+grid = sp.geometry.UniformGrid(x_max=0.05, nodes=500)
+electrode = sp.geometry.Planar(area=0.0707, grid=grid)
+
+# 4. Technique
+cv = sp.techniques.CyclicVoltammetry(
+    E_initial=0.5, E_vertex1=-0.5, scan_rate=0.1, n_sweeps=2, dE=0.001
+)
+
+# 5. Simulate
+sim = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
+results = sim.run()
+```
+
+## ErCi Mechanism, Macroelectrode, Cyclic Voltammetry, Expanding Grid
+```python
+import softpotato as sp
+
+# 1. Species 
+spec_O = sp.core.Species(name="O", D=1e-5, c_bulk=1e-6)
+spec_R = sp.core.Species(name="R", D=1e-5, c_bulk=0.0)
+spec_Z = sp.core.Species(name="Z", D=1e-5, c_bulk=0.0) # Electroinactive product
+
+# 2. Kinetics & Mechanism
+# Er: Nernstian boundary condition (fast kinetics, governed by thermodynamics)
+nernst = sp.kinetics.Nernst()
+rxn_E = sp.core.ElectrochemicalReaction(
+    reactants=[spec_O], products=[spec_R], n_electrons=1, E0=0.0, kinetics=nernst
+)
+
+# Ci: Irreversible first-order chemical reaction (kf in s^-1, kb = 0)
+chem_irrev = sp.kinetics.FirstOrder(kf=10.0, kb=0.0)
+rxn_C = sp.core.ChemicalReaction(
+    reactants=[spec_R], products=[spec_Z], kinetics=chem_irrev
+)
+mechanism = sp.core.Mechanism([rxn_E, rxn_C])
+
+# 3. Grid & Geometry
+# Expanding grid (gamma=1.05) to capture sharp concentration gradients near the electrode
+# critical for fast following chemical reactions.
+exp_grid = sp.geometry.ExpandingGrid(x_max=0.05, nodes=300, gamma=1.05)
+electrode = sp.geometry.Planar(area=0.0707, grid=exp_grid)
+
+# 4. Technique & Simulate
+cv = sp.techniques.CyclicVoltammetry(
+    E_initial=0.5, E_vertex1=-0.5, scan_rate=0.1, n_sweeps=2, dE=0.001
+)
+sim = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
+results = sim.run()
+```
+
+## E Mechanism, Spherical Electrode, Cyclic Voltammetry
+```python
+import softpotato as sp
+
+# 1. Species
+spec_O = sp.core.Species(name="O", D=1e-5, c_bulk=1e-6)
+spec_R = sp.core.Species(name="R", D=1e-5, c_bulk=0.0)
+
+# 2. Kinetics & Mechanism
+bv = sp.kinetics.ButlerVolmer(k0=1e-3, alpha=0.5)
+rxn_E = sp.core.ElectrochemicalReaction(
+    reactants=[spec_O], products=[spec_R], n_electrons=1, E0=0.0, kinetics=bv
+)
+mechanism = sp.core.Mechanism([rxn_E])
+
+# 3. Grid & Geometry
+# Spherical electrode (e.g., a hanging mercury drop or ultramicroelectrode). 
+# Radius is strictly in cm.
+grid = sp.geometry.UniformGrid(x_max=0.05, nodes=500)
+electrode = sp.geometry.Spherical(radius=0.01, grid=grid)
+
+# 4. Technique & Simulate
+cv = sp.techniques.CyclicVoltammetry(
+    E_initial=0.5, E_vertex1=-0.5, scan_rate=0.1, n_sweeps=2, dE=0.001
+)
+sim = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
+results = sim.run()
+```
