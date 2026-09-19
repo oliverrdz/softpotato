@@ -105,3 +105,44 @@ cv = sp.techniques.CyclicVoltammetry(
 sim = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
 results = sim.run()
 ```
+
+# Repository structure
+
+```
+softpotato/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                # Automated pytest runs for GitHub Actions
+├── pyproject.toml                # Build system (Hatchling or Flit), dependencies, and package metadata
+├── README.md
+├── LICENSE
+├── src/
+│   └── softpotato/               # Root namespace
+│       ├── __init__.py           # Exposes main API: from .core import Species, Mechanism
+│       ├── core/
+│       │   ├── __init__.py
+│       │   ├── species.py        # Species class (enforces CGS unit storage)
+│       │   └── reactions.py      # ElectrochemicalReaction, ChemicalReaction, Mechanism
+│       ├── kinetics/
+│       │   ├── __init__.py
+│       │   └── models.py         # ButlerVolmer, Nernst, FirstOrder classes (flux & boundary conditions)
+│       ├── geometry/
+│       │   ├── __init__.py
+│       │   ├── grids.py          # UniformGrid, ExpandingGrid (returns mesh and Laplacian weights)
+│       │   └── electrodes.py     # Planar, Spherical, ThinLayer
+│       ├── techniques/
+│       │   ├── __init__.py
+│       │   ├── voltammetry.py    # CyclicVoltammetry (generates discretized t and E arrays)
+│       │   └── step.py           # Chronoamperometry
+│       └── simulate/
+│           ├── __init__.py
+│           ├── solver.py         # Main Solver class orchestrating the simulation loop
+│           ├── efd.py            # Explicit Finite Difference implementation (vectorized numpy)
+│           └── ifd.py            # Implicit Finite Difference / Crank-Nicolson (scipy.sparse)
+└── tests/                        # Comprehensive test suite
+    ├── conftest.py               # Shared pytest fixtures (e.g., standard [O], [R] species)
+    ├── test_core.py
+    ├── test_kinetics.py
+    ├── test_geometry_laplacians.py
+    └── test_solvers.py           # Validation against analytical solutions (e.g., Randles-Sevcik)
+```
