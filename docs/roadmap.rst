@@ -15,7 +15,7 @@ Release Milestones
 
 * **v3.0.0 (Current)**:
   - Core species and reaction mechanism framework with strict CGS units validation.
-  - Analytical benchmark solutions for fundamental electrochemical techniques.
+  - Analytical benchmark solutions for fundamental electrochemical techniques (In-Development).
   - Documentation and interactive tutorial workflows.
 
 * **v3.1.0 (Upcoming)**:

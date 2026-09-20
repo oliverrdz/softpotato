@@ -32,7 +32,7 @@ The table below outlines the implementation readiness of each module in Soft Pot
      - v3.0
      - Species, reactions, and mechanisms with CGS unit enforcement.
    * - :mod:`softpotato.analytical`
-     - Ready
+     - In-Development
      - v3.0
      - Standard electrochemical Cottrell & voltammetry equations.
    * - :mod:`softpotato.simulate`
