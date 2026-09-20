@@ -28,10 +28,14 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx.ext.todo",
     "sphinx_autodoc_typehints",
     "nbsphinx",
     "nbsphinx_link",
 ]
+
+# Todo settings
+todo_include_todos = True
 
 # Autosummary settings
 autosummary_generate = True
