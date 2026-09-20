@@ -108,10 +108,6 @@ def steady_state_microdisc(
     return float(iss) if is_scalar else iss
 
 
-# Alias for microdisc spelling
-steady_state_microdisk = steady_state_microdisc
-
-
 def steady_state_microhemisphere(
     n: int,
     r0: float | np.ndarray | None = None,
@@ -174,6 +170,5 @@ def steady_state_microhemisphere(
 
 __all__ = [
     "steady_state_microdisc",
-    "steady_state_microdisk",
     "steady_state_microhemisphere",
 ]
