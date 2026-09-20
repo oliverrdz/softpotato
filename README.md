@@ -1,21 +1,21 @@
 # Soft Potato
 
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
-[![Documentation Status](https://readthedocs.org/projects/softpotato/badge/?version=latest)](https://softpotato.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/soft-potato/badge/?version=latest)](https://soft-potato.readthedocs.io/en/latest)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 
 **Soft Potato** is an open-source electrochemical simulator and toolkit designed for electrochemists, materials scientists, and engineers. It enables modeling of complex multi-step reaction mechanisms, spatial mass transport, and transient electrochemical techniques with rigorous physical unit enforcement.
 
 > [!NOTE]
-> Soft Potato is currently in active development (`v3.0.0.dev1`). Core mechanisms and analytical solutions are ready for use, while numerical solvers and technique waveforms are targeting upcoming milestones. See the [Development Roadmap](docs/roadmap.rst) for full details.
+> Soft Potato is currently in active development (`v3.0.0.dev1`). Core mechanisms are ready for use, while analytical solutions, numerical solvers, and technique waveforms are in development or targeting upcoming milestones. See the [Development Roadmap](docs/roadmap.rst) for full details.
 
 ---
 
 ## Key Features
 
 * **Electrochemical Mechanisms** `[Available · v3.0]`: Formulate complex reaction networks (E, EC, CE, EE, ECE, and DISP) combining heterogeneous electron transfers and homogeneous chemical reactions.
-* **Analytical Benchmarks** `[Available · v3.0]`: Vectorized closed-form solutions (Randles–Sevcik, Cottrell, Saito microdisc) for instant benchmarking and parameter sweeping.
+* **Analytical Benchmarks** `[In-Development · v3.0]`: Vectorized closed-form solutions (Randles–Sevcik, Cottrell, Saito microdisc) for instant benchmarking and parameter sweeping.
 * **Mass Transport & Simulation** `[In Development · v3.1]`: Numerical PDE solvers (Explicit & Implicit Finite Difference) for diffusion and coupled chemical kinetics.
 * **Electrode Geometries & Grids** `[In Development · v3.1]`: Support for planar macroelectrodes, spherical electrodes, and microdisc geometries with uniform and expanding spatial grids.
 * **Electrochemical Techniques** `[Planned · v3.2]`: Cyclic voltammetry (CV), chronoamperometry, and potential step simulations.
@@ -31,7 +31,7 @@ Soft Potato is undergoing phased development. Below is the implementation readin
 | Module | Status | Target | Description |
 | :--- | :--- | :--- | :--- |
 | `softpotato.core` | **Ready** | v3.0 | Species, reactions, and mechanisms with CGS unit enforcement |
-| `softpotato.analytical` | **Ready** | v3.0 | Cottrell, Randles–Sevcik, Saito microdisc closed-form solutions |
+| `softpotato.analytical` | *In-Development* | v3.0 | Cottrell, Randles–Sevcik, Saito microdisc closed-form solutions |
 | `softpotato.geometry` | *In Development* | v3.1 | Planar, spherical electrode geometries & spatial grids |
 | `softpotato.simulate` | *In Development* | v3.1 | EFD and IFD finite difference PDE solvers |
 | `softpotato.techniques` | *Planned* | v3.2 | Waveforms for cyclic voltammetry and potential step methods |
@@ -61,7 +61,7 @@ pip install -e ".[test,docs]"
 
 ## Quickstart
 
-### 1. Analytical Benchmark (Available in v3.0)
+### 1. Analytical Benchmark (In-Development · v3.0)
 
 Compute peak currents from the Randles–Sevcik equation across a range of scan rates:
 
@@ -107,7 +107,7 @@ print(mechanism)
 
 ## Documentation & Tutorials
 
-* **Full Documentation**: [Read the Docs](https://softpotato.readthedocs.io/)
+* **Full Documentation**: [Read the Docs](https://soft-potato.readthedocs.io/)
 * **Tutorial Notebooks**:
   * [Reaction Mechanisms Tutorial](examples/mechanisms.ipynb): Step-by-step guide to E, EC, CE, EE, ECE, and DISP schemes.
   * [Analytical Benchmarks Tutorial](examples/analytical_benchmarks.ipynb): Randles–Sevcik, Cottrell, and Saito microdisc solutions.
