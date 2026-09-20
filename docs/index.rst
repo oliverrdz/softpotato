@@ -14,6 +14,46 @@ Key Features
 * **Electrochemical Techniques**: Cyclic voltammetry (CV), chronoamperometry, and potential step simulations.
 * **Analytical Solutions**: Built-in benchmark equations (Cottrell, Randles-Sevcik, etc.) for simulation validation.
 
+Implementation Status
+---------------------
+
+The table below outlines the implementation readiness of each module in Soft Potato:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 20 20 30
+
+   * - Module / Component
+     - Status
+     - Target
+     - Notes
+   * - :mod:`softpotato.core`
+     - Ready
+     - v3.0
+     - Species, reactions, and mechanisms with CGS unit enforcement.
+   * - :mod:`softpotato.analytical`
+     - Ready
+     - v3.0
+     - Standard electrochemical Cottrell & voltammetry equations.
+   * - :mod:`softpotato.simulate`
+     - In Development
+     - v3.1
+     - Finite difference PDE solvers and dispatchers.
+   * - :mod:`softpotato.geometry`
+     - In Development
+     - v3.1
+     - Spatial grids and electrode geometry models.
+   * - :mod:`softpotato.techniques`
+     - Planned
+     - v3.2
+     - Numerical simulation waveforms (CV, LSV, step).
+   * - :mod:`softpotato.kinetics`
+     - Planned
+     - v3.2
+     - Butler-Volmer & Marcus-Hush kinetics models.
+
+For detailed item-by-item progress and active development tasks, see the :doc:`roadmap`.
+
 Contents
 --------
 
@@ -28,6 +68,13 @@ Contents
    :caption: API Reference:
 
    api/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Development & Status:
+
+   roadmap
+
 
 Indices and tables
 ==================

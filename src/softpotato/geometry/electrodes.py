@@ -4,12 +4,33 @@ Electrode geometry representations.
 
 
 class PlanarElectrode:
-    pass
+    """Planar electrode geometry representation.
+
+    .. warning::
+        This class is not implemented yet.
+
+    .. todo::
+        Implementation pending.
+    """
 
 
 class SphericalElectrode:
-    pass
+    """Spherical electrode geometry representation.
+
+    .. warning::
+        This class is not implemented yet.
+
+    .. todo::
+        Implementation pending.
+    """
 
 
 class CylindricalElectrode:
-    pass
+    """Cylindrical electrode geometry representation.
+
+    .. warning::
+        This class is not implemented yet.
+
+    .. todo::
+        Implementation pending.
+    """
