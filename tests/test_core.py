@@ -2,8 +2,8 @@
 Tests for core species module.
 """
 
-import pytest
 import numpy as np
+import pytest
 
 from softpotato.core.species import Species
 
@@ -182,4 +182,3 @@ def test_species_equality_and_representations() -> None:
     assert "Species O" in str(spec1)
     assert "cm²/s" in str(spec1)
     assert "mol/cm³" in str(spec1)
-
