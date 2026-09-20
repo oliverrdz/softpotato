@@ -62,3 +62,40 @@ ec_mechanism = Mechanism(
     c_reactions=[c_step]
 )[span_7](start_span)[span_7](end_span)
 ```
+
+# Examples for different mechanisms
+## EC
+```python
+from softpotato.core.species import Species
+from softpotato.core.reactions import HeterogeneousReaction, HomogeneousReaction, Mechanism
+
+# For EC: 'O' is in bulk. 'R' and 'Z' start at 0.
+o = Species("O", D=1e-5, c_bulk=1e-6)  
+r = Species("R", D=1e-5, c_bulk=0.0)
+z = Species("Z", D=1e-5, c_bulk=0.0)
+
+# E step: O + e- <=> R (Generates R at the electrode)
+e_step = HeterogeneousReaction(ox=o, red=r, E0=-0.2)
+
+# C step: R -> Z (Consumes R in the bulk)
+c_step = HomogeneousReaction(reactants=[r], products=[z], kf=10.0)
+
+ec_mech = Mechanism(species=[o, r, z], e_reactions=[e_step], c_reactions=[c_step])
+```
+
+## CE mechanism
+```python 
+# For CE: Precursor 'Z' is in bulk. 'O' and 'R' start at 0 (or at equilibrium).
+z = Species("Z", D=1e-5, c_bulk=1e-6)  
+o = Species("O", D=1e-5, c_bulk=0.0)   
+r = Species("R", D=1e-5, c_bulk=0.0)
+
+# C step: Z <=> O (Generates O homogeneously in the bulk)
+# Requires a forward and backward rate to establish the equilibrium
+c_step = HomogeneousReaction(reactants=[z], products=[o], kf=1.0, kb=100.0)
+
+# E step: O + e- <=> R (Consumes O at the electrode)
+e_step = HeterogeneousReaction(ox=o, red=r, E0=-0.2)
+
+ce_mech = Mechanism(species=[z, o, r], e_reactions=[e_step], c_reactions=[c_step])
+```
