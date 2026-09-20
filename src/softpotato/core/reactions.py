@@ -105,15 +105,6 @@ class ElectrochemicalReaction:
 
     Standard reduction convention:
         Reactants + n e⁻ ⇌ Products
-
-    Attributes:
-        reactants: Tuple of Species acting as reactants in the reduction step.
-        products: Tuple of Species acting as products in the reduction step.
-        n_electrons: Number of electrons transferred (n >= 1).
-        E0: Standard reduction potential in Volts vs. reference electrode.
-        kinetics: Optional kinetics model (e.g. ButlerVolmer, Nernst).
-        stoich_reactants: Stoichiometric coefficients of reactants.
-        stoich_products: Stoichiometric coefficients of products.
     """
 
     def __init__(
@@ -277,13 +268,6 @@ class ChemicalReaction:
 
     Reaction stoichiometry:
         ∑ ν_r R ⇌ ∑ ν_p P
-
-    Attributes:
-        reactants: Tuple of Species acting as reactants.
-        products: Tuple of Species acting as products.
-        kinetics: Optional kinetics model (e.g. FirstOrder).
-        stoich_reactants: Stoichiometric coefficients of reactants.
-        stoich_products: Stoichiometric coefficients of products.
     """
 
     def __init__(
