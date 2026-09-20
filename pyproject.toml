@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "softpotato"
-version = "3.0.0.dev1"
+version = "3.0.0rc1"
 description = "Next-generation open-source electrochemical simulator and toolkit."
 readme = "README.md"
 license = { text = "BSD-3-Clause" }
