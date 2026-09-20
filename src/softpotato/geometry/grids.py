@@ -11,4 +11,3 @@ def generate_exponential_grid(*args: Any, **kwargs: Any) -> Any:
 
 def generate_linear_grid(*args: Any, **kwargs: Any) -> Any:
     raise NotImplementedError
-
