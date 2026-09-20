@@ -7,14 +7,30 @@ __version__ = "3.0.0"
 __author__ = "Soft Potato Developers"
 
 # Expose primary submodules for easy access
-from . import core
+from . import (
+    analytical as analytical,
+)
+from . import (
+    core as core,
+)
+from . import (
+    geometry as geometry,
+)
+from . import (
+    kinetics as kinetics,
+)
+from . import (
+    simulate as simulate,
+)
+from . import (
+    techniques as techniques,
+)
 
-try:
-    from . import geometry
-    from . import simulate
-    from . import techniques
-    from . import kinetics
-    from . import analytical
-except ImportError:
-    pass
-
+__all__ = [
+    "analytical",
+    "core",
+    "geometry",
+    "kinetics",
+    "simulate",
+    "techniques",
+]

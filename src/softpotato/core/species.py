@@ -2,7 +2,6 @@
 Chemical and electroactive species definition with strict CGS unit enforcement.
 """
 
-from typing import Optional
 import numpy as np
 
 
@@ -45,7 +44,7 @@ class Species:
 
         # Spatial concentration array (mol/cm³).
         # Left uninitialized until the grid geometry is defined by the solver.
-        self._c_profile: Optional[np.ndarray] = None
+        self._c_profile: np.ndarray | None = None
 
     @property
     def name(self) -> str:
@@ -104,12 +103,12 @@ class Species:
         self._charge = int(value)
 
     @property
-    def c_profile(self) -> Optional[np.ndarray]:
+    def c_profile(self) -> np.ndarray | None:
         """Spatial concentration profile array across grid nodes in mol/cm³."""
         return self._c_profile
 
     @c_profile.setter
-    def c_profile(self, value: Optional[np.ndarray]) -> None:
+    def c_profile(self, value: np.ndarray | None) -> None:
         if value is not None:
             if not isinstance(value, np.ndarray):
                 raise TypeError("c_profile must be a numpy ndarray or None.")
@@ -129,7 +128,9 @@ class Species:
             TypeError: If n_nodes is not an integer.
         """
         if isinstance(n_nodes, bool) or not isinstance(n_nodes, int):
-            raise TypeError(f"n_nodes must be an integer, got {type(n_nodes).__name__}.")
+            raise TypeError(
+                f"n_nodes must be an integer, got {type(n_nodes).__name__}."
+            )
         if n_nodes <= 0:
             raise ValueError(f"n_nodes must be greater than 0, got {n_nodes}.")
         self._c_profile = np.full(n_nodes, self._c_bulk, dtype=np.float64)
@@ -160,4 +161,3 @@ class Species:
             and self.c_bulk == other.c_bulk
             and self.charge == other.charge
         )
-
