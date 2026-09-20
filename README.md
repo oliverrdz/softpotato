@@ -1,11 +1,6 @@
 # Soft Potato 3.0 planning
 
-The following sub-modules would need to be implemented:
-* Species. Ability to define any species, only physical parameters such as the diffusion coefficient or the concentration are added here.
-* Reaction. This module would connect the species and define the mechanism with its kinetics. The user should be able to set any mechanism such as E, EC, CE, ECE, EE, etc. Here, the kinetics can also be selected: Butler-Volmer, Nernst, Tafel, etc.
-* Geometry. This would have sub-modules, for example macrodisc, microdisc, sphere, microdisc, RDE, thin_layer, etc. The grid is also set here, uniform, expanding.
-* Technique. This would return the time and potential arrays for potentiostatic simulations and the time and current arrays for galvanostatic ones.
-* Simulate. This is the solver, it would recieve everything that has been defined before and the solver method to use: explicit finite differences (EFD), a wrapper to the scipy.solve_ivp or any other third party solver.
+Planning.
 
 # Examples of how the UI would work
 
