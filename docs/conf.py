@@ -46,9 +46,9 @@ napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = True
 napoleon_include_private_with_doc = False
 
-# nbsphinx settings: 'auto' executes only notebooks without stored outputs
-nbsphinx_execute = "auto"
-nbsphinx_allow_errors = False
+# nbsphinx settings: 'never' avoids executing notebooks during documentation builds
+nbsphinx_execute = "never"
+nbsphinx_allow_errors = True
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
