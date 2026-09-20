@@ -11,4 +11,3 @@ def chronoamperometry(*args: Any, **kwargs: Any) -> Any:
 
 def chronocoulometry(*args: Any, **kwargs: Any) -> Any:
     raise NotImplementedError
-
