@@ -406,15 +406,15 @@ def test_mechanism_initialization_single_and_multiple() -> None:
     # Single reaction as list
     mech1 = Mechanism([rxn_e])
     assert len(mech1) == 1
-    assert mech1.e_reactions == (rxn_e,)
-    assert mech1.c_reactions == ()
+    assert mech1.electrochemical_reactions == (rxn_e,)
+    assert mech1.chemical_reactions == ()
     assert mech1.species == (spec_o, spec_r)
 
     # Multiple reactions as list (EC mechanism)
     mech2 = Mechanism([rxn_e, rxn_c])
     assert len(mech2) == 2
-    assert mech2.e_reactions == (rxn_e,)
-    assert mech2.c_reactions == (rxn_c,)
+    assert mech2.electrochemical_reactions == (rxn_e,)
+    assert mech2.chemical_reactions == (rxn_c,)
     assert mech2.species == (spec_o, spec_r, spec_z)
     assert mech2.species_names == ["O", "R", "Z"]
 

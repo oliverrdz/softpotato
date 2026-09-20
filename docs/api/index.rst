@@ -28,9 +28,6 @@ Simulate
 --------
 
 .. automodule:: softpotato.simulate
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.simulate.solver
    :members:
@@ -51,9 +48,6 @@ Kinetics
 --------
 
 .. automodule:: softpotato.kinetics
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.kinetics.models
    :members:
@@ -64,9 +58,6 @@ Geometry
 --------
 
 .. automodule:: softpotato.geometry
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.geometry.electrodes
    :members:
@@ -82,9 +73,6 @@ Techniques
 ----------
 
 .. automodule:: softpotato.techniques
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.techniques.voltammetry
    :members:
@@ -100,9 +88,6 @@ Analytical
 ----------
 
 .. automodule:: softpotato.analytical
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.analytical.techniques.step
    :members:
@@ -133,5 +118,3 @@ Analytical
    :members:
    :undoc-members:
    :show-inheritance:
-
-
