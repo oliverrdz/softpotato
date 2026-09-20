@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "softpotato"
+version = "3.0.0"
+description = "Next-generation open-source electrochemical simulator and toolkit."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Oliver Rodriguez" }
+]
+dependencies = [
+    "numpy>=1.22.0",
+    "scipy>=1.8.0",
+    "matplotlib>=3.5.0"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
