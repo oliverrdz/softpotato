@@ -161,3 +161,6 @@ class Species:
             and self.c_bulk == other.c_bulk
             and self.charge == other.charge
         )
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.D, self.c_bulk, self.charge))

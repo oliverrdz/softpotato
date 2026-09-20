@@ -19,7 +19,15 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
     - Ionic charge / valence number ($z$).
   - Added strict parameter validation for non-negative values, non-empty names, and integer charge.
   - Implemented profile memory management (`initialize_profile` to allocate 1D NumPy arrays and `reset` to restore initial bulk conditions).
-  - Added placeholder classes in `reactions.py` (`ElectrochemicalReaction`, `ChemicalReaction`, `Mechanism`) with backwards compatibility aliases (`HeterogeneousReaction`, `HomogeneousReaction`).
+  - Added `__hash__` method to `Species` allowing instances to be used in sets and as dictionary keys (e.g., in stoichiometry mappings).
+  - Implemented `ElectrochemicalReaction` representing interfacial electron transfer ($O + n e^- \rightleftharpoons R$) with strict validation for `n_electrons`, `E0`, `kinetics`, and stoichiometric coefficients.
+  - Implemented `ChemicalReaction` representing homogeneous bulk reactions ($\sum \nu_r R \rightleftharpoons \sum \nu_p P$) with support for kinetics and stoichiometry.
+  - Implemented `Mechanism` container orchestrating reactions and species, featuring:
+    - Automatic species discovery and order preservation from reactions.
+    - Categorization into `e_reactions` (`electrochemical_reactions`) and `c_reactions` (`chemical_reactions`).
+    - Indexing by species name (`mech["O"]` / `mech.get_species`) and reaction index (`mech[0]`).
+    - Delegated profile initialization and reset across all species.
+    - Calculation of the homogeneous stoichiometry matrix (`homogeneous_stoichiometry_matrix`).
 - **Analytical Solutions (`softpotato.analytical`)**:
   - Added vectorized analytical equations for baseline comparisons:
     - `randles_sevcik`: Peak current for reversible cyclic voltammetry.
@@ -32,7 +40,7 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
     - `softpotato.techniques`: Electrochemical waveforms including voltammetry (`voltammetry.py`) and potential step (`step.py`).
     - `softpotato.kinetics`: Pluggable kinetic models (in development).
 - **Testing & Quality Infrastructure**:
-  - Added comprehensive test suite in `tests/test_core.py` covering `Species` initialization, validations, memory allocations, property setters, and representations.
+  - Added comprehensive test suite in `tests/test_core.py` covering `Species`, `ElectrochemicalReaction`, `ChemicalReaction`, and `Mechanism` (initialization, validations, memory allocations, property setters, representations, indexing, and stoichiometry matrix).
   - Configured `pyproject.toml` with package metadata, runtime dependencies (`numpy`, `scipy`, `matplotlib`), test dependencies (`pytest`), and tool configurations for `black`, `ruff`, and `mypy`.
   - Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) matrix testing across Python 3.10, 3.11, and 3.12.
   - Added root `.gitignore` covering Python cache directories, virtual environments, build artifacts, and editor settings.
