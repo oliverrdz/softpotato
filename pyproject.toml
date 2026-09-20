@@ -7,9 +7,13 @@ name = "softpotato"
 version = "3.0.0.dev1"
 description = "Next-generation open-source electrochemical simulator and toolkit."
 readme = "README.md"
+license = { text = "BSD-3-Clause" }
 requires-python = ">=3.10"
 authors = [
     { name = "Oliver Rodriguez" }
+]
+classifiers = [
+    "License :: OSI Approved :: BSD License",
 ]
 dependencies = [
     "numpy>=1.22.0",

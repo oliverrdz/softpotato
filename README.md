@@ -162,51 +162,72 @@ results = sim.run()
 softpotato/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                # Automated pytest runs for GitHub Actions
-├── pyproject.toml                # Build system (Hatchling or Flit), dependencies, and package metadata
-├── README.md
-├── LICENSE
+│       └── ci.yml                          # GitHub Actions CI workflow (multi-version test matrix & doc builds)
+├── .gitignore                              # Git ignore rules for Python, virtual environments, and build artifacts
+├── .readthedocs.yaml                       # Read the Docs configuration file
+├── CHANGELOG.md                            # Project changelog following Keep a Changelog format
+├── docs/                                   # Sphinx documentation source files
+│   ├── _static/
+│   │   └── .gitkeep                        # Preserves static assets directory in git
+│   ├── _templates/
+│   │   └── .gitkeep                        # Preserves custom HTML templates directory in git
+│   ├── api/
+│   │   └── index.rst                       # API reference documentation index
+│   ├── examples/
+│   │   ├── index.rst                       # User guide and tutorial notebooks index
+│   │   └── mechanisms.nblink               # Sphinx link to mechanisms.ipynb tutorial notebook
+│   ├── conf.py                             # Sphinx build configuration and extension settings
+│   ├── index.rst                           # Documentation homepage and table of contents
+│   ├── make.bat                            # Windows batch build script for Sphinx documentation
+│   ├── Makefile                            # Unix makefile for Sphinx documentation
+│   └── roadmap.rst                         # Development roadmap and pending implementation tracking
+├── examples/                               # Interactive Jupyter notebook tutorials
+│   └── mechanisms.ipynb                    # Tutorial notebook on defining electrochemical and chemical mechanisms
+├── LICENSE                                 # BSD 3-Clause License file
+├── pyproject.toml                          # Build system, package metadata, dependencies, and tool settings
+├── README.md                               # Project overview, specifications, examples, and roadmap
+├── scaffold.sh                             # Shell script for repository and module scaffolding
 ├── src/
-│   └── softpotato/               # Root namespace
-│       ├── __init__.py           # Exposes main API: from .core import Species, Mechanism
-│       ├── analytical/
-│       │   ├── __init__.py
-│       │   ├── geometry/
-│       │   │   ├── __init__.py
-│       │   │   ├── hydrodynamics.py
-│       │   │   └── microelectrodes.py
-│       │   ├── kinetics/
-│       │   │   ├── __init__.py
-│       │   │   ├── mechanisms.py
-│       │   │   └── reversibility.py
-│       │   └── techniques/
-│       │       ├── __init__.py
-│       │       ├── step.py
-│       │       └── voltammetry.py
-│       ├── core/
-│       │   ├── __init__.py
-│       │   ├── species.py        # Species class (enforces CGS unit storage)
-│       │   └── reactions.py      # ElectrochemicalReaction, ChemicalReaction, Mechanism
-│       ├── kinetics/
-│       │   ├── __init__.py
-│       │   └── models.py         # ButlerVolmer, Nernst, FirstOrder classes (flux & boundary conditions)
-│       ├── geometry/
-│       │   ├── __init__.py
-│       │   ├── grids.py          # UniformGrid, ExpandingGrid (returns mesh and Laplacian weights)
-│       │   └── electrodes.py     # Planar, Spherical, ThinLayer
-│       ├── techniques/
-│       │   ├── __init__.py
-│       │   ├── voltammetry.py    # CyclicVoltammetry (generates discretized t and E arrays)
-│       │   └── step.py           # Chronoamperometry
-│       └── simulate/
-│           ├── __init__.py
-│           ├── solver.py         # Main Solver class orchestrating the simulation loop
-│           ├── efd.py            # Explicit Finite Difference implementation (vectorized numpy)
-│           └── ifd.py            # Implicit Finite Difference / Crank-Nicolson (scipy.sparse)
-└── tests/                        # Comprehensive test suite
-    ├── conftest.py               # Shared pytest fixtures (e.g., standard [O], [R] species)
-    ├── test_core.py
-    ├── test_kinetics.py
-    ├── test_geometry_laplacians.py
-    └── test_solvers.py           # Validation against analytical solutions (e.g., Randles-Sevcik)
+│   └── softpotato/                         # Root namespace for the Soft Potato package
+│       ├── __init__.py                     # Package root exposing top-level API and submodules
+│       ├── analytical/                     # Closed-form analytical electrochemical benchmark equations
+│       │   ├── __init__.py                 # Facade exposing primary analytical functions (Randles-Sevcik, Cottrell, Saito)
+│       │   ├── geometry/                   # Geometry-dependent steady-state analytical solutions
+│       │   │   ├── __init__.py             # Exposes geometry-dependent analytical functions
+│       │   │   ├── hydrodynamics.py        # Analytical solutions for hydrodynamic electrodes (e.g., Levich)
+│       │   │   └── microelectrodes.py      # Analytical steady-state solutions for microelectrodes (e.g., Saito)
+│       │   ├── kinetics/                   # Kinetic reversibility and mechanism diagnostic equations
+│       │   │   ├── __init__.py             # Exposes analytical kinetic diagnostics
+│       │   │   ├── mechanisms.py           # Diagnostic equations for coupled chemical mechanisms (EC, ECE)
+│       │   │   └── reversibility.py        # Diagnostic criteria for electrochemical reversibility (Matsuda-Ayabe, Nicholson)
+│       │   └── techniques/                 # Transient technique-specific analytical solutions
+│       │       ├── __init__.py             # Exposes technique-specific analytical functions
+│       │       ├── step.py                 # Potential step solutions (e.g., Cottrell equation)
+│       │       └── voltammetry.py          # Voltammetry peak current solutions (e.g., Randles-Sevcik)
+│       ├── core/                           # Core data structures and reaction mechanism representations
+│       │   ├── __init__.py                 # Exposes core classes (Species, Reactions, Mechanism)
+│       │   ├── reactions.py                # ElectrochemicalReaction, ChemicalReaction, and Mechanism classes
+│       │   └── species.py                  # Species data class with strict CGS unit enforcement
+│       ├── geometry/                       # Spatial discretizations and electrode geometry models
+│       │   ├── __init__.py                 # Exposes grid and electrode classes
+│       │   ├── electrodes.py               # Electrode geometry implementations (Planar, Spherical, ThinLayer)
+│       │   └── grids.py                    # Spatial grid generators (UniformGrid, ExpandingGrid)
+│       ├── kinetics/                       # Electrochemical and chemical kinetic models
+│       │   ├── __init__.py                 # Exposes kinetic rate and boundary condition models
+│       │   └── models.py                   # Butler-Volmer, Nernst, and chemical kinetic rate models
+│       ├── simulate/                       # Numerical PDE solvers and simulation orchestrators
+│       │   ├── __init__.py                 # Exposes simulation solvers and engines
+│       │   ├── efd.py                      # Explicit Finite Difference (EFD) solver implementation
+│       │   ├── ifd.py                      # Implicit Finite Difference (IFD) / Crank-Nicolson solver
+│       │   └── solver.py                   # Main Solver class orchestrating simulation execution
+│       └── techniques/                     # Electrochemical excitation signals and waveforms
+│           ├── __init__.py                 # Exposes technique waveform generators
+│           ├── step.py                     # Potential step waveforms (e.g., Chronoamperometry)
+│           └── voltammetry.py              # Voltammetry waveforms (e.g., CyclicVoltammetry)
+└── tests/                                  # Test suite for unit, integration, and validation tests
+    ├── conftest.py                         # Shared pytest fixtures and test configurations
+    ├── test_core.py                        # Unit tests for Species, Reactions, and Mechanism classes
+    ├── test_geometry_laplacians.py         # Tests for spatial discretization grids and Laplacian operators
+    ├── test_kinetics.py                    # Tests for Butler-Volmer and chemical reaction kinetics
+    └── test_solvers.py                     # Validation tests for numerical solvers against analytical baselines
 ```
