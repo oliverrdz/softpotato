@@ -4,7 +4,7 @@ from softpotato.core.species import Species
 
 class HeterogeneousReaction:
     """
-    Defines an electrochemical electron transfer step at the electrode surface[span_0](start_span)[span_0](end_span).
+    Defines an electrochemical electron transfer step at the electrode surface
     Follows the convention: Ox + n e- <=> Red
     """
     def __init__(
@@ -19,14 +19,14 @@ class HeterogeneousReaction:
     ) -> None:
         """
         Args:
-            ox: The oxidized Species object[span_1](start_span)[span_1](end_span).
-            red: The reduced Species object[span_2](start_span)[span_2](end_span).
-            n: Number of electrons transferred (dimensionless)[span_3](start_span)[span_3](end_span).
-            E0: Standard reduction potential in V[span_4](start_span)[span_4](end_span).
-            k0: Standard heterogeneous rate constant in cm/s[span_5](start_span)[span_5](end_span). 
+            ox: The oxidized Species object
+            red: The reduced Species object
+            n: Number of electrons transferred (dimensionless)
+            E0: Standard reduction potential in V
+            k0: Standard heterogeneous rate constant in cm/s
                 (Default is fast/reversible: 1e4 cm/s).
-            alpha: Transfer coefficient for reduction (dimensionless, 0 to 1)[span_6](start_span)[span_6](end_span).
-            T: Temperature in Kelvin[span_7](start_span)[span_7](end_span).
+            alpha: Transfer coefficient for reduction
+            T: Temperature in Kelvin
         """
         self.ox = ox
         self.red = red
@@ -43,13 +43,13 @@ class HeterogeneousReaction:
     def get_rate_constants(self, E_app: float) -> tuple[float, float]:
         """
         Calculates the potential-dependent forward (kf) and backward (kb) 
-        heterogeneous rate constants using Butler-Volmer kinetics[span_8](start_span)[span_8](end_span).
+        heterogeneous rate constants using Butler-Volmer kinetics
         
         Args:
-            E_app: Applied electrode potential in V[span_9](start_span)[span_9](end_span).
+            E_app: Applied electrode potential in V
             
         Returns:
-            Tuple of (kf, kb) in cm/s[span_10](start_span)[span_10](end_span).
+            Tuple of (kf, kb) in cm/s
         """
         # Butler-Volmer exponential terms
         theta = self.f * (E_app - self.E0)
@@ -62,7 +62,7 @@ class HeterogeneousReaction:
 
 class HomogeneousReaction:
     """
-    Defines a chemical reaction occurring in the bulk/diffusion layer[span_11](start_span)[span_11](end_span).
+    Defines a chemical reaction occurring in the bulk/diffusion layer
     Handles standard generic kinetics: aA + bB <=> cC + dD
     """
     def __init__(
@@ -76,12 +76,12 @@ class HomogeneousReaction:
     ) -> None:
         """
         Args:
-            reactants: List of reactant Species objects[span_12](start_span)[span_12](end_span).
-            products: List of product Species objects[span_13](start_span)[span_13](end_span).
-            kf: Forward rate constant[span_14](start_span)[span_14](end_span). Units depend on order (e.g., 1/s or cm^3/(mol s)).
-            kb: Backward rate constant[span_15](start_span)[span_15](end_span). Units depend on order.
-            stoich_reactants: Stoichiometric coefficients for reactants[span_16](start_span)[span_16](end_span). Defaults to 1 for all.
-            stoich_products: Stoichiometric coefficients for products[span_17](start_span)[span_17](end_span). Defaults to 1 for all.
+            reactants: List of reactant Species objects
+            products: List of product Species objects
+            kf: Forward rate constant. Units depend on order (e.g., 1/s or cm^3/(mol s)).
+            kb: Backward rate constant. Units depend on order.
+            stoich_reactants: Stoichiometric coefficients for reactants. Defaults to 1 for all.
+            stoich_products: Stoichiometric coefficients for products. Defaults to 1 for all.
         """
         self.reactants = reactants
         self.products = products
@@ -93,11 +93,11 @@ class HomogeneousReaction:
 
     def compute_kinetic_rates(self) -> dict[str, np.ndarray]:
         """
-        Computes the vectorized concentration change rates (dC/dt) for the FDM solver[span_18](start_span)[span_18](end_span).
+        Computes the vectorized concentration change rates (dC/dt) for the FDM solver
         Relies directly on the `c_profile` attribute of the species objects.
         
         Returns:
-            Dictionary mapping species names to their respective dC/dt numpy arrays (mol/cm^3/s)[span_19](start_span)[span_19](end_span).
+            Dictionary mapping species names to their respective dC/dt numpy arrays (mol/cm^3/s)
         """
         # Calculate forward rate (vectorized across the spatial grid)
         rate_f = self.kf
@@ -131,7 +131,7 @@ class HomogeneousReaction:
 
 class Mechanism:
     """
-    Container class to pass species and reactions to the FDM solver seamlessly[span_20](start_span)[span_20](end_span).
+    Container class to pass species and reactions to the FDM solver seamlessly
     """
     def __init__(self, species: List[Species], e_reactions: List[HeterogeneousReaction], c_reactions: List[HomogeneousReaction] = None) -> None:
         self.species = {s.name: s for s in species}
