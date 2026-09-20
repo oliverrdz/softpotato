@@ -7,4 +7,3 @@ Electrochemical and chemical kinetics models.
 .. todo::
     Implementation pending.
 """
-
