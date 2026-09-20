@@ -27,12 +27,32 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
     - Categorization into `e_reactions` (`electrochemical_reactions`) and `c_reactions` (`chemical_reactions`).
     - Indexing by species name (`mech["O"]` / `mech.get_species`) and reaction index (`mech[0]`).
     - Delegated profile initialization and reset across all species.
-    - Calculation of the homogeneous stoichiometry matrix (`homogeneous_stoichiometry_matrix`).
+  - Implemented centralized physical constants module (`softpotato.core.constants`):
+    - `FARADAY`: Faraday constant ($\approx 96485.33212\text{ C/mol}$).
+    - `GAS_CONSTANT`: Molar gas constant $R$ ($\approx 8.3144626\text{ J/(mol}\cdot\text{K)}$).
+    - `STANDARD_TEMPERATURE`: Standard temperature ($298.15\text{ K}$).
 - **Analytical Solutions (`softpotato.analytical`)**:
-  - Added vectorized analytical equations for baseline comparisons:
-    - `randles_sevcik`: Peak current for reversible cyclic voltammetry.
-    - `cottrell`: Transient current response for planar potential steps.
-    - `steady_state_microdisc`: Steady-state limiting current (Saito equation).
+  - Implemented closed-form, vectorized analytical solutions across modular subpackages:
+    - **Potential Step & Chronocoulometry (`softpotato.analytical.techniques.step`)**:
+      - `cottrell`: Transient current decay for planar diffusion.
+      - `anson`: Cumulative charge transient for chronocoulometry including double-layer ($Q_{dl}$) and adsorption ($Q_{ads}$) charges in Coulombs.
+      - `spherical_cottrell`: Transient current at a spherical electrode with area derived from radius $r_0$.
+    - **Voltammetry (`softpotato.analytical.techniques.voltammetry`)**:
+      - `randles_sevcik`: Peak current for reversible electron transfer.
+      - `randles_sevcik_irreversible`: Peak current for totally irreversible electron transfer.
+      - `peak_potential_irreversible`: Peak potential shift for totally irreversible electron transfer.
+    - **Microelectrode Geometries (`softpotato.analytical.geometry.microelectrodes`)**:
+      - `steady_state_microdisc`: Saito equation for steady-state limiting current at an inlaid microdisc with radius $a$.
+      - `steady_state_microhemisphere`: Steady-state limiting current at a microhemisphere electrode.
+    - **Hydrodynamics (`softpotato.analytical.geometry.hydrodynamics`)**:
+      - `levich`: Mass-transport limiting current at a rotating disk electrode (RDE).
+      - `koutecky_levich`: Net steady-state current combining kinetic and mass-transport limitations.
+    - **Kinetics & Reversibility (`softpotato.analytical.kinetics.reversibility`)**:
+      - `nicholson_psi`: Nicholson kinetic reversibility parameter $\Psi$.
+    - **Reaction Mechanisms (`softpotato.analytical.kinetics.mechanisms`)**:
+      - `catalytic_current`: Steady-state catalytic current for an $EC'$ mechanism (with alias `catalytic_current_ec_prime`).
+  - Added top-level facade imports in `softpotato.analytical` for direct access to all equations.
+
 - **Module Scaffolding**:
   - Established subpackage hierarchy:
     - `softpotato.geometry`: Grids (`grids.py`) and electrode geometries (`electrodes.py`).

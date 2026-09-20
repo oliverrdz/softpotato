@@ -29,6 +29,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx.ext.todo",
+    "sphinx.ext.mathjax",
     "sphinx_autodoc_typehints",
     "nbsphinx",
     "nbsphinx_link",

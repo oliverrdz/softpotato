@@ -15,8 +15,9 @@ Release Milestones
 
 * **v3.0.0 (Current)**:
   - Core species and reaction mechanism framework with strict CGS units validation.
-  - Analytical benchmark solutions for fundamental electrochemical techniques (In-Development).
+  - Analytical benchmark solutions for fundamental electrochemical techniques (Completed).
   - Documentation and interactive tutorial workflows.
+
 
 * **v3.1.0 (Upcoming)**:
   - High-level numerical PDE solver dispatcher (:mod:`softpotato.simulate.solver`).
