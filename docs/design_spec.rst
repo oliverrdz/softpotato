@@ -128,7 +128,7 @@ Quasi-reversible single-electron transfer at a planar macroelectrode:
    results = sim.run()
 
 ErCi Mechanism, Macroelectrode, Cyclic Voltammetry, Expanding Grid
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Reversible electron transfer followed by an irreversible homogeneous chemical reaction, solved on an expanding spatial grid:
 
