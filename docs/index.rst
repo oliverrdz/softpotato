@@ -74,6 +74,8 @@ Contents
    :caption: Development & Status:
 
    roadmap
+   design_spec
+
 
 .. toctree::
    :maxdepth: 1

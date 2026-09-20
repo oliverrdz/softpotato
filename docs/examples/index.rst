@@ -8,4 +8,6 @@ Explore step-by-step interactive tutorials and workflows using Soft Potato.
    :caption: Notebooks:
 
    mechanisms
+   analytical_benchmarks
+
 
