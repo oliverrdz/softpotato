@@ -5,10 +5,10 @@ All notable changes to the Soft Potato project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [PEP 440](https://peps.python.org/pep-0440/).
 
-## [3.0.0.dev1] - 2026-09-20
+## [3.0.0rc1] - 2026-09-20
 
-### Initial Development Pre-release
-Initial development build (`dev1`) marking the ground-up architectural rewrite for **Soft Potato 3.0**. This release sets up the core data models, analytical solutions, module scaffolding, and development infrastructure.
+### Release Candidate 1
+First release candidate (`rc1`) for **Soft Potato 3.0.0**, delivering an end-to-end simulation MVP for Cyclic Voltammetry alongside the core mechanisms, analytical solutions, and revised 4-stage development roadmap.
 
 ### Added
 - **Core Module (`softpotato.core`)**:
@@ -52,6 +52,18 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
     - **Reaction Mechanisms (`softpotato.analytical.kinetics.mechanisms`)**:
       - `catalytic_current`: Steady-state catalytic current for an $EC'$ mechanism (with alias `catalytic_current_ec_prime`).
   - Added top-level facade imports in `softpotato.analytical` for direct access to all equations.
+
+- **Simulation MVP (`softpotato.simulate`, `softpotato.geometry`, `softpotato.techniques`, `softpotato.kinetics`)**:
+  - Implemented the end-to-end numerical simulation pipeline for Cyclic Voltammetry:
+    - `Grid` ABC and `UniformGrid` representing uniform 1D spatial discretization with strict CGS coordinates.
+    - `Electrode` ABC and `PlanarElectrode` representing planar macroelectrodes with 1D spatial Laplacian differential operators.
+    - `Technique` ABC and `CyclicVoltammetry` generating exact triangular potential waveforms and sampling parameters ($dt$, duration).
+    - `KineticsModel` ABC and `ButlerVolmer` implementing potential-dependent forward/backward heterogeneous rate constants and surface reduction flux.
+    - Vectorized Explicit Finite Difference (EFD) engine (`explicit_diffuse_step`) and surface flux boundary condition solver (`update_surface_concentrations`).
+    - High-level `Solver` orchestrator supporting automated CFL stability sub-stepping (`auto_substep=True`) with informative `UserWarning`.
+    - `SimulationResult` dataclass storing time, potential, current, concentration profiles, and a built-in `.plot()` method.
+  - Added interactive tutorial notebook `examples/cv_simulation.ipynb` demonstrating end-to-end CV simulation, Butler-Volmer kinetics theory, and Randles-Sevcik benchmarking.
+  - Added integration benchmark test `tests/test_cv_benchmark.py` validating simulated reversible peak current against analytical `randles_sevcik` (< 3% error).
 
 - **Module Scaffolding**:
   - Established subpackage hierarchy:

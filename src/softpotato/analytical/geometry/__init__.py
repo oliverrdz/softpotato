@@ -12,6 +12,5 @@ __all__ = [
     "koutecky_levich",
     "levich",
     "steady_state_microdisc",
-    "steady_state_microdisk",
     "steady_state_microhemisphere",
 ]
