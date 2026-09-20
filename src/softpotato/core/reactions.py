@@ -532,18 +532,8 @@ class Mechanism:
         return self._e_reactions
 
     @property
-    def e_reactions(self) -> tuple[ElectrochemicalReaction, ...]:
-        """Alias for electrochemical_reactions."""
-        return self._e_reactions
-
-    @property
     def chemical_reactions(self) -> tuple[ChemicalReaction, ...]:
         """Chemical reactions in the mechanism."""
-        return self._c_reactions
-
-    @property
-    def c_reactions(self) -> tuple[ChemicalReaction, ...]:
-        """Alias for chemical_reactions."""
         return self._c_reactions
 
     @property
