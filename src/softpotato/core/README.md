@@ -83,7 +83,7 @@ c_step = HomogeneousReaction(reactants=[r], products=[z], kf=10.0)
 ec_mech = Mechanism(species=[o, r, z], e_reactions=[e_step], c_reactions=[c_step])
 ```
 
-## CE mechanism
+## CE
 ```python 
 # For CE: Precursor 'Z' is in bulk. 'O' and 'R' start at 0 (or at equilibrium).
 z = Species("Z", D=1e-5, c_bulk=1e-6)  
