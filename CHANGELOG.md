@@ -44,7 +44,29 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
   - Configured `pyproject.toml` with package metadata, runtime dependencies (`numpy`, `scipy`, `matplotlib`), test dependencies (`pytest`), and tool configurations for `black`, `ruff`, and `mypy`.
   - Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) matrix testing across Python 3.10, 3.11, and 3.12.
   - Added root `.gitignore` covering Python cache directories, virtual environments, build artifacts, and editor settings.
+- **Documentation & Sphinx Framework (`docs/`)**:
+  - Configured Sphinx documentation with Read the Docs integration (`.readthedocs.yaml`) using the `sphinx_rtd_theme`.
+  - Added Sphinx configuration (`docs/conf.py`) integrating `autodoc`, `napoleon`, `mathjax`, `viewcode`, `todo`, `sphinx-math-dollar`, and `nbsphinx`.
+  - Added main landing page (`docs/index.rst`), roadmap document (`docs/roadmap.rst`), and API reference structure (`docs/api/index.rst`).
+  - Added Sphinx `.. warning::` and `.. todo::` directives across all placeholder/scaffolding modules (`geometry`, `simulate`, `techniques`, `kinetics`) to clearly signal their development status in generated documentation.
+  - Added `docs/Makefile` and `docs/make.bat` build scripts for local documentation generation.
+  - Added automated `docs` build validation job in GitHub Actions workflow (`.github/workflows/ci.yml`).
+- **Interactive Tutorials & Examples (`examples/`)**:
+  - Added comprehensive tutorial notebook `examples/mechanisms.ipynb` covering mechanism definitions in Soft Potato 3.0:
+    - Single-electron transfers ($E$).
+    - Chemical equilibria ($C$).
+    - Coupled EC and multi-step ECE mechanisms.
+    - Disproportionation pathways (ECE vs. DISP competition with multi-reactant/product stoichiometry, and bimolecular radical disproportionation $2R \rightleftharpoons O + Z$).
+    - Solver integration features (profile initialization `initialize_profiles`, reset `reset`, dictionary indexing, and stoichiometry matrix inspection).
+  - Linked interactive tutorial notebook into Sphinx documentation via `docs/examples/mechanisms.nblink`.
+- **Dependencies (`pyproject.toml`)**:
+  - Added optional `docs` dependency group (`sphinx`, `sphinx-rtd-theme`, `sphinx-autodoc-typehints`, `nbsphinx`, `nbsphinx-link`, `ipython`, `ipykernel`).
 
 ### Changed
 - Configured Black `target-version = ["py310"]` in `pyproject.toml` to ensure consistent AST checks across the Python 3.10–3.12 CI matrix.
 - Structured package exports in `softpotato/__init__.py` using explicit `__all__` declarations.
+- Cleaned up docstrings in `src/softpotato/core/reactions.py` by removing redundant `Attributes:` sections to optimize Sphinx autodoc rendering.
+- Formatted `src/softpotato/core/reactions.py` and `tests/test_core.py` to adhere strictly to Ruff formatting and lint rules.
+
+### Removed
+- Removed legacy `src/softpotato/core/README.md` in favor of Sphinx documentation.
