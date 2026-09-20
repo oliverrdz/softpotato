@@ -7,9 +7,6 @@ Core
 ----
 
 .. automodule:: softpotato.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. automodule:: softpotato.core.species
    :members:
