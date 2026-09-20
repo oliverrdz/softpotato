@@ -11,4 +11,3 @@ def solve_1d(*args: Any, **kwargs: Any) -> Any:
 
 def solve_homogeneous_1d(*args: Any, **kwargs: Any) -> Any:
     raise NotImplementedError
-

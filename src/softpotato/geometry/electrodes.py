@@ -13,4 +13,3 @@ class SphericalElectrode:
 
 class CylindricalElectrode:
     pass
-

@@ -11,4 +11,3 @@ def cyclic_voltammetry(*args: Any, **kwargs: Any) -> Any:
 
 def linear_sweep(*args: Any, **kwargs: Any) -> Any:
     raise NotImplementedError
-
