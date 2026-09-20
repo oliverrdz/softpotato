@@ -44,12 +44,16 @@ Initial development build (`dev1`) marking the ground-up architectural rewrite f
   - Configured `pyproject.toml` with package metadata, runtime dependencies (`numpy`, `scipy`, `matplotlib`), test dependencies (`pytest`), and tool configurations for `black`, `ruff`, and `mypy`.
   - Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) matrix testing across Python 3.10, 3.11, and 3.12.
   - Added root `.gitignore` covering Python cache directories, virtual environments, build artifacts, and editor settings.
+- **Licensing & Project Metadata**:
+  - Adopted the open-source **BSD 3-Clause License** (`LICENSE`).
+  - Added license metadata and PyPI classifier (`License :: OSI Approved :: BSD License`) in `pyproject.toml`.
 - **Documentation & Sphinx Framework (`docs/`)**:
   - Configured Sphinx documentation with Read the Docs integration (`.readthedocs.yaml`) using the `sphinx_rtd_theme`.
   - Added Sphinx configuration (`docs/conf.py`) integrating `autodoc`, `napoleon`, `mathjax`, `viewcode`, `todo`, `sphinx-math-dollar`, and `nbsphinx`.
   - Added main landing page (`docs/index.rst`), roadmap document (`docs/roadmap.rst`), and API reference structure (`docs/api/index.rst`).
   - Added Sphinx `.. warning::` and `.. todo::` directives across all placeholder/scaffolding modules (`geometry`, `simulate`, `techniques`, `kinetics`) to clearly signal their development status in generated documentation.
   - Added `docs/Makefile` and `docs/make.bat` build scripts for local documentation generation.
+  - Added dedicated license page (`docs/license.rst`) embedding the root `LICENSE` file into the Sphinx documentation table of contents.
   - Added automated `docs` build validation job in GitHub Actions workflow (`.github/workflows/ci.yml`).
 - **Interactive Tutorials & Examples (`examples/`)**:
   - Added comprehensive tutorial notebook `examples/mechanisms.ipynb` covering mechanism definitions in Soft Potato 3.0:

@@ -75,6 +75,12 @@ Contents
 
    roadmap
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Project Information:
+
+   license
+
 
 Indices and tables
 ==================
