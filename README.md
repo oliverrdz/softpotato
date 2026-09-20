@@ -103,7 +103,7 @@ results = sim.run()
 
 # Repository structure
 
-```
+```text
 softpotato/
 ├── .github/
 │   └── workflows/
@@ -114,6 +114,20 @@ softpotato/
 ├── src/
 │   └── softpotato/               # Root namespace
 │       ├── __init__.py           # Exposes main API: from .core import Species, Mechanism
+│       ├── analytical/
+│       │   ├── __init__.py
+│       │   ├── geometry/
+│       │   │   ├── __init__.py
+│       │   │   ├── hydrodynamics.py
+│       │   │   └── microelectrodes.py
+│       │   ├── kinetics/
+│       │   │   ├── __init__.py
+│       │   │   ├── mechanisms.py
+│       │   │   └── reversibility.py
+│       │   └── techniques/
+│       │       ├── __init__.py
+│       │       ├── step.py
+│       │       └── voltammetry.py
 │       ├── core/
 │       │   ├── __init__.py
 │       │   ├── species.py        # Species class (enforces CGS unit storage)
