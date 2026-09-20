@@ -8,8 +8,13 @@ __author__ = "Soft Potato Developers"
 
 # Expose primary submodules for easy access
 from . import core
-from . import geometry
-from . import simulate
-from . import techniques
-from . import kinetics
-from . import analytical
+
+try:
+    from . import geometry
+    from . import simulate
+    from . import techniques
+    from . import kinetics
+    from . import analytical
+except ImportError:
+    pass
+
