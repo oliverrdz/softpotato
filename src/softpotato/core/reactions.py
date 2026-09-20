@@ -75,9 +75,7 @@ def _normalize_stoichiometry(
     if stoich_input is None:
         return tuple(1 for _ in range(expected_length))
 
-    if not isinstance(stoich_input, Sequence) or isinstance(
-        stoich_input, (str, bytes)
-    ):
+    if not isinstance(stoich_input, Sequence) or isinstance(stoich_input, (str, bytes)):
         raise TypeError(f"{arg_name} must be a sequence of integers.")
 
     if len(stoich_input) != expected_length:
@@ -420,10 +418,12 @@ class Mechanism:
 
     def __init__(
         self,
-        reactions: Sequence[ElectrochemicalReaction | ChemicalReaction]
-        | ElectrochemicalReaction
-        | ChemicalReaction
-        | None = None,
+        reactions: (
+            Sequence[ElectrochemicalReaction | ChemicalReaction]
+            | ElectrochemicalReaction
+            | ChemicalReaction
+            | None
+        ) = None,
         *extra_reactions: ElectrochemicalReaction | ChemicalReaction,
         species: Sequence[Species] | None = None,
     ) -> None:
@@ -464,8 +464,8 @@ class Mechanism:
                     f"instances, got {type(rxn).__name__} at index {idx}."
                 )
 
-        self._reactions: tuple[ElectrochemicalReaction | ChemicalReaction, ...] = (
-            tuple(all_rxns)
+        self._reactions: tuple[ElectrochemicalReaction | ChemicalReaction, ...] = tuple(
+            all_rxns
         )
         self._e_reactions: tuple[ElectrochemicalReaction, ...] = tuple(
             r for r in all_rxns if isinstance(r, ElectrochemicalReaction)
