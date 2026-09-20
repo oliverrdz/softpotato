@@ -60,9 +60,9 @@ def test_cv_reversible_peak_current_benchmark() -> None:
     # The cathodic peak is the minimum (most negative) current in sweep 1
     sweep1_len = len(cv.potential) // 2
     i_cathodic_sim = np.min(result.current[:sweep1_len])
-    assert i_cathodic_sim < 0, (
-        "Cathodic current must be negative under IUPAC convention."
-    )
+    assert (
+        i_cathodic_sim < 0
+    ), "Cathodic current must be negative under IUPAC convention."
 
     i_peak_analytical = randles_sevcik(
         n=n,
@@ -86,6 +86,6 @@ def test_cv_reversible_peak_current_benchmark() -> None:
     E_pa = result.potential[idx_pa]
     delta_Ep = abs(E_pa - E_pc)
 
-    assert 0.050 <= delta_Ep <= 0.065, (
-        f"Delta Ep = {delta_Ep * 1e3:.1f} mV outside 50-65 mV range."
-    )
+    assert (
+        0.050 <= delta_Ep <= 0.065
+    ), f"Delta Ep = {delta_Ep * 1e3:.1f} mV outside 50-65 mV range."
