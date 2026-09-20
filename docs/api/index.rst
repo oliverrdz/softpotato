@@ -8,6 +8,11 @@ Core
 
 .. automodule:: softpotato.core
 
+.. automodule:: softpotato.core.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: softpotato.core.species
    :members:
    :undoc-members:
@@ -17,6 +22,7 @@ Core
    :members:
    :undoc-members:
    :show-inheritance:
+
 
 Simulate
 --------
@@ -97,4 +103,35 @@ Analytical
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: softpotato.analytical.techniques.step
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: softpotato.analytical.techniques.voltammetry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: softpotato.analytical.geometry.microelectrodes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: softpotato.analytical.geometry.hydrodynamics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: softpotato.analytical.kinetics.reversibility
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: softpotato.analytical.kinetics.mechanisms
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
