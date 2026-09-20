@@ -4,6 +4,61 @@ Planning.
 
 # Examples of how the UI would work
 
+## Analytical module
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Import analytical equations directly from the Soft Potato 3.0 facade
+from softpotato.analytical import randles_sevcik, cottrell, steady_state_microdisc
+
+# --- Parameters (Strict CGS Units Enforced by Soft Potato) ---
+# Assuming standard T = 298.15 K handled internally by the analytical module
+n_electrons = 1
+D_O = 1e-5            # Diffusion coefficient (cm^2/s)
+C_bulk = 1e-6         # Bulk concentration (mol/cm^3) -> 1 mM
+area = 0.0707         # Planar macroelectrode area (cm^2)
+
+# --- Independent Variable Arrays (Vectorized) ---
+# NumPy arrays are passed directly to avoid slow Python for-loops
+v_array = np.linspace(0.01, 1.0, 200)      # Scan rate (V/s)
+t_array = np.linspace(0.001, 5.0, 500)     # Time (s)
+r_array = np.linspace(1e-4, 25e-4, 200)    # Microdisc radius (cm)
+
+# --- Compute Analytical Solutions ---
+i_p = randles_sevcik(n=n_electrons, area=area, D=D_O, c_bulk=C_bulk, scan_rate=v_array)
+i_t = cottrell(t=t_array, n=n_electrons, area=area, D=D_O, c_bulk=C_bulk)
+i_ss = steady_state_microdisc(n=n_electrons, radius=r_array, D=D_O, c_bulk=C_bulk)
+
+# --- Visualization ---
+fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
+
+# 1. Randles-Sevcik: i_p vs. sqrt(v)
+axes[0].plot(np.sqrt(v_array), i_p * 1e6, color='#1f77b4', lw=2)
+axes[0].set_xlabel(r'$\nu^{1/2}$ / (V/s)$^{1/2}$')
+axes[0].set_ylabel(r'$i_p$ / $\mu$A')
+axes[0].set_title('Randles-Sevcik (Reversible CV)')
+axes[0].grid(True, linestyle='--', alpha=0.7)
+
+# 2. Cottrell: i vs. t
+axes[1].plot(t_array, i_t * 1e6, color='#d62728', lw=2)
+axes[1].set_xlabel('Time / s')
+axes[1].set_ylabel(r'$i$ / $\mu$A')
+axes[1].set_title('Cottrell (Planar Step)')
+axes[1].grid(True, linestyle='--', alpha=0.7)
+
+# 3. Microdisc: i_ss vs. r
+# Converting radius to um and current to nA for standard plotting scaling
+axes[2].plot(r_array * 1e4, i_ss * 1e9, color='#2ca02c', lw=2)
+axes[2].set_xlabel(r'Radius / $\mu$m')
+axes[2].set_ylabel(r'$i_{ss}$ / nA')
+axes[2].set_title('Saito (Steady-State Microdisc)')
+axes[2].grid(True, linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.show()
+```
+
 ## E Mechanism, Macroelectrode, Cyclic Voltammetry, Butler-Volmer
 ```python
 import softpotato as sp
