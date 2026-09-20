@@ -63,78 +63,22 @@ pip install -e ".[test,docs]"
 
 ## Quickstart
 
-### 1. Analytical Benchmark (Available · v3.0)
-
-Compute peak currents from the Randles–Sevcik equation across a range of scan rates:
-
-```python
-import numpy as np
-from softpotato.analytical import randles_sevcik
-
-# Parameters (strict CGS units)
-n = 1
-area = 0.0707          # cm^2 (macroelectrode)
-D_O = 1e-5             # cm^2/s
-c_bulk = 1e-6          # mol/cm^3 (1 mM)
-scan_rates = np.linspace(0.01, 1.0, 50)  # V/s
-
-# Vectorized calculation of peak currents (A)
-i_peak = randles_sevcik(n=n, area=area, D=D_O, c_bulk=c_bulk, scan_rate=scan_rates)
-print(f"Peak current at 0.1 V/s: {i_peak[4] * 1e6:.2f} µA")
-```
-
-### 2. Defining Reaction Mechanisms (Available in v3.0)
-
-Define chemical species and interfacial electron transfer reactions:
+Simulate a Cyclic Voltammogram (CV) with Butler-Volmer kinetics at a planar electrode in just a few lines of code:
 
 ```python
 import softpotato as sp
 
-# 1. Define species with diffusion coefficients (cm^2/s) and bulk concentrations (mol/cm^3)
-O = sp.core.Species(name="O", D=1e-5, c_bulk=1e-6)
-R = sp.core.Species(name="R", D=1e-5, c_bulk=0.0)
+# 1. Define species & Butler-Volmer reaction
+O = sp.core.Species("O", D=1e-5, c_bulk=1e-6)
+R = sp.core.Species("R", D=1e-5)
+rxn = sp.core.ElectrochemicalReaction(O, R, kinetics=sp.kinetics.ButlerVolmer(k0=1e-2))
 
-# 2. Define Butler-Volmer electron transfer
-bv = sp.kinetics.ButlerVolmer(k0=1e-3, alpha=0.5)
-rxn_E = sp.core.ElectrochemicalReaction(
-    reactants=[O], products=[R], n_electrons=1, E0=0.0, kinetics=bv
-)
+# 2. Set up planar electrode & CV waveform
+electrode = sp.geometry.PlanarElectrode(area=0.07, grid=sp.geometry.UniformGrid(x_max=0.08, nodes=500))
+cv = sp.techniques.CyclicVoltammetry(E_initial=0.4, E_vertex1=-0.4, scan_rate=0.1)
 
-# 3. Create mechanism
-mechanism = sp.core.Mechanism([rxn_E])
-print(mechanism)
-```
-
-### 3. Simulating Cyclic Voltammetry (Available in v3.0 MVP)
-
-Simulate a complete Cyclic Voltammogram (CV) with Butler-Volmer kinetics at a planar macroelectrode:
-
-```python
-import softpotato as sp
-
-# 1. Species & Butler-Volmer reaction
-O = sp.core.Species(name="O", D=1e-5, c_bulk=1e-6)
-R = sp.core.Species(name="R", D=1e-5, c_bulk=0.0)
-bv = sp.kinetics.ButlerVolmer(k0=1e-2, alpha=0.5)
-rxn = sp.core.ElectrochemicalReaction(
-    reactants=[O], products=[R], n_electrons=1, E0=0.0, kinetics=bv
-)
-mechanism = sp.core.Mechanism([rxn])
-
-# 2. Geometry & Grid (Planar semi-infinite diffusion)
-grid = sp.geometry.UniformGrid(x_max=0.08, nodes=500)
-electrode = sp.geometry.PlanarElectrode(area=0.0707, grid=grid)
-
-# 3. Excitation waveform (Cyclic Voltammetry)
-cv = sp.techniques.CyclicVoltammetry(
-    E_initial=0.4, E_vertex1=-0.4, scan_rate=0.1, n_sweeps=2, dE=0.002
-)
-
-# 4. Run explicit finite difference simulation
-solver = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
-result = solver.run()
-
-# 5. Plot the voltammogram
+# 3. Simulate and plot
+result = sp.simulate.Solver(sp.core.Mechanism(rxn), electrode, cv).run()
 result.plot()
 ```
 
