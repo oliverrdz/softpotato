@@ -63,7 +63,8 @@ Direct, vectorized evaluation of classic electrochemical solutions (Randles-Sevc
    # --- Compute Analytical Solutions ---
    i_p = randles_sevcik(n=n_electrons, area=area, D=D_O, c_bulk=C_bulk, scan_rate=v_array)
    i_t = cottrell(t=t_array, n=n_electrons, area=area, D=D_O, c_bulk=C_bulk)
-   i_ss = steady_state_microdisc(n=n_electrons, radius=r_array, D=D_O, c_bulk=C_bulk)
+   i_ss = steady_state_microdisc(n=n_electrons, a=r_array, D=D_O, c_bulk=C_bulk)
+
 
    # --- Visualization ---
    fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
