@@ -445,7 +445,9 @@ def test_mechanism_validation() -> None:
     rxn_e = ElectrochemicalReaction(reactants=[spec_o], products=[spec_r])
 
     # Invalid reaction type
-    with pytest.raises(TypeError, match="must be ElectrochemicalReaction or ChemicalReaction"):
+    with pytest.raises(
+        TypeError, match="must be ElectrochemicalReaction or ChemicalReaction"
+    ):
         Mechanism(["not_a_reaction"])  # type: ignore[list-item]
 
     # Reaction uses species not in explicit species list
@@ -542,9 +544,7 @@ def test_mechanism_homogeneous_stoichiometry_matrix() -> None:
 
     rxn_e = ElectrochemicalReaction(reactants=[spec_o], products=[spec_r])
     # R -> 2 Z
-    rxn_c = ChemicalReaction(
-        reactants=[spec_r], products=[spec_z], stoich_products=[2]
-    )
+    rxn_c = ChemicalReaction(reactants=[spec_r], products=[spec_z], stoich_products=[2])
 
     mech = Mechanism([rxn_e, rxn_c])
 
@@ -552,9 +552,9 @@ def test_mechanism_homogeneous_stoichiometry_matrix() -> None:
     # Chemical reaction 0: -1 R, +2 Z, 0 O
     matrix = mech.homogeneous_stoichiometry_matrix
     assert matrix.shape == (3, 1)
-    assert matrix[0, 0] == 0.0   # O
+    assert matrix[0, 0] == 0.0  # O
     assert matrix[1, 0] == -1.0  # R
-    assert matrix[2, 0] == 2.0   # Z
+    assert matrix[2, 0] == 2.0  # Z
 
     # Mechanism with no chemical reactions
     mech_e_only = Mechanism([rxn_e])
