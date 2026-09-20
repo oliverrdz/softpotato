@@ -117,7 +117,7 @@ Quasi-reversible single-electron transfer at a planar macroelectrode:
    # 3. Grid & Geometry
    # Planar semi-infinite diffusion. Area in cm^2.
    grid = sp.geometry.UniformGrid(x_max=0.05, nodes=500)
-   electrode = sp.geometry.Planar(area=0.0707, grid=grid)
+   electrode = sp.geometry.PlanarElectrode(area=0.0707, grid=grid)
 
    # 4. Technique
    cv = sp.techniques.CyclicVoltammetry(
@@ -160,7 +160,7 @@ Reversible electron transfer followed by an irreversible homogeneous chemical re
    # Expanding grid (gamma=1.05) to capture sharp concentration gradients near the electrode
    # critical for fast following chemical reactions.
    exp_grid = sp.geometry.ExpandingGrid(x_max=0.05, nodes=300, gamma=1.05)
-   electrode = sp.geometry.Planar(area=0.0707, grid=exp_grid)
+   electrode = sp.geometry.PlanarElectrode(area=0.0707, grid=exp_grid)
 
    # 4. Technique & Simulate
    cv = sp.techniques.CyclicVoltammetry(
@@ -192,7 +192,7 @@ Single-electron transfer at a spherical electrode (e.g., hanging mercury drop or
    # 3. Grid & Geometry
    # Spherical electrode (radius strictly in cm).
    grid = sp.geometry.UniformGrid(x_max=0.05, nodes=500)
-   electrode = sp.geometry.Spherical(radius=0.01, grid=grid)
+   electrode = sp.geometry.SphericalElectrode(radius=0.01, grid=grid)
 
    # 4. Technique & Simulate
    cv = sp.techniques.CyclicVoltammetry(
@@ -200,4 +200,5 @@ Single-electron transfer at a spherical electrode (e.g., hanging mercury drop or
    )
    sim = sp.simulate.Solver(mechanism, electrode, cv, method="EFD")
    results = sim.run()
+
 

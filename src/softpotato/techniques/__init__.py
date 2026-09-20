@@ -3,11 +3,12 @@ Electrochemical techniques and waveform generators.
 """
 
 from .step import chronoamperometry, chronocoulometry
-from .voltammetry import cyclic_voltammetry, linear_sweep
+from .voltammetry import CyclicVoltammetry, Technique, linear_sweep
 
 __all__ = [
+    "CyclicVoltammetry",
+    "Technique",
     "chronoamperometry",
     "chronocoulometry",
-    "cyclic_voltammetry",
     "linear_sweep",
 ]
