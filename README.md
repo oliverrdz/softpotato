@@ -47,8 +47,8 @@ x = np.linspace(0.0, 1.0, 100)
 # 2. Formulate the diffusion problem for species 'A' and 'B'
 problem = DiffusionProblem(
     grid=x,
-    diffusivity={"A": 1e-5, "B": 2e-5},               # Diffusion coefficients (cm²/s)
-    initial_conditions={"A": 1.0, "B": 0.0},          # Initial concentrations (mol/cm³)
+    diffusivity={"A": 1e-5, "B": 2e-5},  # Diffusion coefficients (cm²/s)
+    initial_conditions={"A": 1.0, "B": 0.0},  # Initial concentrations (mol/cm³)
     boundary_conditions={
         # Species A: depleted at electrode (x=0), bulk concentration maintained at x=1
         "A": (DirichletBC(0.0), DirichletBC(1.0)),
@@ -69,7 +69,7 @@ print(f"Success: {result.success}")
 print(f"Simulated species: {result.species}")
 
 # Access concentration profile array of shape (N_times, N_points):
-c_A = result["A"]            # Or result.concentrations["A"]
+c_A = result["A"]  # Or result.concentrations["A"]
 c_B = result["B"]
 print(f"Species A profile shape: {c_A.shape}")
 
@@ -100,10 +100,12 @@ Custom solvers can be implemented and automatically registered by subclassing `B
 ```python
 from softpotato.solver import BaseSolver, SolverResult, get_solver
 
+
 class SpectralDiffusionSolver(BaseSolver, name="spectral"):
     def _run_solver(self, problem, t_span, t_eval, **kwargs):
         # Implement custom algorithm here...
         return SolverResult(t=..., x=problem.grid, concentrations=...)
+
 
 # Once defined, it is automatically available via the solver factory:
 custom_solver = get_solver("spectral")

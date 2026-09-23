@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+
 import numpy as np
 from scipy.linalg import solve_banded
 
@@ -68,7 +69,11 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
         dx = problem.dx
         t_start, t_end = t_span
 
-        user_dt = kwargs.get("dt") if kwargs.get("dt") is not None else self.options.get("dt", None)
+        user_dt = (
+            kwargs.get("dt")
+            if kwargs.get("dt") is not None
+            else self.options.get("dt", None)
+        )
         if user_dt is not None:
             base_dt = float(user_dt)
         else:
@@ -121,7 +126,9 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
         dx: float,
     ) -> dict[str, np.ndarray]:
         """Advance all species profiles by one Crank-Nicolson time step."""
-        reactions = problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+        reactions = (
+            problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+        )
         new_c: dict[str, np.ndarray] = {}
         N = problem.n_points
         t_next = t + dt
@@ -137,8 +144,8 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
 
             # Interior rows
             ab[1, 1:-1] = 1.0 + 2.0 * r
-            ab[0, 2:] = -r       # A[i, i+1]
-            ab[2, :-2] = -r      # A[i, i-1]
+            ab[0, 2:] = -r  # A[i, i+1]
+            ab[2, :-2] = -r  # A[i, i-1]
             rhs[1:-1] = r * c[:-2] + (1.0 - 2.0 * r) * c[1:-1] + r * c[2:]
             if reactions and sp in reactions:
                 rhs[1:-1] += dt * reactions[sp][1:-1]
@@ -186,4 +193,3 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
 
 # Also register the alias 'crank-nicolson'
 BaseSolver._registry["crank-nicolson"] = CrankNicolson
-

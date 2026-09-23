@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+
 import numpy as np
 
 from .base import BaseSolver, DiffusionProblem, SolverResult
@@ -71,13 +72,19 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         **kwargs: Any,
     ) -> SolverResult:
         if not problem.is_uniform:
-            raise NotImplementedError("ExplicitFiniteDifference requires a uniform spatial grid.")
+            raise NotImplementedError(
+                "ExplicitFiniteDifference requires a uniform spatial grid."
+            )
 
         dx = problem.dx
         max_D = max(problem.diffusivity.values())
         cfl_limit = (dx**2) / (2.0 * max_D)
 
-        user_dt = kwargs.get("dt") if kwargs.get("dt") is not None else self.options.get("dt", None)
+        user_dt = (
+            kwargs.get("dt")
+            if kwargs.get("dt") is not None
+            else self.options.get("dt", None)
+        )
         if user_dt is not None:
             dt_req = float(user_dt)
             if dt_req > cfl_limit:
@@ -104,7 +111,8 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         # Solution records: shape (n_times, n_x) per species
         n_times = len(t_eval)
         records = {
-            sp: np.zeros((n_times, problem.n_points), dtype=float) for sp in problem.species
+            sp: np.zeros((n_times, problem.n_points), dtype=float)
+            for sp in problem.species
         }
         for sp in problem.species:
             records[sp][0, :] = curr_c[sp]
@@ -142,7 +150,9 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         dx: float,
     ) -> dict[str, np.ndarray]:
         """Advance all species concentration profiles by one time step dt."""
-        reactions = problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+        reactions = (
+            problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+        )
         new_c: dict[str, np.ndarray] = {}
         t_next = t + dt
 
@@ -186,4 +196,3 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
 
 # Also register the alias 'ftcs'
 BaseSolver._registry["ftcs"] = ExplicitFiniteDifference
-
