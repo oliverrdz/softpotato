@@ -61,7 +61,10 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
     - Input validation for non-monotonic grids and inverted time spans (`test_input_validation`).
   - Added baseline import and version smoke test `tests/test_basic.py`.
 - **Documentation & Sphinx Framework (`docs/`)**:
-  - Configured Sphinx documentation with Read the Docs theme (`sphinx_rtd_theme`), `autodoc`, `napoleon`, `viewcode`, `mathjax`, and `nbsphinx`.
+  - Configured Sphinx documentation with Read the Docs theme (`sphinx_rtd_theme`), `autodoc`, `napoleon`, `viewcode`, `mathjax`, `nbsphinx`, and `myst_parser`.
+  - Added native Markdown support via `myst_parser` with `dollarmath` extension for MathJax rendering of inline and display LaTeX math equations.
+  - Symlinked root `CHANGELOG.md` to `docs/changelog.md` and added `Development & Releases` toctree section in `docs/index.rst` to publish the changelog directly on Read the Docs.
+  - Added a dedicated "Solvers and Supported Options" quick-reference table in `docs/api.rst` summarizing all solvers, registered aliases, configuration parameters, and default values.
   - Added main landing page (`docs/index.rst`), installation guide (`docs/installation.rst`), and API reference (`docs/api.rst`).
   - Configured Read the Docs build specification (`.readthedocs.yaml`) targeting Ubuntu 24.04 and Python 3.11.
   - Added local documentation build automation scripts (`docs/Makefile`, `docs/make.bat`).
@@ -72,7 +75,7 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
     - Demonstrations of numerical stability breakdown when exceeding the explicit CFL limit.
     - Step-size convergence scaling analysis and solver execution time profiling.
 - **Project Infrastructure & Tooling**:
-  - Configured standard `pyproject.toml` with PEP 621 package metadata, runtime dependencies (`numpy`, `scipy`, `matplotlib`), test dependencies (`pytest`), docs dependencies (`sphinx`, `sphinx-rtd-theme`, `sphinx-autodoc-typehints`, `nbsphinx`, `ipykernel`), and dev configurations for `ruff`, `black`, and `mypy`.
+  - Configured standard `pyproject.toml` with PEP 621 package metadata, runtime dependencies (`numpy`, `scipy`, `matplotlib`), test dependencies (`pytest`), docs dependencies (`sphinx`, `sphinx-rtd-theme`, `sphinx-autodoc-typehints`, `nbsphinx`, `ipykernel`, `myst-parser`), and dev configurations for `ruff`, `black`, and `mypy`.
   - Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) matrix-testing across Python 3.10, 3.11, 3.12, and 3.13 on Ubuntu.
   - Configured root `.gitignore` covering Python cache files, virtual environments, build artifacts, and Jupyter checkpoint files.
   - Added open-source BSD 3-Clause license (`LICENSE`).
@@ -86,8 +89,12 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
   - Added overview table of built-in numerical solvers (Method of Lines, Crank-Nicolson, Implicit, Explicit).
   - Added walkthrough on implementing and registering custom solvers with `BaseSolver`.
   - Linked interactive tutorial notebooks and Read the Docs documentation.
-- Updated `docs/conf.py` and `docs/index.rst` to integrate `nbsphinx` and include notebook examples directly in documentation builds.
-- Updated `pyproject.toml` to include `nbsphinx>=0.9.0` and `ipykernel>=6.0.0` in `docs` and `dev` optional dependency sets.
+- Enhanced solver option discovery and type inspection across the entire `softpotato.solver` subpackage:
+  - Added explicit typed `__init__` constructor methods for `ExplicitFiniteDifference`, `ImplicitFiniteDifference`, `CrankNicolson`, and `ScipyIVPSolver` forwarding `**options` to `BaseSolver`.
+  - Added NumPy-formatted `Parameters` docstrings across all solvers, `BaseSolver.__init__`, `BaseSolver.solve`, and `get_solver`.
+  - Updated runtime option resolution in solver engines so `kwargs` passed to `solve()` dynamically override instance options.
+- Updated `docs/conf.py` and `docs/index.rst` to integrate `nbsphinx` and `myst_parser`, configuring `source_suffix` for both `.rst` and `.md`.
+- Updated `pyproject.toml` to include `nbsphinx>=0.9.0`, `ipykernel>=6.0.0`, and `myst-parser>=2.0.0` in `docs` and `dev` optional dependency sets.
 
 ### Removed
 - Removed legacy pre-3.0 codebase (monolithic `softpotato.core`, `softpotato.analytical`, `softpotato.geometry`, `softpotato.simulate`, `softpotato.techniques`, and `softpotato.kinetics`) to establish a modular, maintainable, and rigorously tested foundation.
