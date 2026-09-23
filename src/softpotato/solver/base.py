@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable, ClassVar, Literal
+from typing import Any, ClassVar, Literal, cast
+
 import numpy as np
 
 
@@ -150,8 +152,13 @@ class DiffusionProblem:
     grid: np.ndarray
     diffusivity: dict[str, float]
     boundary_conditions: dict[str, tuple[BoundaryCondition, BoundaryCondition]]
-    initial_conditions: dict[str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]]
-    reactions: Callable[[dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]] | None = None
+    initial_conditions: dict[
+        str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]
+    ]
+    reactions: (
+        Callable[[dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]]
+        | None
+    ) = None
     species: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
@@ -199,7 +206,7 @@ class DiffusionProblem:
         if callable(ic):
             arr = np.asarray(ic(self.grid), dtype=float)
         elif np.isscalar(ic):
-            arr = np.full_like(self.grid, float(ic), dtype=float)
+            arr = np.full_like(self.grid, float(cast(Any, ic)), dtype=float)
         else:
             arr = np.asarray(ic, dtype=float)
 
@@ -365,9 +372,13 @@ class BaseSolver(ABC):
     ) -> None:
         """Sanity and physical validity checks before integration."""
         if not isinstance(problem, DiffusionProblem):
-            raise TypeError(f"problem must be an instance of DiffusionProblem, got {type(problem)}")
+            raise TypeError(
+                f"problem must be an instance of DiffusionProblem, got {type(problem)}"
+            )
         if t_span[0] >= t_span[1]:
-            raise ValueError(f"t_span[1] must be strictly greater than t_span[0], got {t_span}")
+            raise ValueError(
+                f"t_span[1] must be strictly greater than t_span[0], got {t_span}"
+            )
         if t_eval is not None:
             t_eval = np.asarray(t_eval, dtype=float)
             if t_eval.ndim != 1:
@@ -375,11 +386,17 @@ class BaseSolver(ABC):
             if len(t_eval) < 2:
                 raise ValueError("t_eval must have at least 2 points.")
             if t_eval[0] < t_span[0] or t_eval[-1] > t_span[1]:
-                raise ValueError(f"t_eval [{t_eval[0]}, {t_eval[-1]}] must lie within t_span {t_span}.")
+                raise ValueError(
+                    f"t_eval [{t_eval[0]}, {t_eval[-1]}] must lie within t_span {t_span}."
+                )
             if np.any(np.diff(t_eval) <= 0):
-                raise ValueError("t_eval points must be strictly monotonically increasing.")
+                raise ValueError(
+                    "t_eval points must be strictly monotonically increasing."
+                )
 
-    def _post_process(self, problem: DiffusionProblem, result: SolverResult) -> SolverResult:
+    def _post_process(
+        self, problem: DiffusionProblem, result: SolverResult
+    ) -> SolverResult:
         """Compute surface fluxes and perform post-run integrity checks."""
         # Calculate surface flux J = -D * dc/dx at left boundary x=0 using 2nd order difference
         if problem.is_uniform:

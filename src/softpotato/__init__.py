@@ -41,14 +41,14 @@ from .solver import (
 __version__ = "3.0.0a1"
 
 __all__ = [
-    "__version__",
-    "solver",
     "BaseSolver",
     "BoundaryCondition",
     "DiffusionProblem",
     "DirichletBC",
     "NeumannBC",
     "SolverResult",
+    "__version__",
     "get_solver",
     "list_solvers",
+    "solver",
 ]

@@ -6,7 +6,6 @@ from scipy.integrate import trapezoid
 
 from softpotato.solver import (
     BaseSolver,
-    BoundaryCondition,
     CrankNicolson,
     DiffusionProblem,
     DirichletBC,
@@ -84,7 +83,9 @@ def test_user_defined_solver_decorator():
             return SolverResult(
                 t=t,
                 x=problem.grid,
-                concentrations={sp: np.zeros((len(t), problem.n_points)) for sp in problem.species},
+                concentrations={
+                    sp: np.zeros((len(t), problem.n_points)) for sp in problem.species
+                },
             )
 
     assert "mock_decorated_solver" in list_solvers()
@@ -128,7 +129,9 @@ def test_analytical_dirichlet_benchmark(solver_name):
 
     # Maximum absolute error across all space and time points
     max_error = np.max(np.abs(c_num - c_exact))
-    assert max_error < 5e-3, f"{solver_name} exceeded tolerance: max error = {max_error:.4e}"
+    assert max_error < 5e-3, (
+        f"{solver_name} exceeded tolerance: max error = {max_error:.4e}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -160,7 +163,9 @@ def test_neumann_mass_conservation(solver_name):
     for k in range(len(t_eval)):
         current_mass = trapezoid(c[k, :], x)
         rel_diff = abs(current_mass - initial_mass) / initial_mass
-        assert rel_diff < 1e-3, f"{solver_name} failed mass conservation at step {k}: {rel_diff:.4e}"
+        assert rel_diff < 1e-3, (
+            f"{solver_name} failed mass conservation at step {k}: {rel_diff:.4e}"
+        )
 
 
 def test_explicit_cfl_validation():
@@ -251,4 +256,3 @@ def test_input_validation():
     solver = get_solver("scipy_ivp")
     with pytest.raises(ValueError, match="strictly greater"):
         solver.solve(prob, t_span=(1.0, 0.0))
-
