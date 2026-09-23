@@ -9,7 +9,8 @@ mkdir -p "${TARGET_DIR}"
 cd "${TARGET_DIR}"
 
 # 1. Create directory structure (standard src-layout)
-mkdir -p src/softpotato tests .github/workflows
+mkdir -p src/softpotato tests .github/workflows docs/_static docs/_templates
+touch docs/_static/.gitkeep docs/_templates/.gitkeep
 
 # 2. pyproject.toml (PEP 517 / PEP 621 compliant, installable via pip / PyPI)
 cat << 'EOF' > pyproject.toml
@@ -51,11 +52,19 @@ dependencies = [
 test = [
     "pytest>=7.0.0",
 ]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints>=1.24.0",
+]
 dev = [
     "pytest>=7.0.0",
     "ruff>=0.1.0",
     "build>=1.0.0",
     "twine>=4.0.0",
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints>=1.24.0",
 ]
 
 [project.urls]
@@ -99,11 +108,15 @@ cat << 'EOF' > README.md
 # Soft Potato
 
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
+[![Documentation Status](https://readthedocs.org/projects/soft-potato/badge/?version=latest)](https://soft-potato.readthedocs.io/en/latest)
 [![PyPI version](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
+
+> [!WARNING]
+> **Active Rewrite in Progress:** Soft Potato is currently undergoing a complete rewrite (`v3.0.0a1`) and is **incomplete**. The API is experimental, under rapid development, and subject to breaking changes. It is not yet ready for production use.
 
 ## Installation
 
@@ -248,6 +261,216 @@ jobs:
       - name: Run test suite
         run: |
           pytest -v
+EOF
+
+# 9. Sphinx Documentation
+cat << 'EOF' > docs/conf.py
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../src"))
+import softpotato
+
+project = "softpotato"
+copyright = "2026, Oliver Rodriguez"
+author = "Oliver Rodriguez"
+version = softpotato.__version__
+release = softpotato.__version__
+
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.todo",
+    "sphinx.ext.mathjax",
+    "sphinx_autodoc_typehints",
+]
+
+todo_include_todos = True
+autosummary_generate = True
+napoleon_google_docstring = True
+napoleon_numpy_docstring = True
+napoleon_include_init_with_doc = True
+
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
+html_theme_options = {
+    "navigation_depth": 4,
+    "collapse_navigation": False,
+}
+EOF
+
+cat << 'EOF' > docs/index.rst
+.. Soft Potato documentation master file
+
+Welcome to Soft Potato's Documentation!
+=======================================
+
+**Soft Potato** is an open-source electrochemical simulation and analysis toolkit designed for electrochemists, materials scientists, and engineers.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   installation
+   api
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+EOF
+
+cat << 'EOF' > docs/installation.rst
+Installation
+============
+
+From PyPI
+---------
+
+Install the latest release of ``softpotato`` from PyPI:
+
+.. code-block:: bash
+
+   pip install softpotato
+
+For pre-releases (such as alpha/beta versions):
+
+.. code-block:: bash
+
+   pip install --pre softpotato
+
+From Source (Development)
+-------------------------
+
+Clone the repository and install in editable mode with development and documentation dependencies:
+
+.. code-block:: bash
+
+   git clone https://github.com/oliverrdz/softpotato.git
+   cd softpotato
+   pip install -e ".[dev,docs]"
+EOF
+
+cat << 'EOF' > docs/api.rst
+API Reference
+=============
+
+.. automodule:: softpotato
+   :members:
+   :undoc-members:
+   :show-inheritance:
+EOF
+
+cat << 'EOF' > docs/Makefile
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
+SOURCEDIR     = .
+BUILDDIR      = _build
+
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+.PHONY: help Makefile
+
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+EOF
+
+cat << 'EOF' > docs/make.bat
+@ECHO OFF
+pushd %~dp0
+if "%SPHINXBUILD%" == "" (
+	set SPHINXBUILD=sphinx-build
+)
+set SOURCEDIR=.
+set BUILDDIR=_build
+%SPHINXBUILD% >NUL 2>NUL
+if errorlevel 9009 (
+	echo.The 'sphinx-build' command was not found. Make sure you have Sphinx installed.
+	exit /b 1
+)
+%SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+goto end
+:end
+popd
+EOF
+
+# 10. Read the Docs configuration (.readthedocs.yaml)
+cat << 'EOF' > .readthedocs.yaml
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.11"
+
+sphinx:
+  configuration: docs/conf.py
+
+python:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - docs
+EOF
+
+# 11. GitHub Actions Documentation Workflow
+cat << 'EOF' > .github/workflows/docs.yml
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-upload:
+    name: Build & Upload Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[docs]"
+
+      - name: Build documentation with Sphinx
+        run: |
+          sphinx-build -b html -W --keep-going docs docs/_build/html
+
+      - name: Upload HTML documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-html
+          path: docs/_build/html
+
+      - name: Upload to Read the Docs
+        if: github.event_name == 'push' && env.READTHEDOCS_TOKEN != ''
+        uses: readthedocs/upload-action@v1
+        env:
+          READTHEDOCS_TOKEN: ${{ secrets.READTHEDOCS_TOKEN }}
+        with:
+          token: ${{ secrets.READTHEDOCS_TOKEN }}
+          project-slug: "soft-potato"
+          html-dir: "docs/_build/html"
 EOF
 
 echo "✓ softpotato repository structure generated successfully in '${TARGET_DIR}'."
