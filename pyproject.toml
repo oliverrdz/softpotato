@@ -4,50 +4,53 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "softpotato"
-version = "3.0.0rc1"
-description = "Next-generation open-source electrochemical simulator and toolkit."
+version = "3.0.0a1"
+description = "Electrochemical simulation and analysis toolkit in Python."
 readme = "README.md"
 license = { text = "BSD-3-Clause" }
 requires-python = ">=3.10"
 authors = [
-    { name = "Oliver Rodriguez" }
+    { name = "Oliver Rodriguez", email = "oliver.rdz@gmail.com" }
 ]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
     "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
+keywords = ["electrochemistry", "voltammetry", "simulation"]
 dependencies = [
     "numpy>=1.22.0",
     "scipy>=1.8.0",
-    "matplotlib>=3.5.0"
+    "matplotlib>=3.5.0",
 ]
 
 [project.optional-dependencies]
 test = [
     "pytest>=7.0.0",
 ]
-docs = [
-    "sphinx>=7.0.0",
-    "sphinx-rtd-theme>=2.0.0",
-    "sphinx-autodoc-typehints>=1.24.0",
-    "nbsphinx>=0.9.0",
-    "nbsphinx-link>=1.3.0",
-    "ipython",
-    "ipykernel",
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+    "build>=1.0.0",
+    "twine>=4.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/oliverrdz/softpotato"
+Repository = "https://github.com/oliverrdz/softpotato.git"
+"Bug Tracker" = "https://github.com/oliverrdz/softpotato/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.black]
-line-length = 88
-target-version = ["py310"]
-
-
-[tool.ruff]
-line-length = 88
-target-version = "py310"
-
-[tool.mypy]
-ignore_missing_imports = true
-
-
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
