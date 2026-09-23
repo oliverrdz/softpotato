@@ -21,6 +21,24 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
     Integrates the resulting stiff or non-stiff system using SciPy's ODE suite.
     Defaults to the stiff L-stable ``'Radau'`` integrator, suitable for diffusion-reaction systems.
 
+    Parameters
+    ----------
+    method : {'Radau', 'BDF', 'RK45', 'RK23', 'DOP853', 'LSODA'}, default 'Radau'
+        ODE integration algorithm passed to ``scipy.integrate.solve_ivp``.
+        Recommended options:
+
+        - ``'Radau'`` (default): 5th-order implicit Runge-Kutta; highly recommended for stiff
+          diffusion and fast reaction-diffusion equations.
+        - ``'BDF'``: Variable-order multi-step Backward Differentiation Formula; well-suited
+          for large stiff systems.
+        - ``'RK45'``: Explicit Runge-Kutta order 4(5); suitable for non-stiff pure diffusion.
+    rtol : float, default 1e-6
+        Relative error tolerance for adaptive time stepping.
+    atol : float, default 1e-8
+        Absolute error tolerance for adaptive time stepping.
+    **options : Any
+        Additional solver options passed to ``scipy.integrate.solve_ivp``.
+
     Examples
     --------
     Simulating reaction-diffusion with first-order decay:
@@ -43,6 +61,16 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
     >>> result["A"].shape[1]
     31
     """
+
+    def __init__(
+        self,
+        method: str = "Radau",
+        rtol: float = 1e-6,
+        atol: float = 1e-8,
+        **options: Any,
+    ) -> None:
+        """Initialize SciPy Method of Lines IVP solver."""
+        super().__init__(method=method, rtol=rtol, atol=atol, **options)
 
     def _run_solver(
         self,
@@ -162,9 +190,9 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
             return dy
 
         # Solver options
-        method = self.options.get("method", kwargs.get("method", "Radau"))
-        rtol = self.options.get("rtol", kwargs.get("rtol", 1e-6))
-        atol = self.options.get("atol", kwargs.get("atol", 1e-8))
+        method = kwargs.get("method") if kwargs.get("method") is not None else self.options.get("method", "Radau")
+        rtol = kwargs.get("rtol") if kwargs.get("rtol") is not None else self.options.get("rtol", 1e-6)
+        atol = kwargs.get("atol") if kwargs.get("atol") is not None else self.options.get("atol", 1e-8)
 
         if t_eval is None:
             # Default to 101 points across t_span
