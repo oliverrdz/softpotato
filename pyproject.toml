@@ -36,11 +36,19 @@ dependencies = [
 test = [
     "pytest>=7.0.0",
 ]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints>=1.24.0",
+]
 dev = [
     "pytest>=7.0.0",
     "ruff>=0.1.0",
     "build>=1.0.0",
     "twine>=4.0.0",
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints>=1.24.0",
 ]
 
 [project.urls]
