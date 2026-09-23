@@ -1,5 +1,7 @@
 """Tests for diffusion solvers and extensible BaseSolver architecture."""
 
+from typing import ClassVar
+
 import numpy as np
 import pytest
 from scipy.integrate import trapezoid
@@ -71,6 +73,41 @@ def test_user_defined_solver_subclass():
     assert result.success
     assert "A" in result.concentrations
     assert result["A"].shape == (2, 11)
+
+
+def test_user_defined_solver_subclass_with_solver_name():
+    """Verify solver registration using solver_name keyword argument."""
+
+    class MockSolverName(BaseSolver, solver_name="mock_solver_name"):
+        def _run_solver(self, problem, t_span, t_eval, **kwargs):
+            t = np.array([t_span[0], t_span[1]]) if t_eval is None else t_eval
+            return SolverResult(t=t, x=problem.grid, concentrations={})
+
+    assert "mock_solver_name" in list_solvers()
+    assert isinstance(get_solver("mock_solver_name"), MockSolverName)
+
+
+def test_python_310_abcmeta_name_collision_simulation():
+    """Simulate Python 3.10 ABCMeta.__new__ parameter collision with 'name'."""
+    from softpotato.solver.base import _BaseSolverMeta
+
+    # In Python <= 3.10, ABCMeta.__new__(mcls, name, bases, namespace, **kwargs)
+    # had 'name' as positional-or-keyword, not positional-only.
+    class SimulatedPy310ABCMeta(type):
+        def __new__(mcls, name, bases, namespace, **kwargs):
+            return super().__new__(mcls, name, bases, namespace, **kwargs)
+
+    class SimulatedSolverMeta(_BaseSolverMeta, SimulatedPy310ABCMeta):
+        pass
+
+    class SimulatedBaseSolver(metaclass=SimulatedSolverMeta):
+        _registry: ClassVar[dict[str, type]] = {}
+
+    # This raises TypeError in Python <= 3.10 if 'name' is not popped by _BaseSolverMeta.__new__.
+    class SubSolver(SimulatedBaseSolver, name="simulated_sub_solver"):
+        pass
+
+    assert "simulated_sub_solver" in SimulatedBaseSolver._registry
 
 
 def test_user_defined_solver_decorator():
