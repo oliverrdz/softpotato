@@ -93,10 +93,26 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
   - Added explicit typed `__init__` constructor methods for `ExplicitFiniteDifference`, `ImplicitFiniteDifference`, `CrankNicolson`, and `ScipyIVPSolver` forwarding `**options` to `BaseSolver`.
   - Added NumPy-formatted `Parameters` docstrings across all solvers, `BaseSolver.__init__`, `BaseSolver.solve`, and `get_solver`.
   - Updated runtime option resolution in solver engines so `kwargs` passed to `solve()` dynamically override instance options.
+- Overhauled GitHub Actions CI workflow (`.github/workflows/ci.yml`) into a parallel multi-job pipeline:
+  - Dedicated `lint-and-format` job running `ruff check .` and `ruff format --check .`.
+  - Dedicated `type-check` job executing static type analysis with `mypy src`.
+  - Expanded `test` matrix across Python 3.10, 3.11, 3.12, and 3.13 running unit tests, embedded docstring doctests (`pytest --doctest-modules src tests/`), statement test coverage (`--cov=softpotato`), and full Jupyter notebook execution (`pytest --nbmake examples/`).
+  - Added `package-check` job validating sdist and wheel build generation (`python -m build`) and PyPI metadata/README rendering (`twine check dist/*`).
+- Codebase formatting and type annotations:
+  - Applied `ruff format` across all Python source modules, tests, markdown code snippets, and Jupyter notebook cells.
+  - Alphabetized `__all__` exports across `softpotato` and `softpotato.solver`.
+  - Migrated `Callable` typing import in `softpotato.solver.base` to `collections.abc.Callable` (PEP 585 / UP035).
+  - Added typed scalar casting with `cast(Any, ic)` in `DiffusionProblem.get_initial_profile` for strict `mypy` compliance.
+  - Removed unused imports in `tests/test_solvers.py` (`BoundaryCondition`) and `examples/1d_diffusion_comparison.ipynb` (`NeumannBC`).
+- Fixed undefined analytical reference `c_exact_bench` in benchmark timing cell of `examples/1d_diffusion_comparison.ipynb`.
 - Updated `docs/conf.py` and `docs/index.rst` to integrate `nbsphinx` and `myst_parser`, configuring `source_suffix` for both `.rst` and `.md`.
-- Updated `pyproject.toml` to include `nbsphinx>=0.9.0`, `ipykernel>=6.0.0`, and `myst-parser>=2.0.0` in `docs` and `dev` optional dependency sets.
+- Updated `pyproject.toml` with `[tool.mypy]` configuration and added `pytest-cov>=4.1.0`, `nbmake>=1.5.0`, and `mypy>=1.5.0` to optional dependencies.
+
+### Fixed
+- Fixed Python 3.10 class creation failure (`TypeError: ABCMeta.__new__() got multiple values for argument 'name'`) across all solvers by introducing `_BaseSolverMeta` on `BaseSolver` to safely extract `name` and `solver_name` class keyword arguments prior to delegating to `ABCMeta.__new__`.
 
 ### Removed
+- Removed `.github/workflows/docs.yml` (obsolete standalone workflow referencing non-existent `readthedocs/upload-action@v1`; documentation builds and deployments are managed natively via Read the Docs GitHub webhook integration configured in `.readthedocs.yaml`).
 - Removed legacy pre-3.0 codebase (monolithic `softpotato.core`, `softpotato.analytical`, `softpotato.geometry`, `softpotato.simulate`, `softpotato.techniques`, and `softpotato.kinetics`) to establish a modular, maintainable, and rigorously tested foundation.
 
 ## [3.0.0rc1] - 2026-09-20 [Yanked / Pre-Rewrite]
