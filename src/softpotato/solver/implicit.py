@@ -21,6 +21,15 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
     Unconditionally stable for arbitrary time steps :math:`\Delta t`. Solves the resulting
     tridiagonal system using ``scipy.linalg.solve_banded`` in :math:`\mathcal{O}(N)` time per step.
 
+    Parameters
+    ----------
+    dt : float, optional
+        Fixed time step size :math:`\Delta t`.
+        If None (default), automatically selects 100 uniform steps over the integration
+        interval: :math:`\Delta t = (t_{\text{end}} - t_{\text{start}}) / 100`.
+    **options : Any
+        Additional solver options stored in ``self.options``.
+
     Examples
     --------
     >>> import numpy as np
@@ -42,6 +51,10 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
     31
     """
 
+    def __init__(self, dt: float | None = None, **options: Any) -> None:
+        """Initialize Implicit Finite Difference (BTCS) solver."""
+        super().__init__(dt=dt, **options)
+
     def _run_solver(
         self,
         problem: DiffusionProblem,
@@ -55,7 +68,7 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         dx = problem.dx
         t_start, t_end = t_span
 
-        user_dt = self.options.get("dt", kwargs.get("dt", None))
+        user_dt = kwargs.get("dt") if kwargs.get("dt") is not None else self.options.get("dt", None)
         if user_dt is not None:
             base_dt = float(user_dt)
         else:

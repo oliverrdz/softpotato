@@ -23,6 +23,21 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
 
         \Delta t \le \frac{\Delta x^2}{2 \max_i(D_i)}
 
+    Parameters
+    ----------
+    dt : float, optional
+        Fixed time step size :math:`\Delta t`. Must satisfy the Courant-Friedrichs-Lewy (CFL)
+        stability condition:
+
+        .. math::
+
+            \Delta t \le \frac{\Delta x^2}{2 \max_i(D_i)}
+
+        If None (default), automatically selects a conservative stable step size
+        equal to :math:`0.45 \times \text{CFL limit}`.
+    **options : Any
+        Additional solver options stored in ``self.options``.
+
     Examples
     --------
     >>> import numpy as np
@@ -44,6 +59,10 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
     21
     """
 
+    def __init__(self, dt: float | None = None, **options: Any) -> None:
+        """Initialize Explicit Finite Difference (FTCS) solver."""
+        super().__init__(dt=dt, **options)
+
     def _run_solver(
         self,
         problem: DiffusionProblem,
@@ -58,7 +77,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         max_D = max(problem.diffusivity.values())
         cfl_limit = (dx**2) / (2.0 * max_D)
 
-        user_dt = self.options.get("dt", kwargs.get("dt", None))
+        user_dt = kwargs.get("dt") if kwargs.get("dt") is not None else self.options.get("dt", None)
         if user_dt is not None:
             dt_req = float(user_dt)
             if dt_req > cfl_limit:

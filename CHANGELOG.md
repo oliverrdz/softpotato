@@ -45,6 +45,7 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
     - **Explicit Finite Difference (`ExplicitFiniteDifference`, aliases: `"explicit"`, `"ftcs"`)**:
       - Forward-Time Central-Space (FTCS) explicit scheme ($\mathcal{O}(\Delta t, \Delta x^2)$).
       - Strict Courant-Friedrichs-Lewy (CFL) stability enforcement ($\Delta t \le \frac{\Delta x^2}{2 D_{\max}}$) with configurable auto-substepping (`auto_substep=True`) or explicit error raising.
+    - Explicit `__init__` signatures, typed parameters, and NumPy docstrings across all solver classes (`dt` for FTCS/BTCS/Crank-Nicolson; `method`, `rtol`, `atol` for SciPy IVP) ensuring full option visibility in Sphinx autodoc and IDE autocompletion.
 - **Top-Level Package API (`softpotato`)**:
   - Re-exported core solver classes (`BaseSolver`, `BoundaryCondition`, `DiffusionProblem`, `DirichletBC`, `NeumannBC`, `SolverResult`, `get_solver`, `list_solvers`) in `softpotato/__init__.py`.
   - Exposed module version `__version__ = "3.0.0a1"`.
