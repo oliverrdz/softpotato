@@ -21,6 +21,15 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
 
     Employs ``scipy.linalg.solve_banded`` to invert the tridiagonal system in :math:`\mathcal{O}(N)` time at each step.
 
+    Parameters
+    ----------
+    dt : float, optional
+        Fixed time step size :math:`\Delta t`.
+        If None (default), automatically selects 100 uniform steps over the integration
+        interval: :math:`\Delta t = (t_{\text{end}} - t_{\text{start}}) / 100`.
+    **options : Any
+        Additional solver options stored in ``self.options``.
+
     Examples
     --------
     >>> import numpy as np
@@ -42,6 +51,10 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
     41
     """
 
+    def __init__(self, dt: float | None = None, **options: Any) -> None:
+        """Initialize Crank-Nicolson solver."""
+        super().__init__(dt=dt, **options)
+
     def _run_solver(
         self,
         problem: DiffusionProblem,
@@ -55,7 +68,7 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
         dx = problem.dx
         t_start, t_end = t_span
 
-        user_dt = self.options.get("dt", kwargs.get("dt", None))
+        user_dt = kwargs.get("dt") if kwargs.get("dt") is not None else self.options.get("dt", None)
         if user_dt is not None:
             base_dt = float(user_dt)
         else:
