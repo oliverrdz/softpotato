@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any, ClassVar, Literal, cast
@@ -277,7 +277,34 @@ class SolverResult:
         return list(self.concentrations.keys())
 
 
-class BaseSolver(ABC):
+class _BaseSolverMeta(ABCMeta):
+    """Metaclass for BaseSolver ensuring compatibility across Python versions.
+
+    In Python <= 3.10, ABCMeta.__new__ has `name` as a positional-or-keyword
+    parameter rather than positional-only (/), so passing `name="..."` during
+    class definition results in `TypeError: ABCMeta.__new__() got multiple values
+    for argument 'name'`. We intercept and pop `name` (and optional `solver_name`)
+    before delegating to ABCMeta.__new__.
+    """
+
+    def __new__(
+        mcls,
+        name: str,
+        bases: tuple[type, ...],
+        namespace: dict[str, Any],
+        /,
+        **kwargs: Any,
+    ) -> type:
+        solver_name = kwargs.pop("name", None)
+        if solver_name is None:
+            solver_name = kwargs.pop("solver_name", None)
+        cls = super().__new__(mcls, name, bases, namespace, **kwargs)
+        if solver_name is not None and hasattr(cls, "_registry"):
+            cls._registry[solver_name.lower()] = cls
+        return cls
+
+
+class BaseSolver(ABC, metaclass=_BaseSolverMeta):
     """Abstract Base Class for all diffusion solvers.
 
     Supports automatic registration of subclasses using `name="..."`:
@@ -304,10 +331,16 @@ class BaseSolver(ABC):
 
     _registry: ClassVar[dict[str, type[BaseSolver]]] = {}
 
-    def __init_subclass__(cls, name: str | None = None, **kwargs: Any) -> None:
+    def __init_subclass__(
+        cls,
+        name: str | None = None,
+        solver_name: str | None = None,
+        **kwargs: Any,
+    ) -> None:
         super().__init_subclass__(**kwargs)
-        if name:
-            cls._registry[name.lower()] = cls
+        resolved_name = name or solver_name
+        if resolved_name:
+            cls._registry[resolved_name.lower()] = cls
 
     def __init__(self, **options: Any) -> None:
         """Initialize solver with optional solver-specific configuration.
