@@ -31,7 +31,23 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.mathjax",
     "sphinx_autodoc_typehints",
+    "nbsphinx",
+    "myst_parser",
 ]
+
+# MyST Markdown parser configuration
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
+myst_enable_extensions = [
+    "dollarmath",
+]
+
+# nbsphinx configuration
+# Do not re-execute notebooks during doc build; render saved outputs/plots
+nbsphinx_execute = "never"
+nbsphinx_allow_errors = True
 
 # Todo settings
 todo_include_todos = True
