@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+
 import numpy as np
 from scipy.integrate import solve_ivp
 
@@ -140,7 +141,9 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                 c_dict[sp] = c_full
 
             # 2. Evaluate chemical reaction rates if specified
-            reactions = problem.reactions(c_dict, grid, t) if problem.reactions else None
+            reactions = (
+                problem.reactions(c_dict, grid, t) if problem.reactions else None
+            )
 
             # 3. Compute spatial derivatives and fill dy
             dy = np.empty(total_unknowns, dtype=float)
@@ -153,23 +156,30 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                 d2c = np.empty(N, dtype=float)
                 if is_uniform:
                     # Interior points
-                    d2c[1:-1] = (c_full[2:] - 2.0 * c_full[1:-1] + c_full[:-2]) * inv_dx2
+                    d2c[1:-1] = (
+                        c_full[2:] - 2.0 * c_full[1:-1] + c_full[:-2]
+                    ) * inv_dx2
 
                     # Boundary points if Neumann
                     if not info["left_dirichlet"]:
                         g_left = bc_left.evaluate(t)
-                        d2c[0] = (2.0 * c_full[1] - 2.0 * c_full[0] - 2.0 * dx * g_left) * inv_dx2
+                        d2c[0] = (
+                            2.0 * c_full[1] - 2.0 * c_full[0] - 2.0 * dx * g_left
+                        ) * inv_dx2
 
                     if not info["right_dirichlet"]:
                         g_right = bc_right.evaluate(t)
-                        d2c[-1] = (2.0 * c_full[-2] - 2.0 * c_full[-1] + 2.0 * dx * g_right) * inv_dx2
+                        d2c[-1] = (
+                            2.0 * c_full[-2] - 2.0 * c_full[-1] + 2.0 * dx * g_right
+                        ) * inv_dx2
                 else:
                     # General 3-point stencil for non-uniform grid
                     # d²c/dx² ~ 2 / (h_{i-1} + h_i) * [ (c_{i+1}-c_i)/h_i - (c_i-c_{i-1})/h_{i-1} ]
                     hi_m1 = h[:-1]
                     hi = h[1:]
                     d2c[1:-1] = (2.0 / (hi_m1 + hi)) * (
-                        (c_full[2:] - c_full[1:-1]) / hi - (c_full[1:-1] - c_full[:-2]) / hi_m1
+                        (c_full[2:] - c_full[1:-1]) / hi
+                        - (c_full[1:-1] - c_full[:-2]) / hi_m1
                     )
                     if not info["left_dirichlet"]:
                         g_left = bc_left.evaluate(t)
@@ -178,7 +188,9 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                     if not info["right_dirichlet"]:
                         g_right = bc_right.evaluate(t)
                         hm1 = h[-1]
-                        d2c[-1] = (2.0 / hm1) * (g_right - (c_full[-1] - c_full[-2]) / hm1)
+                        d2c[-1] = (2.0 / hm1) * (
+                            g_right - (c_full[-1] - c_full[-2]) / hm1
+                        )
 
                 sp_rate = reactions[sp] if reactions and sp in reactions else 0.0
                 sp_dcdt = D * d2c + sp_rate
@@ -190,9 +202,21 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
             return dy
 
         # Solver options
-        method = kwargs.get("method") if kwargs.get("method") is not None else self.options.get("method", "Radau")
-        rtol = kwargs.get("rtol") if kwargs.get("rtol") is not None else self.options.get("rtol", 1e-6)
-        atol = kwargs.get("atol") if kwargs.get("atol") is not None else self.options.get("atol", 1e-8)
+        method = (
+            kwargs.get("method")
+            if kwargs.get("method") is not None
+            else self.options.get("method", "Radau")
+        )
+        rtol = (
+            kwargs.get("rtol")
+            if kwargs.get("rtol") is not None
+            else self.options.get("rtol", 1e-6)
+        )
+        atol = (
+            kwargs.get("atol")
+            if kwargs.get("atol") is not None
+            else self.options.get("atol", 1e-8)
+        )
 
         if t_eval is None:
             # Default to 101 points across t_span
@@ -254,4 +278,3 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
 
 # Also register the alias 'solve_ivp'
 BaseSolver._registry["solve_ivp"] = ScipyIVPSolver
-
