@@ -32,8 +32,13 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx_autodoc_typehints",
     "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
     "myst_parser",
 ]
+
+# Syntax highlighting configuration
+pygments_style = "sphinx"
+highlight_language = "python3"
 
 # MyST Markdown parser configuration
 source_suffix = {
