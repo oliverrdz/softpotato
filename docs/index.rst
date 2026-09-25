@@ -17,6 +17,7 @@ Welcome to Soft Potato's Documentation!
    :caption: Tutorials & Examples
 
    examples/1d_diffusion_comparison
+   examples/cottrell_equation_tutorial
 
 .. toctree::
    :maxdepth: 1

@@ -5,6 +5,37 @@ All notable changes to the Soft Potato project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [PEP 440](https://peps.python.org/pep-0440/).
 
+## [Unreleased]
+
+### Added
+- **Chronoamperometry & Cottrell Equation Interactive Tutorial** (`examples/cottrell_equation_tutorial.ipynb` and `examples/cottrell.ipynb`):
+  - Added publication-quality educational tutorial designed to bridge electrochemical intuition and numerical PDE modeling.
+  - Formulated 1D linear semi-infinite diffusion for an anodic oxidation reaction ($\text{Red} \to \text{Ox} + n e^-$) producing a positive current ($I > 0$) adhering to standard IUPAC conventions.
+  - Detailed physical grounding of PDE boundary conditions: complete reactant consumption at the electrode surface ($c(0, t) = 0$), unperturbed bulk solution reservoir ($c(\infty, t) = c^*$), and domain truncation based on the diffusion penetration depth ($L \ge 6\sqrt{D t_{\text{max}}}$).
+  - Derived electrical current from the surface concentration gradient via Faraday's Law ($I(t) = n F A D \left.\frac{\partial c}{\partial x}\right|_{x=0} = -n F A \cdot \text{result.fluxes}['Red']$) using second-order finite difference stencils.
+  - Derived the time-dependent mass transfer coefficient $k_m(t) = \sqrt{D / (\pi t)} = D / \delta(t)$, relating Cottrell current decay to the continuously thickening Nernst diffusion layer $\delta(t)$ at an unstirred planar macroelectrode, in contrast to steady-state electrodes (RDE, ultramicroelectrodes).
+  - Multi-solver comparative benchmark simulating the identical chronoamperogram across `scipy_ivp` (Radau), `crank_nicolson`, `implicit` (BTCS), and `explicit` (FTCS).
+  - Investigated numerical issues in electrochemical modeling:
+    - CFL stability criterion for explicit finite differences ($\Delta t \le \frac{\Delta x^2}{2 D}$), demonstrating exponential blowup and automated safeguard exception handling.
+    - Early-time step discontinuity shocks at $t=0$ and the Rannacher effect (Crank-Nicolson oscillations) compared to monotonic L-stable damping (BTCS) and adaptive substepping (Radau).
+    - Quantitative error analysis against the exact analytical Cottrell equation and spatial grid convergence study demonstrating $\mathcal{O}(\Delta x^2)$ error reduction.
+    - Execution time profiling and RHS evaluation workload benchmarks across all engines.
+  - Added tutorial symlink `docs/examples/cottrell_equation_tutorial.ipynb` and integrated into the `Tutorials & Examples` toctree in `docs/index.rst`.
+- **Read the Docs Syntax Highlighting Support**:
+  - Added `ipython>=8.0.0` to `docs` and `dev` extra requirements in `pyproject.toml` to ensure the `ipython3` Pygments lexer is installed in isolated Read the Docs environments.
+  - Registered `IPython.sphinxext.ipython_console_highlighting` in `docs/conf.py`.
+  - Configured `pygments_style = "sphinx"` and `highlight_language = "python3"` in `docs/conf.py` for vivid, consistent syntax highlighting of Jupyter notebook code cells on Read the Docs.
+
+### Changed
+- **Streamlined README.md**:
+  - Replaced the verbose multi-species quick start with an ultra-minimal 1D diffusion example ($c(0)=0$, $c(L)=1.0$) using `scipy_ivp` and directly storing the concentration profile array in `c_profile = result["c"]`.
+  - Removed overloaded solver configuration and custom solver creation subsections to maintain an approachable, clean quickstart for new users.
+  - Replaced the bulleted tutorial list with a structured **Tutorials & Examples** table linking both interactive tutorials (`1d_diffusion_comparison.ipynb` and `cottrell_equation_tutorial.ipynb`) with concise descriptions.
+
+### Fixed
+- Fixed unhighlighted/monochrome code cells in Jupyter notebook examples on Read the Docs by providing the required `ipython` dependency and Pygments console lexer extension.
+- Fixed corrupted JSON formatting in `examples/cottrell.ipynb`.
+
 ## [3.0.0a1] - 2026-09-23
 
 ### Complete Architecture Reboot & 1D Numerical Diffusion Solvers
