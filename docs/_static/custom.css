@@ -1,0 +1,29 @@
+/*
+ * Custom stylesheet for softpotato documentation.
+ *
+ * Ensures Jupyter notebook code cell outputs wrap to fit the screen
+ * without showing horizontal scrollbars, matching JupyterLab/GitHub behavior.
+ */
+
+/* Target nbsphinx output areas and preformatted text */
+div.nboutput.container div.output_area pre,
+div.nboutput.container div.output_area div[class*="highlight"] > pre,
+.rst-content div.nboutput.container div.output_area pre,
+.rst-content div.nboutput.container div.output_area div[class*="highlight"] > pre,
+div.nboutput.container .output_subarea pre,
+.jp-OutputArea-output pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Ensure output area containers can shrink to adapt to screen size */
+div.nboutput.container div.output_area,
+div.nboutput.container .output_subarea {
+    min-width: 0;
+}
