@@ -19,6 +19,8 @@ Interactive Jupyter notebooks are available in the [`examples/`](examples/) dire
 | Tutorial | Description |
 | :--- | :--- |
 | [1D Chemical Diffusion & Solvers Comparison](examples/1d_diffusion_comparison.ipynb) | Compares `scipy_ivp`, `crank_nicolson`, `implicit`, and `explicit` solvers against exact analytical solutions, including runtime benchmarks and convergence order analysis. |
+| [Cottrell Chronoamperometry with `solve_ivp`](examples/cottrell_solve_ivp_tutorial.ipynb) | Simulates the Cottrell potential-step experiment using Soft Potato's adaptive `solve_ivp` solver and benchmarks against the Cottrell equation. |
+| [Cyclic Voltammetry with Nernst Kinetics](examples/cyclic_voltammetry_solve_ivp_tutorial.ipynb) | Simulates reversible cyclic voltammetry using `solve_ivp`, visualizes spatio-temporal concentration profiles, validates peak currents against the Randles–Ševčík equation across scan rates, and evaluates diagnostic reversibility criteria. |
 | [Chronoamperometry & Cottrell Equation](examples/cottrell_equation_tutorial.ipynb) | Simulates diffusion-controlled chronoamperometry for an oxidation reaction at a macroelectrode. Covers PDE boundary conditions, positive oxidation current, time-dependent $k_m(t)$, CFL stability limits, Rannacher oscillations, and error analysis against the Cottrell equation. |
 
 ## Installation
