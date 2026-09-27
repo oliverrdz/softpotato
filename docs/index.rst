@@ -18,6 +18,7 @@ Welcome to Soft Potato's Documentation!
 
    examples/1d_diffusion_comparison
    examples/cottrell_solve_ivp_tutorial
+   examples/cyclic_voltammetry_solve_ivp_tutorial
    examples/cottrell_equation_tutorial
 
 .. toctree::
