@@ -7,34 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-09-27
+
+### Stable Baseline Release: 1D Diffusion Solvers, SciPy Method of Lines & Benchmark Suite
+Soft Potato 3.0.0 is the official stable baseline release following the ground-up architecture reboot. This release finalizes the numerical solver module (`softpotato.solver`), integrating the stiff `scipy.integrate.solve_ivp` Method of Lines integration alongside classical tridiagonal finite difference schemes, analytical validation benchmarks, and a publication-quality suite of interactive electrochemical tutorials.
+
 ### Added
-- **Chronoamperometry & Cottrell Equation Interactive Tutorial** (`examples/cottrell_equation_tutorial.ipynb` and `examples/cottrell.ipynb`):
-  - Added publication-quality educational tutorial designed to bridge electrochemical intuition and numerical PDE modeling.
-  - Formulated 1D linear semi-infinite diffusion for an anodic oxidation reaction ($\text{Red} \to \text{Ox} + n e^-$) producing a positive current ($I > 0$) adhering to standard IUPAC conventions.
-  - Detailed physical grounding of PDE boundary conditions: complete reactant consumption at the electrode surface ($c(0, t) = 0$), unperturbed bulk solution reservoir ($c(\infty, t) = c^*$), and domain truncation based on the diffusion penetration depth ($L \ge 6\sqrt{D t_{\text{max}}}$).
-  - Derived electrical current from the surface concentration gradient via Faraday's Law ($I(t) = n F A D \left.\frac{\partial c}{\partial x}\right|_{x=0} = -n F A \cdot \text{result.fluxes}['Red']$) using second-order finite difference stencils.
-  - Derived the time-dependent mass transfer coefficient $k_m(t) = \sqrt{D / (\pi t)} = D / \delta(t)$, relating Cottrell current decay to the continuously thickening Nernst diffusion layer $\delta(t)$ at an unstirred planar macroelectrode, in contrast to steady-state electrodes (RDE, ultramicroelectrodes).
-  - Multi-solver comparative benchmark simulating the identical chronoamperogram across `scipy_ivp` (Radau), `crank_nicolson`, `implicit` (BTCS), and `explicit` (FTCS).
-  - Investigated numerical issues in electrochemical modeling:
-    - CFL stability criterion for explicit finite differences ($\Delta t \le \frac{\Delta x^2}{2 D}$), demonstrating exponential blowup and automated safeguard exception handling.
-    - Early-time step discontinuity shocks at $t=0$ and the Rannacher effect (Crank-Nicolson oscillations) compared to monotonic L-stable damping (BTCS) and adaptive substepping (Radau).
-    - Quantitative error analysis against the exact analytical Cottrell equation and spatial grid convergence study demonstrating $\mathcal{O}(\Delta x^2)$ error reduction.
-    - Execution time profiling and RHS evaluation workload benchmarks across all engines.
-  - Added tutorial symlink `docs/examples/cottrell_equation_tutorial.ipynb` and integrated into the `Tutorials & Examples` toctree in `docs/index.rst`.
-- **Read the Docs Syntax Highlighting Support**:
-  - Added `ipython>=8.0.0` to `docs` and `dev` extra requirements in `pyproject.toml` to ensure the `ipython3` Pygments lexer is installed in isolated Read the Docs environments.
-  - Registered `IPython.sphinxext.ipython_console_highlighting` in `docs/conf.py`.
-  - Configured `pygments_style = "sphinx"` and `highlight_language = "python3"` in `docs/conf.py` for vivid, consistent syntax highlighting of Jupyter notebook code cells on Read the Docs.
+- **Interactive Tutorials & Validation Notebooks** (`examples/`):
+  - **Cottrell Chronoamperometry with `solve_ivp`** (`examples/cottrell_solve_ivp_tutorial.ipynb`):
+    - Simulates the Cottrell potential-step experiment using Soft Potato's adaptive `solve_ivp` solver and benchmarks against the analytical Cottrell equation.
+  - **Cyclic Voltammetry with Nernst Kinetics** (`examples/cyclic_voltammetry_solve_ivp_tutorial.ipynb`):
+    - Simulates reversible cyclic voltammetry using `solve_ivp`, visualizes spatio-temporal concentration profiles, validates peak currents against the Randles–Ševčík equation across scan rates, and evaluates diagnostic reversibility criteria.
+  - **Cyclic Voltammetry with Butler–Volmer Kinetics** (`examples/cyclic_voltammetry_butler_volmer_tutorial.ipynb`):
+    - Simulates cyclic voltammetry under Butler–Volmer quasi-reversible kinetics with unequal diffusion coefficients ($D_{\text{Red}} \neq D_{\text{Ox}}$) using second-order ghost-node flux discretization and benchmarks against Nicholson theory.
+  - **Rotating Disk Electrode (RDE) Voltammetry with Levich Analysis** (`examples/rde_cyclic_voltammetry_solve_ivp_tutorial.ipynb`):
+    - Simulates RDE cyclic voltammetry with Nernst kinetics using the Nernst stagnant diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Demonstrates the transition from transient peaks to steady-state waves across scan rates and validates limiting currents against the Levich equation.
+  - **RDE Voltammetry with Butler–Volmer Kinetics & Koutecký–Levich Analysis** (`examples/rde_butler_volmer_koutecky_levich_tutorial.ipynb`):
+    - Simulates RDE cyclic voltammetry for an oxidation under IUPAC convention with Butler–Volmer kinetics using the Nernst diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Demonstrates kinetic shifts via normalized voltammograms ($I/I_L$), validates limiting currents against the Levich equation, and extracts $k_0$ and $\alpha$ using Koutecký–Levich and Tafel analysis.
+- **Project Roadmap** (`ROADMAP.md` and `docs/roadmap.md`):
+  - Formulated and published strategic milestone roadmap for the 3.x series defining future backwards-compatible feature additions: Milestone 1: Grids (`3.1.0`), Milestone 2: Reactions (`3.2.0`), and Milestone 3: Techniques (`3.3.0`).
+- **Core Solver Enhancements (`softpotato.solver`)**:
+  - Implemented runtime option overrides via `**kwargs` in `BaseSolver.solve()`, allowing parameters such as `dt`, `method`, `rtol`, and `atol` passed at call time to take precedence over constructor defaults.
+  - Added comprehensive parameter docstrings with type specifications across all solver implementations.
+  - Added dedicated solver reference table in `docs/api.rst` summarizing available methods and default options.
+- **CI/CD Quality & Automation Enhancements (`.github/workflows/ci.yml`)**:
+  - Added dedicated GitHub Actions jobs for code formatting and lint verification (`ruff`).
+  - Added static type checking job (`mypy`).
+  - Added automated execution and testing of all Jupyter example notebooks via `nbmake` (`pytest -v --nbmake examples/`).
+  - Added test coverage reporting with `pytest-cov` and docstring testing with `--doctest-modules`.
+  - Added automated package build verification and distribution metadata checks (`python -m build && twine check`).
+- **Sphinx Documentation Styling**:
+  - Added custom stylesheet `docs/_static/custom.css` for consistent presentation.
+  - Configured `IPython.sphinxext.ipython_console_highlighting` in `docs/conf.py` for reliable syntax highlighting of Jupyter notebook cells on Read the Docs.
 
 ### Changed
+- Promoted package version to `3.0.0` and PyPI classifier to `Development Status :: 5 - Production/Stable` in `pyproject.toml`.
+- Stabilized the `softpotato.solver` module as the official v3.0.0 baseline.
 - **Streamlined README.md**:
-  - Replaced the verbose multi-species quick start with an ultra-minimal 1D diffusion example ($c(0)=0$, $c(L)=1.0$) using `scipy_ivp` and directly storing the concentration profile array in `c_profile = result["c"]`.
-  - Removed overloaded solver configuration and custom solver creation subsections to maintain an approachable, clean quickstart for new users.
-  - Replaced the bulleted tutorial list with a structured **Tutorials & Examples** table linking both interactive tutorials (`1d_diffusion_comparison.ipynb` and `cottrell_equation_tutorial.ipynb`) with concise descriptions.
+  - Replaced verbose quickstart with minimal 1D diffusion example using `scipy_ivp`.
+  - Added structured **Tutorials & Examples** table indexing all five interactive notebooks.
+  - Removed pre-release rewrite warning banner.
 
 ### Fixed
-- Fixed unhighlighted/monochrome code cells in Jupyter notebook examples on Read the Docs by providing the required `ipython` dependency and Pygments console lexer extension.
-- Fixed corrupted JSON formatting in `examples/cottrell.ipynb`.
+- Fixed Python 3.10 `TypeError: ABCMeta.__new__() got multiple values for argument 'name'` during `BaseSolver` subclass registration via `_BaseSolverMeta` metaclass.
+- Fixed LaTeX/MathJax math delimiters rendering across Jupyter notebook tutorials and documentation pages on Read the Docs.
+- Fixed Ruff formatting and lint violations across tutorials and source files.
+
+### Removed
+- Removed legacy preliminary notebook `examples/1d_diffusion_comparison.ipynb`.
+- Removed redundant `.github/workflows/docs.yml` workflow file in favor of direct Read the Docs integration.
+- Removed temporary repository scaffolding script `scaffold.sh`.
 
 ## [3.0.0a1] - 2026-09-23
 
