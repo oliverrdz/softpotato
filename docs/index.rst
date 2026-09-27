@@ -20,6 +20,7 @@ Welcome to Soft Potato's Documentation!
    examples/cottrell_solve_ivp_tutorial
    examples/cyclic_voltammetry_solve_ivp_tutorial
    examples/cyclic_voltammetry_butler_volmer_tutorial
+   examples/rde_cyclic_voltammetry_solve_ivp_tutorial
    examples/cottrell_equation_tutorial
 
 .. toctree::
