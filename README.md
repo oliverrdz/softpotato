@@ -7,10 +7,7 @@
 
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
 
-> [!WARNING]
-> **Active Rewrite in Progress:** Soft Potato is currently undergoing a complete rewrite (`v3.0.0a1`) and is **incomplete**. The API is experimental, under rapid development, and subject to breaking changes. It is not yet ready for production use.
-
-**Full documentation**: [https://softpotato.readthedocs.io](https://softpotato.readthedocs.io)
+**Full documentation**: [https://softpotato.readthedocs.io](https://softpotato.readthedocs.io) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ## Tutorials & Examples
 

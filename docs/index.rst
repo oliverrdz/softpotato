@@ -26,6 +26,7 @@ Welcome to Soft Potato's Documentation!
    :maxdepth: 1
    :caption: Development & Releases
 
+   roadmap
    changelog
 
 Indices and tables

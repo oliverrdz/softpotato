@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "softpotato"
-version = "3.0.0a1"
+version = "3.0.0"
 description = "Electrochemical simulation and analysis toolkit in Python."
 readme = "README.md"
 license = { text = "BSD-3-Clause" }
@@ -13,7 +13,7 @@ authors = [
     { name = "Oliver Rodriguez", email = "oliver.rdz@gmail.com" }
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Chemistry",
     "License :: OSI Approved :: BSD License",
