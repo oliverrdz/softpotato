@@ -16,12 +16,11 @@ Welcome to Soft Potato's Documentation!
    :maxdepth: 2
    :caption: Tutorials & Examples
 
-   examples/1d_diffusion_comparison
    examples/cottrell_solve_ivp_tutorial
    examples/cyclic_voltammetry_solve_ivp_tutorial
    examples/cyclic_voltammetry_butler_volmer_tutorial
    examples/rde_cyclic_voltammetry_solve_ivp_tutorial
-   examples/cottrell_equation_tutorial
+   examples/rde_butler_volmer_koutecky_levich_tutorial
 
 .. toctree::
    :maxdepth: 1

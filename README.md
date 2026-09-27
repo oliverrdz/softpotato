@@ -18,12 +18,11 @@ Interactive Jupyter notebooks are available in the [`examples/`](examples/) dire
 
 | Tutorial | Description |
 | :--- | :--- |
-| [1D Chemical Diffusion & Solvers Comparison](examples/1d_diffusion_comparison.ipynb) | Compares `scipy_ivp`, `crank_nicolson`, `implicit`, and `explicit` solvers against exact analytical solutions, including runtime benchmarks and convergence order analysis. |
 | [Cottrell Chronoamperometry with `solve_ivp`](examples/cottrell_solve_ivp_tutorial.ipynb) | Simulates the Cottrell potential-step experiment using Soft Potato's adaptive `solve_ivp` solver and benchmarks against the Cottrell equation. |
 | [Cyclic Voltammetry with Nernst Kinetics](examples/cyclic_voltammetry_solve_ivp_tutorial.ipynb) | Simulates reversible cyclic voltammetry using `solve_ivp`, visualizes spatio-temporal concentration profiles, validates peak currents against the Randles–Ševčík equation across scan rates, and evaluates diagnostic reversibility criteria. |
 | [Cyclic Voltammetry with Butler–Volmer Kinetics](examples/cyclic_voltammetry_butler_volmer_tutorial.ipynb) | Simulates cyclic voltammetry under Butler–Volmer quasi-reversible kinetics with unequal diffusion coefficients ($D_{\text{Red}} \neq D_{\text{Ox}}$) using second-order ghost-node flux discretization and benchmarks against Nicholson theory. |
 | [Rotating Disk Electrode (RDE) Voltammetry with Levich Analysis](examples/rde_cyclic_voltammetry_solve_ivp_tutorial.ipynb) | Simulates RDE cyclic voltammetry with Nernst kinetics using the Nernst stagnant diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Demonstrates the transition from transient peaks to steady-state waves across scan rates and validates limiting currents against the Levich equation. |
-| [Chronoamperometry & Cottrell Equation](examples/cottrell_equation_tutorial.ipynb) | Simulates diffusion-controlled chronoamperometry for an oxidation reaction at a macroelectrode. Covers PDE boundary conditions, positive oxidation current, time-dependent $k_m(t)$, CFL stability limits, Rannacher oscillations, and error analysis against the Cottrell equation. |
+| [RDE Voltammetry with Butler–Volmer Kinetics & Koutecký–Levich Analysis](examples/rde_butler_volmer_koutecky_levich_tutorial.ipynb) | Simulates RDE cyclic voltammetry for an oxidation under IUPAC convention with Butler–Volmer kinetics using the Nernst diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Demonstrates kinetic shifts via normalized voltammograms ($I/I_L$), validates limiting currents against the Levich equation, and extracts $k_0$ and $\alpha$ using Koutecký–Levich and Tafel analysis. |
 
 ## Installation
 
