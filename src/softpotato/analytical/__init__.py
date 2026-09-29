@@ -9,10 +9,11 @@ models for electrochemical systems. These analytical equations serve as:
 Submodules
 ----------
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
+kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
 step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 """
 
-from . import hydrodynamics, step
+from . import hydrodynamics, kinetics, step
 from .hydrodynamics import (
     KouteckyLevichResult,
     RRDEResult,
@@ -28,6 +29,23 @@ from .hydrodynamics import (
     rotating_ring_disk,
     rpm_to_rad_s,
     shielding_factor,
+)
+from .kinetics import (
+    TafelResult,
+    butler_volmer,
+    butler_volmer_current_density,
+    butler_volmer_linear,
+    charge_transfer_resistance,
+    exchange_current,
+    exchange_current_density,
+    nernst,
+    nernst_equilibrium_concentrations,
+    nernst_potential,
+    nernst_ratio,
+    tafel,
+    tafel_analysis,
+    tafel_overpotential,
+    tafel_slope,
 )
 from .step import (
     anson,
@@ -45,18 +63,30 @@ from .step import (
 __all__ = [
     "KouteckyLevichResult",
     "RRDEResult",
+    "TafelResult",
     "anson",
+    "butler_volmer",
+    "butler_volmer_current_density",
+    "butler_volmer_linear",
+    "charge_transfer_resistance",
     "collection_efficiency",
     "cottrell",
     "cottrell_cylinder",
     "cottrell_spherical",
     "cottrell_step",
+    "exchange_current",
+    "exchange_current_density",
     "hydrodynamics",
+    "kinetics",
     "koutecky_levich",
     "koutecky_levich_analysis",
     "levich",
     "levich_constant",
+    "nernst",
     "nernst_diffusion_layer",
+    "nernst_equilibrium_concentrations",
+    "nernst_potential",
+    "nernst_ratio",
     "rad_s_to_rpm",
     "ring_collection_current",
     "ring_limiting_current",
@@ -69,4 +99,8 @@ __all__ = [
     "step",
     "step_concentration_profile",
     "step_flux_profile",
+    "tafel",
+    "tafel_analysis",
+    "tafel_overpotential",
+    "tafel_slope",
 ]
