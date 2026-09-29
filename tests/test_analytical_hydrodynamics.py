@@ -175,7 +175,9 @@ def test_levich_input_validation():
     with pytest.raises(ValueError, match="Diffusion coefficient D must be positive"):
         levich(100.0, D=-1e-5)
 
-    with pytest.raises(ValueError, match="Bulk concentration c_bulk must be non-negative"):
+    with pytest.raises(
+        ValueError, match="Bulk concentration c_bulk must be non-negative"
+    ):
         levich(100.0, c_bulk=-1.0)
 
     with pytest.raises(ValueError, match="Electrode area must be positive"):
@@ -204,7 +206,9 @@ def test_koutecky_levich_limits():
 
     # General mixed control: 1/I = 1/I_K + 1/I_L
     expected_mixed = (i_k * i_l) / (i_k + i_l)
-    assert math.isclose(koutecky_levich(i_k=i_k, i_lim=i_l), expected_mixed, rel_tol=1e-12)
+    assert math.isclose(
+        koutecky_levich(i_k=i_k, i_lim=i_l), expected_mixed, rel_tol=1e-12
+    )
 
 
 def test_koutecky_levich_from_rate_constant_and_rotation():
@@ -291,7 +295,9 @@ def test_koutecky_levich_analysis():
 
 def test_koutecky_levich_input_validation():
     """Verify input validation for Koutecký–Levich functions."""
-    with pytest.raises(ValueError, match="Either kinetic current 'i_k' or rate constant 'k'"):
+    with pytest.raises(
+        ValueError, match="Either kinetic current 'i_k' or rate constant 'k'"
+    ):
         koutecky_levich(omega=100.0)
 
     with pytest.raises(ValueError, match="Provide either 'i_k' or 'k', but not both"):
@@ -309,11 +315,21 @@ def test_koutecky_levich_input_validation():
             omega=np.array([100.0, 200.0, 300.0]), current=np.array([1e-3, 2e-3])
         )
 
-    with pytest.raises(ValueError, match="All rotation speeds in Koutecký–Levich analysis must be positive"):
-        koutecky_levich_analysis(omega=np.array([0.0, 100.0]), current=np.array([1e-3, 2e-3]))
+    with pytest.raises(
+        ValueError,
+        match="All rotation speeds in Koutecký–Levich analysis must be positive",
+    ):
+        koutecky_levich_analysis(
+            omega=np.array([0.0, 100.0]), current=np.array([1e-3, 2e-3])
+        )
 
-    with pytest.raises(ValueError, match="All measured currents in Koutecký–Levich analysis must be positive"):
-        koutecky_levich_analysis(omega=np.array([100.0, 200.0]), current=np.array([-1e-3, 2e-3]))
+    with pytest.raises(
+        ValueError,
+        match="All measured currents in Koutecký–Levich analysis must be positive",
+    ):
+        koutecky_levich_analysis(
+            omega=np.array([100.0, 200.0]), current=np.array([-1e-3, 2e-3])
+        )
 
 
 # ==============================================================================
@@ -376,16 +392,28 @@ def test_collection_efficiency_radii_validation():
     with pytest.raises(ValueError, match="Disk radius r1 must be strictly positive"):
         collection_efficiency(0.0, 1.0, 2.0)
 
-    with pytest.raises(ValueError, match="Ring inner radius r2 must be strictly greater than disk radius"):
+    with pytest.raises(
+        ValueError,
+        match="Ring inner radius r2 must be strictly greater than disk radius",
+    ):
         collection_efficiency(1.0, 1.0, 2.0)
 
-    with pytest.raises(ValueError, match="Ring inner radius r2 must be strictly greater than disk radius"):
+    with pytest.raises(
+        ValueError,
+        match="Ring inner radius r2 must be strictly greater than disk radius",
+    ):
         collection_efficiency(1.0, 0.8, 2.0)
 
-    with pytest.raises(ValueError, match="Ring outer radius r3 must be strictly greater than ring inner radius"):
+    with pytest.raises(
+        ValueError,
+        match="Ring outer radius r3 must be strictly greater than ring inner radius",
+    ):
         collection_efficiency(1.0, 1.5, 1.5)
 
-    with pytest.raises(ValueError, match="Ring outer radius r3 must be strictly greater than ring inner radius"):
+    with pytest.raises(
+        ValueError,
+        match="Ring outer radius r3 must be strictly greater than ring inner radius",
+    ):
         collection_efficiency(1.0, 1.5, 1.2)
 
 
@@ -560,24 +588,36 @@ def test_hydrodynamics_additional_edge_cases():
         nernst_diffusion_layer(100.0, nu=0.0)
 
     # koutecky_levich_analysis c_bulk <= 0
-    with pytest.raises(ValueError, match="Bulk concentration c_bulk must be strictly positive"):
-        koutecky_levich_analysis(omega=np.array([100.0, 200.0]), current=np.array([1e-3, 2e-3]), c_bulk=0.0)
+    with pytest.raises(
+        ValueError, match="Bulk concentration c_bulk must be strictly positive"
+    ):
+        koutecky_levich_analysis(
+            omega=np.array([100.0, 200.0]), current=np.array([1e-3, 2e-3]), c_bulk=0.0
+        )
 
     # ring_limiting_current r2 <= 0, r3 <= r2, shielded without r1
     with pytest.raises(ValueError, match="Ring inner radius r2 must be positive"):
         ring_limiting_current(100.0, r2=0.0, r3=1.0)
 
-    with pytest.raises(ValueError, match="Ring outer radius r3 must be greater than r2"):
+    with pytest.raises(
+        ValueError, match="Ring outer radius r3 must be greater than r2"
+    ):
         ring_limiting_current(100.0, r2=1.0, r3=0.8)
 
-    with pytest.raises(ValueError, match="Disk radius 'r1' must be provided to compute shielded"):
+    with pytest.raises(
+        ValueError, match="Disk radius 'r1' must be provided to compute shielded"
+    ):
         ring_limiting_current(100.0, r2=1.0, r3=1.5, shielded=True)
 
     # ring_collection_current n_ring <= 0, missing r1/r2/r3, invalid N
-    with pytest.raises(ValueError, match="Electron numbers n_ring and n_disk must be positive"):
+    with pytest.raises(
+        ValueError, match="Electron numbers n_ring and n_disk must be positive"
+    ):
         ring_collection_current(1e-3, N=0.2, n_ring=0)
 
-    with pytest.raises(ValueError, match="Either collection efficiency 'N' or electrode radii"):
+    with pytest.raises(
+        ValueError, match="Either collection efficiency 'N' or electrode radii"
+    ):
         ring_collection_current(1e-3, r1=0.2)
 
     with pytest.raises(ValueError, match="Collection efficiency N must be in"):
