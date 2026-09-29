@@ -8,7 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Transient Diffusion & Potential Step Equations (`softpotato.analytical.step`)**:
+  - Introduced dedicated analytical equations subpackage (`softpotato.analytical.step`).
+  - Added planar Cottrell equation (`cottrell`) for semi-infinite linear diffusion chronoamperometry.
+  - Added spherical Cottrell equation (`cottrell_spherical`) for spherical electrodes, hanging mercury drops, and hemispherical microelectrodes with long-time steady-state convergence.
+  - Added double potential step chronoamperometry reversal transient (`cottrell_step`) with diagnostic current ratio verification ($-I(2\tau)/I(\tau) = 1 - 1/\sqrt{2} \approx 0.292893$) and unequal diffusion coefficient ($D_{\text{Red}} \neq D_{\text{Ox}}$) support.
+  - Added Anson equation (`anson`) for single- and double-step chronocoulometry cumulative charge transients, supporting double-layer charging ($Q_{\text{dl}}$) and reactant surface excess ($\Gamma$).
+  - Added Sand equation for chronopotentiometry transition time (`sand_transition_time`), time-dependent surface concentration depletion (`sand`), and reversible chronopotentiometric wave potential (`sand_potential`).
+  - Added cylindrical microelectrode chronoamperometry (`cottrell_cylinder`) implementing Aoki's full-range approximation and Oldham's rational Padé approximant across all dimensionless times $\theta$.
+  - Added exact spatial concentration distribution (`step_concentration_profile`) and diffusion flux profile (`step_flux_profile`) for analytical solver verification.
+  - Re-exported all step equations and the `analytical` subpackage at the top level of `softpotato`.
+  - Added comprehensive test suite in `tests/test_analytical_step.py` cross-validating analytical solutions against `ScipyIVPSolver` and Sphinx documentation in `docs/api.rst`.
 - **Centralized Physical & Electrochemical Constants (`softpotato.constants`)**:
+
   - Introduced standard electrochemical constants: Faraday constant (`FARADAY`), molar gas constant (`GAS_CONSTANT`), and standard thermodynamic temperature (`STANDARD_TEMPERATURE`).
   - Added shorthand aliases: `F`, `R`, and `T_STD`.
   - Added foundational physical constants from CODATA / 2019 SI via `scipy.constants`: `AVOGADRO`, `BOLTZMANN`, `ELEMENTARY_CHARGE`, and `VACUUM_PERMITTIVITY`.
