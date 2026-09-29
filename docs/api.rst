@@ -4,8 +4,35 @@ API Reference
 .. automodule:: softpotato
    :undoc-members:
 
+Constants Module (``softpotato.constants``)
+-------------------------------------------
+
+The ``softpotato.constants`` module provides standardized physical and electrochemical
+constants defined according to CODATA 2018 / 2019 SI conventions.
+
+.. automodule:: softpotato.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Analytical Subpackage (``softpotato.analytical``)
+-------------------------------------------------
+
+The ``softpotato.analytical`` subpackage provides exact closed-form solutions,
+asymptotic expansions, and empirical models for electrochemical systems,
+serving as benchmark standards and rapid parameter estimation utilities.
+
+Transient Step Techniques (``softpotato.analytical.step``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.step
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
+
 
 The ``softpotato.solver`` subpackage provides numerical solvers for 1D multi-species
 chemical diffusion and reaction-diffusion problems.
