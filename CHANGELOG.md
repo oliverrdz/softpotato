@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Centralized Physical & Electrochemical Constants (`softpotato.constants`)**:
+  - Introduced standard electrochemical constants: Faraday constant (`FARADAY`), molar gas constant (`GAS_CONSTANT`), and standard thermodynamic temperature (`STANDARD_TEMPERATURE`).
+  - Added shorthand aliases: `F`, `R`, and `T_STD`.
+  - Added foundational physical constants from CODATA / 2019 SI via `scipy.constants`: `AVOGADRO`, `BOLTZMANN`, `ELEMENTARY_CHARGE`, and `VACUUM_PERMITTIVITY`.
+  - Re-exported all constants and aliases at the top level of `softpotato`.
+  - Added unit test suite in `tests/test_constants.py` and Sphinx API documentation in `docs/api.rst`.
+
 ## [3.0.0] - 2026-09-27
 
 ### Stable Baseline Release: 1D Diffusion Solvers, SciPy Method of Lines & Benchmark Suite
