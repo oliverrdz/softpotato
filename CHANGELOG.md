@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Thermodynamics & Interfacial Kinetics (`softpotato.analytical.kinetics`)**:
+  - Introduced thermodynamic and heterogeneous interfacial kinetics submodule (`softpotato.analytical.kinetics`).
+  - Added Nernst equilibrium electrode potential equation (`nernst` / `nernst_potential`) supporting single-ratio ($c_{\text{Ox}} / c_{\text{Red}}$) or separate concentration arguments, with asymptotic $\pm\infty$ limit handling.
+  - Added equilibrium concentration ratio inverter (`nernst_ratio`) and numerically stable species concentration distributor (`nernst_equilibrium_concentrations`) leveraging `scipy.special.expit`.
+  - Added exchange current density (`exchange_current_density`) and total exchange current (`exchange_current`) scaling with electrode area.
+  - Added charge-transfer activation resistance calculation (`charge_transfer_resistance`).
+  - Added Butler–Volmer equation (`butler_volmer` and `butler_volmer_current_density`) supporting activation control, mass-transport/surface concentration corrections ($c_i(0) / c_i^*$), and IUPAC vs polarographic sign conventions.
+  - Added low-overpotential linear Butler–Volmer approximation (`butler_volmer_linear`).
+  - Added theoretical Tafel slope equation (`tafel_slope`) for anodic and signed cathodic branches.
+  - Added high-overpotential Tafel current approximation (`tafel`) with automatic branch detection (`branch='auto'`) and overpotential inversion (`tafel_overpotential`).
+  - Added diagnostic linear Tafel regression analysis (`tafel_analysis`) returning structured dataclass (`TafelResult`) with extracted $I_0$, Tafel slope $b$ (in V/dec and mV/dec), apparent transfer coefficient $\alpha$, $R^2$, regression standard errors, and standard rate constant $k^0$.
+  - Re-exported all kinetics functions and dataclasses at `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive unit test suite in `tests/test_analytical_kinetics.py` with 27 tests and verified doctests.
+  - Documented `softpotato.analytical.kinetics` in Sphinx API reference (`docs/api.rst`).
 - **Hydrodynamics & Convection Equations (`softpotato.analytical.hydrodynamics`)**:
   - Introduced hydrodynamic convective-diffusion equations submodule (`softpotato.analytical.hydrodynamics`).
   - Added Levich equation (`levich`) for convective mass-transport limiting current at a Rotating Disk Electrode (RDE) with dual angular velocity (`omega` in rad/s) and rotational frequency (`rpm`) input support.
