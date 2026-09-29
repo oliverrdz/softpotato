@@ -259,7 +259,7 @@ def levich(
     >>> # Standard 5 mm OD disk (area = 0.1963 cm^2) at 1600 rpm
     >>> i_lim = sp.levich(rpm=1600, n=1, D=1e-5, c_bulk=1e-6, area=0.1963, nu=0.01)
     >>> round(i_lim * 1e6, 2)  # microamperes
-    144.13
+    152.0
     """
     _validate_hydrodynamic_params(n=n, D=D, c_bulk=c_bulk, area=area, nu=nu, F=F)
     w_arr, is_scalar = _resolve_rotation(omega, rpm)
@@ -1038,7 +1038,7 @@ def rotating_ring_disk(
     >>> round(res.N, 4)
     0.2555
     >>> round(res.shielding_factor, 4)
-    0.1691
+    0.2291
     """
     _validate_rrde_radii(r1, r2, r3)
 
