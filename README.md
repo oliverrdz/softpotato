@@ -1,11 +1,21 @@
 # Soft Potato
 
+[![PyPI](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/softpotato/badge/?version=latest)](https://softpotato.readthedocs.io)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
+
+> [!NOTE]
+> **Active Development (Milestone 1 in progress):**
+> The `main` branch contains work-in-progress features for **Milestone 1** (v3.1.0).
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.0.0**.
+> To test or use in-development features, install directly from GitHub:
+> ```bash
+> pip install git+https://github.com/oliverrdz/softpotato.git
+> ```
 
 **Full documentation**: [https://softpotato.readthedocs.io](https://softpotato.readthedocs.io) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -23,10 +33,28 @@ Interactive Jupyter notebooks are available in the [`examples/`](examples/) dire
 
 ## Installation
 
-Soft Potato v3.0.0 is available in [PyPi](https://pypi.org/project/softpotato/) and can be installed via pip:
+### Stable Release (v3.0.0)
+
+Soft Potato v3.0.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
+```
+
+### Development Version (Milestone 1 in progress)
+
+To install the latest development version directly from GitHub:
+
+```bash
+pip install git+https://github.com/oliverrdz/softpotato.git
+```
+
+Or clone the repository and install in development mode:
+
+```bash
+git clone https://github.com/oliverrdz/softpotato.git
+cd softpotato
+pip install -e ".[dev,docs]"
 ```
 
 ## Quick Start: Solving 1D Diffusion with `scipy_ivp`
