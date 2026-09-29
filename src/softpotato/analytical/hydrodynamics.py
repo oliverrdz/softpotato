@@ -425,7 +425,9 @@ def koutecky_levich(
 
     # Resolve kinetic current
     if i_k is None and k is None:
-        raise ValueError("Either kinetic current 'i_k' or rate constant 'k' must be provided.")
+        raise ValueError(
+            "Either kinetic current 'i_k' or rate constant 'k' must be provided."
+        )
     if i_k is not None and k is not None:
         raise ValueError("Provide either 'i_k' or 'k', but not both.")
 
@@ -445,7 +447,9 @@ def koutecky_levich(
         arr_il = np.asarray(i_lim, dtype=float)
         il_is_scalar = arr_il.ndim == 0
     else:
-        arr_il_out = levich(omega=omega, rpm=rpm, n=n, D=D, c_bulk=c_bulk, area=area, nu=nu, F=F)
+        arr_il_out = levich(
+            omega=omega, rpm=rpm, n=n, D=D, c_bulk=c_bulk, area=area, nu=nu, F=F
+        )
         arr_il = np.asarray(arr_il_out, dtype=float)
         il_is_scalar = arr_il.ndim == 0
 
@@ -548,7 +552,9 @@ def koutecky_levich_analysis(
     """
     _validate_hydrodynamic_params(n=n, D=1e-5, c_bulk=c_bulk, area=area, nu=nu, F=F)
     if c_bulk <= 0:
-        raise ValueError(f"Bulk concentration c_bulk must be strictly positive (c_bulk > 0), got {c_bulk}.")
+        raise ValueError(
+            f"Bulk concentration c_bulk must be strictly positive (c_bulk > 0), got {c_bulk}."
+        )
 
     w_arr, _ = _resolve_rotation(omega, rpm)
     i_arr = np.asarray(current, dtype=float)
@@ -562,9 +568,13 @@ def koutecky_levich_analysis(
             f"Length mismatch: rotation speeds has {len(w_arr)} points, but current has {len(i_arr)}."
         )
     if np.any(w_arr <= 0):
-        raise ValueError("All rotation speeds in Koutecký–Levich analysis must be positive (omega > 0).")
+        raise ValueError(
+            "All rotation speeds in Koutecký–Levich analysis must be positive (omega > 0)."
+        )
     if np.any(i_arr <= 0):
-        raise ValueError("All measured currents in Koutecký–Levich analysis must be positive (I > 0).")
+        raise ValueError(
+            "All measured currents in Koutecký–Levich analysis must be positive (I > 0)."
+        )
 
     x_vals = 1.0 / np.sqrt(w_arr)
     y_vals = 1.0 / i_arr
@@ -579,7 +589,9 @@ def koutecky_levich_analysis(
     r_squared = 1.0 - (ss_res / ss_tot) if ss_tot > 0 else 1.0
 
     i_k = float(1.0 / intercept) if intercept > 0 else float("inf")
-    k_rate = float(i_k / (n * F * area * c_bulk)) if not math.isinf(i_k) else float("inf")
+    k_rate = (
+        float(i_k / (n * F * area * c_bulk)) if not math.isinf(i_k) else float("inf")
+    )
     b_levich = float(1.0 / slope) if slope > 0 else float("nan")
 
     # Estimate D from Levich constant B = 0.620 * n * F * A * D^(2/3) * nu^(-1/6) * c*
@@ -628,7 +640,9 @@ def _albery_f(theta: float | np.ndarray) -> float | np.ndarray:
 def _validate_rrde_radii(r1: float, r2: float, r3: float) -> None:
     """Validate geometric radii ordering for rotating ring-disk electrodes."""
     if r1 <= 0:
-        raise ValueError(f"Disk radius r1 must be strictly positive (r1 > 0), got {r1}.")
+        raise ValueError(
+            f"Disk radius r1 must be strictly positive (r1 > 0), got {r1}."
+        )
     if r2 <= r1:
         raise ValueError(
             f"Ring inner radius r2 must be strictly greater than disk radius r1 (r2 > r1 = {r1}), got {r2}."
@@ -789,25 +803,39 @@ def ring_limiting_current(
     if r2 <= 0:
         raise ValueError(f"Ring inner radius r2 must be positive (r2 > 0), got {r2}.")
     if r3 <= r2:
-        raise ValueError(f"Ring outer radius r3 must be greater than r2 (r3 > r2 = {r2}), got {r3}.")
+        raise ValueError(
+            f"Ring outer radius r3 must be greater than r2 (r3 > r2 = {r2}), got {r3}."
+        )
 
     w_arr, is_scalar = _resolve_rotation(omega, rpm)
 
     # Equivalent ring area factor: pi * (r3^3 - r2^3)^(2/3)
     ring_area_factor = np.pi * ((r3**3.0 - r2**3.0) ** (2.0 / 3.0))
-    b_ring = 0.620 * n * F * ring_area_factor * (D ** (2.0 / 3.0)) * (nu ** (-1.0 / 6.0)) * c_bulk
+    b_ring = (
+        0.620
+        * n
+        * F
+        * ring_area_factor
+        * (D ** (2.0 / 3.0))
+        * (nu ** (-1.0 / 6.0))
+        * c_bulk
+    )
     i_ring_unshielded = b_ring * np.sqrt(w_arr)
 
     if not shielded:
         return _format_output(i_ring_unshielded, is_scalar)
 
     if r1 is None:
-        raise ValueError("Disk radius 'r1' must be provided to compute shielded ring current.")
+        raise ValueError(
+            "Disk radius 'r1' must be provided to compute shielded ring current."
+        )
     _validate_rrde_radii(r1, r2, r3)
 
     n_eff = collection_efficiency(r1, r2, r3)
     disk_area = np.pi * (r1**2.0)
-    i_disk_lim = levich(omega=w_arr, n=n, D=D, c_bulk=c_bulk, area=disk_area, nu=nu, F=F)
+    i_disk_lim = levich(
+        omega=w_arr, n=n, D=D, c_bulk=c_bulk, area=disk_area, nu=nu, F=F
+    )
 
     i_ring_shielded = i_ring_unshielded - (n_eff * np.asarray(i_disk_lim, dtype=float))
     return _format_output(i_ring_shielded, is_scalar)
@@ -1025,13 +1053,19 @@ def rotating_ring_disk(
     i_r_shielded: float | np.ndarray | None = None
 
     if omega is not None or rpm is not None:
-        _validate_hydrodynamic_params(n=n_disk, D=D, c_bulk=c_bulk, area=area_d, nu=nu, F=F)
+        _validate_hydrodynamic_params(
+            n=n_disk, D=D, c_bulk=c_bulk, area=area_d, nu=nu, F=F
+        )
         if n_ring <= 0:
-            raise ValueError(f"Number of ring electrons must be positive (n_ring > 0), got {n_ring}.")
+            raise ValueError(
+                f"Number of ring electrons must be positive (n_ring > 0), got {n_ring}."
+            )
 
         w_arr, _ = _resolve_rotation(omega, rpm)
 
-        i_d_lim = levich(omega=w_arr, n=n_disk, D=D, c_bulk=c_bulk, area=area_d, nu=nu, F=F)
+        i_d_lim = levich(
+            omega=w_arr, n=n_disk, D=D, c_bulk=c_bulk, area=area_d, nu=nu, F=F
+        )
         i_r_unshielded = ring_limiting_current(
             omega=w_arr,
             r2=r2,
