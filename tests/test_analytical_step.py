@@ -73,7 +73,9 @@ def test_cottrell_input_validation():
     with pytest.raises(ValueError, match="Diffusion coefficient D must be positive"):
         cottrell(1.0, D=-1e-5)
 
-    with pytest.raises(ValueError, match="Bulk concentration c_bulk must be non-negative"):
+    with pytest.raises(
+        ValueError, match="Bulk concentration c_bulk must be non-negative"
+    ):
         cottrell(1.0, c_bulk=-1e-3)
 
     with pytest.raises(ValueError, match="Electrode area must be positive"):
@@ -178,7 +180,9 @@ def test_cottrell_step_validation():
     """Verify validation on tau and product diffusion coefficient."""
     with pytest.raises(ValueError, match="Step duration tau must be positive"):
         cottrell_step(1.0, tau=0.0)
-    with pytest.raises(ValueError, match="Product diffusion coefficient D_red must be positive"):
+    with pytest.raises(
+        ValueError, match="Product diffusion coefficient D_red must be positive"
+    ):
         cottrell_step(1.0, tau=1.0, D_red=-1e-5)
 
 
@@ -223,7 +227,6 @@ def test_anson_reversal_chronocoulometry():
     q_intercept = anson(0.0, tau=tau)
     q_inf = anson(1e8, tau=tau)
     assert math.isclose(q_inf, q_intercept, abs_tol=1e-4)
-
 
 
 def test_anson_validation():
@@ -275,14 +278,15 @@ def test_sand_potential_quarter_wave():
     assert np.isneginf(e_tau)
 
 
-
 def test_sand_validation():
     """Verify Sand parameter validation."""
     with pytest.raises(ValueError, match="Applied current I cannot be zero"):
         sand_transition_time(I=0.0)
     with pytest.raises(ValueError, match="Applied current I cannot be zero"):
         sand(1.0, I=0.0)
-    with pytest.raises(ValueError, match="Bulk concentration c_bulk must be strictly positive"):
+    with pytest.raises(
+        ValueError, match="Bulk concentration c_bulk must be strictly positive"
+    ):
         sand_transition_time(I=1.0, c_bulk=0.0)
 
 
@@ -302,7 +306,9 @@ def test_cottrell_cylinder_planar_limit():
 
     # Small time: t = 1e-5 s -> theta = D*t/r0² = 1e-5*1e-5 / 1e-6 = 1e-4 << 1
     t_short = 1e-5
-    i_cyl_auto = cottrell_cylinder(t_short, r0=r0, length=length, D=D, c_bulk=c_bulk, n=n)
+    i_cyl_auto = cottrell_cylinder(
+        t_short, r0=r0, length=length, D=D, c_bulk=c_bulk, n=n
+    )
     i_cyl_oldham = cottrell_cylinder(
         t_short, r0=r0, length=length, D=D, c_bulk=c_bulk, n=n, method="oldham"
     )
@@ -403,9 +409,12 @@ def test_numerical_solver_cottrell_benchmark():
 
     # Verify numerical and analytical agreement (mean error < 0.2%, max error < 1.0%)
     rel_error = np.abs(i_numerical - i_analytical) / i_analytical
-    assert np.mean(rel_error) < 3e-3, f"Mean relative error {np.mean(rel_error):.4e} exceeds 0.3%"
-    assert np.max(rel_error) < 1e-2, f"Max relative error {np.max(rel_error):.4e} exceeds 1.0%"
-
+    assert np.mean(rel_error) < 3e-3, (
+        f"Mean relative error {np.mean(rel_error):.4e} exceeds 0.3%"
+    )
+    assert np.max(rel_error) < 1e-2, (
+        f"Max relative error {np.max(rel_error):.4e} exceeds 1.0%"
+    )
 
     # Validate spatial concentration profile at t_end
     c_numerical = result["c"][-1, :]
