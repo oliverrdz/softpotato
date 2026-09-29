@@ -30,6 +30,14 @@ Transient Step Techniques (``softpotato.analytical.step``)
    :undoc-members:
    :show-inheritance:
 
+Hydrodynamics & Convection Equations (``softpotato.analytical.hydrodynamics``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.hydrodynamics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 

@@ -8,10 +8,27 @@ models for electrochemical systems. These analytical equations serve as:
 
 Submodules
 ----------
+hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 """
 
-from . import step
+from . import hydrodynamics, step
+from .hydrodynamics import (
+    KouteckyLevichResult,
+    RRDEResult,
+    collection_efficiency,
+    koutecky_levich,
+    koutecky_levich_analysis,
+    levich,
+    levich_constant,
+    nernst_diffusion_layer,
+    rad_s_to_rpm,
+    ring_collection_current,
+    ring_limiting_current,
+    rotating_ring_disk,
+    rpm_to_rad_s,
+    shielding_factor,
+)
 from .step import (
     anson,
     cottrell,
@@ -26,14 +43,29 @@ from .step import (
 )
 
 __all__ = [
+    "KouteckyLevichResult",
+    "RRDEResult",
     "anson",
+    "collection_efficiency",
     "cottrell",
     "cottrell_cylinder",
     "cottrell_spherical",
     "cottrell_step",
+    "hydrodynamics",
+    "koutecky_levich",
+    "koutecky_levich_analysis",
+    "levich",
+    "levich_constant",
+    "nernst_diffusion_layer",
+    "rad_s_to_rpm",
+    "ring_collection_current",
+    "ring_limiting_current",
+    "rotating_ring_disk",
+    "rpm_to_rad_s",
     "sand",
     "sand_potential",
     "sand_transition_time",
+    "shielding_factor",
     "step",
     "step_concentration_profile",
     "step_flux_profile",

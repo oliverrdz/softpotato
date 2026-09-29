@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Hydrodynamics & Convection Equations (`softpotato.analytical.hydrodynamics`)**:
+  - Introduced hydrodynamic convective-diffusion equations submodule (`softpotato.analytical.hydrodynamics`).
+  - Added Levich equation (`levich`) for convective mass-transport limiting current at a Rotating Disk Electrode (RDE) with dual angular velocity (`omega` in rad/s) and rotational frequency (`rpm`) input support.
+  - Added theoretical Levich slope parameter utility (`levich_constant`) and Nernst stagnant diffusion layer thickness calculation (`nernst_diffusion_layer`).
+  - Added Koutecký–Levich equation (`koutecky_levich`) for mixed kinetic and mass-transfer limitation, accepting explicit kinetic current ($I_K$), heterogeneous rate constant ($k$), and rotation speeds.
+  - Added diagnostic Koutecký–Levich linear regression analysis (`koutecky_levich_analysis`) extracting kinetic current ($I_K$), rate constant ($k$), Levich constant ($B$), estimated diffusivity ($D$), and $R^2$.
+  - Added exact closed-form Albery–Bruckenstein theoretical collection efficiency (`collection_efficiency`) for Rotating Ring-Disk Electrodes (RRDE) evaluated analytically via hydrodynamic function $F(\theta)$.
+  - Added unshielded and shielded ring limiting currents (`ring_limiting_current`), ring collection currents for disk-generated products (`ring_collection_current`), and geometric shielding factors (`shielding_factor`).
+  - Added unified RRDE solver (`rotating_ring_disk`) returning a structured dataclass (`RRDEResult`) with complete geometric and current parameters.
+  - Added rotational speed conversion utilities (`rpm_to_rad_s` and `rad_s_to_rpm`).
+  - Re-exported all hydrodynamic functions and dataclasses at `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive test suite in `tests/test_analytical_hydrodynamics.py` with 100% statement coverage, benchmarked against commercial Pine RRDE geometries and tutorial numerical simulation data.
+  - Documented `softpotato.analytical.hydrodynamics` in Sphinx API reference (`docs/api.rst`).
 - **Transient Diffusion & Potential Step Equations (`softpotato.analytical.step`)**:
   - Introduced dedicated analytical equations subpackage (`softpotato.analytical.step`).
   - Added planar Cottrell equation (`cottrell`) for semi-infinite linear diffusion chronoamperometry.
