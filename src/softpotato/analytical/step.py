@@ -54,7 +54,6 @@ References
   microcylinder electrode", *J. Electroanal. Chem.*, 224 (1987) 229–232.
 """
 
-
 from __future__ import annotations
 
 import math
@@ -490,9 +489,7 @@ def anson(
             q_val[fwd_mask] = slope * np.sqrt(t_arr[fwd_mask]) + q_const
         if np.any(rev_mask):
             t_rev = t_arr[rev_mask]
-            q_val[rev_mask] = (
-                slope * (np.sqrt(t_rev) - np.sqrt(t_rev - tau)) + q_const
-            )
+            q_val[rev_mask] = slope * (np.sqrt(t_rev) - np.sqrt(t_rev - tau)) + q_const
 
     return _format_output(q_val, is_scalar)
 
@@ -718,7 +715,11 @@ def sand_potential(
     with np.errstate(divide="ignore", invalid="ignore"):
         sqrt_t = np.sqrt(t_arr)
         ratio = (sqrt_tau - sqrt_t) / sqrt_t
-        e_pot = np.where(t_arr == 0.0, np.inf, np.where(t_arr >= tau, -np.inf, E_half + vt * np.log(ratio)))
+        e_pot = np.where(
+            t_arr == 0.0,
+            np.inf,
+            np.where(t_arr >= tau, -np.inf, E_half + vt * np.log(ratio)),
+        )
 
     return _format_output(e_pot, is_scalar)
 
@@ -824,7 +825,9 @@ def cottrell_cylinder(
     if r0 <= 0:
         raise ValueError(f"Cylinder radius r0 must be positive (r0 > 0), got {r0}.")
     if length <= 0:
-        raise ValueError(f"Cylinder length must be positive (length > 0), got {length}.")
+        raise ValueError(
+            f"Cylinder length must be positive (length > 0), got {length}."
+        )
 
     area_val = 2.0 * math.pi * r0 * length if area is None else float(area)
     _validate_common_params(n, D, c_bulk, area_val, F)
