@@ -38,6 +38,14 @@ Hydrodynamics & Convection Equations (``softpotato.analytical.hydrodynamics``)
    :undoc-members:
    :show-inheritance:
 
+Thermodynamics & Interfacial Kinetics (``softpotato.analytical.kinetics``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.kinetics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 
