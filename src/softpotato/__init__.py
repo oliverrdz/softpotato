@@ -26,7 +26,19 @@ True
 (101, 50)
 """
 
-from . import constants, solver
+from . import analytical, constants, solver
+from .analytical import (
+    anson,
+    cottrell,
+    cottrell_cylinder,
+    cottrell_spherical,
+    cottrell_step,
+    sand,
+    sand_potential,
+    sand_transition_time,
+    step_concentration_profile,
+    step_flux_profile,
+)
 from .constants import (
     AVOGADRO,
     BOLTZMANN,
@@ -70,8 +82,20 @@ __all__ = [
     "R",
     "SolverResult",
     "__version__",
+    "analytical",
+    "anson",
     "constants",
+    "cottrell",
+    "cottrell_cylinder",
+    "cottrell_spherical",
+    "cottrell_step",
     "get_solver",
     "list_solvers",
+    "sand",
+    "sand_potential",
+    "sand_transition_time",
     "solver",
+    "step_concentration_profile",
+    "step_flux_profile",
 ]
+

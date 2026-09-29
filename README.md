@@ -87,6 +87,23 @@ c_profile = result["c"]  # 2D array of shape (N_times, N_points)
 c_flux = result.fluxes["c"]  # The current can be calculated with i = n*F*A*c_flux
 ```
 
+## Analytical Equations & Benchmarking (`softpotato.analytical`)
+
+Soft Potato provides exact closed-form analytical solutions and empirical models for benchmarking numerical solvers and rapid parameter estimation:
+
+```python
+import numpy as np
+import softpotato as sp
+
+# 1. Planar Cottrell chronoamperometry current transient
+t = np.linspace(0.1, 5.0, 50)
+i_transient = sp.cottrell(t, n=1, D=1e-5, c_bulk=1e-3, area=1e-4)
+
+# 2. Spherical electrode transient and steady-state limiting current
+i_sphere = sp.cottrell_spherical(t, r=1e-5, n=1, D=1e-5, c_bulk=1e-3)
+```
+
 ## License
 
 This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details.
+
