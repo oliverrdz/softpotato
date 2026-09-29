@@ -421,7 +421,9 @@ def test_tafel_analysis_exact_recovery():
 
     # 1. Exact mathematical recovery from pure Tafel data (machine precision)
     eta_pts = np.linspace(0.15, 0.30, 40)
-    current_tafel = tafel(eta_pts, i0=true_i0, alpha=true_alpha, n=n, T=T, branch="anodic")
+    current_tafel = tafel(
+        eta_pts, i0=true_i0, alpha=true_alpha, n=n, T=T, branch="anodic"
+    )
     res_exact = tafel_analysis(eta_pts, current_tafel, branch="anodic", n=n, T=T)
     assert isinstance(res_exact, TafelResult)
     assert res_exact.branch == "anodic"
@@ -459,7 +461,9 @@ def test_tafel_analysis_cathodic():
     assert res_exact.r_squared > 0.99999999
     assert math.isclose(res_exact.i0, true_i0, rel_tol=1e-10)
     assert math.isclose(res_exact.alpha, true_alpha, rel_tol=1e-10)
-    expected_slope_c = tafel_slope(alpha=true_alpha, n=n, branch="cathodic", signed=True)
+    expected_slope_c = tafel_slope(
+        alpha=true_alpha, n=n, branch="cathodic", signed=True
+    )
     assert math.isclose(res_exact.slope, expected_slope_c, rel_tol=1e-10)
 
     # 2. Realistic recovery from cathodic Butler-Volmer

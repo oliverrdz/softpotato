@@ -516,9 +516,7 @@ def exchange_current(
         If parameters are physically invalid.
     """
     _validate_positive(area, "Electrode area")
-    j0 = exchange_current_density(
-        k0, c_ox=c_ox, c_red=c_red, alpha=alpha, n=n, F=F
-    )
+    j0 = exchange_current_density(k0, c_ox=c_ox, c_red=c_red, alpha=alpha, n=n, F=F)
     return float(j0 * area)
 
 
@@ -690,7 +688,9 @@ def butler_volmer(
         _validate_positive(c_red_bulk, "Bulk reduced concentration c_red_bulk")
         red_surf_arr = np.asarray(c_red_surf, dtype=float)
         if np.any(red_surf_arr < 0.0):
-            raise ValueError("Surface concentration c_red_surf must be non-negative (>= 0).")
+            raise ValueError(
+                "Surface concentration c_red_surf must be non-negative (>= 0)."
+            )
         gamma_red = red_surf_arr / c_red_bulk
 
     gamma_ox: float | np.ndarray = 1.0
@@ -698,7 +698,9 @@ def butler_volmer(
         _validate_positive(c_ox_bulk, "Bulk oxidized concentration c_ox_bulk")
         ox_surf_arr = np.asarray(c_ox_surf, dtype=float)
         if np.any(ox_surf_arr < 0.0):
-            raise ValueError("Surface concentration c_ox_surf must be non-negative (>= 0).")
+            raise ValueError(
+                "Surface concentration c_ox_surf must be non-negative (>= 0)."
+            )
         gamma_ox = ox_surf_arr / c_ox_bulk
 
     # Exponential terms
@@ -1114,7 +1116,9 @@ def tafel_overpotential(
         # Allow negative signed currents by taking absolute value, but reject zeros
         abs_cur = np.abs(cur_arr)
         if np.any(abs_cur == 0.0):
-            raise ValueError("Current must be non-zero to evaluate Tafel overpotential.")
+            raise ValueError(
+                "Current must be non-zero to evaluate Tafel overpotential."
+            )
     else:
         abs_cur = cur_arr
 
