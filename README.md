@@ -56,7 +56,7 @@ result = solver.solve(problem, t_span=(0.0, 1.0))
 
 # 3. Save the concentration profile to a variable
 c_profile = result["c"]  # 2D array of shape (N_times, N_points)
-c_flux = result.fluxes["c"] # The current can be calculated with i = n*F*A*c_flux
+c_flux = result.fluxes["c"]  # The current can be calculated with i = n*F*A*c_flux
 ```
 
 ## License
