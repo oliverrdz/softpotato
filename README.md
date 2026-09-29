@@ -1,11 +1,21 @@
 # Soft Potato
 
+[![PyPI](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/softpotato/badge/?version=latest)](https://softpotato.readthedocs.io)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
+
+> [!NOTE]
+> **Active Development (Milestone 1 in progress):**
+> The `main` branch contains work-in-progress features for **Milestone 1** (v3.1.0).
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.0.0**.
+> To test or use in-development features, install directly from GitHub:
+> ```bash
+> pip install git+https://github.com/oliverrdz/softpotato.git
+> ```
 
 **Full documentation**: [https://softpotato.readthedocs.io](https://softpotato.readthedocs.io) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -23,10 +33,28 @@ Interactive Jupyter notebooks are available in the [`examples/`](examples/) dire
 
 ## Installation
 
-Soft Potato v3.0.0 is available in [PyPi](https://pypi.org/project/softpotato/) and can be installed via pip:
+### Stable Release (v3.0.0)
+
+Soft Potato v3.0.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
+```
+
+### Development Version (Milestone 1 in progress)
+
+To install the latest development version directly from GitHub:
+
+```bash
+pip install git+https://github.com/oliverrdz/softpotato.git
+```
+
+Or clone the repository and install in development mode:
+
+```bash
+git clone https://github.com/oliverrdz/softpotato.git
+cd softpotato
+pip install -e ".[dev,docs]"
 ```
 
 ## Quick Start: Solving 1D Diffusion with `scipy_ivp`
@@ -59,6 +87,23 @@ c_profile = result["c"]  # 2D array of shape (N_times, N_points)
 c_flux = result.fluxes["c"]  # The current can be calculated with i = n*F*A*c_flux
 ```
 
+## Analytical Equations & Benchmarking (`softpotato.analytical`)
+
+Soft Potato provides exact closed-form analytical solutions and empirical models for benchmarking numerical solvers and rapid parameter estimation:
+
+```python
+import numpy as np
+import softpotato as sp
+
+# 1. Planar Cottrell chronoamperometry current transient
+t = np.linspace(0.1, 5.0, 50)
+i_transient = sp.cottrell(t, n=1, D=1e-5, c_bulk=1e-3, area=1e-4)
+
+# 2. Spherical electrode transient and steady-state limiting current
+i_sphere = sp.cottrell_spherical(t, r=1e-5, n=1, D=1e-5, c_bulk=1e-3)
+```
+
 ## License
 
 This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details.
+

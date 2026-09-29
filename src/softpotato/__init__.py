@@ -26,7 +26,31 @@ True
 (101, 50)
 """
 
-from . import solver
+from . import analytical, constants, solver
+from .analytical import (
+    anson,
+    cottrell,
+    cottrell_cylinder,
+    cottrell_spherical,
+    cottrell_step,
+    sand,
+    sand_potential,
+    sand_transition_time,
+    step_concentration_profile,
+    step_flux_profile,
+)
+from .constants import (
+    AVOGADRO,
+    BOLTZMANN,
+    ELEMENTARY_CHARGE,
+    FARADAY,
+    GAS_CONSTANT,
+    STANDARD_TEMPERATURE,
+    T_STD,
+    VACUUM_PERMITTIVITY,
+    F,
+    R,
+)
 from .solver import (
     BaseSolver,
     BoundaryCondition,
@@ -41,14 +65,37 @@ from .solver import (
 __version__ = "3.0.0"
 
 __all__ = [
+    "AVOGADRO",
+    "BOLTZMANN",
+    "ELEMENTARY_CHARGE",
+    "FARADAY",
+    "GAS_CONSTANT",
+    "STANDARD_TEMPERATURE",
+    "T_STD",
+    "VACUUM_PERMITTIVITY",
     "BaseSolver",
     "BoundaryCondition",
     "DiffusionProblem",
     "DirichletBC",
+    "F",
     "NeumannBC",
+    "R",
     "SolverResult",
     "__version__",
+    "analytical",
+    "anson",
+    "constants",
+    "cottrell",
+    "cottrell_cylinder",
+    "cottrell_spherical",
+    "cottrell_step",
     "get_solver",
     "list_solvers",
+    "sand",
+    "sand_potential",
+    "sand_transition_time",
     "solver",
+    "step_concentration_profile",
+    "step_flux_profile",
 ]
+
