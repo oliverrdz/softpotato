@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Microelectrode & Ultramicroelectrode (UME) Models (`softpotato.analytical.microelectrodes`)**:
+  - Introduced dedicated microelectrode and ultramicroelectrode analytical submodule (`softpotato.analytical.microelectrodes`).
+  - Added Saito steady-state diffusion-limited current equation (`microdisc_limiting_current`) for circular inlaid microdiscs ($I_{\text{lim}} = 4 n F D c^* a$).
+  - Added Shoup and Szabo full-time chronoamperometric transient approximation (`microdisc_transient`) for inlaid microdiscs spanning planar Cottrell decay to Saito steady state with $<0.6\%$ relative error.
+  - Added Mahon and Oldham analytical piecewise chronoamperometric transient model (`mahon_oldham_transient`) for inlaid microdiscs with $<0.02\%$ relative error across intermediate times.
+  - Added hemispherical microelectrode steady-state diffusion-limited current (`microhemisphere_limiting_current`) on an insulator ($I_{\text{lim}} = 2 \pi n F D c^* r$).
+  - Added spherical microelectrode steady-state diffusion-limited current (`microsphere_limiting_current`) in bulk solution ($I_{\text{lim}} = 4 \pi n F D c^* r$).
+  - Added quasi-steady-state microband electrode diffusion-limited current (`microband_limiting_current`) with logarithmic time decay ($I_{\text{lim}}(t) = 2 \pi n F D c^* l / \ln(0.64 D t / w^2)$).
+  - Re-exported all microelectrode analytical functions at `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive unit test suite in `tests/test_analytical_microelectrodes.py` with 20 tests and complete doctests.
+  - Documented `softpotato.analytical.microelectrodes` in Sphinx API reference (`docs/api.rst`).
 - **Voltammetry & Kinetic Diagnostics (`softpotato.analytical.voltammetry`)**:
   - Introduced voltammetric peak current and kinetic diagnostic submodule (`softpotato.analytical.voltammetry`).
   - Added classical Randles–Ševčík peak current equation for reversible planar diffusion (`randles_sevcik`) supporting cathodic and anodic sweeps with vectorization across scan rates.
