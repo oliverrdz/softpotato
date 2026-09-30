@@ -178,4 +178,3 @@ __all__ = [
     "tafel_overpotential",
     "tafel_slope",
 ]
-
