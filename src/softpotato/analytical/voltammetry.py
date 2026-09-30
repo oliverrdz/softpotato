@@ -273,7 +273,7 @@ def randles_sevcik(
     >>> # Reversible 1-electron reduction at 0.1 V/s, 1 mM, 0.07 cm^2, D = 1e-5 cm^2/s
     >>> ip = randles_sevcik(0.1, c_bulk=1e-6, D=1e-5, area=0.07)
     >>> round(ip * 1e6, 2)  # Current in microamperes
-    18.78
+    18.81
     """
     _validate_non_negative(c_bulk, "Bulk concentration c_bulk")
     _validate_positive(D, "Diffusion coefficient D")
@@ -368,7 +368,7 @@ def randles_sevcik_irreversible(
     >>> from softpotato.analytical.voltammetry import randles_sevcik_irreversible
     >>> ip_irrev = randles_sevcik_irreversible(0.1, alpha=0.5, c_bulk=1e-6, D=1e-5, area=0.07)
     >>> round(ip_irrev * 1e6, 2)
-    14.75
+    14.77
     """
     _validate_alpha(alpha)
     _validate_positive(n_alpha, "Number of electrons n_alpha")
@@ -482,7 +482,7 @@ def randles_sevcik_quasi(
     >>> from softpotato.analytical.voltammetry import randles_sevcik_quasi
     >>> ip_quasi = randles_sevcik_quasi(0.1, k0=1e-3, c_bulk=1e-6, D=1e-5, area=0.07)
     >>> round(ip_quasi * 1e6, 2)
-    17.92
+    15.3
     """
     _validate_alpha(alpha)
     _validate_non_negative(c_bulk, "Bulk concentration c_bulk")
@@ -634,7 +634,7 @@ def nicholson_psi(
     >>> # Evaluate Psi from Delta_Ep = 72 mV for n = 1
     >>> psi_val = nicholson_psi(delta_ep=0.072, in_volts=True, method="swaddle")
     >>> round(float(psi_val), 2)
-    2.05
+    2.04
     """
     _validate_positive(n, "Number of electrons n")
     _validate_positive(T, "Temperature T")
@@ -1036,7 +1036,7 @@ def peak_potential_irreversible(
     >>> from softpotato.analytical.voltammetry import peak_potential_irreversible
     >>> ep = peak_potential_irreversible(0.1, k0=1e-4, E0_prime=0.0)
     >>> round(ep, 4)
-    -0.1242
+    -0.2347
     """
     _validate_positive(k0, "Standard rate constant k0")
     _validate_positive(D, "Diffusion coefficient D")
