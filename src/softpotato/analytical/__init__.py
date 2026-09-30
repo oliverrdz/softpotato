@@ -11,9 +11,10 @@ Submodules
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
 step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
+voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
 """
 
-from . import hydrodynamics, kinetics, step
+from . import hydrodynamics, kinetics, step, voltammetry
 from .hydrodynamics import (
     KouteckyLevichResult,
     RRDEResult,
@@ -59,9 +60,24 @@ from .step import (
     step_concentration_profile,
     step_flux_profile,
 )
+from .voltammetry import (
+    MatsudaAyabeResult,
+    NicholsonResult,
+    matsuda_ayabe,
+    matsuda_ayabe_lambda,
+    nicholson_delta_ep,
+    nicholson_psi,
+    nicholson_rate_constant,
+    peak_potential_irreversible,
+    randles_sevcik,
+    randles_sevcik_irreversible,
+    randles_sevcik_quasi,
+)
 
 __all__ = [
     "KouteckyLevichResult",
+    "MatsudaAyabeResult",
+    "NicholsonResult",
     "RRDEResult",
     "TafelResult",
     "anson",
@@ -82,12 +98,21 @@ __all__ = [
     "koutecky_levich_analysis",
     "levich",
     "levich_constant",
+    "matsuda_ayabe",
+    "matsuda_ayabe_lambda",
     "nernst",
     "nernst_diffusion_layer",
     "nernst_equilibrium_concentrations",
     "nernst_potential",
     "nernst_ratio",
+    "nicholson_delta_ep",
+    "nicholson_psi",
+    "nicholson_rate_constant",
+    "peak_potential_irreversible",
     "rad_s_to_rpm",
+    "randles_sevcik",
+    "randles_sevcik_irreversible",
+    "randles_sevcik_quasi",
     "ring_collection_current",
     "ring_limiting_current",
     "rotating_ring_disk",
@@ -103,4 +128,5 @@ __all__ = [
     "tafel_analysis",
     "tafel_overpotential",
     "tafel_slope",
+    "voltammetry",
 ]
