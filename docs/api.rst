@@ -70,6 +70,14 @@ Scanning Electrochemical Microscopy (``softpotato.analytical.secm``)
    :undoc-members:
    :show-inheritance:
 
+Parameter Fitting & Experimental Data Analysis (``softpotato.analytical.fitting``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.fitting
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 
