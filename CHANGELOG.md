@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Scanning Electrochemical Microscopy (SECM) Approach Curves (`softpotato.analytical.secm`)**:
+  - Introduced dedicated SECM probe approach curve analytical submodule (`softpotato.analytical.secm`).
+  - Added Lefrou and Cornut analytical approximation for steady-state normalized tip current over conductive substrates (`secm_approach_positive_feedback`) supporting variable normalized distance $L = d/a$ and insulator radius ratio $RG = r_g/a$.
+  - Added Lefrou and Cornut analytical approximation for steady-state normalized tip current over inert insulating substrates (`secm_approach_negative_feedback`) modeling hindered diffusion across all $L$ and $RG > 1$.
+  - Added unified SECM approach curve model (`secm_approach_curve`) supporting arbitrary first-order heterogeneous substrate kinetics ($\kappa = \Lambda = ka/D \ge 0$), smoothly interpolating between pure negative feedback ($\kappa = 0$) and pure positive feedback ($\kappa \to \infty$).
+  - Added Saito steady-state limiting current calculation at infinite distance (`secm_limiting_current_infinite`) for microdisk electrodes ($i_{T,\infty} = 4 n F D c^* a$).
+  - Added dimensional tip current calculation in Amperes (`secm_tip_current`) with IUPAC cathodic/anodic sign convention support.
+  - Re-exported all SECM analytical functions at `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive unit test suite in `tests/test_analytical_secm.py` with 21 tests and verified doctests.
+  - Documented `softpotato.analytical.secm` in Sphinx API reference (`docs/api.rst`).
 - **Microelectrode & Ultramicroelectrode (UME) Models (`softpotato.analytical.microelectrodes`)**:
   - Introduced dedicated microelectrode and ultramicroelectrode analytical submodule (`softpotato.analytical.microelectrodes`).
   - Added Saito steady-state diffusion-limited current equation (`microdisc_limiting_current`) for circular inlaid microdiscs ($I_{\text{lim}} = 4 n F D c^* a$).

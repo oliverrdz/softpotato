@@ -62,6 +62,14 @@ Microelectrode Geometries (``softpotato.analytical.microelectrodes``)
    :undoc-members:
    :show-inheritance:
 
+Scanning Electrochemical Microscopy (``softpotato.analytical.secm``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.secm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 
