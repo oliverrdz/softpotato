@@ -510,4 +510,3 @@ def test_import_from_top_level_package():
     assert hasattr(sp, "peak_potential_irreversible")
     assert hasattr(sp, "NicholsonResult")
     assert hasattr(sp, "MatsudaAyabeResult")
-
