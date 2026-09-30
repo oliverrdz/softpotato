@@ -434,11 +434,9 @@ def mahon_oldham_transient(
     ------------------------
     - Maximum relative error is below :math:`0.02\%` for all intermediate and transition times.
     - As :math:`\sigma \to 0` (short times), :math:`f(\sigma) \to \dfrac{1}{\sqrt{\pi \sigma}}`,
-      matching exact planar Cottrell behavior:
-      :math:`I(t) \to \dfrac{n F (\pi a^2) \sqrt{D} c^*}{\sqrt{\pi t}}`.
+      matching exact planar Cottrell behavior: :math:`I(t) \to \dfrac{n F (\pi a^2) \sqrt{D} c^*}{\sqrt{\pi t}}`.
     - As :math:`\sigma \to \infty` (long times), :math:`f(\sigma) \to \dfrac{4}{\pi}`,
-      matching exact Saito steady-state limiting current:
-      :math:`I(t) \to \pi n F D c^* a \cdot \dfrac{4}{\pi} = 4 n F D c^* a`.
+      matching exact Saito steady-state limiting current: :math:`I(t) \to 4 n F D c^* a`.
 
     Parameters
     ----------
@@ -452,10 +450,11 @@ def mahon_oldham_transient(
         Diffusion coefficient :math:`D` in :math:`\text{m}^2/\text{s}` or
         :math:`\text{cm}^2/\text{s}` (:math:`D > 0`).
     c_bulk : float, default 1e-3
-        Bulk concentration of electroactive species :math:`c^*` in :math:`\text{mol}/\text{m}`
+        Bulk concentration of electroactive species :math:`c^*` in :math:`\text{mol}/\text{m}^3`
         or :math:`\text{mol}/\text{cm}^3` (:math:`c^* \ge 0`).
     branch : {'auto', 'short_time', 'long_time'}, default 'auto'
         Branch formula to evaluate:
+
         - ``'auto'``: Automatically selects short-time (:math:`\sigma \le 1.281`) or
           long-time (:math:`\sigma \ge 1.281`) branch element-wise.
         - ``'short_time'``: Evaluates the short-time asymptotic series expansion.

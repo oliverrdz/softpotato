@@ -11,11 +11,12 @@ Submodules
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
 microelectrodes : Steady-state and transient models for microelectrodes and UMEs.
+secm : Scanning Electrochemical Microscopy (SECM) approach curves.
 step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
 """
 
-from . import hydrodynamics, kinetics, microelectrodes, step, voltammetry
+from . import hydrodynamics, kinetics, microelectrodes, secm, step, voltammetry
 from .hydrodynamics import (
     KouteckyLevichResult,
     RRDEResult,
@@ -56,6 +57,13 @@ from .microelectrodes import (
     microdisc_transient,
     microhemisphere_limiting_current,
     microsphere_limiting_current,
+)
+from .secm import (
+    secm_approach_curve,
+    secm_approach_negative_feedback,
+    secm_approach_positive_feedback,
+    secm_limiting_current_infinite,
+    secm_tip_current,
 )
 from .step import (
     anson,
@@ -136,6 +144,12 @@ __all__ = [
     "sand",
     "sand_potential",
     "sand_transition_time",
+    "secm",
+    "secm_approach_curve",
+    "secm_approach_negative_feedback",
+    "secm_approach_positive_feedback",
+    "secm_limiting_current_infinite",
+    "secm_tip_current",
     "shielding_factor",
     "step",
     "step_concentration_profile",
