@@ -46,6 +46,14 @@ Thermodynamics & Interfacial Kinetics (``softpotato.analytical.kinetics``)
    :undoc-members:
    :show-inheritance:
 
+Voltammetry & Kinetic Diagnostics (``softpotato.analytical.voltammetry``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.voltammetry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 

@@ -142,7 +142,7 @@ def _format_output(arr: np.ndarray, is_scalar: bool) -> float | np.ndarray:
 class NicholsonResult:
     r"""Container for Nicholson cyclic voltammetry kinetic diagnostic parameters.
 
-    Attributes
+    Parameters
     ----------
     psi : float
         Dimensionless Nicholson kinetic parameter :math:`\Psi`.
@@ -150,12 +150,12 @@ class NicholsonResult:
         Peak potential separation :math:`\Delta E_p` in Volts.
     delta_ep_mv : float
         Peak potential separation :math:`\Delta E_p` in millivolts.
-    k0 : float or None
+    k0 : float or None, default None
         Extracted heterogeneous standard electron transfer rate constant :math:`k^0`
         in :math:`\text{m}\cdot\text{s}^{-1}` (or :math:`\text{cm}\cdot\text{s}^{-1}`).
-    method : str
+    method : str, default "swaddle"
         Method used for the evaluation (``"swaddle"``, ``"lavagnini"``, or ``"table"``).
-    n : float
+    n : float, default 1.0
         Number of electrons transferred.
     """
 
@@ -171,7 +171,7 @@ class NicholsonResult:
 class MatsudaAyabeResult:
     r"""Container for Matsuda–Ayabe reversibility classification and diagnostics.
 
-    Attributes
+    Parameters
     ----------
     lambda_param : float
         Dimensionless Matsuda–Ayabe kinetic parameter :math:`\Lambda`.
