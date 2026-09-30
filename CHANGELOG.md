@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Voltammetry & Kinetic Diagnostics (`softpotato.analytical.voltammetry`)**:
+  - Introduced voltammetric peak current and kinetic diagnostic submodule (`softpotato.analytical.voltammetry`).
+  - Added classical Randles–Ševčík peak current equation for reversible planar diffusion (`randles_sevcik`) supporting cathodic and anodic sweeps with vectorization across scan rates.
+  - Added irreversible Randles–Ševčík peak current equation (`randles_sevcik_irreversible`) supporting variable transfer coefficient $\alpha$ and stoichiometric electron count $n_\alpha$.
+  - Added quasi-reversible peak current approximation (`randles_sevcik_quasi`) transitioning smoothly between reversible and irreversible limits via Matsuda–Ayabe shape factor $K(\Lambda, \alpha)$.
+  - Added Nicholson kinetic diagnostic method (`nicholson_psi`) supporting forward calculation of peak separation $\Delta E_p$, inverse estimation of dimensionless rate parameter $\Psi$ (Swaddle, Lavagnini, and tabulated root-finding), and direct extraction of standard heterogeneous rate constant $k^0$.
+  - Added Matsuda–Ayabe reversibility parameter calculation (`matsuda_ayabe_lambda`) and zone classification (`matsuda_ayabe`) returning structured dataclass (`MatsudaAyabeResult`).
+  - Added irreversible peak potential shift diagnostics with scan rate (`peak_potential_irreversible`).
+  - Re-exported all voltammetry functions and dataclasses at `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive test suite in `tests/test_analytical_voltammetry.py` with 23 tests and complete docstring examples.
+  - Documented `softpotato.analytical.voltammetry` in Sphinx API reference (`docs/api.rst`).
 - **Thermodynamics & Interfacial Kinetics (`softpotato.analytical.kinetics`)**:
   - Introduced thermodynamic and heterogeneous interfacial kinetics submodule (`softpotato.analytical.kinetics`).
   - Added Nernst equilibrium electrode potential equation (`nernst` / `nernst_potential`) supporting single-ratio ($c_{\text{Ox}} / c_{\text{Red}}$) or separate concentration arguments, with asymptotic $\pm\infty$ limit handling.
