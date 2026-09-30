@@ -8,6 +8,7 @@ models for electrochemical systems. These analytical equations serve as:
 
 Submodules
 ----------
+fitting : Parameter fitting and experimental data analysis utilities.
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
 microelectrodes : Steady-state and transient models for microelectrodes and UMEs.
@@ -16,7 +17,28 @@ step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
 """
 
-from . import hydrodynamics, kinetics, microelectrodes, secm, step, voltammetry
+from . import fitting, hydrodynamics, kinetics, microelectrodes, secm, step, voltammetry
+from .fitting import (
+    ButlerVolmerFitResult,
+    CottrellFitResult,
+    FitResult,
+    KouteckyLevichFitResult,
+    LevichFitResult,
+    MicrodiscFitResult,
+    RandlesSevcikFitResult,
+    SECMApproachFitResult,
+    TafelFitResult,
+    fit_butler_volmer,
+    fit_cottrell,
+    fit_curve,
+    fit_koutecky_levich,
+    fit_levich,
+    fit_linear,
+    fit_microdisc_transient,
+    fit_randles_sevcik,
+    fit_secm_approach,
+    fit_tafel,
+)
 from .hydrodynamics import (
     KouteckyLevichResult,
     RRDEResult,
@@ -92,10 +114,19 @@ from .voltammetry import (
 )
 
 __all__ = [
+    "ButlerVolmerFitResult",
+    "CottrellFitResult",
+    "FitResult",
+    "KouteckyLevichFitResult",
     "KouteckyLevichResult",
+    "LevichFitResult",
     "MatsudaAyabeResult",
+    "MicrodiscFitResult",
     "NicholsonResult",
     "RRDEResult",
+    "RandlesSevcikFitResult",
+    "SECMApproachFitResult",
+    "TafelFitResult",
     "TafelResult",
     "anson",
     "butler_volmer",
@@ -109,6 +140,17 @@ __all__ = [
     "cottrell_step",
     "exchange_current",
     "exchange_current_density",
+    "fit_butler_volmer",
+    "fit_cottrell",
+    "fit_curve",
+    "fit_koutecky_levich",
+    "fit_levich",
+    "fit_linear",
+    "fit_microdisc_transient",
+    "fit_randles_sevcik",
+    "fit_secm_approach",
+    "fit_tafel",
+    "fitting",
     "hydrodynamics",
     "kinetics",
     "koutecky_levich",
