@@ -14,7 +14,7 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | Milestone | Target Version | Focus Area | Status | Release Type |
 | :--- | :--- | :--- | :--- | :--- |
 | **Current State Stabilization** | `v3.0.0` | Finalize core solver module & `solve_ivp` integration | Released | **Stable Baseline** |
-| **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Planned | **Minor Feature Addition** |
+| **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Active Development | **Minor Feature Addition** |
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Planned | **Minor Feature Addition** |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Planned | **Minor Feature Addition** |
 | **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | Planned | **Minor Feature Addition** |
