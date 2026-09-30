@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Parameter Fitting & Experimental Data Analysis (`softpotato.analytical.fitting`)**:
+  - Introduced dedicated parameter estimation and regression submodule (`softpotato.analytical.fitting`) resolving Issue #16.
+  - Added general bounded non-linear least-squares fitting engine (`fit_curve`) with sensitive tolerances for electrochemical micro- and nano-currents, parameter covariance, correlation matrix, Student's $t$ confidence intervals, $R^2$, adjusted $R^2$, RMSE, and reduced $\chi^2$.
+  - Added ordinary and zero-intercept linear regression engine (`fit_linear`) with exact analytical standard errors and confidence intervals.
+  - Added Cottrell chronoamperometry fitter (`fit_cottrell`) supporting linear ($I \text{ vs. } t^{-1/2}$) and non-linear ($I(t)$) regression with optional background current estimation returning `CottrellFitResult`.
+  - Added Randles–Ševčík voltammetry fitter (`fit_randles_sevcik`) for reversible and irreversible electron transfer returning `RandlesSevcikFitResult`.
+  - Added RDE Levich analysis fitter (`fit_levich`) supporting linear and non-linear optimization with dual `omega`/`rpm` rotation units returning `LevichFitResult`.
+  - Added RDE Koutecký–Levich analysis fitter (`fit_koutecky_levich`) supporting both linearized ($1/I \text{ vs. } \omega^{-1/2}$) and direct non-linear current regression returning `KouteckyLevichFitResult`.
+  - Added high-field Tafel kinetics fitter (`fit_tafel`) returning `TafelFitResult`.
+  - Added full-range non-linear Butler–Volmer fitter (`fit_butler_volmer`) simultaneously optimizing $I_0$, $\alpha$, and equilibrium potential offset returning `ButlerVolmerFitResult`.
+  - Added microdisc transient chronoamperometry fitter (`fit_microdisc_transient`) with Shoup–Szabo and Mahon–Oldham models returning `MicrodiscFitResult`.
+  - Added SECM approach curve feedback fitter (`fit_secm_approach`) simultaneously estimating insulator ratio $RG$, vertical positioning offset $d_{\text{offset}}$, and substrate kinetics returning `SECMApproachFitResult`.
+  - Implemented typed dataclasses for each technique inheriting from base `FitResult`.
+  - Re-exported all fitting functions and result dataclasses in `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive test suite in `tests/test_analytical_fitting.py` with 19 tests.
+  - Documented `softpotato.analytical.fitting` in Sphinx API reference (`docs/api.rst`).
 - **Scanning Electrochemical Microscopy (SECM) Approach Curves (`softpotato.analytical.secm`)**:
   - Introduced dedicated SECM probe approach curve analytical submodule (`softpotato.analytical.secm`).
   - Added Lefrou and Cornut analytical approximation for steady-state normalized tip current over conductive substrates (`secm_approach_positive_feedback`) supporting variable normalized distance $L = d/a$ and insulator radius ratio $RG = r_g/a$.
