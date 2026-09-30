@@ -10,11 +10,12 @@ Submodules
 ----------
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
+microelectrodes : Steady-state and transient models for microelectrodes and UMEs.
 step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
 """
 
-from . import hydrodynamics, kinetics, step, voltammetry
+from . import hydrodynamics, kinetics, microelectrodes, step, voltammetry
 from .hydrodynamics import (
     KouteckyLevichResult,
     RRDEResult,
@@ -47,6 +48,14 @@ from .kinetics import (
     tafel_analysis,
     tafel_overpotential,
     tafel_slope,
+)
+from .microelectrodes import (
+    mahon_oldham_transient,
+    microband_limiting_current,
+    microdisc_limiting_current,
+    microdisc_transient,
+    microhemisphere_limiting_current,
+    microsphere_limiting_current,
 )
 from .step import (
     anson,
@@ -98,8 +107,15 @@ __all__ = [
     "koutecky_levich_analysis",
     "levich",
     "levich_constant",
+    "mahon_oldham_transient",
     "matsuda_ayabe",
     "matsuda_ayabe_lambda",
+    "microband_limiting_current",
+    "microdisc_limiting_current",
+    "microdisc_transient",
+    "microelectrodes",
+    "microhemisphere_limiting_current",
+    "microsphere_limiting_current",
     "nernst",
     "nernst_diffusion_layer",
     "nernst_equilibrium_concentrations",
