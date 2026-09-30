@@ -54,6 +54,14 @@ Voltammetry & Kinetic Diagnostics (``softpotato.analytical.voltammetry``)
    :undoc-members:
    :show-inheritance:
 
+Microelectrode Geometries (``softpotato.analytical.microelectrodes``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.microelectrodes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 
