@@ -6,13 +6,11 @@ experimental or simulated electrochemical data.
 
 These utilities wrap :func:`scipy.optimize.curve_fit` and linear least-squares
 algorithms with:
-1. Physically realistic parameter boundaries (:math:`D > 0`, :math:`0 < \alpha < 1`,
-   :math:`k^0 \ge 0`, :math:`c^* > 0`, :math:`A > 0`, :math:`RG \ge 1.0`).
-2. Rigorous uncertainty quantification: parameter standard errors, covariance
-   and correlation matrices, and Student's :math:`t` confidence intervals.
-3. Goodness-of-fit statistics: :math:`R^2`, adjusted :math:`R^2`, Root-Mean-Square
-   Error (RMSE), and reduced chi-squared (:math:`\chi_\nu^2`).
+1. Physically realistic parameter boundaries (:math:`D > 0`, :math:`0 < \alpha < 1`, :math:`k^0 \ge 0`, :math:`c^* > 0`, :math:`A > 0`, :math:`RG \ge 1.0`).
+2. Rigorous uncertainty quantification: parameter standard errors, covariance and correlation matrices, and Student's :math:`t` confidence intervals.
+3. Goodness-of-fit statistics: :math:`R^2`, adjusted :math:`R^2`, Root-Mean-Square Error (RMSE), and reduced chi-squared (:math:`\chi_\nu^2`).
 4. High-level fitting routines for standard electroanalytical techniques:
+
    - Cottrell chronoamperometry (:func:`fit_cottrell`)
    - Randles–Ševčík cyclic voltammetry (:func:`fit_randles_sevcik`)
    - Rotating Disk Electrode (RDE) Levich analysis (:func:`fit_levich`)

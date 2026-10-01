@@ -78,6 +78,14 @@ Parameter Fitting & Experimental Data Analysis (``softpotato.analytical.fitting`
    :undoc-members:
    :show-inheritance:
 
+Simulation Benchmarking Suite (``softpotato.analytical.benchmark``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: softpotato.analytical.benchmark
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Solver Subpackage (``softpotato.solver``)
 -----------------------------------------
 
