@@ -515,7 +515,7 @@ def test_rotating_ring_disk_unified_solver():
 def test_rde_numerical_benchmark_agreement():
     """Validate Levich analytical equation against simulated RDE voltammetry parameters.
 
-    Matches parameters from examples/rde_cyclic_voltammetry_solve_ivp_tutorial.ipynb:
+    Parameters:
     n = 1, D = 1e-5 cm^2/s, c_bulk = 1e-6 mol/cm^3, A = 0.07 cm^2, nu = 0.01 cm^2/s.
     """
     n = 1
@@ -524,14 +524,14 @@ def test_rde_numerical_benchmark_agreement():
     area = 0.07
     nu = 0.01
 
-    # Rotation series from tutorial: 400, 900, 1600, 2500 rpm
+    # Rotation series: 400, 900, 1600, 2500 rpm
     rpms = [400, 900, 1600, 2500]
     expected_currents_uA = [27.10, 40.65, 54.20, 67.75]
 
     for rpm_val, i_expected_uA in zip(rpms, expected_currents_uA):
         i_calc_A = levich(rpm=rpm_val, n=n, D=D, c_bulk=c_bulk, area=area, nu=nu)
         i_calc_uA = float(i_calc_A) * 1e6
-        # Compare with tutorial values (< 0.2% tolerance)
+        # Compare with expected values (< 0.2% tolerance)
         assert math.isclose(i_calc_uA, i_expected_uA, rel_tol=2e-3)
 
 

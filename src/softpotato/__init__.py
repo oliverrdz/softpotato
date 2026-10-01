@@ -146,7 +146,7 @@ from .solver import (
     list_solvers,
 )
 
-__version__ = "3.0.0"
+__version__ = "3.1.0"
 
 __all__ = [
     "AVOGADRO",
