@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-10-01
+
+### Milestone 1 Release: Analytical Equations, Benchmarking & Parameter Fitting
+Soft Potato 3.1.0 delivers Milestone 1 of the strategic development roadmap, introducing a comprehensive suite of closed-form and empirical electrochemical equations (`softpotato.analytical`), automated numerical solver verification and benchmarking (`softpotato.analytical.benchmark`), non-linear least-squares parameter estimation and regression (`softpotato.analytical.fitting`), centralized physical and electrochemical constants (`softpotato.constants`), and an interactive Cottrell tutorial notebook (`examples/cottrell.ipynb`).
+
+### Removed
+- Removed previous tutorial notebooks and documentation entries ahead of creating a redesigned tutorial suite.
+
 ### Added
+- **Interactive Cottrell Chronoamperometry Tutorial (`examples/cottrell.ipynb`)**:
+  - Redesigned and refactored Cottrell chronoamperometry tutorial demonstrating 1D potential-step simulation with Soft Potato 3.1.
+  - Showcases problem formulation with `DiffusionProblem`, Method of Lines stiff adaptive integration via `scipy_ivp`, spatio-temporal concentration profile verification against analytical error-function theory (`step_concentration_profile`), Faradaic current calculation and Cottrell plot analysis (`cottrell`), automated solver benchmarking (`compute_error_metrics`), and parameter estimation (`fit_cottrell`).
+  - Integrated into Read the Docs documentation suite (`docs/examples/cottrell.ipynb`) and automated CI test execution via `nbmake`.
 - **Simulation Benchmarking Suite (`softpotato.analytical.benchmark`)**:
   - Introduced dedicated automated solver benchmarking and verification submodule (`softpotato.analytical.benchmark`) resolving Issue #17.
   - Added standardized error metrics calculation (`compute_error_metrics`) returning `BenchmarkMetrics` with RMSE, maximum pointwise absolute error ($L_\infty$), discrete relative $L_2$ error norm, mean absolute error (MAE), and zero-division-protected relative error metrics.
