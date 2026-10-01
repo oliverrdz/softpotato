@@ -9,9 +9,9 @@
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
 
 > [!NOTE]
-> **Active Development (Milestone 1 in progress):**
-> The `main` branch contains work-in-progress features for **Milestone 1** (v3.1.0).
-> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.0.0**.
+> **Active Development (Milestone 2 in progress):**
+> The `main` branch contains work-in-progress features for **Milestone 2** (v3.2.0: Grids).
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.1.0**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
@@ -19,29 +19,17 @@
 
 **Full documentation**: [https://softpotato.readthedocs.io](https://softpotato.readthedocs.io) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-## Tutorials & Examples
-
-Interactive Jupyter notebooks are available in the [`examples/`](examples/) directory:
-
-| Tutorial | Description |
-| :--- | :--- |
-| [Cottrell Chronoamperometry with `solve_ivp`](examples/cottrell_solve_ivp_tutorial.ipynb) | Simulates the Cottrell potential-step experiment using Soft Potato's adaptive `solve_ivp` solver and benchmarks against the Cottrell equation. |
-| [Cyclic Voltammetry with Nernst Kinetics](examples/cyclic_voltammetry_solve_ivp_tutorial.ipynb) | Simulates reversible cyclic voltammetry using `solve_ivp`, visualizes spatio-temporal concentration profiles, validates peak currents against the Randles–Ševčík equation across scan rates, and evaluates diagnostic reversibility criteria. |
-| [Cyclic Voltammetry with Butler–Volmer Kinetics](examples/cyclic_voltammetry_butler_volmer_tutorial.ipynb) | Simulates cyclic voltammetry under Butler–Volmer quasi-reversible kinetics with unequal diffusion coefficients ($D_{\text{Red}} \neq D_{\text{Ox}}$) using second-order ghost-node flux discretization and benchmarks against Nicholson theory. |
-| [Rotating Disk Electrode (RDE) Voltammetry with Levich Analysis](examples/rde_cyclic_voltammetry_solve_ivp_tutorial.ipynb) | Simulates RDE cyclic voltammetry with Nernst kinetics using the stagnant diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Demonstrates the transition from transient peaks to steady-state waves across scan rates and validates limiting currents against the Levich equation. |
-| [RDE Voltammetry with Butler–Volmer Kinetics & Koutecký–Levich Analysis](examples/rde_butler_volmer_koutecky_levich_tutorial.ipynb) | Simulates RDE cyclic voltammetry for an oxidation with Butler–Volmer kinetics using the stagnant diffusion layer approximation ($\delta = 1.61 D^{1/3} \nu^{1/6} \omega^{-1/2}$). Extracts $k_0$ and $\alpha$ using Koutecký–Levich and Tafel analysis. |
-
 ## Installation
 
-### Stable Release (v3.0.0)
+### Stable Release (v3.1.0)
 
-Soft Potato v3.0.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.1.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
 ```
 
-### Development Version (Milestone 1 in progress)
+### Development Version (Milestone 2 in progress)
 
 To install the latest development version directly from GitHub:
 
@@ -102,6 +90,20 @@ i_transient = sp.cottrell(t, n=1, D=1e-5, c_bulk=1e-3, area=1e-4)
 # 2. Spherical electrode transient and steady-state limiting current
 i_sphere = sp.cottrell_spherical(t, r=1e-5, n=1, D=1e-5, c_bulk=1e-3)
 ```
+
+## Development Roadmap & Milestones
+
+Soft Potato follows a staged milestone development roadmap for the 3.x series, maintaining strict backwards compatibility across releases:
+
+| Milestone | Target | Focus Area | Status |
+| :--- | :--- | :--- | :--- |
+| **Current Baseline** | `v3.0.0` | 1D multi-species diffusion solvers (`scipy_ivp`, Crank–Nicolson, BTCS, FTCS) | Released |
+| **Milestone 1: Analytical Equations** | `v3.1.0` | Vectorized analytical models (`step`, `voltammetry`, `hydrodynamics`, `microelectrodes`, `secm`, `kinetics`), automated solver benchmarking (`benchmark`), and parameter fitting (`fitting`) | Released |
+| **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) | In Development |
+| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Planned |
+| **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | Planned |
+
+For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 
 ## License
 
