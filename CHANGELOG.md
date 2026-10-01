@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Simulation Benchmarking Suite (`softpotato.analytical.benchmark`)**:
+  - Introduced dedicated automated solver benchmarking and verification submodule (`softpotato.analytical.benchmark`) resolving Issue #17.
+  - Added standardized error metrics calculation (`compute_error_metrics`) returning `BenchmarkMetrics` with RMSE, maximum pointwise absolute error ($L_\infty$), discrete relative $L_2$ error norm, mean absolute error (MAE), and zero-division-protected relative error metrics.
+  - Added empirical order of convergence estimator (`estimate_convergence_order`) via log-log linear regression returning order $p$ and $R^2$.
+  - Added spatial discretization convergence verification (`verify_spatial_convergence`) confirming expected second-order $\mathcal{O}(\Delta x^2)$ convergence across grid refinement $\Delta x$ with `ConvergenceResult`.
+  - Added temporal discretization convergence verification (`verify_temporal_convergence`) confirming theoretical convergence rates (second-order $\mathcal{O}(\Delta t^2)$ for Crank–Nicolson, first-order $\mathcal{O}(\Delta t)$ for backward-Euler BTCS) with optional fine-step self-convergence baselining.
+  - Added canonical Fourier sine diffusion decay benchmark (`run_fourier_decay_benchmark`) with exact time-exponential decay and analytical interfacial flux validation.
+  - Added planar Cottrell chronoamperometry potential step benchmark (`run_cottrell_benchmark`) evaluating semi-infinite diffusion concentration fields ($c(x, t) = c^* \text{erf}(x / 2\sqrt{Dt})$) and Cottrell current transients.
+  - Added total mass conservation benchmark (`run_mass_conservation_benchmark`) verifying integral mass invariance under zero-flux Neumann boundary conditions.
+  - Added single benchmark dispatcher (`run_benchmark`) and multi-solver comparative suite runner (`run_benchmark_suite`) with formatted ASCII tabular summary reporting via `BenchmarkSuiteResult.summary()`.
+  - Re-exported all benchmark functions and result dataclasses in `softpotato.analytical` and top-level `softpotato`.
+  - Added comprehensive test suite in `tests/test_analytical_benchmark.py` with 27 tests covering error metrics, convergence verification, all standard benchmarks across solvers, and dispatcher utilities.
+  - Documented `softpotato.analytical.benchmark` in Sphinx API reference (`docs/api.rst`).
 - **Parameter Fitting & Experimental Data Analysis (`softpotato.analytical.fitting`)**:
   - Introduced dedicated parameter estimation and regression submodule (`softpotato.analytical.fitting`) resolving Issue #16.
   - Added general bounded non-linear least-squares fitting engine (`fit_curve`) with sensitive tolerances for electrochemical micro- and nano-currents, parameter covariance, correlation matrix, Student's $t$ confidence intervals, $R^2$, adjusted $R^2$, RMSE, and reduced $\chi^2$.
