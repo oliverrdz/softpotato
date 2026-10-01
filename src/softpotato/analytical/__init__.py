@@ -8,6 +8,7 @@ models for electrochemical systems. These analytical equations serve as:
 
 Submodules
 ----------
+benchmark : Automated numerical solver validation suite and analytical benchmarking harness.
 fitting : Parameter fitting and experimental data analysis utilities.
 hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
 kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
@@ -17,7 +18,32 @@ step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
 voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
 """
 
-from . import fitting, hydrodynamics, kinetics, microelectrodes, secm, step, voltammetry
+from . import (
+    benchmark,
+    fitting,
+    hydrodynamics,
+    kinetics,
+    microelectrodes,
+    secm,
+    step,
+    voltammetry,
+)
+from .benchmark import (
+    BenchmarkCaseResult,
+    BenchmarkMetrics,
+    BenchmarkSuiteResult,
+    ConvergenceResult,
+    compute_error_metrics,
+    estimate_convergence_order,
+    list_benchmark_cases,
+    run_benchmark,
+    run_benchmark_suite,
+    run_cottrell_benchmark,
+    run_fourier_decay_benchmark,
+    run_mass_conservation_benchmark,
+    verify_spatial_convergence,
+    verify_temporal_convergence,
+)
 from .fitting import (
     ButlerVolmerFitResult,
     CottrellFitResult,
@@ -114,7 +140,11 @@ from .voltammetry import (
 )
 
 __all__ = [
+    "BenchmarkCaseResult",
+    "BenchmarkMetrics",
+    "BenchmarkSuiteResult",
     "ButlerVolmerFitResult",
+    "ConvergenceResult",
     "CottrellFitResult",
     "FitResult",
     "KouteckyLevichFitResult",
@@ -129,15 +159,18 @@ __all__ = [
     "TafelFitResult",
     "TafelResult",
     "anson",
+    "benchmark",
     "butler_volmer",
     "butler_volmer_current_density",
     "butler_volmer_linear",
     "charge_transfer_resistance",
     "collection_efficiency",
+    "compute_error_metrics",
     "cottrell",
     "cottrell_cylinder",
     "cottrell_spherical",
     "cottrell_step",
+    "estimate_convergence_order",
     "exchange_current",
     "exchange_current_density",
     "fit_butler_volmer",
@@ -157,6 +190,7 @@ __all__ = [
     "koutecky_levich_analysis",
     "levich",
     "levich_constant",
+    "list_benchmark_cases",
     "mahon_oldham_transient",
     "matsuda_ayabe",
     "matsuda_ayabe_lambda",
@@ -183,6 +217,11 @@ __all__ = [
     "ring_limiting_current",
     "rotating_ring_disk",
     "rpm_to_rad_s",
+    "run_benchmark",
+    "run_benchmark_suite",
+    "run_cottrell_benchmark",
+    "run_fourier_decay_benchmark",
+    "run_mass_conservation_benchmark",
     "sand",
     "sand_potential",
     "sand_transition_time",
@@ -200,5 +239,7 @@ __all__ = [
     "tafel_analysis",
     "tafel_overpotential",
     "tafel_slope",
+    "verify_spatial_convergence",
+    "verify_temporal_convergence",
     "voltammetry",
 ]
