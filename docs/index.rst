@@ -12,15 +12,13 @@ Welcome to Soft Potato's Documentation!
    installation
    api
 
+
 .. toctree::
    :maxdepth: 2
    :caption: Tutorials & Examples
 
-   examples/cottrell_solve_ivp_tutorial
-   examples/cyclic_voltammetry_solve_ivp_tutorial
-   examples/cyclic_voltammetry_butler_volmer_tutorial
-   examples/rde_cyclic_voltammetry_solve_ivp_tutorial
-   examples/rde_butler_volmer_koutecky_levich_tutorial
+   examples/cottrell
+
 
 .. toctree::
    :maxdepth: 1
