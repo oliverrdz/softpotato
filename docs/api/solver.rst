@@ -1,5 +1,5 @@
-Solver Subpackage (``softpotato.solver``)
-=========================================
+Solver Module (``softpotato.solver``)
+=====================================
 
 The ``softpotato.solver`` subpackage provides numerical solvers for 1D multi-species
 chemical diffusion and reaction-diffusion problems.
