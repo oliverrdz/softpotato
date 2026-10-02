@@ -53,3 +53,8 @@ div.nboutput.container .output_subarea {
 .rst-content table.docutils td {
     vertical-align: middle;
 }
+
+/* Hide multi-citation back-reference links in the bibliography */
+.rst-content span.backrefs {
+    display: none;
+}

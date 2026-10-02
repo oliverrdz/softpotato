@@ -22,7 +22,7 @@ Welcome to Soft Potato's Documentation!
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Development & Releases
 
    roadmap
