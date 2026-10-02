@@ -52,8 +52,8 @@ electrochemical CGS units:
   :math:`\implies I_p` in :math:`\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Cathodic (reduction) peak currents are positive (:math:`I_p > 0`).
-- Anodic (oxidation) peak currents are negative (:math:`I_p < 0`) when ``scan_direction="anodic"``.
+- Cathodic (reduction) peak currents are negative (:math:`I_p < 0`) when ``scan_direction="cathodic"``.
+- Anodic (oxidation) peak currents are positive (:math:`I_p > 0`) when ``scan_direction="anodic"``.
 
 References
 ----------
@@ -254,8 +254,8 @@ def randles_sevcik(
     F : float, default 96485.332
         Faraday constant in :math:`\text{C}\cdot\text{mol}^{-1}` (:math:`F > 0`).
     scan_direction : {"cathodic", "anodic"}, default "cathodic"
-        Direction of potential sweep. Cathodic (reduction) yields positive current (:math:`I_p > 0`),
-        while anodic (oxidation) yields negative current (:math:`I_p < 0`).
+        Direction of potential sweep. Cathodic (reduction) yields negative current (:math:`I_p < 0`),
+        while anodic (oxidation) yields positive current (:math:`I_p > 0`).
 
     Returns
     -------
@@ -272,8 +272,8 @@ def randles_sevcik(
     >>> from softpotato.analytical.voltammetry import randles_sevcik
     >>> # Reversible 1-electron reduction at 0.1 V/s, 1 mM, 0.07 cm^2, D = 1e-5 cm^2/s
     >>> ip = randles_sevcik(0.1, c_bulk=1e-6, D=1e-5, area=0.07)
-    >>> round(ip * 1e6, 2)  # Current in microamperes
-    18.81
+    >>> round(ip * 1e6, 2)  # Current in microamperes (cathodic is negative)
+    -18.81
     """
     _validate_non_negative(c_bulk, "Bulk concentration c_bulk")
     _validate_positive(D, "Diffusion coefficient D")
@@ -293,7 +293,7 @@ def randles_sevcik(
         raise ValueError(f"Scan rate v must be strictly positive (v > 0), got {v!r}.")
 
     prefactor = 0.4463 * n * F * area * c_bulk * np.sqrt((n * F * D * v_arr) / (R * T))
-    if scan_direction == "anodic":
+    if scan_direction == "cathodic":
         prefactor = -prefactor
 
     return _format_output(prefactor, np.ndim(v) == 0)
@@ -350,8 +350,8 @@ def randles_sevcik_irreversible(
     F : float, default 96485.332
         Faraday constant in :math:`\text{C}\cdot\text{mol}^{-1}` (:math:`F > 0`).
     scan_direction : {"cathodic", "anodic"}, default "cathodic"
-        Direction of potential sweep. Cathodic (reduction) yields positive current (:math:`I_p > 0`),
-        while anodic (oxidation) yields negative current (:math:`I_p < 0`).
+        Direction of potential sweep. Cathodic (reduction) yields negative current (:math:`I_p < 0`),
+        while anodic (oxidation) yields positive current (:math:`I_p > 0`).
 
     Returns
     -------
@@ -367,8 +367,8 @@ def randles_sevcik_irreversible(
     --------
     >>> from softpotato.analytical.voltammetry import randles_sevcik_irreversible
     >>> ip_irrev = randles_sevcik_irreversible(0.1, alpha=0.5, c_bulk=1e-6, D=1e-5, area=0.07)
-    >>> round(ip_irrev * 1e6, 2)
-    14.77
+    >>> round(ip_irrev * 1e6, 2)  # Current in microamperes (cathodic is negative)
+    -14.77
     """
     _validate_alpha(alpha)
     _validate_positive(n_alpha, "Number of electrons n_alpha")
@@ -397,7 +397,7 @@ def randles_sevcik_irreversible(
         * c_bulk
         * np.sqrt((alpha * n_alpha * F * D * v_arr) / (R * T))
     )
-    if scan_direction == "anodic":
+    if scan_direction == "cathodic":
         prefactor = -prefactor
 
     return _format_output(prefactor, np.ndim(v) == 0)
@@ -465,7 +465,8 @@ def randles_sevcik_quasi(
     F : float, default 96485.332
         Faraday constant (:math:`F > 0`).
     scan_direction : {"cathodic", "anodic"}, default "cathodic"
-        Direction of sweep ("cathodic" or "anodic").
+        Direction of potential sweep. Cathodic (reduction) yields negative current (:math:`I_p < 0`),
+        while anodic (oxidation) yields positive current (:math:`I_p > 0`).
 
     Returns
     -------
@@ -482,7 +483,7 @@ def randles_sevcik_quasi(
     >>> from softpotato.analytical.voltammetry import randles_sevcik_quasi
     >>> ip_quasi = randles_sevcik_quasi(0.1, k0=1e-3, c_bulk=1e-6, D=1e-5, area=0.07)
     >>> round(ip_quasi * 1e6, 2)
-    15.3
+    -15.3
     """
     _validate_alpha(alpha)
     _validate_non_negative(c_bulk, "Bulk concentration c_bulk")

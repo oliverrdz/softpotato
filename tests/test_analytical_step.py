@@ -149,11 +149,11 @@ def test_cottrell_step_forward_and_reversal():
     c_bulk = 1e-3
     area = 1e-4
 
-    # Forward step check (t <= tau)
+    # Forward step check (t <= tau): cathodic reduction is negative
     t_fwd = 1.0
     assert math.isclose(
         cottrell_step(t_fwd, tau=tau, n=n, D=D, c_bulk=c_bulk, area=area),
-        cottrell(t_fwd, n=n, D=D, c_bulk=c_bulk, area=area),
+        -cottrell(t_fwd, n=n, D=D, c_bulk=c_bulk, area=area),
         rel_tol=1e-12,
     )
 
@@ -170,10 +170,10 @@ def test_cottrell_step_vector_transition():
     t_arr = np.linspace(0.1, 3.0, 30)
     i_arr = cottrell_step(t_arr, tau=tau)
 
-    # Forward currents must be positive
-    assert np.all(i_arr[t_arr <= tau] > 0.0)
-    # Reversal currents must be negative
-    assert np.all(i_arr[t_arr > tau] < 0.0)
+    # Forward currents must be negative (cathodic reduction)
+    assert np.all(i_arr[t_arr <= tau] < 0.0)
+    # Reversal currents must be positive (anodic oxidation)
+    assert np.all(i_arr[t_arr > tau] > 0.0)
 
 
 def test_cottrell_step_validation():

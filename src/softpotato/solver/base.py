@@ -431,7 +431,17 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
         self, problem: DiffusionProblem, result: SolverResult
     ) -> SolverResult:
         """Compute surface fluxes and perform post-run integrity checks."""
-        # Calculate surface flux J = -D * dc/dx at left boundary x=0 using 2nd order difference
+        # Calculate surface flux J = -D * dc/dx at left boundary x=0 using 2nd order difference.
+        # Sign convention:
+        # Fick's first law defines the diffusive flux along the +x outward normal into the solution:
+        #   J(0, t) = -D * (dc/dx)|_{x=0}
+        # When an electroactive species is consumed at the electrode (c(0, t) < c_bulk), (dc/dx)|_{x=0} > 0,
+        # so the interfacial flux J(0, t) is strictly NEGATIVE (J < 0).
+        # Under standard IUPAC sign conventions (cathodic reduction < 0, anodic oxidation > 0):
+        # - For reduction (Ox + n e^- -> Red):
+        #     I_cathodic = n * F * A * J_Ox < 0 (negative)
+        # - For oxidation (Red -> Ox + n e^-):
+        #     I_anodic = -n * F * A * J_Red > 0 (positive)
         if problem.is_uniform:
             dx = problem.dx
             for sp in problem.species:
