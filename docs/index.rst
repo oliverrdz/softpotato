@@ -14,7 +14,7 @@ Welcome to Soft Potato's Documentation!
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials & Examples
 
    examples/cottrell
