@@ -18,6 +18,7 @@ Welcome to Soft Potato's Documentation!
    :caption: Tutorials & Examples
 
    examples/cottrell
+   examples/cyclic_voltammetry
 
 
 .. toctree::
