@@ -11,7 +11,7 @@
 > [!NOTE]
 > **Active Development (Milestone 2 in progress):**
 > The `main` branch contains work-in-progress features for **Milestone 2** (v3.2.0: Grids).
-> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.1.0**.
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.1.1**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
@@ -21,9 +21,9 @@
 
 ## Installation
 
-### Stable Release (v3.1.0)
+### Stable Release (v3.1.1)
 
-Soft Potato v3.1.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.1.1 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
