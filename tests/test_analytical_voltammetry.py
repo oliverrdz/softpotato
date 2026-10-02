@@ -75,13 +75,13 @@ def test_randles_sevcik_proportionalities():
 
 
 def test_randles_sevcik_scan_direction():
-    """Verify IUPAC sign convention for cathodic and anodic sweeps."""
+    """Verify sign convention for cathodic and anodic sweeps."""
     ip_cathodic = randles_sevcik(0.05, scan_direction="cathodic")
     ip_anodic = randles_sevcik(0.05, scan_direction="anodic")
 
     assert ip_cathodic > 0.0
-    assert ip_anodic < 0.0
-    assert math.isclose(ip_cathodic, -ip_anodic, rel_tol=1e-12)
+    assert ip_anodic > 0.0
+    assert math.isclose(ip_cathodic, ip_anodic, rel_tol=1e-12)
 
 
 def test_randles_sevcik_vectorization():
@@ -158,8 +158,8 @@ def test_randles_sevcik_irreversible_scaling():
 
     # Anodic sign
     ip_anodic = randles_sevcik_irreversible(v, scan_direction="anodic")
-    assert ip_anodic < 0.0
-    assert math.isclose(ip_anodic, -randles_sevcik_irreversible(v), rel_tol=1e-12)
+    assert ip_anodic > 0.0
+    assert math.isclose(ip_anodic, randles_sevcik_irreversible(v), rel_tol=1e-12)
 
 
 def test_randles_sevcik_irreversible_validation():

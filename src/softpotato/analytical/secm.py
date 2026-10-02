@@ -41,8 +41,7 @@ Conventions & Units
   microdisk radius, and :math:`D` is the diffusion coefficient of the mediator.
 
 Standard IUPAC sign conventions are applied for dimensional current:
-- Cathodic (reduction) currents are positive (:math:`I > 0`).
-- Anodic (oxidation) currents are negative (:math:`I < 0`).
+- Both cathodic (reduction) and anodic (oxidation) currents are positive (:math:`I > 0`).
 
 References
 ----------
@@ -470,10 +469,7 @@ def secm_tip_current(
 
     .. math::
 
-        i_T = I_T(L, RG, \kappa) \cdot 4 n F D c^* a \cdot \text{sign}
-
-    where :math:`\text{sign} = +1` for reduction (cathodic, default) and :math:`-1`
-    for oxidation (anodic).
+        i_T = I_T(L, RG, \kappa) \cdot 4 n F D c^* a
 
     Parameters
     ----------
@@ -497,8 +493,8 @@ def secm_tip_current(
     F : float, default FARADAY
         Faraday constant in :math:`\text{C}/\text{mol}` (:math:`F > 0`).
     reduction : bool, default True
-        If True, applies IUPAC cathodic sign (:math:`i_T > 0`). If False, applies
-        anodic sign (:math:`i_T < 0`).
+        Direction of reaction. Both reduction (True) and oxidation (False)
+        yield positive dimensional tip currents (:math:`i_T > 0`).
 
     Returns
     ----------
@@ -513,7 +509,7 @@ def secm_tip_current(
     i_inf = secm_limiting_current_infinite(radius=radius, n=n, D=D, c_bulk=c_bulk, F=F)
     i_norm = secm_approach_curve(L=L, RG=RG, kappa=kappa)
 
-    sign = 1.0 if reduction else -1.0
+    sign = 1.0
     res = i_norm * i_inf * sign
 
     if isinstance(res, np.ndarray) and res.ndim == 0:

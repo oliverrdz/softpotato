@@ -41,8 +41,7 @@ electrochemical CGS units:
   :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Reduction (cathodic) currents are positive (:math:`I > 0`).
-- Oxidation (anodic) currents are negative (:math:`I < 0`).
+- Both reduction (cathodic) and oxidation (anodic) currents are positive (:math:`I > 0`).
 
 References
 ----------
@@ -322,7 +321,7 @@ def cottrell_step(
     -------
     float or np.ndarray
         Faradaic current :math:`I(t)` in Amperes (:math:`\text{A}`). Positive for
-        cathodic reduction (:math:`t \le \tau`), negative for anodic oxidation (:math:`t > \tau`).
+        both cathodic reduction (:math:`t \le \tau`) and anodic oxidation (:math:`t > \tau`).
 
     Raises
     ------
@@ -336,7 +335,7 @@ def cottrell_step(
     >>> # Evaluate forward and reversal currents
     >>> i_fwd = cottrell_step(tau, tau=tau)
     >>> i_rev = cottrell_step(2.0 * tau, tau=tau)
-    >>> ratio = -i_rev / i_fwd
+    >>> ratio = i_rev / i_fwd
     >>> round(ratio, 6)
     0.292893
     """
@@ -374,7 +373,7 @@ def cottrell_step(
             dt_rev = t_rev - tau
             term1 = np.where(dt_rev == 0.0, np.inf, 1.0 / np.sqrt(dt_rev))
             term2 = 1.0 / np.sqrt(t_rev)
-            result[rev_mask] = -coeff_rev * (term1 - term2)
+            result[rev_mask] = coeff_rev * (term1 - term2)
 
     return _format_output(result, is_scalar)
 

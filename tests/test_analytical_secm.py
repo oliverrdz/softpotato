@@ -319,7 +319,7 @@ def test_secm_tip_current_scaling_and_sign():
     assert i_cat > 0.0
     assert math.isclose(i_cat, i_norm_pos * i_inf, rel_tol=1e-14)
 
-    # Anodic oxidation: negative
+    # Anodic oxidation: positive
     i_an = secm_tip_current(
         L,
         RG=rg,
@@ -330,8 +330,8 @@ def test_secm_tip_current_scaling_and_sign():
         reduction=False,
     )
     assert isinstance(i_an, float)
-    assert i_an < 0.0
-    assert math.isclose(i_an, -i_norm_pos * i_inf, rel_tol=1e-14)
+    assert i_an > 0.0
+    assert math.isclose(i_an, i_norm_pos * i_inf, rel_tol=1e-14)
 
 
 def test_secm_tip_current_array():
