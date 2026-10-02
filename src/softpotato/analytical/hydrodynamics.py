@@ -58,8 +58,8 @@ electrochemical CGS units:
   :math:`\\implies I` in :math:`\\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Cathodic (reduction) currents are positive (:math:`I > 0`).
-- Anodic (oxidation) currents are negative (:math:`I < 0`).
+- Cathodic (reduction) currents are negative (:math:`I < 0`).
+- Anodic (oxidation) currents are positive (:math:`I > 0`).
 
 References
 ----------
@@ -858,7 +858,9 @@ def ring_collection_current(
         I_R = -N \left(\frac{n_R}{n_D}\right) I_D
 
     where :math:`I_D` is the Faradaic current at the disk electrode, and :math:`N`
-    is the RRDE collection efficiency.
+    is the RRDE collection efficiency. The negative sign ensures that a cathodic
+    disk reaction (:math:`I_D < 0`) produces a positive anodic collection current
+    at the ring (:math:`I_R > 0`), and vice versa.
 
     Parameters
     ----------

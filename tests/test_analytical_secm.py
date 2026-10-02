@@ -305,7 +305,7 @@ def test_secm_tip_current_scaling_and_sign():
     i_inf = 4.0 * n * FARADAY * D * c_bulk * radius
     i_norm_pos = secm_approach_positive_feedback(L, RG=rg)
 
-    # Cathodic reduction (default): positive
+    # Cathodic reduction (default): negative
     i_cat = secm_tip_current(
         L,
         RG=rg,
@@ -316,10 +316,10 @@ def test_secm_tip_current_scaling_and_sign():
         reduction=True,
     )
     assert isinstance(i_cat, float)
-    assert i_cat > 0.0
-    assert math.isclose(i_cat, i_norm_pos * i_inf, rel_tol=1e-14)
+    assert i_cat < 0.0
+    assert math.isclose(i_cat, -i_norm_pos * i_inf, rel_tol=1e-14)
 
-    # Anodic oxidation: negative
+    # Anodic oxidation: positive
     i_an = secm_tip_current(
         L,
         RG=rg,
@@ -330,8 +330,8 @@ def test_secm_tip_current_scaling_and_sign():
         reduction=False,
     )
     assert isinstance(i_an, float)
-    assert i_an < 0.0
-    assert math.isclose(i_an, -i_norm_pos * i_inf, rel_tol=1e-14)
+    assert i_an > 0.0
+    assert math.isclose(i_an, i_norm_pos * i_inf, rel_tol=1e-14)
 
 
 def test_secm_tip_current_array():
@@ -340,7 +340,7 @@ def test_secm_tip_current_array():
     i_arr = secm_tip_current(L, RG=10.0, radius=1e-5)
     assert isinstance(i_arr, np.ndarray)
     assert i_arr.shape == L.shape
-    assert np.all(i_arr > 0)
+    assert np.all(i_arr < 0)
 
 
 # ==============================================================================

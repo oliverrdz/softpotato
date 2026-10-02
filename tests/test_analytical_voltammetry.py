@@ -35,12 +35,12 @@ def test_randles_sevcik_classical_constant():
     )
     assert math.isclose(theoretical_const, 2.686e5, rel_tol=1e-3)
 
-    # Ip for n=1, A=1.0 cm^2, D=1e-5 cm^2/s, c*=1e-3 mol/cm^3, v=1.0 V/s
+    # Ip for n=1, A=1.0 cm^2, D=1e-5 cm^2/s, c*=1e-3 mol/cm^3, v=1.0 V/s (cathodic is negative)
     ip = randles_sevcik(1.0, c_bulk=1e-3, D=1e-5, area=1.0, n=1, T=STANDARD_TEMPERATURE)
     expected_ip = (
         theoretical_const * (1.0**1.5) * 1.0 * math.sqrt(1e-5) * 1e-3 * math.sqrt(1.0)
     )
-    assert math.isclose(ip, expected_ip, rel_tol=1e-10)
+    assert math.isclose(ip, -expected_ip, rel_tol=1e-10)
 
 
 def test_randles_sevcik_proportionalities():
@@ -75,12 +75,12 @@ def test_randles_sevcik_proportionalities():
 
 
 def test_randles_sevcik_scan_direction():
-    """Verify IUPAC sign convention for cathodic and anodic sweeps."""
+    """Verify sign convention for cathodic (negative) and anodic (positive) sweeps."""
     ip_cathodic = randles_sevcik(0.05, scan_direction="cathodic")
     ip_anodic = randles_sevcik(0.05, scan_direction="anodic")
 
-    assert ip_cathodic > 0.0
-    assert ip_anodic < 0.0
+    assert ip_cathodic < 0.0
+    assert ip_anodic > 0.0
     assert math.isclose(ip_cathodic, -ip_anodic, rel_tol=1e-12)
 
 
@@ -158,7 +158,7 @@ def test_randles_sevcik_irreversible_scaling():
 
     # Anodic sign
     ip_anodic = randles_sevcik_irreversible(v, scan_direction="anodic")
-    assert ip_anodic < 0.0
+    assert ip_anodic > 0.0
     assert math.isclose(ip_anodic, -randles_sevcik_irreversible(v), rel_tol=1e-12)
 
 
@@ -211,7 +211,7 @@ def test_randles_sevcik_quasi_limits():
     ip_intermed = randles_sevcik_quasi(
         v, lambda_param=1.0, alpha=alpha, c_bulk=c, D=D, area=area, n=n
     )
-    assert ip_irrev < ip_intermed < ip_rev
+    assert ip_rev < ip_intermed < ip_irrev
 
 
 def test_randles_sevcik_quasi_with_k0():

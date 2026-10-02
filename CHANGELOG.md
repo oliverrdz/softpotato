@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.1] - 2026-10-02
+
+### Patch Release: IUPAC Sign Convention Bug Fix & Cyclic Voltammetry Tutorial
+Soft Potato 3.1.1 is a patch release resolving a sign convention bug in electrochemical current calculations to strictly enforce IUPAC polarity across analytical, solver, and fitting modules (cathodic reduction currents are negative, $I < 0$; anodic oxidation currents are positive, $I > 0$), introducing an interactive cyclic voltammetry tutorial notebook, and enhancing CI workflow automation.
+
+### Fixed
+- **Electrochemical Current IUPAC Sign Convention Bug**:
+  - Resolved sign convention bug across analytical equations, numerical solvers, and parameter fitting routines to strictly enforce the IUPAC convention (cathodic reduction currents are negative, $I < 0$; anodic oxidation currents are positive, $I > 0$).
+  - `softpotato.solver.base`: Corrected Faradaic current calculation from interfacial diffusive flux ($J = -D (\partial c/\partial x)|_{x=0}$) so that cathodic reduction yields negative current ($I_{\text{cathodic}} = n F A J_{\text{Ox}} < 0$) and anodic oxidation yields positive current ($I_{\text{anodic}} = -n F A J_{\text{Red}} > 0$).
+  - `softpotato.analytical.voltammetry`: Corrected `randles_sevcik`, `randles_sevcik_irreversible`, and `randles_sevcik_quasi` to return negative peak currents for cathodic sweeps and positive peak currents for anodic sweeps.
+  - `softpotato.analytical.step`: Corrected double potential step chronoamperometry (`cottrell_step`) so that forward reduction yields negative current and reverse oxidation yields positive current.
+  - `softpotato.analytical.secm`: Corrected SECM tip current calculation (`secm_tip_current`) to produce negative currents for reduction and positive currents for oxidation.
+  - `softpotato.analytical.hydrodynamics`: Corrected RRDE collection current (`ring_collection_current`) so that cathodic disk currents ($I_{\text{disk}} < 0$) produce positive anodic ring collection currents ($I_{\text{ring}} = -N \cdot I_{\text{disk}} > 0$).
+  - `softpotato.analytical.fitting`: Updated curve fitting routines (`fit_cottrell`, `fit_randles_sevcik`, `fit_levich`) to infer polarity from experimental data and robustly fit signed currents.
+  - Updated unit test assertions across `tests/test_analytical_voltammetry.py`, `tests/test_analytical_step.py`, `tests/test_analytical_hydrodynamics.py`, and `tests/test_analytical_secm.py`.
+- Fixed Faradaic current equation sign in the Cottrell tutorial notebook (`examples/cottrell.ipynb`), ensuring the formula reflects positive oxidation current ($I = n F A J_{\text{surface}}$).
+- Corrected terminology in the Cottrell tutorial describing the process as a one-electron oxidation.
+- Refined LaTeX math formatting and Markdown rendering in `examples/cottrell.ipynb` for consistency.
+
+### Added
+- **Interactive Cyclic Voltammetry Tutorial (`examples/cyclic_voltammetry.ipynb`)**:
+  - Added comprehensive interactive tutorial demonstrating 1D simulation of cyclic voltammetry with reversible electron transfer ($O + e^- \rightleftharpoons R$) under Nernstian equilibrium.
+  - Implemented dynamic triangular potential sweep waveform generator with forward cathodic and reverse anodic sweeps.
+  - Coupled time-dependent surface concentration boundary conditions to `ScipyIVPSolver` (Method of Lines).
+  - Visualized spatio-temporal concentration distributions across the diffusion layer at characteristic scan milestones (initial, cathodic peak, switching vertex, anodic peak, final).
+  - Validated simulated voltammetric response against theoretical diagnostic criteria: Randles–Ševčík peak current equation and peak potential separation ($\Delta E_p \approx 57\text{--}59\text{ mV}$).
+  - Linked notebook into documentation suite (`docs/examples/cyclic_voltammetry.ipynb`).
+- **CI/CD Quality & Automation Enhancements**:
+  - Enhanced GitHub Actions CI workflow (`.github/workflows/ci.yml`) to automatically apply Ruff lint fixes and code formatting via `stefanzweifel/git-auto-commit-action`.
+  - Added `[tool.ruff]` section in `pyproject.toml` with `extend-exclude` configuration for documentation build artifacts and example notebooks.
+
+### Changed
+- **Documentation & Metadata**:
+  - Enhanced installation documentation (`docs/installation.rst`) with detailed setup instructions for PyPI (`pip`), GitHub bleeding-edge installation, source development environments, and optional dependency extras (`[test]`, `[docs]`, `[dev]`).
+  - Updated author contact email to `oliver.rdz@softpotato.xyz` in `pyproject.toml`.
+
 ## [3.1.0] - 2026-10-01
 
 ### Milestone 1 Release: Analytical Equations, Benchmarking & Parameter Fitting
