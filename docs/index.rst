@@ -10,11 +10,11 @@ Welcome to Soft Potato's Documentation!
    :caption: Getting Started
 
    installation
-   api
+   api/index
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials & Examples
 
    examples/cottrell
