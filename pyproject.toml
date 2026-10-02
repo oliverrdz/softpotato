@@ -77,3 +77,9 @@ pythonpath = ["src"]
 [tool.mypy]
 ignore_missing_imports = true
 warn_unused_configs = true
+
+[tool.ruff]
+extend-exclude = [
+    "docs/examples",
+    "docs/_build",
+]
