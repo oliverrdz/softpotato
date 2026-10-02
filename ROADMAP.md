@@ -140,7 +140,7 @@ In electrochemical simulations, diffusion layers are typically confined to a nar
   - Ghost-node and boundary stencil formulations on irregular node intervals for Dirichlet and Neumann boundary conditions.
 - **Backwards Compatibility**:
   - Ensure `DiffusionProblem` seamlessly accepts either raw 1D NumPy arrays (`np.ndarray`) or structured mesh objects (`Mesh1D`).
-  - Existing `v3.0.0` and `v3.1.0` solver scripts and tutorials continue executing with zero code changes.
+  - Existing `v3.0.0`, `v3.1.0`, and `v3.1.1` solver scripts and tutorials continue executing with zero code changes.
 - **Solver Adaptations**:
   - Enable `ScipyIVPSolver` and banded implicit solvers to consume non-uniform spatial discretizations natively.
 
