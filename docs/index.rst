@@ -10,7 +10,7 @@ Welcome to Soft Potato's Documentation!
    :caption: Getting Started
 
    installation
-   api
+   api/index
 
 
 .. toctree::
