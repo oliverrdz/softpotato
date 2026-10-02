@@ -779,9 +779,7 @@ def fit_cottrell(
         else:
 
             def model_fn_nobg(t, d_param):
-                return (
-                    sign * prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
-                )
+                return sign * prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
 
             model_fn = model_fn_nobg
             p_init = p0 if p0 is not None else [1e-5]
@@ -981,9 +979,7 @@ def fit_randles_sevcik(
         else:
 
             def model_fn_noint(v, d_param):
-                return (
-                    sign * c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
-                )
+                return sign * c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
 
             model_fn = model_fn_noint
             p_init = [1e-5]
@@ -1150,7 +1146,9 @@ def fit_levich(
         sign = -1.0 if np.mean(i_arr) < 0 else 1.0
 
         def model_fn(w, d_param):
-            return sign * k_factor * (np.maximum(d_param, 0.0) ** (2.0 / 3.0)) * np.sqrt(w)
+            return (
+                sign * k_factor * (np.maximum(d_param, 0.0) ** (2.0 / 3.0)) * np.sqrt(w)
+            )
 
         res = fit_curve(
             model_fn,
