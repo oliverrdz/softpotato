@@ -14,7 +14,7 @@ import softpotato
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "softpotato"
+project = "Soft Potato"
 copyright = "2026, Oliver Rodriguez"
 author = "Oliver Rodriguez"
 version = softpotato.__version__
