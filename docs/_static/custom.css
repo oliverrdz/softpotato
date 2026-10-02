@@ -27,3 +27,29 @@ div.nboutput.container div.output_area,
 div.nboutput.container .output_subarea {
     min-width: 0;
 }
+
+/* API Reference overview module and submodule headings */
+.rst-content p.module-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2980b9;
+    border-bottom: 2px solid #e1e4e5;
+    padding-bottom: 6px;
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.rst-content p.submodule-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 4px;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Ensure math expressions in tables fit cleanly */
+.rst-content table.docutils td {
+    vertical-align: middle;
+}
