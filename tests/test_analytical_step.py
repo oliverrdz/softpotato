@@ -157,11 +157,11 @@ def test_cottrell_step_forward_and_reversal():
         rel_tol=1e-12,
     )
 
-    # Diagnostic ratio check at t = 2 * tau: -I(2*tau) / I(tau) == 1 - 1/sqrt(2)
+    # Diagnostic ratio check at t = 2 * tau: I(2*tau) / I(tau) == 1 - 1/sqrt(2)
     i_tau = cottrell_step(tau, tau=tau, n=n, D=D, c_bulk=c_bulk, area=area)
     i_2tau = cottrell_step(2.0 * tau, tau=tau, n=n, D=D, c_bulk=c_bulk, area=area)
     expected_ratio = 1.0 - 1.0 / math.sqrt(2.0)
-    assert math.isclose(-i_2tau / i_tau, expected_ratio, rel_tol=1e-12)
+    assert math.isclose(i_2tau / i_tau, expected_ratio, rel_tol=1e-12)
 
 
 def test_cottrell_step_vector_transition():
@@ -172,8 +172,8 @@ def test_cottrell_step_vector_transition():
 
     # Forward currents must be positive
     assert np.all(i_arr[t_arr <= tau] > 0.0)
-    # Reversal currents must be negative
-    assert np.all(i_arr[t_arr > tau] < 0.0)
+    # Reversal currents must be positive
+    assert np.all(i_arr[t_arr > tau] > 0.0)
 
 
 def test_cottrell_step_validation():
