@@ -52,8 +52,7 @@ electrochemical CGS units:
   :math:`\implies I_p` in :math:`\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Cathodic (reduction) peak currents are positive (:math:`I_p > 0`).
-- Anodic (oxidation) peak currents are negative (:math:`I_p < 0`) when ``scan_direction="anodic"``.
+- Both cathodic (reduction) and anodic (oxidation) peak currents are positive (:math:`I_p > 0`).
 
 References
 ----------
@@ -254,8 +253,8 @@ def randles_sevcik(
     F : float, default 96485.332
         Faraday constant in :math:`\text{C}\cdot\text{mol}^{-1}` (:math:`F > 0`).
     scan_direction : {"cathodic", "anodic"}, default "cathodic"
-        Direction of potential sweep. Cathodic (reduction) yields positive current (:math:`I_p > 0`),
-        while anodic (oxidation) yields negative current (:math:`I_p < 0`).
+        Direction of potential sweep. Both cathodic (reduction) and anodic (oxidation)
+        yield positive peak current (:math:`I_p > 0`).
 
     Returns
     -------
@@ -293,8 +292,6 @@ def randles_sevcik(
         raise ValueError(f"Scan rate v must be strictly positive (v > 0), got {v!r}.")
 
     prefactor = 0.4463 * n * F * area * c_bulk * np.sqrt((n * F * D * v_arr) / (R * T))
-    if scan_direction == "anodic":
-        prefactor = -prefactor
 
     return _format_output(prefactor, np.ndim(v) == 0)
 
@@ -350,8 +347,8 @@ def randles_sevcik_irreversible(
     F : float, default 96485.332
         Faraday constant in :math:`\text{C}\cdot\text{mol}^{-1}` (:math:`F > 0`).
     scan_direction : {"cathodic", "anodic"}, default "cathodic"
-        Direction of potential sweep. Cathodic (reduction) yields positive current (:math:`I_p > 0`),
-        while anodic (oxidation) yields negative current (:math:`I_p < 0`).
+        Direction of potential sweep. Both cathodic (reduction) and anodic (oxidation)
+        yield positive peak current (:math:`I_p > 0`).
 
     Returns
     -------
@@ -397,8 +394,6 @@ def randles_sevcik_irreversible(
         * c_bulk
         * np.sqrt((alpha * n_alpha * F * D * v_arr) / (R * T))
     )
-    if scan_direction == "anodic":
-        prefactor = -prefactor
 
     return _format_output(prefactor, np.ndim(v) == 0)
 

@@ -58,8 +58,7 @@ electrochemical CGS units:
   :math:`\\implies I` in :math:`\\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Cathodic (reduction) currents are positive (:math:`I > 0`).
-- Anodic (oxidation) currents are negative (:math:`I < 0`).
+- Both cathodic (reduction) and anodic (oxidation) currents are positive (:math:`I > 0`).
 
 References
 ----------
@@ -855,7 +854,7 @@ def ring_collection_current(
 
     .. math::
 
-        I_R = -N \left(\frac{n_R}{n_D}\right) I_D
+        I_R = N \left(\frac{n_R}{n_D}\right) I_D
 
     where :math:`I_D` is the Faradaic current at the disk electrode, and :math:`N`
     is the RRDE collection efficiency.
@@ -898,7 +897,7 @@ def ring_collection_current(
     arr_id = np.asarray(i_disk, dtype=float)
     is_scalar = arr_id.ndim == 0
 
-    i_ring = -N * (n_ring / n_disk) * arr_id
+    i_ring = N * (n_ring / n_disk) * arr_id
     return _format_output(i_ring, is_scalar)
 
 
