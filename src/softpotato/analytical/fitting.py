@@ -716,8 +716,8 @@ def fit_cottrell(
         slope_err = lin_res.stderr.get("slope", 0.0)
         i_bg = lin_res.params.get("i_bg", 0.0)
 
-        # D = (slope / prefactor)^2
-        d_val = float((slope / prefactor) ** 2)
+        # D = (|slope| / prefactor)^2
+        d_val = float((abs(slope) / prefactor) ** 2)
         # Error propagation: sigma_D = 2 * (slope / prefactor^2) * sigma_slope = 2 * D * (sigma_slope / slope)
         d_err = (
             float(2.0 * d_val * abs(slope_err / slope))
@@ -730,8 +730,9 @@ def fit_cottrell(
 
         # CI for D
         ci_slope = lin_res.confidence_intervals.get("slope", (0.0, 0.0))
-        d_ci_low = float((max(ci_slope[0], 0.0) / prefactor) ** 2)
-        d_ci_high = float((max(ci_slope[1], 0.0) / prefactor) ** 2)
+        ci_slope_mag = sorted([abs(ci_slope[0]), abs(ci_slope[1])])
+        d_ci_low = float((ci_slope_mag[0] / prefactor) ** 2)
+        d_ci_high = float((ci_slope_mag[1] / prefactor) ** 2)
         ci_dict = {
             "D": (d_ci_low, d_ci_high),
             "i_bg": lin_res.confidence_intervals.get("i_bg", (0.0, 0.0)),
@@ -759,12 +760,13 @@ def fit_cottrell(
         )
 
     elif method == "nonlinear":
+        sign = -1.0 if np.mean(i_arr) < 0 else 1.0
         model_fn: Callable[..., Any]
         if fit_background:
 
             def model_fn_bg(t, d_param, bg_param):
                 return (
-                    prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
+                    sign * prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
                     + bg_param
                 )
 
@@ -777,7 +779,9 @@ def fit_cottrell(
         else:
 
             def model_fn_nobg(t, d_param):
-                return prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
+                return (
+                    sign * prefactor * np.sqrt(np.maximum(d_param, 0.0)) / np.sqrt(t)
+                )
 
             model_fn = model_fn_nobg
             p_init = p0 if p0 is not None else [1e-5]
@@ -919,8 +923,8 @@ def fit_randles_sevcik(
         intercept = lin_res.params.get("intercept", 0.0)
         slope_err = lin_res.stderr.get("slope", 0.0)
 
-        # D = (slope / c_factor)^2
-        d_val = float((slope / c_factor) ** 2)
+        # D = (|slope| / c_factor)^2
+        d_val = float((abs(slope) / c_factor) ** 2)
         d_err = (
             float(2.0 * d_val * abs(slope_err / slope))
             if slope != 0 and np.isfinite(slope_err)
@@ -928,8 +932,9 @@ def fit_randles_sevcik(
         )
 
         ci_slope = lin_res.confidence_intervals.get("slope", (0.0, 0.0))
-        d_ci_low = float((max(ci_slope[0], 0.0) / c_factor) ** 2)
-        d_ci_high = float((max(ci_slope[1], 0.0) / c_factor) ** 2)
+        ci_slope_mag = sorted([abs(ci_slope[0]), abs(ci_slope[1])])
+        d_ci_low = float((ci_slope_mag[0] / c_factor) ** 2)
+        d_ci_high = float((ci_slope_mag[1] / c_factor) ** 2)
 
         params = {"D": d_val, "intercept": intercept}
         stderr = {"D": d_err, "intercept": lin_res.stderr.get("intercept", 0.0)}
@@ -959,12 +964,13 @@ def fit_randles_sevcik(
             nfev=lin_res.nfev,
         )
     elif method == "nonlinear":
+        sign = -1.0 if np.mean(ip_arr) < 0 else 1.0
         model_fn: Callable[..., Any]
         if fit_intercept:
 
             def model_fn_int(v, d_param, off_param):
                 return (
-                    c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
+                    sign * c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
                     + off_param
                 )
 
@@ -975,7 +981,9 @@ def fit_randles_sevcik(
         else:
 
             def model_fn_noint(v, d_param):
-                return c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
+                return (
+                    sign * c_factor * np.sqrt(np.maximum(d_param, 0.0)) * np.sqrt(v)
+                )
 
             model_fn = model_fn_noint
             p_init = [1e-5]
@@ -998,7 +1006,7 @@ def fit_randles_sevcik(
         return RandlesSevcikFitResult(
             d=d_val,
             d_stderr=d_err,
-            slope=float(c_factor * np.sqrt(d_val)),
+            slope=float(sign * c_factor * np.sqrt(d_val)),
             intercept=intercept,
             params=res.params,
             stderr=res.stderr,
@@ -1096,9 +1104,9 @@ def fit_levich(
         b_val = lin_res.params["B"]
         b_err = lin_res.stderr.get("B", 0.0)
 
-        # D = (B / k_factor)^(3/2)
-        if b_val > 0 and k_factor > 0:
-            d_val = float((b_val / k_factor) ** 1.5)
+        # D = (|B| / k_factor)^(3/2)
+        if abs(b_val) > 0 and k_factor > 0:
+            d_val = float((abs(b_val) / k_factor) ** 1.5)
             # sigma_D = 1.5 * D * (sigma_B / B)
             d_err = (
                 float(1.5 * d_val * abs(b_err / b_val))
@@ -1110,8 +1118,9 @@ def fit_levich(
             d_err = float("nan")
 
         ci_b = lin_res.confidence_intervals.get("B", (0.0, 0.0))
-        d_ci_low = float((max(ci_b[0], 0.0) / k_factor) ** 1.5)
-        d_ci_high = float((max(ci_b[1], 0.0) / k_factor) ** 1.5)
+        ci_b_mag = sorted([abs(ci_b[0]), abs(ci_b[1])])
+        d_ci_low = float((ci_b_mag[0] / k_factor) ** 1.5)
+        d_ci_high = float((ci_b_mag[1] / k_factor) ** 1.5)
 
         params = {"B": b_val, "D": d_val}
         stderr = {"B": b_err, "D": d_err}
@@ -1138,9 +1147,10 @@ def fit_levich(
             nfev=lin_res.nfev,
         )
     elif method == "nonlinear":
+        sign = -1.0 if np.mean(i_arr) < 0 else 1.0
 
         def model_fn(w, d_param):
-            return k_factor * (np.maximum(d_param, 0.0) ** (2.0 / 3.0)) * np.sqrt(w)
+            return sign * k_factor * (np.maximum(d_param, 0.0) ** (2.0 / 3.0)) * np.sqrt(w)
 
         res = fit_curve(
             model_fn,
@@ -1153,7 +1163,7 @@ def fit_levich(
         )
         d_val = res.params["D"]
         d_err = res.stderr.get("D", 0.0)
-        b_val = float(k_factor * (d_val ** (2.0 / 3.0)))
+        b_val = float(sign * k_factor * (d_val ** (2.0 / 3.0)))
 
         params = {"B": b_val, "D": d_val}
         stderr = {

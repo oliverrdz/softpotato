@@ -783,8 +783,8 @@ def run_cottrell_benchmark(
 
     conc_metrics = compute_error_metrics(c_num, c_exact)
 
-    # Compare Cottrell currents: I_num = -n * F * A * J(0)
-    # J(0) = -D * dc/dx < 0 for reduction, so I_num > 0 matches IUPAC cathodic sign.
+    # Compare Cottrell currents: for an oxidation, I_num = -n * F * A * J(0) > 0
+    # J(0) = -D * dc/dx < 0 when reactant is consumed at x=0, so I_num > 0 matches IUPAC anodic sign.
     flux_metrics = None
     if "c" in result.fluxes:
         j_num = result.fluxes["c"][mask]

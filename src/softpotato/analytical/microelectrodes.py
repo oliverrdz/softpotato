@@ -33,7 +33,8 @@ electrochemical CGS units:
   :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Both cathodic (reduction) and anodic (oxidation) currents are positive (:math:`I > 0`).
+- Cathodic (reduction) currents are negative (:math:`I < 0`).
+- Anodic (oxidation) currents are positive (:math:`I > 0`).
 
 References
 ----------

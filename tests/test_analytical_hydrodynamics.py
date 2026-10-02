@@ -424,26 +424,28 @@ def test_collection_efficiency_radii_validation():
 
 def test_ring_collection_current():
     """Verify ring collection current from disk Faradaic generation."""
-    i_disk = 100e-6  # 100 uA
+    i_disk = -100e-6  # -100 uA (cathodic disk)
     n_eff = 0.2555
 
     i_ring = ring_collection_current(i_disk, N=n_eff)
-    # Cathodic disk (positive) produces anodic ring collection (positive)
-    assert math.isclose(i_ring, n_eff * i_disk, rel_tol=1e-12)
+    # Cathodic disk (negative) produces anodic ring collection (positive)
+    assert i_ring > 0.0
+    assert math.isclose(i_ring, -n_eff * i_disk, rel_tol=1e-12)
 
     # Different ring electron stoichiometry (e.g. n_ring = 2, n_disk = 1)
     i_ring_multi = ring_collection_current(i_disk, N=n_eff, n_ring=2, n_disk=1)
-    assert math.isclose(i_ring_multi, n_eff * 2.0 * i_disk, rel_tol=1e-12)
+    assert math.isclose(i_ring_multi, -n_eff * 2.0 * i_disk, rel_tol=1e-12)
 
     # Vectorized
-    i_d_vec = np.array([50e-6, 100e-6, 200e-6])
+    i_d_vec = np.array([-50e-6, -100e-6, -200e-6])
     i_r_vec = ring_collection_current(i_d_vec, N=n_eff)
     assert isinstance(i_r_vec, np.ndarray)
-    np.testing.assert_allclose(i_r_vec, n_eff * i_d_vec, rtol=1e-12)
+    assert np.all(i_r_vec > 0.0)
+    np.testing.assert_allclose(i_r_vec, -n_eff * i_d_vec, rtol=1e-12)
 
     # Radii computation
     i_r_from_radii = ring_collection_current(i_disk, r1=0.25, r2=0.325, r3=0.375)
-    assert math.isclose(i_r_from_radii, n_eff * i_disk, rel_tol=1e-3)
+    assert math.isclose(i_r_from_radii, -n_eff * i_disk, rel_tol=1e-3)
 
 
 def test_ring_limiting_current_unshielded_and_shielded():
