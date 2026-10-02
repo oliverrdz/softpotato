@@ -9,9 +9,13 @@ jobs:
   lint-and-format:
     name: Lint & Formatting
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,11 +28,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff
 
+      - name: Auto-fix Lint Rules
+        run: ruff check --fix .
+        continue-on-error: true
+
+      - name: Format Code
+        run: ruff format .
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-fix and format with Ruff"
+
       - name: Check Lint Rules
         run: ruff check .
-
-      - name: Check Code Formatting
-        run: ruff format --check .
 
   type-check:
     name: Static Type Check (mypy)
