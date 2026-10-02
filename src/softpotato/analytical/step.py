@@ -41,7 +41,8 @@ electrochemical CGS units:
   :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
 
 Standard IUPAC sign conventions are applied:
-- Both reduction (cathodic) and oxidation (anodic) currents are positive (:math:`I > 0`).
+- Cathodic (reduction) currents are negative (:math:`I < 0`).
+- Anodic (oxidation) currents are positive (:math:`I > 0`).
 
 References
 ----------
@@ -273,19 +274,20 @@ def cottrell_step(
     redox couple :math:`\text{Ox} + n e^- \rightleftharpoons \text{Red}`.
 
     - **Forward step** (:math:`0 < t \le \tau`): Potential is stepped to a value where
-      :math:`\text{Ox}` is reduced at the diffusion-controlled rate (:math:`c_{\text{Ox}}(0, t) = 0`):
+      :math:`\text{Ox}` is reduced at the diffusion-controlled rate (:math:`c_{\text{Ox}}(0, t) = 0`),
+      yielding negative cathodic current:
 
       .. math::
 
-          I_f(t) = \frac{n F A \sqrt{D_{\text{Ox}}} c^*_{\text{Ox}}}{\sqrt{\pi t}}
+          I_f(t) = -\frac{n F A \sqrt{D_{\text{Ox}}} c^*_{\text{Ox}}}{\sqrt{\pi t}}
 
     - **Reversal step** (:math:`t > \tau`): Potential is stepped to re-oxidize
       :math:`\text{Red}` back to :math:`\text{Ox}` at the diffusion-controlled rate
-      (:math:`c_{\text{Red}}(0, t) = 0`):
+      (:math:`c_{\text{Red}}(0, t) = 0`), yielding positive anodic current:
 
       .. math::
 
-          I_r(t) = -\frac{n F A \sqrt{D_{\text{Red}}} c^*_{\text{Ox}}}{\sqrt{\pi}}
+          I_r(t) = \frac{n F A \sqrt{D_{\text{Red}}} c^*_{\text{Ox}}}{\sqrt{\pi}}
                    \left[ \frac{1}{\sqrt{t - \tau}} - \frac{1}{\sqrt{t}} \right]
 
     When :math:`D_{\text{Ox}} = D_{\text{Red}} = D`, the reversal current satisfies the
@@ -320,8 +322,8 @@ def cottrell_step(
     Returns
     -------
     float or np.ndarray
-        Faradaic current :math:`I(t)` in Amperes (:math:`\text{A}`). Positive for
-        both cathodic reduction (:math:`t \le \tau`) and anodic oxidation (:math:`t > \tau`).
+        Faradaic current :math:`I(t)` in Amperes (:math:`\text{A}`). Negative for
+        cathodic reduction (:math:`t \le \tau`) and positive for anodic oxidation (:math:`t > \tau`).
 
     Raises
     ------
@@ -335,7 +337,7 @@ def cottrell_step(
     >>> # Evaluate forward and reversal currents
     >>> i_fwd = cottrell_step(tau, tau=tau)
     >>> i_rev = cottrell_step(2.0 * tau, tau=tau)
-    >>> ratio = i_rev / i_fwd
+    >>> ratio = -i_rev / i_fwd
     >>> round(ratio, 6)
     0.292893
     """
@@ -366,7 +368,7 @@ def cottrell_step(
         if np.any(fwd_mask):
             t_fwd = t_arr[fwd_mask]
             inv_sqrt_t = np.where(t_fwd == 0.0, np.inf, 1.0 / np.sqrt(t_fwd))
-            result[fwd_mask] = coeff_fwd * inv_sqrt_t
+            result[fwd_mask] = -coeff_fwd * inv_sqrt_t
 
         if np.any(rev_mask):
             t_rev = t_arr[rev_mask]
