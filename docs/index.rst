@@ -6,7 +6,7 @@ Welcome to Soft Potato's Documentation!
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit designed for electrochemists, materials scientists, and engineers.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Getting Started
 
    installation
@@ -14,7 +14,7 @@ Welcome to Soft Potato's Documentation!
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials & Examples
 
    examples/cottrell
