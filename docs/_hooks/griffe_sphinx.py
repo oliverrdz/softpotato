@@ -30,7 +30,7 @@ def _convert_math_directive(match: re.Match[str]) -> str:
         f"{indent}{line[min_indent:]}" if line.strip() else "" for line in lines
     ]
     math_content = "\n".join(dedented).strip()
-    return f"{indent}$$\n{indent}{math_content}\n{indent}$$\n\n"
+    return f"\n\n{indent}$$\n{indent}{math_content}\n{indent}$$\n\n"
 
 
 def _convert_xref(match: re.Match[str]) -> str:

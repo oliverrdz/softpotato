@@ -61,49 +61,109 @@ Analytical and empirical equations form the classical bedrock of electrochemistr
 ### Objectives & Deliverables
 - **Transient Diffusion & Potential Step Equations (`softpotato.analytical.diffusion` / `softpotato.analytical.step`)**:
   - `cottrell`: Planar Cottrell equation for semi-infinite linear diffusion chronoamperometry:
-    $$I(t) = \frac{n F A \sqrt{D} c^*}{\sqrt{\pi t}}$$
+
+    $$
+    I(t) = \frac{n F A \sqrt{D} c^*}{\sqrt{\pi t}}
+    $$
+
   - `cottrell_spherical`: Cottrell equation for spherical electrodes, hanging mercury drops, and micro-spheres of radius $r$:
-    $$I(t) = n F A D c^* \left(\frac{1}{\sqrt{\pi D t}} + \frac{1}{r}\right)$$
+
+    $$
+    I(t) = n F A D c^* \left(\frac{1}{\sqrt{\pi D t}} + \frac{1}{r}\right)
+    $$
+
   - `cottrell_step`: Double potential step chronoamperometry reversal transient ($I(t)$ for $t > \tau$).
   - `anson`: Anson equation for chronocoulometry cumulative charge transients:
-    $$Q(t) = \frac{2 n F A \sqrt{D} c^* \sqrt{t}}{\sqrt{\pi}} + Q_{\text{dl}} + n F A \Gamma$$
+
+    $$
+    Q(t) = \frac{2 n F A \sqrt{D} c^* \sqrt{t}}{\sqrt{\pi}} + Q_{\text{dl}} + n F A \Gamma
+    $$
+
   - `sand`: Sand equation for chronopotentiometry transition time $\tau$ under constant current:
-    $$I \tau^{1/2} = \frac{n F A \sqrt{\pi D} c^*}{2}$$
+
+    $$
+    I \tau^{1/2} = \frac{n F A \sqrt{\pi D} c^*}{2}
+    $$
+
   - `cottrell_cylinder`: Short- and long-time asymptotic expansions for cylindrical wire/fiber electrodes.
 - **Hydrodynamics & Convection Equations (`softpotato.analytical.hydrodynamics`)**:
   - `levich`: Levich equation for convective mass-transport limiting current at a Rotating Disk Electrode (RDE):
-    $$I_L = 0.620\, n F A D^{2/3} \omega^{1/2} \nu^{-1/6} c^*$$
+
+    $$
+    I_L = 0.620\, n F A D^{2/3} \omega^{1/2} \nu^{-1/6} c^*
+    $$
+
   - `koutecky_levich`: Koutecký–Levich equation for mixed kinetic and mass-transfer limitation:
-    $$\frac{1}{I} = \frac{1}{I_K} + \frac{1}{I_L} = \frac{1}{n F A k(E) c^*} + \frac{1}{0.620\, n F A D^{2/3} \omega^{1/2} \nu^{-1/6} c^*}$$
+
+    $$
+    \frac{1}{I} = \frac{1}{I_K} + \frac{1}{I_L} = \frac{1}{n F A k(E) c^*} + \frac{1}{0.620\, n F A D^{2/3} \omega^{1/2} \nu^{-1/6} c^*}
+    $$
+
   - `rotating_ring_disk`: Theoretical collection efficiency ($N$) and ring limiting currents for RRDE systems.
 - **Microelectrode & Ultramicroelectrode (UME) Geometries (`softpotato.analytical.microelectrodes`)**:
   - `microdisc_limiting_current`: Saito steady-state limiting current for an inlaid microdisc of radius $a$:
-    $$I_{\text{lim}} = 4 n F D c^* a$$
+
+    $$
+    I_{\text{lim}} = 4 n F D c^* a
+    $$
+
   - `microdisc_transient`: Shoup and Szabo empirical approximation for inlaid microdisc chronoamperometry with radius $a$, spanning the entire transition from short-time planar Cottrell decay to long-time steady state ($<0.6\%$ maximum relative error):
-    $$I(t) = \frac{4 n F D c^* a}{f(\tau)}, \quad \tau = \frac{4 D t}{a^2}$$
+
+    $$
+    I(t) = \frac{4 n F D c^* a}{f(\tau)}, \quad \tau = \frac{4 D t}{a^2}
+    $$
+
   - `mahon_oldham_transient`: Mahon and Oldham analytical expression for transient diffusion current at an inlaid microdisc electrode of radius $a$ across all time regimes:
-    $$I(t) = 4 n F D c^* a \cdot f(\theta), \quad \theta = \frac{4 D t}{a^2}$$
+
+    $$
+    I(t) = 4 n F D c^* a \cdot f(\theta), \quad \theta = \frac{4 D t}{a^2}
+    $$
+
   - `microhemisphere_limiting_current` & `microsphere_limiting_current`: Steady-state limiting currents for hemispherical ($I_{\text{lim}} = 2 \pi n F D c^* r$) and spherical ($I_{\text{lim}} = 4 \pi n F D c^* r$) microelectrodes of radius $r$.
   - `microband_limiting_current`: Steady-state and quasi-steady-state current approximations for microband geometries.
 - **Scanning Electrochemical Microscopy (SECM) Approach Curves (`softpotato.analytical.secm`)**:
   - `secm_approach_positive_feedback`: Lefrou and Cornut analytical approximation for steady-state normalized tip current ($I_T = i_T / i_{T,\infty}$ with $i_{T,\infty} = 4 n F D c^* a$) over a conductive substrate (positive feedback / diffusion-controlled mediator regeneration) as a function of normalized distance ($L = d / a$) and insulator radius ratio ($RG = r_g / a$):
-    $$I_T^{\text{cond}}(L, RG)$$
+
+    $$
+    I_T^{\text{cond}}(L, RG)
+    $$
+
   - `secm_approach_negative_feedback`: Lefrou and Cornut analytical approximation for steady-state normalized tip current over an insulating substrate (negative feedback / hindered diffusion) as a function of normalized distance ($L = d / a$) and insulator radius ratio ($RG = r_g / a$):
-    $$I_T^{\text{ins}}(L, RG)$$
+
+    $$
+    I_T^{\text{ins}}(L, RG)
+    $$
+
 - **Voltammetry & Kinetic Diagnostics (`softpotato.analytical.voltammetry`)**:
   - `randles_sevcik`: Randles–Ševčík peak current for reversible electron transfer at planar electrodes:
-    $$I_p = 0.4463\, n F A c^* \sqrt{\frac{n F D v}{R T}}$$
+
+    $$
+    I_p = 0.4463\, n F A c^* \sqrt{\frac{n F D v}{R T}}
+    $$
+
   - `randles_sevcik_irreversible`: Peak current for totally irreversible electron transfer:
-    $$I_p = 0.4958\, n F A c^* \sqrt{\frac{\alpha n_\alpha F D v}{R T}}$$
+
+    $$
+    I_p = 0.4958\, n F A c^* \sqrt{\frac{\alpha n_\alpha F D v}{R T}}
+    $$
+
   - `randles_sevcik_quasi`: Peak current and shape factor approximations across intermediate quasi-reversible regimes.
   - `peak_potential_irreversible`: Peak potential shift relationship with scan rate $v$ for irreversible systems.
   - `nicholson_psi`: Nicholson method relating peak potential separation ($\Delta E_p$) to the dimensionless kinetic parameter $\Psi$ and standard rate constant $k^0$, providing both forward rational approximations and inverse solvers.
   - `matsuda_ayabe`: Dimensionless parameter $\Lambda$ boundary criteria classifying reversible ($\Lambda \ge 15$), quasi-reversible ($10^{-3} < \Lambda < 15$), and irreversible ($\Lambda \le 10^{-3}$) voltammetric systems.
 - **Thermodynamics & Interfacial Kinetics (`softpotato.analytical.kinetics`)**:
   - `nernst`: Nernst equation for equilibrium electrode potential and surface concentration ratios:
-    $$E = E^{0\prime} + \frac{R T}{n F} \ln\left(\frac{c_{\text{Ox}}}{c_{\text{Red}}}\right)$$
+
+    $$
+    E = E^{0\prime} + \frac{R T}{n F} \ln\left(\frac{c_{\text{Ox}}}{c_{\text{Red}}}\right)
+    $$
+
   - `butler_volmer`: Butler–Volmer equation for current density and net current as a function of overpotential $\eta = E - E^{0\prime}$:
-    $$I = I_0 \left[\exp\left(\frac{(1 - \alpha) n F \eta}{R T}\right) - \exp\left(-\frac{\alpha n F \eta}{R T}\right)\right], \quad I_0 = n F A k^0 (c_{\text{Ox}}^*)^{1-\alpha} (c_{\text{Red}}^*)^\alpha$$
+
+    $$
+    I = I_0 \left[\exp\left(\frac{(1 - \alpha) n F \eta}{R T}\right) - \exp\left(-\frac{\alpha n F \eta}{R T}\right)\right], \quad I_0 = n F A k^0 (c_{\text{Ox}}^*)^{1-\alpha} (c_{\text{Red}}^*)^\alpha
+    $$
+
   - `tafel`: Anodic and cathodic high-overpotential Tafel approximations ($\eta = a + b \log_{10}|I|$) with automated extraction of Tafel slopes ($b$) and exchange currents ($I_0$).
 - **Simulation Benchmarking Suite (`softpotato.analytical.benchmark`)**:
   - Automated benchmark harness comparing `softpotato.solver` numerical results against analytical solutions.
@@ -133,7 +193,11 @@ In electrochemical simulations, diffusion layers are typically confined to a nar
 - **Meshing Module (`softpotato.grid`)**:
   - `Uniform1DMesh`: Standard equidistant grid generator.
   - `GeometricExpandingMesh`: Exponential / geometrically expanding spatial discretization:
-    $$\Delta x_j = \Delta x_0 \cdot \gamma^j \quad (\gamma > 1)$$
+
+    $$
+    \Delta x_j = \Delta x_0 \cdot \gamma^j \quad (\gamma > 1)
+    $$
+
   - `ExponentialMesh` and conformal transformation-based coordinates for semi-infinite diffusion domains.
 - **Non-Uniform Discretization Operators**:
   - Implement second-order finite difference stencils adapted for non-uniform spacing for both first ($\partial c / \partial x$) and second ($\partial^2 c / \partial x^2$) spatial derivatives.
@@ -158,12 +222,20 @@ Electrochemical systems frequently involve coupled chemical transformations (e.g
   - `Species`: Class encapsulating species identity, standard diffusion coefficient ($D_i$), bulk concentration ($c_i^*$), formal charge ($z_i$), and standard redox potential ($E^0$).
 - **Homogeneous Reaction Kinetics (`softpotato.reactions.homogeneous`)**:
   - Flexible multi-reaction formulation computing reaction rate vectors $\mathbf{R}(\mathbf{c}, x, t)$:
-    $$\frac{\partial c_i}{\partial t} = D_i \nabla^2 c_i + R_i(\mathbf{c})$$
+
+    $$
+    \frac{\partial c_i}{\partial t} = D_i \nabla^2 c_i + R_i(\mathbf{c})
+    $$
+
   - Built-in reaction primitives: first-order, second-order, reversible equilibrium ($A \rightleftharpoons B$), and catalytic cycles.
   - Automated kinetic Jacobian matrix formulation for implicit stiff ODE integration (`Radau`, `BDF`).
 - **Heterogeneous Charge-Transfer Kinetics (`softpotato.reactions.heterogeneous`)**:
   - Butler–Volmer kinetics:
-    $$k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^0)\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^0)\right)$$
+
+    $$
+    k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^0)\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^0)\right)
+    $$
+
   - Marcus–Hush–Chidsey (MHC) kinetics for non-adiabatic electron transfer.
   - Reversible Nernstian boundary condition helpers.
 - **Integration**:
