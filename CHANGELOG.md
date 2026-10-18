@@ -222,7 +222,11 @@ Ground-up redesign and modern reimplementation of Soft Potato (`v3.0.0a1`), intr
 ### Added
 - **1D Numerical Diffusion Solvers Framework (`softpotato.solver`)**:
   - Implemented `DiffusionProblem` formulation for 1D multi-species chemical diffusion and reaction-diffusion systems:
-    $$\frac{\partial c_i}{\partial t} = D_i \frac{\partial^2 c_i}{\partial x^2} + R_i(\mathbf{c}, x, t)$$
+
+    $$
+    \frac{\partial c_i}{\partial t} = D_i \frac{\partial^2 c_i}{\partial x^2} + R_i(\mathbf{c}, x, t)
+    $$
+
     - Monotonically increasing 1D spatial grid validation with uniform step size detection (`dx` property).
     - Multi-species support with strict validation for positive diffusion coefficients ($D_i > 0$).
     - Flexible initial conditions supporting constant scalar concentrations, 1D NumPy profile arrays, or spatial callables $f(x)$.

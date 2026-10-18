@@ -76,4 +76,8 @@ print(f"Extracted D = {fit.D:.3e} m^2/s (R^2 = {fit.r_squared:.5f})")
 ```
 
 !!! note "Support Soft Potato"
-    If you find Soft Potato useful in your research or teaching, consider supporting the project on [Buy Me a Coffee](https://www.buymeacoffee.com/oliverrdz).
+    If you find Soft Potato useful in your research or teaching, consider supporting its ongoing open-source development:
+
+    <iframe src="https://github.com/sponsors/oliverrdz/button" title="Sponsor oliverrdz" height="32" width="114" style="border: 0; border-radius: 6px; vertical-align: middle;"></iframe>
+    &nbsp;&nbsp;
+    or on [Buy Me a Coffee](https://www.buymeacoffee.com/oliverrdz).

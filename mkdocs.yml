@@ -4,7 +4,9 @@ site_author: Oliver Rodriguez
 site_url: https://softpotato.xyz
 repo_url: https://github.com/oliverrdz/softpotato
 repo_name: oliverrdz/softpotato
-copyright: Copyright &copy; 2026 Oliver Rodriguez
+copyright: |
+  Copyright &copy; 2026 Oliver Rodriguez &bull;
+  <a href="https://github.com/sponsors/oliverrdz" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Sponsor on GitHub <span style="color: #ea4aaa;">&hearts;</span></a>
 
 theme:
   name: material
@@ -34,6 +36,9 @@ theme:
 
 exclude_docs: |
   _hooks/
+
+hooks:
+  - docs/_hooks/math_hook.py
 
 plugins:
   - search
@@ -100,10 +105,16 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/oliverrdz/softpotato
+      name: GitHub Repository
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/softpotato/
+      name: PyPI
+    - icon: fontawesome/solid/heart
+      link: https://github.com/sponsors/oliverrdz
+      name: Sponsor on GitHub
     - icon: fontawesome/solid/mug-hot
       link: https://www.buymeacoffee.com/oliverrdz
+      name: Buy Me a Coffee
 
 nav:
   - Home: index.md
