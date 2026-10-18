@@ -10,6 +10,8 @@ dist/
 *.egg
 _build/
 docs/_build/
+site/
+.cache/
 
 # Virtual environments
 .venv/
