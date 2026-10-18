@@ -1,0 +1,140 @@
+site_name: Soft Potato
+site_description: Electrochemical simulation and analysis toolkit in Python — plus tutorials on Python, Linux, and scientific computing.
+site_author: Oliver Rodriguez
+site_url: https://softpotato.xyz
+repo_url: https://github.com/oliverrdz/softpotato
+repo_name: oliverrdz/softpotato
+copyright: Copyright &copy; 2026 Oliver Rodriguez
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+exclude_docs: |
+  _hooks/
+
+plugins:
+  - search
+  - blog:
+      blog_dir: blog
+      post_date_format: full
+      archive: true
+      categories: true
+  - mkdocs-jupyter:
+      include: ["*.ipynb"]
+      execute: false
+      include_source: true
+      ignore_h1_titles: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: numpy
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            members_order: source
+            separate_signature: true
+            show_signature_annotations: true
+            extensions:
+              - docs/_hooks/griffe_sphinx.py:SphinxDocstringExtension
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  analytics:
+    provider: google
+    property: G-PEWTLDFZD6
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/oliverrdz/softpotato
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/softpotato/
+    - icon: fontawesome/solid/mug-hot
+      link: https://www.buymeacoffee.com/oliverrdz
+
+nav:
+  - Home: index.md
+  - Documentation:
+      - Installation: installation.md
+      - Examples:
+          - Cottrell Chronoamperometry: examples/cottrell.ipynb
+          - Cyclic Voltammetry: examples/cyclic_voltammetry.ipynb
+      - Development & Releases:
+          - Roadmap: roadmap.md
+          - Changelog: changelog.md
+  - API Reference:
+      - api/index.md
+      - Constants Module: api/constants.md
+      - Analytical Module:
+          - api/analytical/index.md
+          - Transient Step Techniques: api/analytical/step.md
+          - Hydrodynamics & Convection: api/analytical/hydrodynamics.md
+          - Thermodynamics & Kinetics: api/analytical/kinetics.md
+          - Voltammetry & Diagnostics: api/analytical/voltammetry.md
+          - Microelectrode Geometries: api/analytical/microelectrodes.md
+          - SECM Approach Curves: api/analytical/secm.md
+          - Parameter Fitting: api/analytical/fitting.md
+          - Simulation Benchmarking: api/analytical/benchmark.md
+      - Solver Module: api/solver.md
+  - Tutorials:
+      - tutorials/index.md
+      - Python Basics: tutorials/python-basics.md
+      - Linux Basics: tutorials/linux-basics.md
+      - Electrochemistry Notebooks:
+          - Cottrell Chronoamperometry: examples/cottrell.ipynb
+          - Cyclic Voltammetry: examples/cyclic_voltammetry.ipynb
+  - Blog:
+      - blog/index.md

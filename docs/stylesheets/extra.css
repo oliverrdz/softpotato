@@ -1,0 +1,16 @@
+/* Custom styles for Soft Potato (Material for MkDocs) */
+
+/* Ensure Jupyter notebook output areas wrap cleanly without horizontal scrollbars */
+.jp-OutputArea-output pre,
+.jupyter-wrapper .output_area pre,
+.jupyter-wrapper .output_subarea pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Vertically center cells in API reference tables */
+.md-typeset table:not([class]) td {
+    vertical-align: middle;
+}
