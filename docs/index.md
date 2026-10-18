@@ -85,9 +85,9 @@ t = np.linspace(0.01, 10.0, 200)
 current = sp.analytical.cottrell(
     t=t,
     n=1,
-    D=1e-9,      # m^2 / s
+    D=1e-9,  # m^2 / s
     c_bulk=1.0,  # mol / m^3 (1 mM)
-    A=1e-4,      # m^2 (1 cm^2)
+    A=1e-4,  # m^2 (1 cm^2)
 )
 
 # 2. Fit experimental chronoamperometric data to recover diffusivity D

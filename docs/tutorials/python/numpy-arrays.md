@@ -43,9 +43,7 @@ import math
 
 current_loop = []
 for ti in t:
-    val = (1 * 96485.332 * 1e-4 * math.sqrt(1e-9) * 1.0) / math.sqrt(
-        math.pi * ti
-    )
+    val = (1 * 96485.332 * 1e-4 * math.sqrt(1e-9) * 1.0) / math.sqrt(math.pi * ti)
     current_loop.append(val)
 ```
 
@@ -78,8 +76,7 @@ t_large = np.linspace(0.001, 10.0, 100_000)
 # Pure Python Loop
 start = time.perf_counter()
 res_loop = [
-    (n * F * A * math.sqrt(D) * c_bulk) / math.sqrt(math.pi * ti)
-    for ti in t_large
+    (n * F * A * math.sqrt(D) * c_bulk) / math.sqrt(math.pi * ti) for ti in t_large
 ]
 t_loop = time.perf_counter() - start
 
