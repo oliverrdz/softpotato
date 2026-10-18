@@ -14,3 +14,12 @@
 .md-typeset table:not([class]) td {
     vertical-align: middle;
 }
+
+/* GitHub Sponsors footer icon highlight */
+.md-social__link[href*="sponsors"] {
+    color: #ea4aaa;
+}
+.md-social__link[href*="sponsors"]:hover {
+    color: #db2777;
+}
+
