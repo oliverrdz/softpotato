@@ -2,25 +2,39 @@
 
 <div class="sp-section-banner" markdown>
 <div markdown>
-Welcome to the **Soft Potato Learning Hub**! Here you will find interactive electrochemical simulation notebooks alongside foundational tutorials on **Python programming** and **Linux** for students, researchers, and engineers.
+Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **electrochemistry simulations**, scientific **Python programming**, and the **Linux** command line for students, researchers, and computational scientists.
 </div>
 <img src="../assets/images/chip-coding.png" alt="Chip — Code & Mesh Analyst" />
 </div>
 
 ---
 
-## Electrochemical Simulations
+## Electrochemistry Simulations
 
-Interactive Jupyter notebooks demonstrating numerical simulations, analytical theory, and parameter fitting with Soft Potato:
+Interactive simulations, numerical solvers, and analytical benchmarking with Soft Potato:
 
-- [**Cottrell Chronoamperometry**](../examples/cottrell.ipynb) — 1D potential-step diffusion simulation, concentration profiles, Cottrell plots, and diffusivity extraction.
-- [**Cyclic Voltammetry**](../examples/cyclic_voltammetry.ipynb) — Reversible electron transfer ($O + e^- \rightleftharpoons R$), triangular sweep generation, Randles–Ševčík diagnostics, and peak separation analysis.
+- [**Cottrell Chronoamperometry**](electrochemistry/cottrell.ipynb) — 1D potential-step diffusion simulation, concentration profiles, Cottrell plots, and diffusivity extraction.
+- [**Cyclic Voltammetry**](electrochemistry/cyclic_voltammetry.ipynb) — Reversible electron transfer ($O + e^- \rightleftharpoons R$), triangular sweep generation, Randles–Ševčík diagnostics, and peak separation analysis.
+- [**Chronopotentiometry & Sand Equation**](electrochemistry/chronopotentiometry.md) — Constant-current transient simulation, Neumann boundary conditions, Sand transition time ($\tau$) scaling, and quarter-wave potential analysis.
 
 ---
 
-## Programming & Scientific Computing
+## Python
 
-New to scientific programming or the command line? Start here:
+Foundational scientific programming tutorials designed for researchers and engineers:
 
-- [**Python Basics for Scientists**](python-basics.md) — Setting up virtual environments, working with variables and functions, vectorized math with NumPy, and plotting data with Matplotlib.
-- [**Linux Command Line Basics**](linux-basics.md) — Navigating the filesystem, managing files and permissions, shell scripting fundamentals, and running Python scripts from the terminal.
+- [**Setting Up Virtual Environments**](python/virtual-environments.md) — Isolated project environments using `venv` and `pip`, dependency management, and installing scientific packages.
+- [**Python Fundamentals: Variables & Functions**](python/variables-and-functions.md) — Variables, physical constants, typing, scientific functions, and calculating electrochemical parameters like thermal voltage.
+- [**Numerical Computing with NumPy**](python/numpy-arrays.md) — Utilizing `np.ndarray` for vectorized math, evaluating equations without slow loops, and handling multidimensional concentration grids.
+- [**Data Visualization with Matplotlib**](python/matplotlib-plotting.md) — Generating publication-quality figures, transient curves, cyclic voltammograms, custom styling, multi-panel subplots, and vector graphics export.
+
+---
+
+## Linux
+
+Essential command-line skills for running simulations, managing data, and remote computing:
+
+- [**Navigating the Filesystem**](linux/filesystem-navigation.md) — The Linux directory hierarchy, essential navigation commands (`pwd`, `ls`, `cd`, `mkdir`), and tab autocompletion.
+- [**File Management & Data Inspection**](linux/file-management.md) — Creating, moving, copying files safely, fast data inspection with `head`, `tail`, `cat`, and text search with `grep`.
+- [**Running Scripts & Redirection**](linux/running-scripts.md) — Running scientific Python scripts from the terminal, standard I/O redirection (`>`, `2>&1`), and managing background jobs.
+- [**Remote Computing with SSH & Rsync**](linux/ssh-remote-access.md) — Connecting securely to remote lab workstations with SSH keys, persistent sessions with `tmux`, and syncing datasets with `rsync`.
