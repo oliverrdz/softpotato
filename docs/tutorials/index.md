@@ -2,7 +2,7 @@
 
 <div class="sp-section-banner" markdown>
 <div markdown>
-Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **electrochemistry simulations**, scientific **Python programming**, and the **Linux** command line for students, researchers, and computational scientists.
+Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **electrochemistry simulations**, scientific **Python programming**, and the **Linux** command line for students, researchers, and computational scientists. This section is in active development and will be updated continuously.
 </div>
 <img src="../assets/images/chip-coding.png" alt="Chip — Code & Mesh Analyst" />
 </div>
@@ -15,7 +15,6 @@ Interactive simulations, numerical solvers, and analytical benchmarking with Sof
 
 - [**Cottrell Chronoamperometry**](electrochemistry/cottrell.ipynb) — 1D potential-step diffusion simulation, concentration profiles, Cottrell plots, and diffusivity extraction.
 - [**Cyclic Voltammetry**](electrochemistry/cyclic_voltammetry.ipynb) — Reversible electron transfer ($O + e^- \rightleftharpoons R$), triangular sweep generation, Randles–Ševčík diagnostics, and peak separation analysis.
-- [**Chronopotentiometry & Sand Equation**](electrochemistry/chronopotentiometry.md) — Constant-current transient simulation, Neumann boundary conditions, Sand transition time ($\tau$) scaling, and quarter-wave potential analysis.
 
 ---
 
@@ -23,7 +22,7 @@ Interactive simulations, numerical solvers, and analytical benchmarking with Sof
 
 Foundational scientific programming tutorials designed for researchers and engineers:
 
-- [**Setting Up Virtual Environments**](python/virtual-environments.md) — Isolated project environments using `venv` and `pip`, dependency management, and installing scientific packages.
+- [**Installing Python & First Simulation**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, comparing IDEs, and running an analytical chronoamperometry test in IDLE to verify your setup.
 - [**Python Fundamentals: Variables & Functions**](python/variables-and-functions.md) — Variables, physical constants, typing, scientific functions, and calculating electrochemical parameters like thermal voltage.
 - [**Numerical Computing with NumPy**](python/numpy-arrays.md) — Utilizing `np.ndarray` for vectorized math, evaluating equations without slow loops, and handling multidimensional concentration grids.
 - [**Data Visualization with Matplotlib**](python/matplotlib-plotting.md) — Generating publication-quality figures, transient curves, cyclic voltammograms, custom styling, multi-panel subplots, and vector graphics export.
