@@ -84,7 +84,11 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.arithmatex:
@@ -147,9 +151,8 @@ nav:
       - Electrochemistry Simulations:
           - Cottrell Chronoamperometry: tutorials/electrochemistry/cottrell.ipynb
           - Cyclic Voltammetry: tutorials/electrochemistry/cyclic_voltammetry.ipynb
-          - Chronopotentiometry & Sand Equation: tutorials/electrochemistry/chronopotentiometry.md
       - Python:
-          - Virtual Environments: tutorials/python/virtual-environments.md
+          - Installing Python: tutorials/python/installing-python.md
           - Variables & Functions: tutorials/python/variables-and-functions.md
           - Numerical Computing with NumPy: tutorials/python/numpy-arrays.md
           - Plotting with Matplotlib: tutorials/python/matplotlib-plotting.md
