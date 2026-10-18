@@ -34,8 +34,8 @@ jobs:
         run: mkdocs build --strict
 
       - name: Deploy via rsync over SSH
-        uses: easingthemes/ssh-deploy@v5
-        with:
+        uses: easingthemes/ssh-deploy@v6
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           ARGS: "-rlgoDzvc -i --delete"
           SOURCE: "site/"
