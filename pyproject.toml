@@ -39,11 +39,10 @@ test = [
     "nbmake>=1.5.0",
 ]
 docs = [
-    "sphinx>=7.0.0",
-    "sphinx-rtd-theme>=2.0.0",
-    "sphinx-autodoc-typehints>=1.24.0",
-    "nbsphinx>=0.9.0",
-    "myst-parser>=2.0.0",
+    "mkdocs>=1.6.0,<2.0.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-jupyter>=0.24.0",
     "ipython>=8.0.0",
 ]
 dev = [
@@ -54,16 +53,16 @@ dev = [
     "ruff>=0.1.0",
     "build>=1.0.0",
     "twine>=4.0.0",
-    "sphinx>=7.0.0",
-    "sphinx-rtd-theme>=2.0.0",
-    "sphinx-autodoc-typehints>=1.24.0",
-    "nbsphinx>=0.9.0",
-    "myst-parser>=2.0.0",
+    "mkdocs>=1.6.0,<2.0.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-jupyter>=0.24.0",
     "ipython>=8.0.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/oliverrdz/softpotato"
+Homepage = "https://softpotato.xyz"
+Documentation = "https://softpotato.xyz"
 Repository = "https://github.com/oliverrdz/softpotato.git"
 "Bug Tracker" = "https://github.com/oliverrdz/softpotato/issues"
 
@@ -82,4 +81,5 @@ warn_unused_configs = true
 extend-exclude = [
     "docs/examples",
     "docs/_build",
+    "site",
 ]
