@@ -245,11 +245,11 @@ import matplotlib.pyplot as plt
 from softpotato.analytical import cottrell
 
 # 1. Experimental parameters (SI units)
-n = 1                     # Number of electrons
-c_bulk = 1.0              # Bulk concentration [mol/m^3] (1.0 mM)
-D = 7.5e-10               # Diffusion coefficient [m^2/s]
-electrode_radius = 1.5e-3 # Disc radius [m] (3 mm diameter)
-area = np.pi * (electrode_radius ** 2)
+n = 1  # Number of electrons
+c_bulk = 1.0  # Bulk concentration [mol/m^3] (1.0 mM)
+D = 7.5e-10  # Diffusion coefficient [m^2/s]
+electrode_radius = 1.5e-3  # Disc radius [m] (3 mm diameter)
+area = np.pi * (electrode_radius**2)
 
 # 2. Time grid from 0.01 s to 5.0 s
 t = np.linspace(0.01, 5.0, 500)
@@ -260,7 +260,13 @@ i_microamps = i_amperes * 1e6  # Convert to microamperes (µA)
 
 # 4. Generate the plot
 plt.figure(figsize=(7, 4.5))
-plt.plot(t, i_microamps, color="#FD8031", linewidth=2.5, label="softpotato.analytical.cottrell")
+plt.plot(
+    t,
+    i_microamps,
+    color="#FD8031",
+    linewidth=2.5,
+    label="softpotato.analytical.cottrell",
+)
 plt.xlabel("Time (s)")
 plt.ylabel("Current (µA)")
 plt.title("Installation Verification: Chronoamperometry Transient")
