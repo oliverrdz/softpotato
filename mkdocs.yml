@@ -144,10 +144,19 @@ nav:
       - Solver Module: api/solver.md
   - Tutorials:
       - tutorials/index.md
-      - Python Basics: tutorials/python-basics.md
-      - Linux Basics: tutorials/linux-basics.md
-      - Electrochemistry Notebooks:
-          - Cottrell Chronoamperometry: examples/cottrell.ipynb
-          - Cyclic Voltammetry: examples/cyclic_voltammetry.ipynb
+      - Electrochemistry Simulations:
+          - Cottrell Chronoamperometry: tutorials/electrochemistry/cottrell.ipynb
+          - Cyclic Voltammetry: tutorials/electrochemistry/cyclic_voltammetry.ipynb
+          - Chronopotentiometry & Sand Equation: tutorials/electrochemistry/chronopotentiometry.md
+      - Python:
+          - Virtual Environments: tutorials/python/virtual-environments.md
+          - Variables & Functions: tutorials/python/variables-and-functions.md
+          - Numerical Computing with NumPy: tutorials/python/numpy-arrays.md
+          - Plotting with Matplotlib: tutorials/python/matplotlib-plotting.md
+      - Linux:
+          - Navigating the Filesystem: tutorials/linux/filesystem-navigation.md
+          - File Management: tutorials/linux/file-management.md
+          - Running Scripts & Redirection: tutorials/linux/running-scripts.md
+          - Remote Servers & SSH: tutorials/linux/ssh-remote-access.md
   - Blog:
       - blog/index.md
