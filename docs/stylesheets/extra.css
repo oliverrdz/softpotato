@@ -1,6 +1,257 @@
-/* Custom styles for Soft Potato (Material for MkDocs) */
+/* ==========================================================================
+   Soft Potato ("Chip" Mascot) Color Palette & Custom Theme Styles
+   Palette:
+     - Warm Cream / Potato Gold: #FFF6F3 / #E5B575
+     - Goggle Sky Blue:          #9ADEED
+     - Electrolyte Mint:         #83BEB2
+     - Reaction Orange:          #FD8031
+     - Deep Lab Slate:           #344050 / #341030
+   ========================================================================== */
 
-/* Ensure Jupyter notebook output areas wrap cleanly without horizontal scrollbars */
+:root {
+    --sp-cream: #FFF6F3;
+    --sp-potato-gold: #E5B575;
+    --sp-goggle-blue: #9ADEED;
+    --sp-mint: #83BEB2;
+    --sp-orange: #FD8031;
+    --sp-orange-dark: #E0681B;
+    --sp-slate: #344050;
+    --sp-dark-plum: #341030;
+}
+
+/* Light mode palette */
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color: #344050;
+    --md-primary-fg-color--light: #4A5B70;
+    --md-primary-fg-color--dark: #252E3A;
+    --md-primary-bg-color: #FFF6F3;
+    --md-primary-bg-color--light: #FFFFFF;
+    --md-accent-fg-color: #FD8031;
+    --md-accent-fg-color--transparent: rgba(253, 128, 49, 0.12);
+    --md-typeset-a-color: #D96014;
+}
+
+/* Dark mode palette */
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #26303D;
+    --md-primary-fg-color--light: #344050;
+    --md-primary-fg-color--dark: #1B222C;
+    --md-primary-bg-color: #FFF6F3;
+    --md-accent-fg-color: #FD8031;
+    --md-accent-fg-color--transparent: rgba(253, 128, 49, 0.16);
+    --md-typeset-a-color: #9ADEED;
+}
+
+/* Header logo sizing so Chip is clearly visible */
+.md-header__button.md-logo {
+    padding: 0.15rem;
+}
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: 2.1rem;
+    width: auto;
+}
+
+/* Primary CTA Button in Reaction Orange */
+.md-typeset .md-button--primary {
+    background-color: var(--sp-orange);
+    border-color: var(--sp-orange);
+    color: #FFFFFF;
+}
+.md-typeset .md-button--primary:hover,
+.md-typeset .md-button--primary:focus {
+    background-color: var(--sp-orange-dark);
+    border-color: var(--sp-orange-dark);
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Landing Page Two-Column Hero Section
+   ========================================================================== */
+.sp-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding: 2.25rem 2.5rem;
+    margin: 0.5rem 0 2rem 0;
+    border-radius: 0.85rem;
+    background: linear-gradient(135deg, rgba(154, 222, 237, 0.22) 0%, rgba(255, 246, 243, 0.85) 60%, rgba(131, 190, 178, 0.2) 100%);
+    border: 1px solid rgba(154, 222, 237, 0.55);
+}
+
+[data-md-color-scheme="slate"] .sp-hero {
+    background: linear-gradient(135deg, rgba(52, 64, 80, 0.65) 0%, rgba(38, 48, 61, 0.85) 60%, rgba(131, 190, 178, 0.15) 100%);
+    border-color: rgba(154, 222, 237, 0.25);
+}
+
+.sp-hero__content {
+    flex: 1 1 62%;
+}
+
+.sp-hero__content h1 {
+    margin: 0 0 0.65rem 0 !important;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.sp-hero__tagline {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    opacity: 0.92;
+}
+
+.sp-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sp-hero__actions .md-button {
+    margin: 0 !important;
+}
+
+.sp-hero__mascot {
+    flex: 0 0 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sp-hero__mascot img {
+    width: 210px;
+    height: 210px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 8px 16px rgba(52, 64, 80, 0.18));
+    transition: transform 0.25s ease;
+}
+
+.sp-hero__mascot img:hover {
+    transform: translateY(-4px) rotate(-2deg);
+}
+
+@media screen and (max-width: 768px) {
+    .sp-hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .sp-hero__actions {
+        justify-content: center;
+    }
+    .sp-hero__mascot {
+        flex: 0 0 auto;
+    }
+    .sp-hero__mascot img {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* ==========================================================================
+   Feature Cards (Balanced 2x2 Grid) & Section Mascot Illustrations
+   ========================================================================== */
+.md-typeset .grid.cards.sp-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.md-typeset .grid.cards.sp-feature-grid > ul > li {
+    padding: 1.25rem 1.4rem;
+    border-radius: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.md-typeset .grid.cards.sp-feature-grid > ul > li > p:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+}
+
+.md-typeset img.sp-card-icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .md-typeset .grid.cards.sp-feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sp-section-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: rgba(154, 222, 237, 0.14);
+    border-left: 4px solid var(--sp-mint);
+}
+
+[data-md-color-scheme="slate"] .sp-section-banner {
+    background-color: rgba(154, 222, 237, 0.07);
+}
+
+.sp-section-banner p {
+    margin: 0;
+}
+
+.sp-section-banner img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+}
+
+@media screen and (max-width: 600px) {
+    .sp-section-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   Custom "Chip's Tip" Admonition (`!!! chip "Chip's Tip"`)
+   ========================================================================== */
+:root {
+    --md-admonition-icon--chip: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C7.5 2 4 6.5 4 12.5C4 18 7.5 22 12 22s8-4 8-9.5C20 6.5 16.5 2 12 2zm-3.5 7A2.5 2.5 0 0 1 11 11.5A2.5 2.5 0 0 1 8.5 14A2.5 2.5 0 0 1 6 11.5A2.5 2.5 0 0 1 8.5 9zm7 0A2.5 2.5 0 0 1 18 11.5A2.5 2.5 0 0 1 15.5 14A2.5 2.5 0 0 1 13 11.5A2.5 2.5 0 0 1 15.5 9zm-6.5 7h4c0 1.1-.9 2-2 2s-2-.9-2-2z"/></svg>');
+}
+
+.md-typeset .admonition.chip,
+.md-typeset details.chip {
+    border-color: var(--sp-mint);
+}
+
+.md-typeset .chip > .admonition-title,
+.md-typeset .chip > summary {
+    background-color: rgba(131, 190, 178, 0.18);
+}
+
+.md-typeset .chip > .admonition-title::before,
+.md-typeset .chip > summary::before {
+    background-color: var(--sp-orange);
+    -webkit-mask-image: var(--md-admonition-icon--chip);
+    mask-image: var(--md-admonition-icon--chip);
+}
+
+/* ==========================================================================
+   Jupyter Notebook & Table Adjustments
+   ========================================================================== */
 .jp-OutputArea-output pre,
 .jupyter-wrapper .output_area pre,
 .jupyter-wrapper .output_subarea pre {
@@ -10,7 +261,6 @@
     overflow-wrap: anywhere;
 }
 
-/* Vertically center cells in API reference tables */
 .md-typeset table:not([class]) td {
     vertical-align: middle;
 }
@@ -22,4 +272,3 @@
 .md-social__link[href*="sponsors"]:hover {
     color: #db2777;
 }
-

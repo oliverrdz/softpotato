@@ -1,6 +1,11 @@
 # Tutorials & Learning Guides
 
+<div class="sp-section-banner" markdown>
+<div markdown>
 Welcome to the **Soft Potato Learning Hub**! Here you will find interactive electrochemical simulation notebooks alongside foundational tutorials on **Python programming** and **Linux** for students, researchers, and engineers.
+</div>
+<img src="../assets/images/chip-coding.png" alt="Chip — Code & Mesh Analyst" />
+</div>
 
 ---
 

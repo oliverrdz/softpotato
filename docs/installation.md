@@ -9,6 +9,9 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
+!!! chip "Chip's Tip: Why Use a Virtual Environment?"
+    Installing scientific packages inside a dedicated `.venv` keeps your project dependencies isolated and reproducible without requiring `sudo` or modifying your operating system's Python installation.
+
 ## Stable Release (PyPI)
 
 The recommended way to install the latest stable version of Soft Potato is via [PyPI](https://pypi.org/project/softpotato/) using `pip`:
