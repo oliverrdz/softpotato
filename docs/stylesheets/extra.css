@@ -272,3 +272,62 @@
 .md-social__link[href*="sponsors"]:hover {
     color: #db2777;
 }
+
+/* ==========================================================================
+   Mermaid Diagram Theme & Soft Potato Palette
+   ========================================================================== */
+.mermaid {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.mermaid .node rect,
+.mermaid .node polygon {
+    rx: 8px !important;
+    ry: 8px !important;
+}
+
+/* Light mode node styling */
+[data-md-color-scheme="default"] .mermaid .node.engine rect {
+    fill: rgba(154, 222, 237, 0.25) !important;
+    stroke: #83BEB2 !important;
+    stroke-width: 2px !important;
+}
+[data-md-color-scheme="default"] .mermaid .node.editor rect {
+    fill: rgba(253, 128, 49, 0.14) !important;
+    stroke: #FD8031 !important;
+    stroke-width: 2px !important;
+}
+[data-md-color-scheme="default"] .mermaid .node.packages rect {
+    fill: rgba(229, 181, 117, 0.22) !important;
+    stroke: #E5B575 !important;
+    stroke-width: 2px !important;
+}
+
+/* Dark mode (slate) node styling */
+[data-md-color-scheme="slate"] .mermaid .node.engine rect {
+    fill: rgba(154, 222, 237, 0.15) !important;
+    stroke: #9ADEED !important;
+    stroke-width: 2px !important;
+}
+[data-md-color-scheme="slate"] .mermaid .node.editor rect {
+    fill: rgba(253, 128, 49, 0.20) !important;
+    stroke: #FD8031 !important;
+    stroke-width: 2px !important;
+}
+[data-md-color-scheme="slate"] .mermaid .node.packages rect {
+    fill: rgba(229, 181, 117, 0.18) !important;
+    stroke: #E5B575 !important;
+    stroke-width: 2px !important;
+}
+
+/* Flowchart connectors in Reaction Orange */
+.mermaid .edgePath .path {
+    stroke: var(--sp-orange) !important;
+    stroke-width: 2px !important;
+}
+.mermaid .marker {
+    fill: var(--sp-orange) !important;
+    stroke: var(--sp-orange) !important;
+}
+
