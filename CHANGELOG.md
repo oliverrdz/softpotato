@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Official Website & Domain (`softpotato.xyz`)**:
+  - Launched the official project website and centralized documentation hub at [softpotato.xyz](https://softpotato.xyz).
+  - Introduced a project blog and announcements platform (`docs/blog/`) with author profiling, featuring the inaugural announcement post welcoming users to `softpotato.xyz`.
+  - Added comprehensive educational tutorial series for scientific computing:
+    - Linux basics (`docs/tutorials/linux/`): filesystem navigation, file management, running scripts, and SSH remote access.
+    - Python fundamentals (`docs/tutorials/python/`): Python installation, variables and functions, NumPy numerical arrays, and Matplotlib plotting.
+  - Added GitHub Actions deployment workflow (`.github/workflows/deploy-docs.yml`) to automatically build and deploy the documentation site to the production server via SSH/rsync on pushes to `main`.
+- **Material for MkDocs Documentation Framework**:
+  - Migrated the documentation engine from Sphinx to [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) (`mkdocs.yml`).
+  - Re-architected API documentation using `mkdocstrings` (`mkdocstrings-python`) with custom Griffe extension hooks (`docs/_hooks/griffe_sphinx.py`) to parse and render docstrings seamlessly.
+  - Implemented MathJax LaTeX equation rendering via custom math hooks (`docs/_hooks/math_hook.py`) and JavaScript configuration (`docs/javascripts/mathjax.js`).
+  - Added custom styling, branding, and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (slate) palettes, typography, and Mermaid diagram theming.
+
+### Changed
+- Converted all documentation source files, API references, and guides from reStructuredText (`.rst`) to Markdown (`.md`).
+- Reorganized tutorial and notebook structure into dedicated categories (`docs/tutorials/electrochemistry/`, `docs/tutorials/python/`, `docs/tutorials/linux/`).
+- Updated documentation dependencies in `pyproject.toml` (`[project.optional-dependencies].docs`), replacing Sphinx packages with MkDocs, Material for MkDocs, `mkdocstrings`, and markdown extensions.
+
+### Removed
+- Removed legacy Sphinx configuration and build infrastructure: `docs/conf.py`, `docs/Makefile`, `docs/make.bat`, `docs/docutils.conf`, `.readthedocs.yaml`, and Sphinx templates/static assets.
+
 ## [3.1.1] - 2026-10-02
 
 ### Patch Release: IUPAC Sign Convention Bug Fix & Cyclic Voltammetry Tutorial
