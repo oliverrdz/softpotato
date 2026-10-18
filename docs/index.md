@@ -4,19 +4,27 @@ hide:
   - toc
 ---
 
-# Soft Potato
+<div class="sp-hero">
+  <div class="sp-hero__content">
+    <h1>Soft Potato</h1>
+    <p class="sp-hero__tagline">
+      An open-source electrochemical simulation and analysis toolkit in Python — plus practical tutorials on scientific computing, Python, and Linux.
+    </p>
+    <div class="sp-hero__actions">
+      <a class="md-button md-button--primary" href="installation/">Get Started</a>
+      <a class="md-button" href="api/">Explore API Reference</a>
+      <a class="md-button" href="tutorials/">Tutorials</a>
+      <a class="md-button" href="blog/">Read the Blog</a>
+    </div>
+  </div>
+  <div class="sp-hero__mascot">
+    <img src="assets/images/chip-greeting.png" alt="Chip — Soft Potato Mascot" />
+  </div>
+</div>
 
-**An open-source electrochemical simulation and analysis toolkit in Python — plus tutorials on scientific computing, Python, and Linux.**
+<div class="grid cards sp-feature-grid" markdown>
 
-[Get Started](installation.md){ .md-button .md-button--primary }
-[Explore API Reference](api/index.md){ .md-button }
-[Read the Blog](blog/index.md){ .md-button }
-
----
-
-<div class="grid cards" markdown>
-
--   :material-flash-outline: **Analytical Electrochemistry**
+-   ![Analytical Electrochemistry](assets/images/chip-electrodes.png){ .sp-card-icon } **Analytical Electrochemistry**
 
     ---
 
@@ -24,7 +32,7 @@ hide:
 
     [:octicons-arrow-right-24: Analytical Module](api/analytical/index.md)
 
--   :material-matrix: **Numerical PDE Solvers**
+-   ![Numerical PDE Solvers](assets/images/chip-coding.png){ .sp-card-icon } **Numerical PDE Solvers**
 
     ---
 
@@ -32,7 +40,7 @@ hide:
 
     [:octicons-arrow-right-24: Solver Module](api/solver.md)
 
--   :material-chart-scatter-plot: **Parameter Fitting & Benchmarking**
+-   ![Parameter Fitting & Benchmarking](assets/images/chip-lab.png){ .sp-card-icon } **Parameter Fitting & Benchmarking**
 
     ---
 
@@ -40,7 +48,7 @@ hide:
 
     [:octicons-arrow-right-24: Fitting & Benchmarks](api/analytical/fitting.md)
 
--   :material-school-outline: **Tutorials: Electrochemistry, Python & Linux**
+-   ![Tutorials](assets/images/chip-greeting.png){ .sp-card-icon } **Tutorials: Electrochemistry, Python & Linux**
 
     ---
 
@@ -49,6 +57,18 @@ hide:
     [:octicons-arrow-right-24: Browse Tutorials](tutorials/index.md)
 
 </div>
+
+---
+
+## Installation
+
+Install the latest stable release of Soft Potato from [PyPI](https://pypi.org/project/softpotato/) using `pip`:
+
+```bash
+pip install softpotato
+```
+
+For more details, including instructions on how to install from GitHub (bleeding-edge or from source), visit the [full installation page](installation.md).
 
 ---
 
@@ -65,15 +85,18 @@ t = np.linspace(0.01, 10.0, 200)
 current = sp.analytical.cottrell(
     t=t,
     n=1,
-    D=1e-9,  # m^2 / s
+    D=1e-9,      # m^2 / s
     c_bulk=1.0,  # mol / m^3 (1 mM)
-    A=1e-4,  # m^2 (1 cm^2)
+    A=1e-4,      # m^2 (1 cm^2)
 )
 
 # 2. Fit experimental chronoamperometric data to recover diffusivity D
 fit = sp.analytical.fit_cottrell(t=t, current=current, n=1, A=1e-4, c_bulk=1.0)
 print(f"Extracted D = {fit.D:.3e} m^2/s (R^2 = {fit.r_squared:.5f})")
 ```
+
+!!! chip "Chip's Tip: Always Use SI Units!"
+    Soft Potato functions use **SI base units** throughout: lengths in meters ($\text{m}$), areas in $\text{m}^2$, diffusion coefficients in $\text{m}^2\cdot\text{s}^{-1}$, and concentrations in $\text{mol}\cdot\text{m}^{-3}$ (conveniently, $1\text{ mM} = 1\text{ mol}\cdot\text{m}^{-3}$!).
 
 !!! note "Support Soft Potato"
     If you find Soft Potato useful in your research or teaching, consider supporting its ongoing open-source development:

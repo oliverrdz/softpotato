@@ -1,8 +1,13 @@
 # API Reference
 
+<div class="sp-section-banner" markdown>
+<div markdown>
 Welcome to the **Soft Potato** API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
 and numerical PDE solvers.
+</div>
+<img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" />
+</div>
 
 ## Constants Module
 
