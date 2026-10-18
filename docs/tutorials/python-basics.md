@@ -62,6 +62,9 @@ c_bulk = 1.0  # mol / m^3
 current = (n * F * A * np.sqrt(D) * c_bulk) / np.sqrt(np.pi * t)
 ```
 
+!!! chip "Chip's Tip: Vectorize Instead of Looping!"
+    In Python, evaluating a mathematical expression on a `numpy.ndarray` runs compiled C code under the hood—often **50× to 100× faster** than writing a Python `for` loop over each time point. All [`softpotato.analytical`][softpotato.analytical] functions accept both scalars and NumPy arrays natively!
+
 ---
 
 ## 4. Plotting Data with Matplotlib

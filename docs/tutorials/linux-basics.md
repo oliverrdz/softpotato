@@ -15,6 +15,9 @@ When you open a terminal, you are inside a **working directory**. These essentia
 | `cd` | Change directory (`..` moves up one level, `~` goes to home) | `cd ~/projects/softpotato` |
 | `mkdir` | Create a new directory (`-p` creates parent directories if needed) | `mkdir -p data/cv_scans` |
 
+!!! chip "Chip's Tip: Use Tab Autocompletion!"
+    Press the <kbd>Tab</kbd> key while typing any file or folder name in the Linux terminal to autocomplete it automatically. This saves typing and prevents typos in long file paths!
+
 ---
 
 ## 2. Viewing and Managing Files
