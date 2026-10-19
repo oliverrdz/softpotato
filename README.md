@@ -2,6 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
+[![DOI](https://img.shields.io/badge/DOI-10.26434%2Fchemrxiv--2022--4bs3w-orange.svg)](https://doi.org/10.26434/chemrxiv-2022-4bs3w)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
@@ -103,6 +104,23 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | Planned |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
+
+## Citation
+
+If you use Soft Potato in your research or project, please cite the ChemRxiv preprint:
+
+> Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. *ChemRxiv*. [doi:10.26434/chemrxiv-2022-4bs3w](https://doi.org/10.26434/chemrxiv-2022-4bs3w)
+
+```bibtex
+@article{rodriguez2022softpotato,
+  author    = {Rodr{\'i}guez, Oliver},
+  title     = {Soft Potato: an open source electrochemical simulator and toolkit},
+  journal   = {ChemRxiv},
+  year      = {2022},
+  doi       = {10.26434/chemrxiv-2022-4bs3w},
+  url       = {https://chemrxiv.org/doi/full/10.26434/chemrxiv-2022-4bs3w}
+}
+```
 
 ## License
 

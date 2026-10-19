@@ -98,6 +98,35 @@ print(f"Extracted D = {fit.D:.3e} m^2/s (R^2 = {fit.r_squared:.5f})")
 !!! chip "Chip's Tip: Always Use SI Units!"
     Soft Potato functions use **SI base units** throughout: lengths in meters ($\text{m}$), areas in $\text{m}^2$, diffusion coefficients in $\text{m}^2\cdot\text{s}^{-1}$, and concentrations in $\text{mol}\cdot\text{m}^{-3}$ (conveniently, $1\text{ mM} = 1\text{ mol}\cdot\text{m}^{-3}$!).
 
+---
+
+## Citation
+
+If you use Soft Potato in your research or project, please cite the ChemRxiv preprint:
+
+> Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. *ChemRxiv*. [doi:10.26434/chemrxiv-2022-4bs3w](https://doi.org/10.26434/chemrxiv-2022-4bs3w)
+
+=== "BibTeX"
+
+    ```bibtex
+    @article{rodriguez2022softpotato,
+      author    = {Rodr{\'i}guez, Oliver},
+      title     = {Soft Potato: an open source electrochemical simulator and toolkit},
+      journal   = {ChemRxiv},
+      year      = {2022},
+      doi       = {10.26434/chemrxiv-2022-4bs3w},
+      url       = {https://chemrxiv.org/doi/full/10.26434/chemrxiv-2022-4bs3w}
+    }
+    ```
+
+=== "APA"
+
+    ```text
+    Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. ChemRxiv. https://doi.org/10.26434/chemrxiv-2022-4bs3w
+    ```
+
+---
+
 !!! note "Support Soft Potato"
     If you find Soft Potato useful in your research or teaching, consider supporting its ongoing open-source development:
 
