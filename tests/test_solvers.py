@@ -326,6 +326,9 @@ def test_left_and_right_boundary_fluxes(solver_name):
     expected_left = np.full_like(t_eval, D / L)
     expected_right = np.full_like(t_eval, -D / L)
 
-    np.testing.assert_allclose(result.left_fluxes["A"], expected_left, rtol=1e-5, atol=1e-7)
-    np.testing.assert_allclose(result.right_fluxes["A"], expected_right, rtol=1e-5, atol=1e-7)
-
+    np.testing.assert_allclose(
+        result.left_fluxes["A"], expected_left, rtol=1e-5, atol=1e-7
+    )
+    np.testing.assert_allclose(
+        result.right_fluxes["A"], expected_right, rtol=1e-5, atol=1e-7
+    )
