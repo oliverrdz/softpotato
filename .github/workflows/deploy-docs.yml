@@ -119,6 +119,20 @@ jobs:
             fi
           fi
 
+          # Sync shared stylesheet (extra.css) across all deployed versions on gh-pages
+          git worktree add /tmp/gh-pages gh-pages
+          for dir in /tmp/gh-pages/*/stylesheets; do
+            if [ -d "$dir" ] && [ ! -L "${dir%/stylesheets}" ]; then
+              cp docs/stylesheets/extra.css "$dir/extra.css"
+            fi
+          done
+          git -C /tmp/gh-pages add -A
+          if ! git -C /tmp/gh-pages diff --cached --quiet; then
+            git -C /tmp/gh-pages commit -m "Sync extra.css across all versions"
+            git -C /tmp/gh-pages push origin gh-pages
+          fi
+          git worktree remove /tmp/gh-pages
+
       - name: Export gh-pages branch to site directory
         run: |
           rm -rf site
