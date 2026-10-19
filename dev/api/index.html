@@ -1,0 +1,2640 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Electrochemical simulation and analysis toolkit in Python — plus tutorials on Python, Linux, and scientific computing.">
+      
+      
+        <meta name="author" content="Oliver Rodriguez">
+      
+      
+        <link rel="canonical" href="https://softpotato.xyz/dev/api/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="constants/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>API Reference - Soft Potato</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-PEWTLDFZD6"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-PEWTLDFZD6",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-PEWTLDFZD6",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You are viewing documentation for an unreleased development version or an older release.
+  <a href="../..">
+    <strong>Click here to go to the latest stable release.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL(".."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Soft Potato" class="md-header__button md-logo" aria-label="Soft Potato" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Soft Potato
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/oliverrdz/softpotato" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oliverrdz/softpotato
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Soft Potato" class="md-nav__button md-logo" aria-label="Soft Potato" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    Soft Potato
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/oliverrdz/softpotato" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oliverrdz/softpotato
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Constants Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="analytical/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytical Module
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analytical Module
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transient Step Techniques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/hydrodynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydrodynamics & Convection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/kinetics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thermodynamics & Kinetics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/voltammetry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voltammetry & Diagnostics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/microelectrodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Microelectrode Geometries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/secm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SECM Approach Curves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Fitting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytical/benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simulation Benchmarking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="solver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solver Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Electrochemistry Simulations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Electrochemistry Simulations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/electrochemistry/cottrell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cottrell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/electrochemistry/cyclic_voltammetry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cyclic Voltammetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/python/installing-python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../blog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/category/announcements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Announcements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/category/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#constants-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analytical-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analytical Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analytical Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transient-step-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transient Step Techniques
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hydrodynamics-convection-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hydrodynamics &amp; Convection Equations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thermodynamics-interfacial-kinetics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thermodynamics &amp; Interfacial Kinetics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voltammetry-kinetic-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voltammetry &amp; Kinetic Diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microelectrode-geometries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microelectrode Geometries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanning-electrochemical-microscopy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanning Electrochemical Microscopy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-fitting-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Fitting &amp; Regression
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulation-benchmarking-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simulation Benchmarking Suite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solver-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solver Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
+<div class="sp-section-banner">
+<div>
+<p>Welcome to the <strong>Soft Potato</strong> API Reference. The toolkit is organized into modular
+subpackages and modules for physical constants, closed-form analytical electrochemistry,
+and numerical PDE solvers.</p>
+</div>
+<p><img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" /></p>
+</div>
+<h2 id="constants-module">Constants Module<a class="headerlink" href="#constants-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            constants" href="constants/#softpotato.constants"><code>softpotato.constants</code></a> module provides standardized physical and electrochemical
+constants defined according to CODATA 2018 / 2019 SI conventions <a href="#ref-1">[1]</a>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Constant / Identifier</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value &amp; Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            FARADAY
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.FARADAY"><code>FARADAY</code></a> (<code>F</code>)</td>
+<td style="text-align: left;"><span class="arithmatex">\(F\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(96485.332 \,\text{C}\cdot\text{mol}^{-1}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            GAS_CONSTANT
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.GAS_CONSTANT"><code>GAS_CONSTANT</code></a> (<code>R</code>)</td>
+<td style="text-align: left;"><span class="arithmatex">\(R\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(8.31446\,\text{J}\cdot\text{mol}^{-1}\cdot\text{K}^{-1}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            STANDARD_TEMPERATURE
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.STANDARD_TEMPERATURE"><code>STANDARD_TEMPERATURE</code></a> (<code>T_STD</code>)</td>
+<td style="text-align: left;"><span class="arithmatex">\(T^\circ\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(298.15\,\text{K}\)</span> (<span class="arithmatex">\(25\,^\circ\text{C}\)</span>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            AVOGADRO
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.AVOGADRO"><code>AVOGADRO</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(N_{\text{A}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(6.02214 \times 10^{23}\,\text{mol}^{-1}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            BOLTZMANN
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.BOLTZMANN"><code>BOLTZMANN</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_{\text{B}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(1.38065 \times 10^{-23}\,\text{J}\cdot\text{K}^{-1}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ELEMENTARY_CHARGE
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.ELEMENTARY_CHARGE"><code>ELEMENTARY_CHARGE</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(e\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(1.60218 \times 10^{-19}\,\text{C}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            VACUUM_PERMITTIVITY
+
+
+  
+      module-attribute
+  " href="constants/#softpotato.constants.VACUUM_PERMITTIVITY"><code>VACUUM_PERMITTIVITY</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varepsilon_0\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(8.85419 \times 10^{-12}\,\text{F}\cdot\text{m}^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="analytical-module">Analytical Module<a class="headerlink" href="#analytical-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            analytical" href="analytical/#softpotato.analytical"><code>softpotato.analytical</code></a> subpackage provides closed-form analytical solutions,
+asymptotic approximations, and diagnostic formulations across transient step techniques,
+hydrodynamics, interfacial kinetics, voltammetry, microelectrodes, SECM, parameter fitting,
+and numerical benchmark suites.</p>
+<h3 id="transient-step-techniques">Transient Step Techniques<a class="headerlink" href="#transient-step-techniques" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            step" href="analytical/step/#softpotato.analytical.step"><code>softpotato.analytical.step</code></a> module provides exact solutions for potentiostatic
+and galvanostatic step experiments, including Cottrell, Anson, and Sand formulations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            cottrell" href="analytical/step/#softpotato.analytical.step.cottrell"><code>cottrell</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, n, D, c^*, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Planar chronoamperometric diffusion-limited current transient.</td>
+<td style="text-align: left;"><a href="#ref-2">2</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            cottrell_step" href="analytical/step/#softpotato.analytical.step.cottrell_step"><code>cottrell_step</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, \tau, n, D, c^*, A, D_{\text{Red}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Double potential step chronoamperometry reversal current.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            cottrell_spherical" href="analytical/step/#softpotato.analytical.step.cottrell_spherical"><code>cottrell_spherical</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, r, n, D, c^*, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Chronoamperometric current at a spherical electrode.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            cottrell_cylinder" href="analytical/step/#softpotato.analytical.step.cottrell_cylinder"><code>cottrell_cylinder</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, r_0, n, D, c^*, l, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Chronoamperometric current at a cylindrical wire/fiber electrode.</td>
+<td style="text-align: left;"><a href="#ref-4">4</a>, <a href="#ref-5">5</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            anson" href="analytical/step/#softpotato.analytical.step.anson"><code>anson</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, n, D, c^*, A, Q_{\text{dl}}, \Gamma, \tau\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(Q(t)\)</span></td>
+<td style="text-align: left;">Cumulative charge transient for chronocoulometry.</td>
+<td style="text-align: left;"><a href="#ref-6">6</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            sand" href="analytical/step/#softpotato.analytical.step.sand"><code>sand</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, I, n, D, c^*, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(c(0, t)\)</span></td>
+<td style="text-align: left;">Surface reactant concentration transient under constant current.</td>
+<td style="text-align: left;"><a href="#ref-7">7</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            sand_transition_time" href="analytical/step/#softpotato.analytical.step.sand_transition_time"><code>sand_transition_time</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(I, n, D, c^*, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\tau\)</span></td>
+<td style="text-align: left;">Transition time for galvanostatic chronopotentiometry.</td>
+<td style="text-align: left;"><a href="#ref-7">7</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            sand_potential" href="analytical/step/#softpotato.analytical.step.sand_potential"><code>sand_potential</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, \tau, E_{1/2}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(E(t)\)</span></td>
+<td style="text-align: left;">Potential-time response curve for chronopotentiometry.</td>
+<td style="text-align: left;"><a href="#ref-7">7</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            step_concentration_profile" href="analytical/step/#softpotato.analytical.step.step_concentration_profile"><code>step_concentration_profile</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x, t, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(c(x, t)\)</span></td>
+<td style="text-align: left;">Exact spatial concentration profile following a potential step.</td>
+<td style="text-align: left;"><a href="#ref-8">8</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            step_flux_profile" href="analytical/step/#softpotato.analytical.step.step_flux_profile"><code>step_flux_profile</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x, t, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(J(x, t)\)</span></td>
+<td style="text-align: left;">Exact spatial diffusion flux profile following a potential step.</td>
+<td style="text-align: left;"><a href="#ref-8">8</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="hydrodynamics-convection-equations">Hydrodynamics &amp; Convection Equations<a class="headerlink" href="#hydrodynamics-convection-equations" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            hydrodynamics" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics"><code>softpotato.analytical.hydrodynamics</code></a> module provides models for rotating disk
+(RDE) and rotating ring-disk (RRDE) convective electrochemical systems.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            levich" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.levich"><code>levich</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, n, D, c^*, A, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{L}}\)</span></td>
+<td style="text-align: left;">Convective mass-transfer limiting current at an RDE.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            levich_constant" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.levich_constant"><code>levich_constant</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(n, D, c^*, A, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(B\)</span></td>
+<td style="text-align: left;">Theoretical Levich slope parameter for RDE rotation series.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            koutecky_levich" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.koutecky_levich"><code>koutecky_levich</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, I_{\text{k}}, k, I_{\text{lim}}, n, D, c^*, A, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I\)</span></td>
+<td style="text-align: left;">Current under mixed kinetic and convective mass-transfer control.</td>
+<td style="text-align: left;"><a href="#ref-10">10</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            koutecky_levich_analysis" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.koutecky_levich_analysis"><code>koutecky_levich_analysis</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, I, A, c^*, n, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(k, B\)</span></td>
+<td style="text-align: left;">Kinetic rate constant and Levich slope extraction from RDE data.</td>
+<td style="text-align: left;"><a href="#ref-10">10</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nernst_diffusion_layer" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.nernst_diffusion_layer"><code>nernst_diffusion_layer</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, D, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\delta\)</span></td>
+<td style="text-align: left;">Steady-state stagnant diffusion layer thickness at an RDE.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            collection_efficiency" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.collection_efficiency"><code>collection_efficiency</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r_1, r_2, r_3\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(N\)</span></td>
+<td style="text-align: left;">Theoretical collection efficiency for an RRDE geometry.</td>
+<td style="text-align: left;"><a href="#ref-11">11</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            shielding_factor" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.shielding_factor"><code>shielding_factor</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r_1, r_2, r_3, N\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(S\)</span></td>
+<td style="text-align: left;">Theoretical geometric shielding factor for an RRDE.</td>
+<td style="text-align: left;"><a href="#ref-11">11</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ring_collection_current" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.ring_collection_current"><code>ring_collection_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{disk}}, N, n_{\text{ring}}, n_{\text{disk}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{ring}}\)</span></td>
+<td style="text-align: left;">Ring electrode current from disk product collection.</td>
+<td style="text-align: left;"><a href="#ref-11">11</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ring_limiting_current" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.ring_limiting_current"><code>ring_limiting_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, r_1, r_2, r_3, n, D, c^*, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{R,lim}}\)</span></td>
+<td style="text-align: left;">Convective mass-transfer limiting current at an RRDE ring.</td>
+<td style="text-align: left;"><a href="#ref-11">11</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            rotating_ring_disk" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.rotating_ring_disk"><code>rotating_ring_disk</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r_1, r_2, r_3, \omega, n, D, c^*, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(N, S, I_{\text{D,lim}}, I_{\text{R,lim}}\)</span></td>
+<td style="text-align: left;">Comprehensive collection and limiting current metrics for RRDE.</td>
+<td style="text-align: left;"><a href="#ref-11">11</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            rad_s_to_rpm" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.rad_s_to_rpm"><code>rad_s_to_rpm</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(f_{\text{RPM}}\)</span></td>
+<td style="text-align: left;">Angular velocity to rotational speed conversion.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            rpm_to_rad_s" href="analytical/hydrodynamics/#softpotato.analytical.hydrodynamics.rpm_to_rad_s"><code>rpm_to_rad_s</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(f_{\text{RPM}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega\)</span></td>
+<td style="text-align: left;">Rotational speed to angular velocity conversion.</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="thermodynamics-interfacial-kinetics">Thermodynamics &amp; Interfacial Kinetics<a class="headerlink" href="#thermodynamics-interfacial-kinetics" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            kinetics" href="analytical/kinetics/#softpotato.analytical.kinetics"><code>softpotato.analytical.kinetics</code></a> module provides thermodynamic equilibrium potentials
+and electrode kinetic models, including Nernst, Butler–Volmer, and Tafel formulations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nernst" href="analytical/kinetics/#softpotato.analytical.kinetics.nernst"><code>nernst</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E^\circ, c_{\text{Ox}}, c_{\text{Red}}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(E\)</span></td>
+<td style="text-align: left;">Reversible equilibrium reduction potential.</td>
+<td style="text-align: left;"><a href="#ref-12">12</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nernst" href="analytical/kinetics/#softpotato.analytical.kinetics.nernst"><code>nernst_potential</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E^\circ, c_{\text{Ox}}, c_{\text{Red}}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(E\)</span></td>
+<td style="text-align: left;">Nernst equilibrium electrode potential calculation.</td>
+<td style="text-align: left;"><a href="#ref-12">12</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nernst_ratio" href="analytical/kinetics/#softpotato.analytical.kinetics.nernst_ratio"><code>nernst_ratio</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E, E^\circ, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(c_{\text{Ox}} / c_{\text{Red}}\)</span></td>
+<td style="text-align: left;">Equilibrium concentration ratio from applied potential.</td>
+<td style="text-align: left;"><a href="#ref-12">12</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nernst_equilibrium_concentrations" href="analytical/kinetics/#softpotato.analytical.kinetics.nernst_equilibrium_concentrations"><code>nernst_equilibrium_concentrations</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E, E^\circ, c_{\text{total}}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(c_{\text{Ox}}, c_{\text{Red}}\)</span></td>
+<td style="text-align: left;">Individual equilibrium species concentrations from total pool.</td>
+<td style="text-align: left;"><a href="#ref-12">12</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            butler_volmer" href="analytical/kinetics/#softpotato.analytical.kinetics.butler_volmer"><code>butler_volmer</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, I_0, \alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I\)</span></td>
+<td style="text-align: left;">Faradaic current from activation overpotential.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            butler_volmer_current_density" href="analytical/kinetics/#softpotato.analytical.kinetics.butler_volmer_current_density"><code>butler_volmer_current_density</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, j_0, \alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(j\)</span></td>
+<td style="text-align: left;">Faradaic current density from activation overpotential.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            butler_volmer_linear" href="analytical/kinetics/#softpotato.analytical.kinetics.butler_volmer_linear"><code>butler_volmer_linear</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, I_0, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I\)</span></td>
+<td style="text-align: left;">Low-overpotential linearized Butler–Volmer current.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            charge_transfer_resistance" href="analytical/kinetics/#softpotato.analytical.kinetics.charge_transfer_resistance"><code>charge_transfer_resistance</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_0, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(R_{\text{ct}}\)</span></td>
+<td style="text-align: left;">Charge-transfer resistance at equilibrium potential.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            exchange_current" href="analytical/kinetics/#softpotato.analytical.kinetics.exchange_current"><code>exchange_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_0, c_{\text{Ox}}^*, c_{\text{Red}}^*, A, \alpha, n\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_0\)</span></td>
+<td style="text-align: left;">Standard exchange current from rate constant and concentrations.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            exchange_current_density" href="analytical/kinetics/#softpotato.analytical.kinetics.exchange_current_density"><code>exchange_current_density</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_0, c_{\text{Ox}}^*, c_{\text{Red}}^*, \alpha, n\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(j_0\)</span></td>
+<td style="text-align: left;">Exchange current density from rate constant and concentrations.</td>
+<td style="text-align: left;"><a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            tafel" href="analytical/kinetics/#softpotato.analytical.kinetics.tafel"><code>tafel</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, I_0, \alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I\)</span></td>
+<td style="text-align: left;">High-overpotential unidirectional Tafel current approximation.</td>
+<td style="text-align: left;"><a href="#ref-15">15</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            tafel_overpotential" href="analytical/kinetics/#softpotato.analytical.kinetics.tafel_overpotential"><code>tafel_overpotential</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(I, I_0, \alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta\)</span></td>
+<td style="text-align: left;">Activation overpotential calculated from current.</td>
+<td style="text-align: left;"><a href="#ref-15">15</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            tafel_slope" href="analytical/kinetics/#softpotato.analytical.kinetics.tafel_slope"><code>tafel_slope</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(b\)</span></td>
+<td style="text-align: left;">Theoretical Tafel slope in Volts per decade.</td>
+<td style="text-align: left;"><a href="#ref-15">15</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            tafel_analysis" href="analytical/kinetics/#softpotato.analytical.kinetics.tafel_analysis"><code>tafel_analysis</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, I, A, c^*, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_0, \alpha, b\)</span></td>
+<td style="text-align: left;">Semi-logarithmic Tafel regression for kinetic parameter extraction.</td>
+<td style="text-align: left;"><a href="#ref-15">15</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="voltammetry-kinetic-diagnostics">Voltammetry &amp; Kinetic Diagnostics<a class="headerlink" href="#voltammetry-kinetic-diagnostics" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            voltammetry" href="analytical/voltammetry/#softpotato.analytical.voltammetry"><code>softpotato.analytical.voltammetry</code></a> module provides peak current expressions and
+reversibility diagnostics for cyclic and linear sweep voltammetry.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            randles_sevcik" href="analytical/voltammetry/#softpotato.analytical.voltammetry.randles_sevcik"><code>randles_sevcik</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(v, c^*, D, A, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{p}}\)</span></td>
+<td style="text-align: left;">Reversible electron transfer peak voltammetric current.</td>
+<td style="text-align: left;"><a href="#ref-16">16</a>, <a href="#ref-17">17</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            randles_sevcik_irreversible" href="analytical/voltammetry/#softpotato.analytical.voltammetry.randles_sevcik_irreversible"><code>randles_sevcik_irreversible</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(v, \alpha, n_\alpha, c^*, D, A, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{p}}\)</span></td>
+<td style="text-align: left;">Totally irreversible electron transfer peak current.</td>
+<td style="text-align: left;"><a href="#ref-18">18</a>, <a href="#ref-19">19</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            randles_sevcik_quasi" href="analytical/voltammetry/#softpotato.analytical.voltammetry.randles_sevcik_quasi"><code>randles_sevcik_quasi</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(v, k_0, \Lambda, c^*, D, A, \alpha, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{p}}\)</span></td>
+<td style="text-align: left;">Quasi-reversible voltammetric peak current and wave shape.</td>
+<td style="text-align: left;"><a href="#ref-19">19</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            peak_potential_irreversible" href="analytical/voltammetry/#softpotato.analytical.voltammetry.peak_potential_irreversible"><code>peak_potential_irreversible</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(v, k_0, E^{\circ\prime}, D, \alpha, n_\alpha, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{p}}\)</span></td>
+<td style="text-align: left;">Peak potential shift for totally irreversible kinetics.</td>
+<td style="text-align: left;"><a href="#ref-18">18</a>, <a href="#ref-19">19</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nicholson_delta_ep" href="analytical/voltammetry/#softpotato.analytical.voltammetry.nicholson_delta_ep"><code>nicholson_delta_ep</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\psi, n\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta E_{\text{p}}\)</span></td>
+<td style="text-align: left;">Peak potential separation from Nicholson parameter.</td>
+<td style="text-align: left;"><a href="#ref-20">20</a>, <a href="#ref-21">21</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nicholson_psi" href="analytical/voltammetry/#softpotato.analytical.voltammetry.nicholson_psi"><code>nicholson_psi</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta E_{\text{p}}, k_0, v, D, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\psi\)</span></td>
+<td style="text-align: left;">Nicholson dimensionless kinetic parameter calculation.</td>
+<td style="text-align: left;"><a href="#ref-20">20</a>, <a href="#ref-21">21</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            nicholson_rate_constant" href="analytical/voltammetry/#softpotato.analytical.voltammetry.nicholson_rate_constant"><code>nicholson_rate_constant</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta E_{\text{p}}, v, D, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_0\)</span></td>
+<td style="text-align: left;">Standard heterogeneous rate constant extraction from peak split.</td>
+<td style="text-align: left;"><a href="#ref-20">20</a>, <a href="#ref-21">21</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            matsuda_ayabe_lambda" href="analytical/voltammetry/#softpotato.analytical.voltammetry.matsuda_ayabe_lambda"><code>matsuda_ayabe_lambda</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_0, v, D, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Lambda\)</span></td>
+<td style="text-align: left;">Dimensionless Matsuda–Ayabe reversibility parameter.</td>
+<td style="text-align: left;"><a href="#ref-19">19</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            matsuda_ayabe" href="analytical/voltammetry/#softpotato.analytical.voltammetry.matsuda_ayabe"><code>matsuda_ayabe</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k_0, v, D, n, \alpha, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Lambda, \text{zone}\)</span></td>
+<td style="text-align: left;">Reversibility classification (reversible, quasi, irreversible).</td>
+<td style="text-align: left;"><a href="#ref-19">19</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="microelectrode-geometries">Microelectrode Geometries<a class="headerlink" href="#microelectrode-geometries" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            microelectrodes" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes"><code>softpotato.analytical.microelectrodes</code></a> module provides steady-state and transient
+diffusion-limited current expressions for ultramicroelectrode (UME) geometries.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            microdisc_limiting_current" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.microdisc_limiting_current"><code>microdisc_limiting_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(a, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{ss}}\)</span></td>
+<td style="text-align: left;">Saito steady-state limiting current at an inlaid circular microdisc.</td>
+<td style="text-align: left;"><a href="#ref-22">22</a>, <a href="#ref-23">23</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            microdisc_transient" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.microdisc_transient"><code>microdisc_transient</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, a, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Shoup–Szabo full-time chronoamperometric transient at a microdisc.</td>
+<td style="text-align: left;"><a href="#ref-24">24</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            mahon_oldham_transient" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.mahon_oldham_transient"><code>mahon_oldham_transient</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, a, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">High-precision Mahon–Oldham chronoamperometric transient.</td>
+<td style="text-align: left;"><a href="#ref-25">25</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            microsphere_limiting_current" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.microsphere_limiting_current"><code>microsphere_limiting_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{ss}}\)</span></td>
+<td style="text-align: left;">Steady-state spherical diffusion-limited current.</td>
+<td style="text-align: left;"><a href="#ref-22">22</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            microhemisphere_limiting_current" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.microhemisphere_limiting_current"><code>microhemisphere_limiting_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{ss}}\)</span></td>
+<td style="text-align: left;">Steady-state hemispherical diffusion-limited current.</td>
+<td style="text-align: left;"><a href="#ref-22">22</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            microband_limiting_current" href="analytical/microelectrodes/#softpotato.analytical.microelectrodes.microband_limiting_current"><code>microband_limiting_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, w, l, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I(t)\)</span></td>
+<td style="text-align: left;">Quasi-steady-state diffusion-limited current at an inlaid microband.</td>
+<td style="text-align: left;"><a href="#ref-26">26</a>, <a href="#ref-27">27</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="scanning-electrochemical-microscopy">Scanning Electrochemical Microscopy<a class="headerlink" href="#scanning-electrochemical-microscopy" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            secm" href="analytical/secm/#softpotato.analytical.secm"><code>softpotato.analytical.secm</code></a> module provides normalized approach curve models
+and feedback current expressions for scanning electrochemical microscopy.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            secm_limiting_current_infinite" href="analytical/secm/#softpotato.analytical.secm.secm_limiting_current_infinite"><code>secm_limiting_current_infinite</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(a, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{T},\infty}\)</span></td>
+<td style="text-align: left;">Unhindered bulk steady-state current at microelectrode tip.</td>
+<td style="text-align: left;"><a href="#ref-22">22</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            secm_approach_curve" href="analytical/secm/#softpotato.analytical.secm.secm_approach_curve"><code>secm_approach_curve</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(L, R_{\text{g}}, \kappa\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{T}}^{\text{norm}}\)</span></td>
+<td style="text-align: left;">Normalized tip approach curve over substrates of arbitrary kinetics.</td>
+<td style="text-align: left;"><a href="#ref-28">28</a>, <a href="#ref-29">29</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            secm_approach_positive_feedback" href="analytical/secm/#softpotato.analytical.secm.secm_approach_positive_feedback"><code>secm_approach_positive_feedback</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(L, R_{\text{g}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{T}}^{\text{norm}}\)</span></td>
+<td style="text-align: left;">Pure positive feedback approach curve over conductive substrate.</td>
+<td style="text-align: left;"><a href="#ref-28">28</a>, <a href="#ref-29">29</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            secm_approach_negative_feedback" href="analytical/secm/#softpotato.analytical.secm.secm_approach_negative_feedback"><code>secm_approach_negative_feedback</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(L, R_{\text{g}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{T}}^{\text{norm}}\)</span></td>
+<td style="text-align: left;">Pure negative feedback approach curve over insulating substrate.</td>
+<td style="text-align: left;"><a href="#ref-28">28</a>, <a href="#ref-29">29</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            secm_tip_current" href="analytical/secm/#softpotato.analytical.secm.secm_tip_current"><code>secm_tip_current</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(L, R_{\text{g}}, \kappa, a, n, D, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{T}}\)</span></td>
+<td style="text-align: left;">Dimensional steady-state tip current in Amperes.</td>
+<td style="text-align: left;"><a href="#ref-28">28</a>, <a href="#ref-29">29</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="parameter-fitting-regression">Parameter Fitting &amp; Regression<a class="headerlink" href="#parameter-fitting-regression" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            fitting" href="analytical/fitting/#softpotato.analytical.fitting"><code>softpotato.analytical.fitting</code></a> module provides non-linear regression and parameter
+extraction routines for experimental electrochemical data.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_linear" href="analytical/fitting/#softpotato.analytical.fitting.fit_linear"><code>fit_linear</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x, y\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(m, c, R^2\)</span></td>
+<td style="text-align: left;">Ordinary linear regression with complete error diagnostics.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_curve" href="analytical/fitting/#softpotato.analytical.fitting.fit_curve"><code>fit_curve</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(f(x, p), x, y, p_0, \sigma\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(p, \sigma_p, R^2\)</span></td>
+<td style="text-align: left;">Physically bounded non-linear least-squares curve fitting.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_cottrell" href="analytical/fitting/#softpotato.analytical.fitting.fit_cottrell"><code>fit_cottrell</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, I, n, A, c^*\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(D, I_{\text{dl}}\)</span></td>
+<td style="text-align: left;">Chronoamperometric Cottrell regression for diffusivity extraction.</td>
+<td style="text-align: left;"><a href="#ref-2">2</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_levich" href="analytical/fitting/#softpotato.analytical.fitting.fit_levich"><code>fit_levich</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, I, n, A, c^*, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(D, B\)</span></td>
+<td style="text-align: left;">RDE Levich analysis for diffusion coefficient determination.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_koutecky_levich" href="analytical/fitting/#softpotato.analytical.fitting.fit_koutecky_levich"><code>fit_koutecky_levich</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega, I, n, A, c^*, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_{\text{k}}, k_0, D\)</span></td>
+<td style="text-align: left;">Koutecký–Levich analysis for kinetic and transport parameters.</td>
+<td style="text-align: left;"><a href="#ref-10">10</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_tafel" href="analytical/fitting/#softpotato.analytical.fitting.fit_tafel"><code>fit_tafel</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\eta, I, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(I_0, \alpha, b\)</span></td>
+<td style="text-align: left;">Tafel plot regression for exchange current and transfer coefficient.</td>
+<td style="text-align: left;"><a href="#ref-15">15</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_randles_sevcik" href="analytical/fitting/#softpotato.analytical.fitting.fit_randles_sevcik"><code>fit_randles_sevcik</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(v, I_{\text{p}}, n, A, c^*, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(D\)</span></td>
+<td style="text-align: left;">Voltammetric peak current regression for diffusion coefficient.</td>
+<td style="text-align: left;"><a href="#ref-16">16</a>, <a href="#ref-17">17</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_microdisc_transient" href="analytical/fitting/#softpotato.analytical.fitting.fit_microdisc_transient"><code>fit_microdisc_transient</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(t, I, r, c^*, n\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(D\)</span></td>
+<td style="text-align: left;">Microdisc transient current fitting to extract diffusivity or radius.</td>
+<td style="text-align: left;"><a href="#ref-24">24</a>, <a href="#ref-25">25</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            fit_secm_approach" href="analytical/fitting/#softpotato.analytical.fitting.fit_secm_approach"><code>fit_secm_approach</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(d, I_{\text{norm}}, a\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(R_{\text{g}}, d_{\text{offset}}\)</span></td>
+<td style="text-align: left;">SECM approach curve fitting for sheath ratio and distance offset.</td>
+<td style="text-align: left;"><a href="#ref-28">28</a>, <a href="#ref-29">29</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="simulation-benchmarking-suite">Simulation Benchmarking Suite<a class="headerlink" href="#simulation-benchmarking-suite" title="Permanent link">&para;</a></h3>
+<p>The <a class="autorefs autorefs-internal" title="            benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark"><code>softpotato.analytical.benchmark</code></a> module provides validation harnesses, exact
+analytical benchmarks, and spatial/temporal order of convergence testing utilities.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            compute_error_metrics" href="analytical/benchmark/#softpotato.analytical.benchmark.compute_error_metrics"><code>compute_error_metrics</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(u_{\text{num}}, u_{\text{exact}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(e_{\max}, \text{RMSE}, L_2\)</span></td>
+<td style="text-align: left;">Standardized error norms between numerical and exact profiles.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            estimate_convergence_order" href="analytical/benchmark/#softpotato.analytical.benchmark.estimate_convergence_order"><code>estimate_convergence_order</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta x, e\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(p, R^2\)</span></td>
+<td style="text-align: left;">Empirical discretization order calculation via log-log regression.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            list_benchmark_cases" href="analytical/benchmark/#softpotato.analytical.benchmark.list_benchmark_cases"><code>list_benchmark_cases</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{cases}\)</span></td>
+<td style="text-align: left;">Names of available standard benchmark cases.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_benchmark"><code>run_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{case}, \text{solver}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
+<td style="text-align: left;">Unified runner executing a specified validation benchmark.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_cottrell_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_cottrell_benchmark"><code>run_cottrell_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, D, c^*, A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
+<td style="text-align: left;">Chronoamperometric potential step solver accuracy benchmark.</td>
+<td style="text-align: left;"><a href="#ref-2">2</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_fourier_decay_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_fourier_decay_benchmark"><code>run_fourier_decay_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, D, L, t_{\text{end}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
+<td style="text-align: left;">1D Fourier sine diffusion series analytical validation.</td>
+<td style="text-align: left;"><a href="#ref-30">30</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_mass_conservation_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_mass_conservation_benchmark"><code>run_mass_conservation_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, D, L, t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
+<td style="text-align: left;">Zero-flux total mass conservation test across simulation time.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_benchmark_suite" href="analytical/benchmark/#softpotato.analytical.benchmark.run_benchmark_suite"><code>run_benchmark_suite</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solvers}, \text{cases}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{suite}\)</span></td>
+<td style="text-align: left;">Comprehensive benchmark suite execution across multiple solvers.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            verify_spatial_convergence" href="analytical/benchmark/#softpotato.analytical.benchmark.verify_spatial_convergence"><code>verify_spatial_convergence</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, \Delta x_i, D, L\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(p_x\)</span></td>
+<td style="text-align: left;">Spatial grid refinement convergence order verification.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            verify_temporal_convergence" href="analytical/benchmark/#softpotato.analytical.benchmark.verify_temporal_convergence"><code>verify_temporal_convergence</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, \Delta t_j, D, L\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(p_t\)</span></td>
+<td style="text-align: left;">Time-step refinement convergence order verification.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="solver-module">Solver Module<a class="headerlink" href="#solver-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            solver" href="solver/#softpotato.solver"><code>softpotato.solver</code></a> subpackage provides numerical partial differential equation (PDE)
+solvers and boundary condition primitives for 1D multi-species diffusion and reaction-diffusion systems.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class / Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            get_solver" href="solver/#softpotato.solver.get_solver"><code>get_solver</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{name}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}\)</span></td>
+<td style="text-align: left;">Factory retrieving an instantiated numerical solver by alias.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            list_solvers" href="solver/#softpotato.solver.list_solvers"><code>list_solvers</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{names}\)</span></td>
+<td style="text-align: left;">Returns all registered solver names and aliases.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            register_solver" href="solver/#softpotato.solver.register_solver"><code>register_solver</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{name}, \text{cls}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;">Extends solver registry with a custom solver class.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            DirichletBC" href="solver/#softpotato.solver.DirichletBC"><code>DirichletBC</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(c_{\text{bc}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{BC}\)</span></td>
+<td style="text-align: left;">Fixed concentration boundary condition specification.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            NeumannBC" href="solver/#softpotato.solver.NeumannBC"><code>NeumannBC</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(J_{\text{bc}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{BC}\)</span></td>
+<td style="text-align: left;">Fixed diffusion flux boundary condition specification.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            DiffusionProblem
+
+
+  
+      dataclass
+  " href="solver/#softpotato.solver.DiffusionProblem"><code>DiffusionProblem</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x, D_i, \text{BC}_i, c_{i,0}, R_i\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Problem}\)</span></td>
+<td style="text-align: left;">Data container defining multi-species diffusion-reaction problem.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ExplicitFiniteDifference" href="solver/#softpotato.solver.ExplicitFiniteDifference"><code>ExplicitFiniteDifference</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}\)</span></td>
+<td style="text-align: left;">Forward-Time Central-Space explicit finite difference solver.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ImplicitFiniteDifference" href="solver/#softpotato.solver.ImplicitFiniteDifference"><code>ImplicitFiniteDifference</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}\)</span></td>
+<td style="text-align: left;">Backward-Time Central-Space unconditionally stable implicit solver.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CrankNicolson" href="solver/#softpotato.solver.CrankNicolson"><code>CrankNicolson</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\Delta t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}\)</span></td>
+<td style="text-align: left;">Second-order in space and time Crank–Nicolson solver.</td>
+<td style="text-align: left;"><a href="#ref-32">32</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ScipyIVPSolver" href="solver/#softpotato.solver.ScipyIVPSolver"><code>ScipyIVPSolver</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{method}, \text{rtol}, \text{atol}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}\)</span></td>
+<td style="text-align: left;">Method of Lines solver wrapping SciPy adaptive ODE integrators.</td>
+<td style="text-align: left;"><a href="#ref-33">33</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            solve" href="solver/#softpotato.solver.BaseSolver.solve"><code>solve</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Problem}, (t_0, t_1)\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(c_i(x, t)\)</span></td>
+<td style="text-align: left;">Integrates problem across time span to compute concentration fields.</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a id="ref-1"></a>Tiesinga, E.; Mohr, P. J.; Newell, D. B.; Taylor, B. N. "CODATA recommended values of the fundamental physical constants: 2018." <em>Reviews of Modern Physics</em>, <strong>93</strong> (2), 025010 (2021). <a href="https://doi.org/10.1103/RevModPhys.93.025010">doi:10.1103/RevModPhys.93.025010</a></li>
+<li><a id="ref-2"></a>Cottrell, F. G. "Der Reststrom bei galvanischer Polarisation, betrachtet als Diffusionsproblem." <em>Zeitschrift für Physikalische Chemie</em>, <strong>42</strong>, 385–431 (1903). <a href="https://doi.org/10.1515/zpch-1903-4229">doi:10.1515/zpch-1903-4229</a></li>
+<li><a id="ref-3"></a>Bard, A. J.; Faulkner, L. R.; White, H. S. <em>Electrochemical Methods: Fundamentals and Applications</em>, 3rd ed.; John Wiley &amp; Sons: Hoboken, NJ, 2022.</li>
+<li><a id="ref-4"></a>Aoki, K.; Honda, K.; Tokuda, K.; Matsuda, H. "Voltammetry at microcylinder electrodes: Part II. Chronoamperometry." <em>Journal of Electroanalytical Chemistry</em>, <strong>186</strong> (1–2), 79–86 (1985). <a href="https://doi.org/10.1016/0368-1874(85)85756-3">doi:10.1016/0368-1874(85)85756-3</a></li>
+<li><a id="ref-5"></a>Oldham, K. B. "Analytical expressions for the transient current at a microcylinder electrode." <em>Journal of Electroanalytical Chemistry</em>, <strong>224</strong> (1–2), 229–232 (1987). <a href="https://doi.org/10.1016/0022-0728(87)85093-X">doi:10.1016/0022-0728(87)85093-X</a></li>
+<li><a id="ref-6"></a>Anson, F. C. "Application of Potentiostatic Current Integration to the Study of the Adsorption of Cobalt(III)-(Ethylenedinitrilo)tetraacetate on Mercury Electrodes." <em>Analytical Chemistry</em>, <strong>36</strong> (5), 932–934 (1964). <a href="https://doi.org/10.1021/ac60211a003">doi:10.1021/ac60211a003</a></li>
+<li><a id="ref-7"></a>Sand, H. J. S. "On the concentration at the electrodes in a solution, with special reference to the liberation of hydrogen by electrolysis of a mixture of copper sulphate and sulphuric acid." <em>Philosophical Magazine</em>, <strong>1</strong> (1), 45–79 (1901). <a href="https://doi.org/10.1080/14786440109462590">doi:10.1080/14786440109462590</a></li>
+<li><a id="ref-8"></a>Crank, J. <em>The Mathematics of Diffusion</em>, 2nd ed.; Oxford University Press: Oxford, UK, 1975.</li>
+<li><a id="ref-9"></a>Levich, V. G. <em>Physicochemical Hydrodynamics</em>; Prentice-Hall: Englewood Cliffs, NJ, 1962.</li>
+<li><a id="ref-10"></a>Koutecký, J.; Levich, V. G. "Calculation of the kinetics of a heterogeneous reaction in a moving liquid." <em>Zhurnal Fizicheskoi Khimii</em>, <strong>32</strong>, 1565–1575 (1958).</li>
+<li><a id="ref-11"></a>Albery, W. J.; Bruckenstein, S. "Ring-disc electrodes. Part 2.—Theoretical analysis of collection efficiency and shielding." <em>Transactions of the Faraday Society</em>, <strong>62</strong>, 1920–1931 (1966). <a href="https://doi.org/10.1039/TF9626201920">doi:10.1039/TF9626201920</a></li>
+<li><a id="ref-12"></a>Nernst, W. "Die elektromotorische Wirksamkeit der Jonen." <em>Zeitschrift für Physikalische Chemie</em>, <strong>4</strong>, 129–181 (1889). <a href="https://doi.org/10.1515/zpch-1889-0412">doi:10.1515/zpch-1889-0412</a></li>
+<li><a id="ref-13"></a>Butler, J. A. V. "The studies of hydrogen overpotential." <em>Transactions of the Faraday Society</em>, <strong>19</strong>, 729–733 (1924). <a href="https://doi.org/10.1039/TF9241900729">doi:10.1039/TF9241900729</a></li>
+<li><a id="ref-14"></a>Erdey-Grúz, T.; Volmer, M. "Zur Theorie der Wasserstoffüberspannung." <em>Zeitschrift für Physikalische Chemie</em>, <strong>150A</strong>, 203–213 (1930). <a href="https://doi.org/10.1515/zpch-1930-15020">doi:10.1515/zpch-1930-15020</a></li>
+<li><a id="ref-15"></a>Tafel, J. "Über die Polarisation bei kathodischer Wasserstoffentwicklung." <em>Zeitschrift für Physikalische Chemie</em>, <strong>50</strong>, 641–712 (1905). <a href="https://doi.org/10.1515/zpch-1905-5043">doi:10.1515/zpch-1905-5043</a></li>
+<li><a id="ref-16"></a>Randles, J. E. B. "A cathode ray polarograph. Part II. The current-voltage curves." <em>Transactions of the Faraday Society</em>, <strong>44</strong>, 327–338 (1948). <a href="https://doi.org/10.1039/TF9484400327">doi:10.1039/TF9484400327</a></li>
+<li><a id="ref-17"></a>Ševčík, A. "Oscillographic polarography with periodical triangular voltage." <em>Collection of Czechoslovak Chemical Communications</em>, <strong>13</strong>, 349–377 (1948). <a href="https://doi.org/10.1135/cccc19480349">doi:10.1135/cccc19480349</a></li>
+<li><a id="ref-18"></a>Delahay, P. "Theory of Irreversible Polarographic Waves with Fixed and Diffusion-Controlled Surface Concentrations." <em>Journal of the American Chemical Society</em>, <strong>75</strong> (5), 1190–1196 (1953). <a href="https://doi.org/10.1021/ja01101a052">doi:10.1021/ja01101a052</a></li>
+<li><a id="ref-19"></a>Matsuda, H.; Ayabe, Y. "Zur Theorie der Randles-Sevčikschen Kathodenstrahl-Polarographie." <em>Zeitschrift für Elektrochemie</em>, <strong>59</strong> (6), 494–503 (1955). <a href="https://doi.org/10.1002/bbpc.19550590605">doi:10.1002/bbpc.19550590605</a></li>
+<li><a id="ref-20"></a>Nicholson, R. S. "Theory and Application of Cyclic Voltammetry for Measurement of Electrode Reaction Kinetics." <em>Analytical Chemistry</em>, <strong>37</strong> (11), 1351–1355 (1965). <a href="https://doi.org/10.1021/ac60230a016">doi:10.1021/ac60230a016</a></li>
+<li><a id="ref-21"></a>Lavagnini, I.; Antiochia, R.; Magno, F. "An Extended Method for the Practical Evaluation of the Standard Rate Constant from Cyclic Voltammetric Data." <em>Electroanalysis</em>, <strong>16</strong> (6), 505–506 (2004). <a href="https://doi.org/10.1002/elan.200302851">doi:10.1002/elan.200302851</a></li>
+<li><a id="ref-22"></a>Saito, Y. "A theoretical study on the diffusion current at the stationary spherical and disc electrodes." <em>Review of Polarography</em>, <strong>15</strong> (6), 177–187 (1968). <a href="https://doi.org/10.5189/revpolarography.15.177">doi:10.5189/revpolarography.15.177</a></li>
+<li><a id="ref-23"></a>Newman, J. "Resistance for Flow of Current to a Disk." <em>Journal of the Electrochemical Society</em>, <strong>113</strong> (5), 501–502 (1966). <a href="https://doi.org/10.1149/1.2424003">doi:10.1149/1.2424003</a></li>
+<li><a id="ref-24"></a>Shoup, D.; Szabo, A. "Chronoamperometric current at finite disk electrodes." <em>Journal of Electroanalytical Chemistry</em>, <strong>140</strong> (2), 237–245 (1982). <a href="https://doi.org/10.1016/0368-1874(82)85294-1">doi:10.1016/0368-1874(82)85294-1</a></li>
+<li><a id="ref-25"></a>Mahon, P. J.; Oldham, K. B. "An analytical expression for the transient current at a microdisk electrode." <em>Analytical Chemistry</em>, <strong>77</strong> (18), 6100–6101 (2005). <a href="https://doi.org/10.1021/ac050965i">doi:10.1021/ac050965i</a></li>
+<li><a id="ref-26"></a>Szabo, A.; Cope, D. K.; Tallman, D. E.; Kovach, P. M.; Wightman, R. M. "Chronoamperometric current at hemicylinder and band microelectrodes: Theory and experiment." <em>Journal of Electroanalytical Chemistry</em>, <strong>217</strong> (2), 417–423 (1987). <a href="https://doi.org/10.1016/0022-0728(87)80234-2">doi:10.1016/0022-0728(87)80234-2</a></li>
+<li><a id="ref-27"></a>Aoki, K.; Tokuda, K.; Matsuda, H. "Derivation of an approximate equation for chronoamperometric curves at microband electrodes and its experimental verification." <em>Journal of Electroanalytical Chemistry</em>, <strong>225</strong> (1–2), 19–32 (1987). <a href="https://doi.org/10.1016/0022-0728(87)80003-3">doi:10.1016/0022-0728(87)80003-3</a></li>
+<li><a id="ref-28"></a>Cornut, R.; Lefrou, C. "New Analytical Approximations for SECM with an Inlaid Microdisk Tip: Pure Positive Feedback and Insulating Substrate Feedback." <em>Journal of Electroanalytical Chemistry</em>, <strong>604</strong> (2), 91–100 (2007). <a href="https://doi.org/10.1016/j.jelechem.2007.03.003">doi:10.1016/j.jelechem.2007.03.003</a></li>
+<li><a id="ref-29"></a>Lefrou, C.; Cornut, R. "Analytical Approximations for Quantitative Approach Curves in SECM with a Flat and Non-Flat Inlaid Disk Tip under Finite Kinetics." <em>ChemPhysChem</em>, <strong>9</strong> (15), 2154–2160 (2008). <a href="https://doi.org/10.1002/cphc.200800366">doi:10.1002/cphc.200800366</a></li>
+<li><a id="ref-30"></a>Fourier, J. <em>Théorie analytique de la chaleur</em>; Firmin Didot: Paris, France, 1822.</li>
+<li><a id="ref-31"></a>Roache, P. J. <em>Verification and Validation in Computational Science and Engineering</em>; Hermosa Publishers: Albuquerque, NM, 1998.</li>
+<li><a id="ref-32"></a>Crank, J.; Nicolson, P. "A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type." <em>Mathematical Proceedings of the Cambridge Philosophical Society</em>, <strong>43</strong> (1), 50–67 (1947). <a href="https://doi.org/10.1017/S0305004100023197">doi:10.1017/S0305004100023197</a></li>
+<li><a id="ref-33"></a>Hairer, E.; Wanner, G. <em>Solving Ordinary Differential Equations II: Stiff and Differential-Algebraic Problems</em>, 2nd ed.; Springer-Verlag: Berlin, Germany, 1996. <a href="https://doi.org/10.1007/978-3-642-05221-7">doi:10.1007/978-3-642-05221-7</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Oliver Rodriguez &bull;
+<a href="https://github.com/sponsors/oliverrdz" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Sponsor on GitHub <span style="color: #ea4aaa;">&hearts;</span></a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/oliverrdz/softpotato" target="_blank" rel="noopener" title="GitHub Repository" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://pypi.org/project/softpotato/" target="_blank" rel="noopener" title="PyPI" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/sponsors/oliverrdz" target="_blank" rel="noopener" title="Sponsor on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m241 87.1 15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1v2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7v-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.buymeacoffee.com/oliverrdz" target="_blank" rel="noopener" title="Buy Me a Coffee" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M152-16c-13.3 0-24 10.7-24 24 0 38.9 23.4 59.4 39.1 73.1l1.1 1C184.5 96.4 192 103.9 192 120c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C183.5 31.7 176 24.1 176 8c0-13.3-10.7-24-24-24M96 192c-17.7 0-32 14.3-32 32v192c0 53 43 96 96 96h192c41.8 0 77.4-26.7 90.5-64h5.5c70.7 0 128-57.3 128-128s-57.3-128-128-128zm352 192V256c35.3 0 64 28.7 64 64s-28.7 64-64 64M288 8c0-13.3-10.7-24-24-24S240-5.3 240 8c0 38.9 23.4 59.4 39.1 73.1l1.1 1C296.5 96.4 304 103.9 304 120c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C295.5 31.7 288 24.1 288 8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
