@@ -1,49 +1,36 @@
-"""Physical and chemical constants with standardized SI definitions.
+r"""Physical and chemical constants with standardized SI definitions.
 
 This module provides fundamental physical and electrochemical constants sourced
 from CODATA (via :mod:`scipy.constants`) and standardized IUPAC conventions.
 
 Constants
 ---------
-FARADAY : float
-    Faraday constant :math:`F` in Coulombs per mole (:math:`\\text{C}\\cdot\\text{mol}^{-1}`).
-    Represents the magnitude of electric charge per mole of electrons
-    (:math:`F = e \\cdot N_A \\approx 96485.332\\,\\text{C}\\cdot\\text{mol}^{-1}`).
-GAS_CONSTANT : float
-    Molar gas constant :math:`R` in Joules per mole per Kelvin
-    (:math:`\\text{J}\\cdot\\text{mol}^{-1}\\cdot\\text{K}^{-1}`).
-    Represents the constant of proportionality in the ideal gas law
-    (:math:`R = k_B \\cdot N_A \\approx 8.31446\\,\\text{J}\\cdot\\text{mol}^{-1}\\cdot\\text{K}^{-1}`).
-STANDARD_TEMPERATURE : float
-    Standard thermodynamic temperature :math:`T^\\circ` in Kelvin (:math:`298.15\\,\\text{K}`,
-    corresponding to :math:`25\\,^\\circ\\text{C}`).
+
+| Constant | Symbol | Value | Units | Description |
+| :--- | :---: | :--- | :--- | :--- |
+| :data:`~softpotato.constants.FARADAY` | :math:`F` | :math:`\approx 96485.332` | :math:`\text{C}\cdot\text{mol}^{-1}` | Faraday constant (:math:`F = e \cdot N_A`); electric charge per mole of electrons |
+| :data:`~softpotato.constants.GAS_CONSTANT` | :math:`R` | :math:`\approx 8.31446` | :math:`\text{J}\cdot\text{mol}^{-1}\cdot\text{K}^{-1}` | Molar gas constant (:math:`R = k_B \cdot N_A`); ideal gas law proportionality constant |
+| :data:`~softpotato.constants.STANDARD_TEMPERATURE` | :math:`T^\circ` | :math:`298.15` | :math:`\text{K}` | Standard thermodynamic temperature (corresponding to :math:`25\,^\circ\text{C}`) |
 
 Aliases
 -------
-F : float
-    Shorthand alias for :data:`FARADAY`.
-R : float
-    Shorthand alias for :data:`GAS_CONSTANT`.
-T_STD : float
-    Shorthand alias for :data:`STANDARD_TEMPERATURE`.
+
+| Alias | Target | Description |
+| :--- | :--- | :--- |
+| :data:`~softpotato.constants.F` | :data:`~softpotato.constants.FARADAY` | Shorthand alias for Faraday constant (:math:`F`) |
+| :data:`~softpotato.constants.R` | :data:`~softpotato.constants.GAS_CONSTANT` | Shorthand alias for molar gas constant (:math:`R`) |
+| :data:`~softpotato.constants.T_STD` | :data:`~softpotato.constants.STANDARD_TEMPERATURE` | Shorthand alias for standard thermodynamic temperature (:math:`T^\circ`) |
 
 Related Physical Constants
 --------------------------
-AVOGADRO : float
-    Avogadro constant :math:`N_A` in reciprocal moles (:math:`\\text{mol}^{-1}`).
-    Number of constituent particles per mole
-    (:math:`6.02214076 \\times 10^{23}\\,\\text{mol}^{-1}`).
-BOLTZMANN : float
-    Boltzmann constant :math:`k_B` in Joules per Kelvin (:math:`\\text{J}\\cdot\\text{K}^{-1}`).
-    Relates average kinetic energy of particles to temperature
-    (:math:`1.380649 \\times 10^{-23}\\,\\text{J}\\cdot\\text{K}^{-1}`).
-ELEMENTARY_CHARGE : float
-    Elementary charge :math:`e` in Coulombs (:math:`\\text{C}`).
-    Electric charge carried by a single proton (:math:`1.602176634 \\times 10^{-19}\\,\\text{C}`).
-VACUUM_PERMITTIVITY : float
-    Vacuum permittivity (electric constant) :math:`\\varepsilon_0` in Farads per meter
-    (:math:`\\text{F}\\cdot\\text{m}^{-1}`). Capability of a vacuum to permit electric field lines
-    (:math:`\\approx 8.854188 \\times 10^{-12}\\,\\text{F}\\cdot\\text{m}^{-1}`).
+
+| Constant | Symbol | Value | Units | Description |
+| :--- | :---: | :--- | :--- | :--- |
+| :data:`~softpotato.constants.AVOGADRO` | :math:`N_A` | :math:`6.02214076 \times 10^{23}` | :math:`\text{mol}^{-1}` | Avogadro constant; constituent particles per mole |
+| :data:`~softpotato.constants.BOLTZMANN` | :math:`k_B` | :math:`1.380649 \times 10^{-23}` | :math:`\text{J}\cdot\text{K}^{-1}` | Boltzmann constant; relates kinetic energy to temperature |
+| :data:`~softpotato.constants.ELEMENTARY_CHARGE` | :math:`e` | :math:`1.602176634 \times 10^{-19}` | :math:`\text{C}` | Elementary charge; electric charge of a single proton |
+| :data:`~softpotato.constants.VACUUM_PERMITTIVITY` | :math:`\varepsilon_0` | :math:`\approx 8.854188 \times 10^{-12}` | :math:`\text{F}\cdot\text{m}^{-1}` | Vacuum permittivity; capability to permit electric fields |
+
 
 Examples
 --------

@@ -198,8 +198,3 @@ python -c "import scipy; print('SciPy installed successfully!')"
 
 ---
 
-## Next Steps
-
-- [Variables & Functions](variables-and-functions.md) — Learn Python syntax and data types.
-- [Numerical Computing with NumPy](numpy-arrays.md) — Work with numerical arrays.
-- [Data Visualization with Matplotlib](matplotlib-plotting.md) — Create scientific plots.

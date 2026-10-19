@@ -6,52 +6,38 @@ at planar electrodes under semi-infinite linear diffusion.
 
 Functions & Classes
 -------------------
-randles_sevcik
-    Reversible electron transfer peak current (Randles–Ševčík equation).
-randles_sevcik_irreversible
-    Totally irreversible electron transfer peak current.
-randles_sevcik_quasi
-    Quasi-reversible electron transfer peak current and shape factor approximations.
-nicholson_psi
-    Nicholson method relating peak potential separation (Delta Ep) to kinetic parameter Psi and k0.
-nicholson_delta_ep
-    Forward Nicholson approximation predicting peak separation from Psi.
-nicholson_rate_constant
-    Direct extraction of standard rate constant k0 from peak potential separation.
-matsuda_ayabe
-    Reversibility criteria classification based on the dimensionless Matsuda–Ayabe parameter Lambda.
-matsuda_ayabe_lambda
-    Compute the dimensionless kinetic parameter Lambda.
-peak_potential_irreversible
-    Peak potential and scan-rate dependence for totally irreversible systems.
-NicholsonResult
-    Container dataclass for Nicholson cyclic voltammetry kinetic diagnostic parameters.
-MatsudaAyabeResult
-    Container dataclass for Matsuda–Ayabe reversibility classification and diagnostic parameters.
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| :func:`~softpotato.analytical.voltammetry.randles_sevcik` | Function | Reversible electron transfer peak current (Randles–Ševčík equation). |
+| :func:`~softpotato.analytical.voltammetry.randles_sevcik_irreversible` | Function | Totally irreversible electron transfer peak current. |
+| :func:`~softpotato.analytical.voltammetry.randles_sevcik_quasi` | Function | Quasi-reversible electron transfer peak current and shape factor approximations. |
+| :func:`~softpotato.analytical.voltammetry.nicholson_psi` | Function | Nicholson method relating peak potential separation (:math:`\Delta E_p`) to kinetic parameter :math:`\Psi` and :math:`k^0`. |
+| :func:`~softpotato.analytical.voltammetry.nicholson_delta_ep` | Function | Forward Nicholson approximation predicting peak separation from :math:`\Psi`. |
+| :func:`~softpotato.analytical.voltammetry.nicholson_rate_constant` | Function | Direct extraction of standard rate constant :math:`k^0` from peak potential separation. |
+| :func:`~softpotato.analytical.voltammetry.matsuda_ayabe` | Function | Reversibility criteria classification based on the dimensionless Matsuda–Ayabe parameter :math:`\Lambda`. |
+| :func:`~softpotato.analytical.voltammetry.matsuda_ayabe_lambda` | Function | Compute the dimensionless kinetic parameter :math:`\Lambda`. |
+| :func:`~softpotato.analytical.voltammetry.peak_potential_irreversible` | Function | Peak potential and scan-rate dependence for totally irreversible systems. |
+| :class:`~softpotato.analytical.voltammetry.NicholsonResult` | Dataclass | Container for Nicholson cyclic voltammetry kinetic diagnostic parameters. |
+| :class:`~softpotato.analytical.voltammetry.MatsudaAyabeResult` | Dataclass | Container for Matsuda–Ayabe reversibility classification and diagnostic parameters. |
 
 Conventions & Units
 -------------------
 All equations are dimensionally consistent in either standard SI or standard
 electrochemical CGS units:
 
-- **SI**:
-  :math:`v` in :math:`\text{V}\cdot\text{s}^{-1}`,
-  :math:`c^*` in :math:`\text{mol}\cdot\text{m}^{-3}`,
-  :math:`A` in :math:`\text{m}^2`,
-  :math:`D` in :math:`\text{m}^2\cdot\text{s}^{-1}`,
-  :math:`k^0` in :math:`\text{m}\cdot\text{s}^{-1}`,
-  :math:`F` in :math:`\text{C}\cdot\text{mol}^{-1}`
-  :math:`\implies I_p` in :math:`\text{A}`.
-- **CGS**:
-  :math:`v` in :math:`\text{V}\cdot\text{s}^{-1}`,
-  :math:`c^*` in :math:`\text{mol}\cdot\text{cm}^{-3}`,
-  :math:`A` in :math:`\text{cm}^2`,
-  :math:`D` in :math:`\text{cm}^2\cdot\text{s}^{-1}`,
-  :math:`k^0` in :math:`\text{cm}\cdot\text{s}^{-1}`,
-  :math:`F` in :math:`\text{C}\cdot\text{mol}^{-1}`
-  :math:`\implies I_p` in :math:`\text{A}`.
+| Quantity | Symbol | SI Units | CGS Units |
+| :--- | :---: | :--- | :--- |
+| Scan rate | :math:`v` | :math:`\text{V}\cdot\text{s}^{-1}` | :math:`\text{V}\cdot\text{s}^{-1}` |
+| Bulk concentration | :math:`c^*` | :math:`\text{mol}\cdot\text{m}^{-3}` | :math:`\text{mol}\cdot\text{cm}^{-3}` |
+| Electrode area | :math:`A` | :math:`\text{m}^2` | :math:`\text{cm}^2` |
+| Diffusion coefficient | :math:`D` | :math:`\text{m}^2\cdot\text{s}^{-1}` | :math:`\text{cm}^2\cdot\text{s}^{-1}` |
+| Standard rate constant | :math:`k^0` | :math:`\text{m}\cdot\text{s}^{-1}` | :math:`\text{cm}\cdot\text{s}^{-1}` |
+| Faraday constant | :math:`F` | :math:`\text{C}\cdot\text{mol}^{-1}` | :math:`\text{C}\cdot\text{mol}^{-1}` |
+| Peak current | :math:`I_p` | :math:`\text{A}` | :math:`\text{A}` |
 
 Standard IUPAC sign conventions are applied:
+
 - Cathodic (reduction) peak currents are negative (:math:`I_p < 0`) when ``scan_direction="cathodic"``.
 - Anodic (oxidation) peak currents are positive (:math:`I_p > 0`) when ``scan_direction="anodic"``.
 

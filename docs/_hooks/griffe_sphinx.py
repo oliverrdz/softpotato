@@ -19,6 +19,8 @@ _MATH_DIRECTIVE_RE = re.compile(
 
 def _convert_math_directive(match: re.Match[str]) -> str:
     indent = match.group(1)
+    if len(indent) % 4 != 0:
+        indent = " " * ((len(indent) + 3) // 4 * 4)
     body = match.group(2)
     lines = body.splitlines()
     # Determine minimum indentation of non-empty lines in the math block
@@ -30,6 +32,8 @@ def _convert_math_directive(match: re.Match[str]) -> str:
         f"{indent}{line[min_indent:]}" if line.strip() else "" for line in lines
     ]
     math_content = "\n".join(dedented).strip()
+    if ("&" in math_content or r"\\" in math_content) and r"\begin{" not in math_content:
+        math_content = f"\\begin{{aligned}}\n{indent}{math_content}\n{indent}\\end{{aligned}}"
     return f"\n\n{indent}$$\n{indent}{math_content}\n{indent}$$\n\n"
 
 

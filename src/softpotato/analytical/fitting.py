@@ -6,19 +6,35 @@ experimental or simulated electrochemical data.
 
 These utilities wrap :func:`scipy.optimize.curve_fit` and linear least-squares
 algorithms with:
+
 1. Physically realistic parameter boundaries (:math:`D > 0`, :math:`0 < \alpha < 1`, :math:`k^0 \ge 0`, :math:`c^* > 0`, :math:`A > 0`, :math:`RG \ge 1.0`).
 2. Rigorous uncertainty quantification: parameter standard errors, covariance and correlation matrices, and Student's :math:`t` confidence intervals.
 3. Goodness-of-fit statistics: :math:`R^2`, adjusted :math:`R^2`, Root-Mean-Square Error (RMSE), and reduced chi-squared (:math:`\chi_\nu^2`).
-4. High-level fitting routines for standard electroanalytical techniques:
 
-   - Cottrell chronoamperometry (:func:`fit_cottrell`)
-   - Randles–Ševčík cyclic voltammetry (:func:`fit_randles_sevcik`)
-   - Rotating Disk Electrode (RDE) Levich analysis (:func:`fit_levich`)
-   - Koutecký–Levich mixed kinetic/diffusion analysis (:func:`fit_koutecky_levich`)
-   - High-field Tafel kinetics (:func:`fit_tafel`)
-   - Full-range Butler–Volmer kinetics (:func:`fit_butler_volmer`)
-   - Microelectrode transient chronoamperometry (:func:`fit_microdisc_transient`)
-   - SECM approach curve feedback modeling (:func:`fit_secm_approach`)
+Functions & Classes
+-------------------
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| :func:`~softpotato.analytical.fitting.fit_curve` | Function | General-purpose bounded non-linear least-squares curve fitting with statistical diagnostics. |
+| :func:`~softpotato.analytical.fitting.fit_linear` | Function | Ordinary or weighted linear least-squares regression (:math:`y = m x + b`) with confidence intervals. |
+| :func:`~softpotato.analytical.fitting.fit_cottrell` | Function | Fit planar Cottrell chronoamperometry transients to extract :math:`D`, :math:`c^*`, or :math:`A`. |
+| :func:`~softpotato.analytical.fitting.fit_randles_sevcik` | Function | Fit Randles–Ševčík peak current vs. scan rate data to extract :math:`D`, :math:`c^*`, or :math:`A`. |
+| :func:`~softpotato.analytical.fitting.fit_levich` | Function | Fit Rotating Disk Electrode (RDE) limiting currents vs. rotation rate to extract :math:`D`. |
+| :func:`~softpotato.analytical.fitting.fit_koutecky_levich` | Function | Fit mixed kinetic/mass-transport RDE data to extract :math:`k^0` and :math:`D`. |
+| :func:`~softpotato.analytical.fitting.fit_tafel` | Function | High-field Tafel regression on overpotential-current data to extract :math:`I_0` and :math:`\alpha`. |
+| :func:`~softpotato.analytical.fitting.fit_butler_volmer` | Function | Full-range non-linear Butler–Volmer kinetic regression for :math:`I_0`, :math:`\alpha`, and :math:`k^0`. |
+| :func:`~softpotato.analytical.fitting.fit_microdisc_transient` | Function | Fit microdisc chronoamperometric transients (Shoup–Szabo or Mahon–Oldham) for :math:`D` or :math:`a`. |
+| :func:`~softpotato.analytical.fitting.fit_secm_approach` | Function | Fit SECM feedback approach curves for tip-substrate offset :math:`d_0`, :math:`RG`, and :math:`\kappa`. |
+| :class:`~softpotato.analytical.fitting.FitResult` | Dataclass | Base container for regression parameters, standard errors, covariance, and :math:`R^2` metrics. |
+| :class:`~softpotato.analytical.fitting.CottrellFitResult` | Dataclass | Specialized result container for Cottrell chronoamperometric regression. |
+| :class:`~softpotato.analytical.fitting.RandlesSevcikFitResult` | Dataclass | Specialized result container for Randles–Ševčík voltammetric regression. |
+| :class:`~softpotato.analytical.fitting.LevichFitResult` | Dataclass | Specialized result container for RDE Levich regression. |
+| :class:`~softpotato.analytical.fitting.KouteckyLevichFitResult` | Dataclass | Specialized result container for Koutecký–Levich RDE regression. |
+| :class:`~softpotato.analytical.fitting.TafelFitResult` | Dataclass | Specialized result container for high-overpotential Tafel regression. |
+| :class:`~softpotato.analytical.fitting.ButlerVolmerFitResult` | Dataclass | Specialized result container for full Butler–Volmer regression. |
+| :class:`~softpotato.analytical.fitting.MicrodiscFitResult` | Dataclass | Specialized result container for microdisc chronoamperometry regression. |
+| :class:`~softpotato.analytical.fitting.SECMApproachFitResult` | Dataclass | Specialized result container for SECM feedback approach curve regression. |
 """
 
 from __future__ import annotations
@@ -670,6 +686,7 @@ def fit_cottrell(
         Measured Faradaic currents :math:`I` in Amperes.
     method : {'linear', 'nonlinear'}, default 'linear'
         Regression methodology:
+
         - ``'linear'``: Fits :math:`I` vs. :math:`t^{-1/2}`.
         - ``'nonlinear'``: Directly optimizes :math:`I(t) = n F A c^* \sqrt{D / (\pi t)} + I_{\text{bg}}`.
     n : float, default 1
@@ -859,10 +876,12 @@ def fit_randles_sevcik(
         Array of peak currents :math:`I_p` in Amperes.
     method : {'linear', 'nonlinear'}, default 'linear'
         Regression methodology:
+
         - ``'linear'``: Fits :math:`I_p` vs. :math:`v^{1/2}`.
         - ``'nonlinear'``: Directly optimizes :math:`I_p(v)`.
     model : {'reversible', 'irreversible'}, default 'reversible'
         Electron transfer reversibility regime:
+
         - ``'reversible'``: Uses prefactor :math:`0.4463 \sqrt{n}`.
         - ``'irreversible'``: Uses prefactor :math:`0.4958 \sqrt{\alpha n_\alpha}`.
     n : float, default 1
@@ -1058,6 +1077,7 @@ def fit_levich(
         Rotation rates in RPM. Either ``omega`` or ``rpm`` must be supplied.
     method : {'linear', 'nonlinear'}, default 'linear'
         Regression methodology:
+
         - ``'linear'``: Linear regression of :math:`I_L` vs. :math:`\omega^{1/2}`.
         - ``'nonlinear'``: Non-linear regression on :math:`I_L(\omega)`.
     n : float, default 1
@@ -1227,6 +1247,7 @@ def fit_koutecky_levich(
         Rotation rates in RPM. Either ``omega`` or ``rpm`` must be supplied.
     method : {'linear', 'nonlinear'}, default 'linear'
         Regression methodology:
+
         - ``'linear'``: Fits :math:`1/I` vs. :math:`\omega^{-1/2}`.
         - ``'nonlinear'``: Directly fits :math:`I(\omega) = \frac{I_K B \sqrt{\omega}}{I_K + B \sqrt{\omega}}`.
     n : float, default 1
@@ -1673,6 +1694,7 @@ def fit_microdisc_transient(
         Measured Faradaic currents in Amperes.
     target : {'D', 'radius', 'a'}, default 'D'
         Parameter to optimize while holding the other constant:
+
         - ``'D'``: Fits diffusion coefficient :math:`D` (radius must be provided).
         - ``'radius'`` or ``'a'``: Fits microdisc radius :math:`a` (:math:`D` must be provided).
     radius : float, optional
@@ -1806,6 +1828,7 @@ def fit_secm_approach(
         Experimental normalized tip current :math:`I_T = i_T / i_{T,\infty}`.
     substrate : {'conducting', 'insulating', 'kinetic'}, default 'conducting'
         Substrate boundary condition model:
+
         - ``'conducting'``: Diffusion-controlled regeneration (positive feedback).
         - ``'insulating'``: Hindered diffusion (negative feedback).
         - ``'kinetic'``: Substrate kinetics with finite rate parameter :math:`\kappa`.

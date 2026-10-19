@@ -1,4 +1,4 @@
-"""Analytical and empirical equations for thermodynamics and interfacial kinetics.
+r"""Analytical and empirical equations for thermodynamics and interfacial kinetics.
 
 This module provides closed-form equations, asymptotic expansions, and regression
 analysis tools for electrochemical thermodynamics (Nernst equation) and heterogeneous
@@ -6,58 +6,43 @@ interfacial charge-transfer kinetics (Butler–Volmer equation and Tafel approxi
 
 Functions & Classes
 -------------------
-nernst
-    Compute Nernst equilibrium electrode potential from concentration or concentration ratio.
-nernst_potential
-    Alias for :func:`nernst`.
-nernst_ratio
-    Compute equilibrium concentration ratio :math:`c_{\\text{Ox}} / c_{\\text{Red}}` from potential.
-nernst_equilibrium_concentrations
-    Compute equilibrium species concentrations from potential and total concentration.
-exchange_current_density
-    Compute exchange current density :math:`j_0` from standard rate constant and concentrations.
-exchange_current
-    Compute exchange current :math:`I_0` from standard rate constant, concentrations, and area.
-charge_transfer_resistance
-    Compute charge-transfer resistance :math:`R_{\\text{ct}}` from exchange current.
-butler_volmer
-    Compute Faradaic current or current density using the Butler–Volmer equation.
-butler_volmer_current_density
-    Compute Faradaic current density using the Butler–Volmer equation.
-butler_volmer_linear
-    Compute low-overpotential linear approximation of the Butler–Volmer equation.
-tafel_slope
-    Compute theoretical Tafel slope :math:`b` in V/decade.
-tafel
-    Compute high-overpotential Tafel current approximation.
-tafel_overpotential
-    Compute overpotential :math:`\\eta` from current using the Tafel approximation.
-TafelResult
-    Container dataclass for Tafel diagnostic linear regression parameters.
-tafel_analysis
-    Perform linear regression on overpotential-current data to extract Tafel parameters.
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| :func:`~softpotato.analytical.kinetics.nernst` | Function | Compute Nernst equilibrium electrode potential from concentration or concentration ratio. |
+| ``nernst_potential`` | Alias | Alias for :func:`~softpotato.analytical.kinetics.nernst`. |
+| :func:`~softpotato.analytical.kinetics.nernst_ratio` | Function | Compute equilibrium concentration ratio :math:`c_{\text{Ox}} / c_{\text{Red}}` from potential. |
+| :func:`~softpotato.analytical.kinetics.nernst_equilibrium_concentrations` | Function | Compute equilibrium species concentrations from potential and total concentration. |
+| :func:`~softpotato.analytical.kinetics.exchange_current_density` | Function | Compute exchange current density :math:`j_0` from standard rate constant and concentrations. |
+| :func:`~softpotato.analytical.kinetics.exchange_current` | Function | Compute exchange current :math:`I_0` from standard rate constant, concentrations, and area. |
+| :func:`~softpotato.analytical.kinetics.charge_transfer_resistance` | Function | Compute charge-transfer resistance :math:`R_{\text{ct}}` from exchange current. |
+| :func:`~softpotato.analytical.kinetics.butler_volmer` | Function | Compute Faradaic current or current density using the Butler–Volmer equation. |
+| :func:`~softpotato.analytical.kinetics.butler_volmer_current_density` | Function | Compute Faradaic current density using the Butler–Volmer equation. |
+| :func:`~softpotato.analytical.kinetics.butler_volmer_linear` | Function | Compute low-overpotential linear approximation of the Butler–Volmer equation. |
+| :func:`~softpotato.analytical.kinetics.tafel_slope` | Function | Compute theoretical Tafel slope :math:`b` in :math:`\text{V}\cdot\text{dec}^{-1}`. |
+| :func:`~softpotato.analytical.kinetics.tafel` | Function | Compute high-overpotential Tafel current approximation. |
+| :func:`~softpotato.analytical.kinetics.tafel_overpotential` | Function | Compute overpotential :math:`\eta` from current using the Tafel approximation. |
+| :class:`~softpotato.analytical.kinetics.TafelResult` | Dataclass | Container for Tafel diagnostic linear regression parameters. |
+| :func:`~softpotato.analytical.kinetics.tafel_analysis` | Function | Perform linear regression on overpotential-current data to extract Tafel parameters. |
 
 Conventions & Units
 -------------------
 All equations are dimensionally consistent in either standard SI or standard
 electrochemical CGS units:
 
-- **SI**:
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{m}^{-3}`,
-  :math:`A` in :math:`\\text{m}^2`,
-  :math:`k^0` in :math:`\\text{m}\\cdot\\text{s}^{-1}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}`
-  :math:`\\implies I` in :math:`\\text{A}`, :math:`j` in :math:`\\text{A}\\cdot\\text{m}^{-2}`.
-- **CGS**:
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{cm}^{-3}`,
-  :math:`A` in :math:`\\text{cm}^2`,
-  :math:`k^0` in :math:`\\text{cm}\\cdot\\text{s}^{-1}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}`
-  :math:`\\implies I` in :math:`\\text{A}`, :math:`j` in :math:`\\text{A}\\cdot\\text{cm}^{-2}`.
+| Quantity | Symbol | SI Units | CGS Units |
+| :--- | :---: | :--- | :--- |
+| Bulk concentration | :math:`c^*` | :math:`\text{mol}\cdot\text{m}^{-3}` | :math:`\text{mol}\cdot\text{cm}^{-3}` |
+| Electrode area | :math:`A` | :math:`\text{m}^2` | :math:`\text{cm}^2` |
+| Standard rate constant | :math:`k^0` | :math:`\text{m}\cdot\text{s}^{-1}` | :math:`\text{cm}\cdot\text{s}^{-1}` |
+| Faraday constant | :math:`F` | :math:`\text{C}\cdot\text{mol}^{-1}` | :math:`\text{C}\cdot\text{mol}^{-1}` |
+| Resulting current | :math:`I` | :math:`\text{A}` | :math:`\text{A}` |
+| Current density | :math:`j` | :math:`\text{A}\cdot\text{m}^{-2}` | :math:`\text{A}\cdot\text{cm}^{-2}` |
 
 Standard IUPAC sign conventions are applied by default:
-- Anodic (oxidation) currents are positive (:math:`I > 0`, :math:`j > 0`) for positive overpotentials (:math:`\\eta > 0`).
-- Cathodic (reduction) currents are negative (:math:`I < 0`, :math:`j < 0`) for negative overpotentials (:math:`\\eta < 0`).
+
+- Anodic (oxidation) currents are positive (:math:`I > 0`, :math:`j > 0`) for positive overpotentials (:math:`\eta > 0`).
+- Cathodic (reduction) currents are negative (:math:`I < 0`, :math:`j < 0`) for negative overpotentials (:math:`\eta < 0`).
 - The toggle ``anodic_positive=False`` can be specified to follow the polarographic / US convention (cathodic positive).
 
 References
@@ -1208,6 +1193,7 @@ def tafel_analysis(
         Measured Faradaic current in Amperes (A) or current density.
     branch : {'anodic', 'cathodic'}, default 'anodic'
         Kinetic branch to isolate for regression:
+
         - ``'anodic'``: Fits positive overpotentials (:math:`\eta > 0`).
         - ``'cathodic'``: Fits negative overpotentials (:math:`\eta < 0`).
     fit_range : tuple of (float, float), optional

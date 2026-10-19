@@ -17,7 +17,8 @@ class BoundaryCondition:
     Parameters
     ----------
     btype : {'dirichlet', 'neumann'}
-        Type of boundary condition.
+        Type of boundary condition:
+
         - ``'dirichlet'``: fixed concentration, :math:`c(x_{\text{bound}}, t) = \text{value}(t)`.
         - ``'neumann'``: fixed concentration gradient, :math:`\left.\frac{\partial c}{\partial x}\right|_{x_{\text{bound}}} = \text{value}(t)`.
     value : float or Callable[[float], float]

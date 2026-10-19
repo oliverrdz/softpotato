@@ -30,17 +30,16 @@ secm_tip_current
 
 Conventions & Units
 -------------------
-- **Normalized distance**: :math:`L = d / a` (:math:`L > 0`), where :math:`d` is the tip-substrate
-  separation distance and :math:`a` is the electroactive microdisk radius.
-- **Insulator ratio**: :math:`RG = r_g / a` (:math:`RG > 1`), where :math:`r_g` is the total radius
-  including the surrounding glass insulator sheath.
-- **Normalized current**: :math:`I_T = i_T / i_{T,\infty}`, where :math:`i_{T,\infty} = 4 n F D c^* a`
-  is the steady-state diffusion-limited current in bulk solution (:math:`L \to \infty`).
-- **Substrate kinetics parameter**: :math:`\kappa = \Lambda = \frac{k a}{D}` (:math:`\kappa \ge 0`),
-  where :math:`k` is the heterogeneous first-order rate constant at the substrate, :math:`a` is the
-  microdisk radius, and :math:`D` is the diffusion coefficient of the mediator.
+
+| Parameter | Definition | Domain | Description |
+| :--- | :---: | :---: | :--- |
+| Normalized distance | :math:`L = d / a` | :math:`L > 0` | Tip-substrate separation :math:`d` normalized by microdisk radius :math:`a`. |
+| Insulator ratio | :math:`RG = r_g / a` | :math:`RG > 1` | Total sheath radius :math:`r_g` normalized by electroactive radius :math:`a`. |
+| Normalized current | :math:`I_T = i_T / i_{T,\infty}` | :math:`I_T > 0` | Tip current normalized by steady-state bulk current :math:`i_{T,\infty} = 4 n F D c^* a`. |
+| Substrate kinetics | :math:`\kappa = \Lambda = k a / D` | :math:`\kappa \ge 0` | Dimensionless heterogeneous first-order substrate rate constant. |
 
 Standard IUPAC sign conventions are applied for dimensional current:
+
 - Cathodic (reduction) currents are negative (:math:`I < 0`).
 - Anodic (oxidation) currents are positive (:math:`I > 0`).
 
@@ -163,9 +162,11 @@ def secm_approach_positive_feedback(
 
     .. math::
 
+        \begin{aligned}
         \theta(RG) &= \frac{2}{\pi} \arccos\left(\frac{1}{RG}\right) \\
         \alpha(RG) &= \ln(2) + \ln(2)(1 - \theta) - \ln(2)(1 - \theta^2) \\
         \beta(RG) &= 1 + 0.639(1 - \theta) - 0.186(1 - \theta^2)
+        \end{aligned}
 
     As :math:`L \to \infty`, :math:`I_T^{\text{cond}} \to 1.0` exactly for all :math:`RG`.
     As :math:`L \to 0`, :math:`I_T^{\text{cond}} \sim \frac{\pi}{4 \beta(RG) L} \to \infty`.

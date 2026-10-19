@@ -6,30 +6,51 @@ PDE solvers (:mod:`softpotato.solver`) against closed-form analytical ground tru
 
 Features
 --------
+
 1. **Standardized Error Metrics**:
 
-   - Pointwise absolute error (:math:`L_\infty` norm, :func:`compute_error_metrics`).
-   - Root-Mean-Square Error (RMSE).
-   - Discrete relative :math:`L_2` error norm.
-   - Mean absolute error (MAE).
-   - Mean and maximum relative errors with zero-division protection.
+    - Pointwise absolute error (:math:`L_\infty` norm, :func:`~softpotato.analytical.benchmark.compute_error_metrics`).
+    - Root-Mean-Square Error (RMSE).
+    - Discrete relative :math:`L_2` error norm.
+    - Mean absolute error (MAE).
+    - Mean and maximum relative errors with zero-division protection.
 
 2. **Order-of-Convergence Verification**:
 
-   - Spatial discretization convergence verification (:math:`\mathcal{O}(\Delta x^2)`).
-   - Temporal discretization convergence verification (:math:`\mathcal{O}(\Delta t^2)` for Crank–Nicolson, :math:`\mathcal{O}(\Delta t)` for backward-Euler BTCS).
-   - Empirical order estimation via log-log regression (:func:`estimate_convergence_order`).
+    - Spatial discretization convergence verification (:math:`\mathcal{O}(\Delta x^2)`).
+    - Temporal discretization convergence verification (:math:`\mathcal{O}(\Delta t^2)` for Crank–Nicolson, :math:`\mathcal{O}(\Delta t)` for backward-Euler BTCS).
+    - Empirical order estimation via log-log regression (:func:`~softpotato.analytical.benchmark.estimate_convergence_order`).
 
 3. **Canonical Electrochemical Benchmark Problems**:
 
-   - Fourier sine diffusion decay (:func:`run_fourier_decay_benchmark`).
-   - Planar Cottrell potential step chronoamperometry (:func:`run_cottrell_benchmark`).
-   - Total mass conservation under zero-flux Neumann BCs (:func:`run_mass_conservation_benchmark`).
+    - Fourier sine diffusion decay (:func:`~softpotato.analytical.benchmark.run_fourier_decay_benchmark`).
+    - Planar Cottrell potential step chronoamperometry (:func:`~softpotato.analytical.benchmark.run_cottrell_benchmark`).
+    - Total mass conservation under zero-flux Neumann BCs (:func:`~softpotato.analytical.benchmark.run_mass_conservation_benchmark`).
 
 4. **Automated Suite Execution**:
 
-   - Unified single-case runner (:func:`run_benchmark`).
-   - Multi-solver comparative benchmark suite (:func:`run_benchmark_suite`) with formatted tabular ASCII reporting.
+    - Unified single-case runner (:func:`~softpotato.analytical.benchmark.run_benchmark`).
+    - Multi-solver comparative benchmark suite (:func:`~softpotato.analytical.benchmark.run_benchmark_suite`) with formatted tabular ASCII reporting.
+
+Functions & Classes
+-------------------
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| :func:`~softpotato.analytical.benchmark.compute_error_metrics` | Function | Compute standardized error norms (:math:`L_\infty`, RMSE, relative :math:`L_2`, MAE) between arrays. |
+| :func:`~softpotato.analytical.benchmark.estimate_convergence_order` | Function | Estimate empirical numerical order of accuracy :math:`p` via log-log linear regression. |
+| :func:`~softpotato.analytical.benchmark.verify_spatial_convergence` | Function | Verify spatial discretization convergence order across a sequence of grid refinements. |
+| :func:`~softpotato.analytical.benchmark.verify_temporal_convergence` | Function | Verify temporal discretization convergence order across a sequence of time step refinements. |
+| :func:`~softpotato.analytical.benchmark.run_fourier_decay_benchmark` | Function | Benchmark a solver against the exact 1D Fourier sine-mode diffusion decay solution. |
+| :func:`~softpotato.analytical.benchmark.run_cottrell_benchmark` | Function | Benchmark a solver against the exact planar Cottrell concentration profile and surface flux. |
+| :func:`~softpotato.analytical.benchmark.run_mass_conservation_benchmark` | Function | Benchmark total mass conservation in an insulated domain with zero-flux Neumann boundaries. |
+| :func:`~softpotato.analytical.benchmark.list_benchmark_cases` | Function | Return the list of registered canonical benchmark case identifiers. |
+| :func:`~softpotato.analytical.benchmark.run_benchmark` | Function | Run a single named benchmark problem for a specified solver. |
+| :func:`~softpotato.analytical.benchmark.run_benchmark_suite` | Function | Execute the full validation suite across one or more solvers and generate a summary report. |
+| :class:`~softpotato.analytical.benchmark.BenchmarkMetrics` | Dataclass | Container for pointwise and integral numerical error metrics. |
+| :class:`~softpotato.analytical.benchmark.ConvergenceResult` | Dataclass | Container for grid/time-step refinement errors and observed convergence order. |
+| :class:`~softpotato.analytical.benchmark.BenchmarkCaseResult` | Dataclass | Container for the outcome, timing, and error metrics of a single benchmark case. |
+| :class:`~softpotato.analytical.benchmark.BenchmarkSuiteResult` | Dataclass | Container aggregating results across multiple solvers and benchmark cases. |
 """
 
 from __future__ import annotations
