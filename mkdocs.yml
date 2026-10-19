@@ -10,6 +10,7 @@ copyright: |
 
 theme:
   name: material
+  custom_dir: docs/_overrides
   logo: assets/images/logo.png
   favicon: assets/images/favicon.png
   palette:
@@ -28,6 +29,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - announce.dismiss
     - navigation.tabs
     - navigation.sections
     - navigation.indexes
@@ -38,6 +40,7 @@ theme:
 
 exclude_docs: |
   _hooks/
+  _overrides/
 
 hooks:
   - docs/_hooks/math_hook.py
@@ -105,6 +108,10 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 extra:
+  version:
+    provider: mike
+    default: stable
+    alias: true
   analytics:
     provider: google
     property: G-PEWTLDFZD6

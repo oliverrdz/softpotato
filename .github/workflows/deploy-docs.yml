@@ -4,20 +4,35 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "docs/**"
-      - "examples/**"
-      - "mkdocs.yml"
-      - "pyproject.toml"
-      - ".github/workflows/deploy-docs.yml"
+    tags:
+      - "v*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy (leave empty for 'dev', or e.g. '3.1.1')"
+        required: false
+        default: ""
+        type: string
+      set_stable:
+        description: "Alias this version as 'stable' and set as default"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,8 +45,85 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[docs]"
 
-      - name: Build documentation
+      - name: Validate documentation build
         run: mkdocs build --strict
+
+      - name: Build versioned documentation with mike
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch origin gh-pages:gh-pages
+          fi
+
+          # One-time backfill for historical releases (3.0.0, 3.1.0, 3.1.1) if missing
+          if ! mike list 2>/dev/null | grep -Eq "^3\.0\.0(\s|$)"; then
+            rm -rf src && git archive v3.0.0 src/ | tar -x
+            rm -rf docs/api/constants.md docs/api/analytical
+            python -c '
+          from pathlib import Path
+          import re
+          mkdocs = Path("mkdocs.yml").read_text()
+          mkdocs = re.sub(r"      - Constants Module:.*?      - Solver Module:", "      - Solver Module:", mkdocs, flags=re.S)
+          Path("mkdocs.yml").write_text(mkdocs)
+          api_idx = Path("docs/api/index.md").read_text()
+          api_idx = re.sub(r"## Constants Module.*?(?=## Solver Module)", "", api_idx, flags=re.S)
+          Path("docs/api/index.md").write_text(api_idx)
+          idx = Path("docs/index.md").read_text()
+          idx = idx.replace("api/analytical/index.md", "api/solver.md").replace("api/analytical/fitting.md", "api/solver.md")
+          Path("docs/index.md").write_text(idx)
+          blog = Path("docs/blog/posts/welcome-to-softpotato-xyz.md")
+          if blog.exists():
+              blog.write_text(re.sub(r"\[(`[^`]+`)\]\[softpotato\.(?:constants|analytical)[^\]]*\]", r"\1", blog.read_text()))
+          '
+            mike deploy --push 3.0.0 --title "3.0.0"
+            git checkout HEAD -- src/ docs/ mkdocs.yml
+          fi
+
+          if ! mike list 2>/dev/null | grep -Eq "^3\.1\.0(\s|$)"; then
+            rm -rf src && git archive v3.1.0 src/ | tar -x
+            mike deploy --push 3.1.0 --title "3.1.0"
+            git checkout HEAD -- src/
+          fi
+
+          if ! mike list 2>/dev/null | grep -Eq "^3\.1\.1(\s|$)"; then
+            rm -rf src && git archive v3.1.1 src/ | tar -x
+            if ! mike list 2>/dev/null | grep -q "stable"; then
+              mike deploy --push --update-aliases 3.1.1 stable --title "3.1.1"
+              mike set-default --push stable
+            else
+              mike deploy --push 3.1.1 --title "3.1.1"
+            fi
+            git checkout HEAD -- src/
+          fi
+
+          # Deploy current ref (tag release, manual dispatch, or main -> dev)
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            mike deploy --push --update-aliases "${VERSION}" stable --title "${VERSION}"
+            mike set-default --push stable
+          elif [[ -n "${{ inputs.version }}" ]]; then
+            VERSION="${{ inputs.version }}"
+            VERSION="${VERSION#v}"
+            if [[ "${{ inputs.set_stable }}" == "true" ]]; then
+              mike deploy --push --update-aliases "${VERSION}" stable --title "${VERSION}"
+              mike set-default --push stable
+            else
+              mike deploy --push "${VERSION}" --title "${VERSION}"
+            fi
+          else
+            mike deploy --push dev --title "dev (unreleased)"
+            if ! mike list | grep -q "stable"; then
+              mike set-default --push dev
+            fi
+          fi
+
+      - name: Export gh-pages branch to site directory
+        run: |
+          rm -rf site
+          mkdir -p site
+          git archive gh-pages | tar -x -C site
 
       - name: Deploy via rsync over SSH
         uses: easingthemes/ssh-deploy@v6
