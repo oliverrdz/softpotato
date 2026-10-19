@@ -8,13 +8,14 @@ hide:
   <div class="sp-hero__content">
     <h1>Soft Potato</h1>
     <p class="sp-hero__tagline">
-      An open-source electrochemical simulation and analysis toolkit in Python — plus practical tutorials on scientific computing, Python, and Linux.
+      An open-source electrochemical simulation and analysis toolkit in Python.
     </p>
     <div class="sp-hero__actions">
-      <a class="md-button md-button--primary" href="installation/">Get Started</a>
-      <a class="md-button" href="api/">Explore API Reference</a>
+      <a class="md-button md-button--primary" href="api/">API Reference</a>
       <a class="md-button" href="tutorials/">Tutorials</a>
-      <a class="md-button" href="blog/">Read the Blog</a>
+      <a class="md-button" href="blog/">Blog</a>
+      <a class="md-button" href="roadmap/">Roadmap</a>
+      <a class="md-button" href="changelog/">Changelog</a>
     </div>
   </div>
   <div class="sp-hero__mascot">
@@ -28,7 +29,7 @@ hide:
 
     ---
 
-    Closed-form and asymptotic equations for transient potential/current steps (Cottrell, Anson, Sand), hydrodynamics (Levich, Koutecký–Levich, RRDE), interfacial kinetics (Nernst, Butler–Volmer, Tafel), voltammetry, ultramicroelectrodes, and SECM.
+    A library of commonly used electrochemical equations such as Cottrell, Nernst, Levich, Randles-Sevick, Butler-Volmer, SECM, etc.
 
     [:octicons-arrow-right-24: Analytical Module](api/analytical/index.md)
 
@@ -52,7 +53,7 @@ hide:
 
     ---
 
-    Interactive Jupyter notebooks for electrochemical simulations alongside practical tutorials on basic programming in Python and working effectively in Linux.
+    Interactive Jupyter notebooks for electrochemical simulations alongside practical tutorials on basic programming in Python.
 
     [:octicons-arrow-right-24: Browse Tutorials](tutorials/index.md)
 

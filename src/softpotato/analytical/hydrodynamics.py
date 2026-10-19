@@ -1,4 +1,4 @@
-"""Analytical and empirical equations for hydrodynamic electrochemical systems.
+r"""Analytical and empirical equations for hydrodynamic electrochemical systems.
 
 This module provides closed-form solutions, asymptotic expansions, and empirical
 models for convective-diffusion mass transport at Rotating Disk Electrodes (RDE)
@@ -6,58 +6,41 @@ and Rotating Ring-Disk Electrodes (RRDE).
 
 Functions & Classes
 -------------------
-rpm_to_rad_s
-    Convert rotational speed from revolutions per minute (RPM) to angular velocity (rad/s).
-rad_s_to_rpm
-    Convert angular velocity from rad/s to rotational speed in RPM.
-levich
-    Levich equation for convective mass-transport limiting current at an RDE.
-levich_constant
-    Compute the theoretical Levich slope parameter B.
-nernst_diffusion_layer
-    Compute the hydrodynamic stagnant diffusion layer thickness delta.
-koutecky_levich
-    Koutecký–Levich equation for mixed kinetic and mass-transfer limitation.
-koutecky_levich_analysis
-    Perform linear regression on Koutecký–Levich data to extract kinetic and transport parameters.
-KouteckyLevichResult
-    Container dataclass for extracted Koutecký–Levich diagnostic regression parameters.
-collection_efficiency
-    Exact Albery–Bruckenstein theoretical collection efficiency N for an RRDE.
-ring_limiting_current
-    Convective mass-transport limiting current at the ring electrode (unshielded or shielded).
-ring_collection_current
-    Ring current resulting from collection of intermediate species generated at the disk.
-shielding_factor
-    Theoretical geometric shielding factor for an RRDE.
-rotating_ring_disk
-    Unified solver evaluating RRDE geometric parameters, collection efficiency, and limiting currents.
-RRDEResult
-    Container dataclass for comprehensive RRDE hydrodynamic and geometric parameters.
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| :func:`~softpotato.analytical.hydrodynamics.rpm_to_rad_s` | Function | Convert rotational speed from revolutions per minute (RPM) to angular velocity ($\text{rad}\cdot\text{s}^{-1}$). |
+| :func:`~softpotato.analytical.hydrodynamics.rad_s_to_rpm` | Function | Convert angular velocity ($\text{rad}\cdot\text{s}^{-1}$) to rotational speed in RPM. |
+| :func:`~softpotato.analytical.hydrodynamics.levich` | Function | Levich equation for convective mass-transport limiting current at an RDE. |
+| :func:`~softpotato.analytical.hydrodynamics.levich_constant` | Function | Compute the theoretical Levich slope parameter :math:`B`. |
+| :func:`~softpotato.analytical.hydrodynamics.nernst_diffusion_layer` | Function | Compute the hydrodynamic stagnant diffusion layer thickness :math:`\delta`. |
+| :func:`~softpotato.analytical.hydrodynamics.koutecky_levich` | Function | Koutecký–Levich equation for mixed kinetic and mass-transfer limitation. |
+| :func:`~softpotato.analytical.hydrodynamics.koutecky_levich_analysis` | Function | Linear regression on Koutecký–Levich data to extract kinetic and transport parameters. |
+| :class:`~softpotato.analytical.hydrodynamics.KouteckyLevichResult` | Dataclass | Container for extracted Koutecký–Levich diagnostic regression parameters. |
+| :func:`~softpotato.analytical.hydrodynamics.collection_efficiency` | Function | Exact Albery–Bruckenstein theoretical collection efficiency :math:`N` for an RRDE. |
+| :func:`~softpotato.analytical.hydrodynamics.ring_limiting_current` | Function | Convective mass-transport limiting current at the ring electrode (unshielded or shielded). |
+| :func:`~softpotato.analytical.hydrodynamics.ring_collection_current` | Function | Ring current resulting from collection of intermediate species generated at the disk. |
+| :func:`~softpotato.analytical.hydrodynamics.shielding_factor` | Function | Theoretical geometric shielding factor :math:`S` for an RRDE. |
+| :func:`~softpotato.analytical.hydrodynamics.rotating_ring_disk` | Function | Unified solver evaluating RRDE geometric parameters, collection efficiency, and limiting currents. |
+| :class:`~softpotato.analytical.hydrodynamics.RRDEResult` | Dataclass | Container for comprehensive RRDE hydrodynamic and geometric parameters. |
 
 Conventions & Units
 -------------------
 All equations are dimensionally consistent in either standard SI or standard
 electrochemical CGS units:
 
-- **SI**:
-  :math:`D` in :math:`\\text{m}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{m}^{-3}`,
-  :math:`A` in :math:`\\text{m}^2`,
-  :math:`\\nu` in :math:`\\text{m}^2\\cdot\\text{s}^{-1}` (water at 25 °C :math:`\\approx 10^{-6}`),
-  :math:`\\omega` in :math:`\\text{rad}\\cdot\\text{s}^{-1}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}`
-  :math:`\\implies I` in :math:`\\text{A}`.
-- **CGS**:
-  :math:`D` in :math:`\\text{cm}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{cm}^{-3}`,
-  :math:`A` in :math:`\\text{cm}^2`,
-  :math:`\\nu` in :math:`\\text{cm}^2\\cdot\\text{s}^{-1}` (water at 25 °C :math:`\\approx 0.01`),
-  :math:`\\omega` in :math:`\\text{rad}\\cdot\\text{s}^{-1}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}`
-  :math:`\\implies I` in :math:`\\text{A}`.
+| Quantity | Symbol | SI Units | CGS Units |
+| :--- | :---: | :--- | :--- |
+| Diffusion coefficient | :math:`D` | :math:`\text{m}^2\cdot\text{s}^{-1}` | :math:`\text{cm}^2\cdot\text{s}^{-1}` |
+| Bulk concentration | :math:`c^*` | :math:`\text{mol}\cdot\text{m}^{-3}` | :math:`\text{mol}\cdot\text{cm}^{-3}` |
+| Electrode area | :math:`A` | :math:`\text{m}^2` | :math:`\text{cm}^2` |
+| Kinematic viscosity | :math:`\nu` | :math:`\text{m}^2\cdot\text{s}^{-1}` (:math:`\approx 10^{-6}` for water) | :math:`\text{cm}^2\cdot\text{s}^{-1}` (:math:`\approx 0.01` for water) |
+| Angular velocity | :math:`\omega` | :math:`\text{rad}\cdot\text{s}^{-1}` | :math:`\text{rad}\cdot\text{s}^{-1}` |
+| Faraday constant | :math:`F` | :math:`\text{C}\cdot\text{mol}^{-1}` | :math:`\text{C}\cdot\text{mol}^{-1}` |
+| Resulting current | :math:`I` | :math:`\text{A}` | :math:`\text{A}` |
 
 Standard IUPAC sign conventions are applied:
+
 - Cathodic (reduction) currents are negative (:math:`I < 0`).
 - Anodic (oxidation) currents are positive (:math:`I > 0`).
 

@@ -1,4 +1,4 @@
-"""Analytical and empirical equations for electrochemical step techniques.
+r"""Analytical and empirical equations for electrochemical step techniques.
 
 This module provides closed-form solutions, asymptotic expansions, and empirical
 models for transient potential-step (chronoamperometry, chronocoulometry) and
@@ -33,14 +33,17 @@ Conventions & Units
 All equations are dimensionally consistent in either standard SI or standard
 electrochemical CGS units:
 
-- **SI**: :math:`t` in :math:`\\text{s}`, :math:`D` in :math:`\\text{m}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{m}^{-3}`, :math:`A` in :math:`\\text{m}^2`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
-- **CGS**: :math:`t` in :math:`\\text{s}`, :math:`D` in :math:`\\text{cm}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{cm}^{-3}`, :math:`A` in :math:`\\text{cm}^2`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
+| Quantity | Symbol | SI Units | CGS Units |
+| :--- | :---: | :--- | :--- |
+| Time | :math:`t` | :math:`\text{s}` | :math:`\text{s}` |
+| Diffusion coefficient | :math:`D` | :math:`\text{m}^2\cdot\text{s}^{-1}` | :math:`\text{cm}^2\cdot\text{s}^{-1}` |
+| Bulk concentration | :math:`c^*` | :math:`\text{mol}\cdot\text{m}^{-3}` | :math:`\text{mol}\cdot\text{cm}^{-3}` |
+| Electrode area | :math:`A` | :math:`\text{m}^2` | :math:`\text{cm}^2` |
+| Faraday constant | :math:`F` | :math:`\text{C}\cdot\text{mol}^{-1}` | :math:`\text{C}\cdot\text{mol}^{-1}` |
+| Resulting current | :math:`I` | :math:`\text{A}` | :math:`\text{A}` |
 
 Standard IUPAC sign conventions are applied:
+
 - Cathodic (reduction) currents are negative (:math:`I < 0`).
 - Anodic (oxidation) currents are positive (:math:`I > 0`).
 

@@ -1,12 +1,13 @@
-"""Numerical solvers for chemical species diffusion and reaction-diffusion problems.
+r"""Numerical solvers for chemical species diffusion and reaction-diffusion problems.
 
 This module provides a unified framework for solving 1D multi-species diffusion equations:
 
 .. math::
 
-    \\frac{\\partial c_i}{\\partial t} = D_i \\frac{\\partial^2 c_i}{\\partial x^2} + R_i(\\mathbf{c}, x, t)
+    \frac{\partial c_i}{\partial t} = D_i \frac{\partial^2 c_i}{\partial x^2} + R_i(\mathbf{c}, x, t)
 
 Available built-in solvers include:
+
 - ``"scipy_ivp"`` / ``"solve_ivp"``: Method of Lines using ``scipy.integrate.solve_ivp`` (Radau/BDF/RK45).
 - ``"crank_nicolson"``: 2nd-order unconditionally stable Crank-Nicolson finite difference.
 - ``"implicit"`` / ``"btcs"``: Unconditionally stable Backward-Time Central-Space.
