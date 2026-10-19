@@ -125,7 +125,6 @@ extra:
 nav:
   - Home: index.md
   - Documentation:
-      - Installation: installation.md
       - Examples:
           - Cottrell Chronoamperometry: examples/cottrell.ipynb
           - Cyclic Voltammetry: examples/cyclic_voltammetry.ipynb
