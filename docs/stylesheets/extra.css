@@ -65,6 +65,18 @@
     color: #FFFFFF;
 }
 
+/* Secondary buttons in dark mode (default uses --md-primary-fg-color which blends into dark background) */
+[data-md-color-scheme="slate"] .md-typeset .md-button:not(.md-button--primary) {
+    color: var(--sp-goggle-blue);
+    border-color: var(--sp-goggle-blue);
+}
+[data-md-color-scheme="slate"] .md-typeset .md-button:not(.md-button--primary):hover,
+[data-md-color-scheme="slate"] .md-typeset .md-button:not(.md-button--primary):focus {
+    background-color: var(--sp-orange);
+    border-color: var(--sp-orange);
+    color: #FFFFFF;
+}
+
 /* ==========================================================================
    Landing Page Two-Column Hero Section
    ========================================================================== */
