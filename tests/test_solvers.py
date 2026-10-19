@@ -293,3 +293,39 @@ def test_input_validation():
     solver = get_solver("scipy_ivp")
     with pytest.raises(ValueError, match="strictly greater"):
         solver.solve(prob, t_span=(1.0, 0.0))
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+def test_left_and_right_boundary_fluxes(solver_name):
+    """Verify left_fluxes and right_fluxes calculation and electrode-normal sign convention."""
+    L = 2.0
+    D = 0.05
+    x = np.linspace(0.0, L, 41)
+    t_eval = np.linspace(0.0, 0.2, 6)
+
+    # Steady-state generation-collection profile: c(x) = 1 - x / L
+    # Left electrode (x=0) generates species (c=1 -> flux into solution > 0)
+    # Right electrode (x=L) consumes species (c=0 -> flux into solution < 0)
+    problem = DiffusionProblem(
+        grid=x,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(1.0), DirichletBC(0.0))},
+        initial_conditions={"A": lambda x_pts: 1.0 - x_pts / L},
+    )
+
+    solver = get_solver(solver_name)
+    result = solver.solve(problem, t_span=(0.0, 0.2), t_eval=t_eval)
+
+    assert result.left_fluxes is result.fluxes
+    assert "A" in result.left_fluxes
+    assert "A" in result.right_fluxes
+
+    expected_left = np.full_like(t_eval, D / L)
+    expected_right = np.full_like(t_eval, -D / L)
+
+    np.testing.assert_allclose(result.left_fluxes["A"], expected_left, rtol=1e-5, atol=1e-7)
+    np.testing.assert_allclose(result.right_fluxes["A"], expected_right, rtol=1e-5, atol=1e-7)
+
