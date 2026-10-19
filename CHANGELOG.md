@@ -14,24 +14,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added unit tests in `tests/test_solvers.py` verifying left and right boundary flux accuracy and polarity across all built-in solvers (`explicit`, `implicit`, `crank_nicolson`, and `scipy_ivp`).
 - **Official Website & Domain (`softpotato.xyz`)**:
   - Launched the official project website and centralized documentation hub at [softpotato.xyz](https://softpotato.xyz).
-  - Introduced a project blog and announcements platform (`docs/blog/`) with author profiling, featuring the inaugural announcement post welcoming users to `softpotato.xyz`.
-  - Added comprehensive educational tutorial series for scientific computing:
-    - Linux basics (`docs/tutorials/linux/`): filesystem navigation, file management, running scripts, and SSH remote access.
-    - Python fundamentals (`docs/tutorials/python/`): Python installation, variables and functions, NumPy numerical arrays, and Matplotlib plotting.
-  - Added GitHub Actions deployment workflow (`.github/workflows/deploy-docs.yml`) to automatically build and deploy the documentation site to the production server via SSH/rsync on pushes to `main`.
+  - Introduced a project blog and announcements section (`docs/blog/`) with author profiling (`docs/blog/.authors.yml`), featuring the inaugural announcement post (`docs/blog/posts/welcome-to-softpotato-xyz.md`).
+  - Added a step-by-step Python & Soft Potato installation and verification tutorial (`docs/tutorials/python/installing-python.md`) with a chronoamperometry verification test script and plot (`docs/assets/images/chronoamperometry-test-plot.png`).
+  - Added a **Citation** section with the ChemRxiv preprint DOI badge (`doi:10.26434/chemrxiv-2022-4bs3w`), BibTeX/APA citation blocks, and GitHub Sponsors support links to `README.md` and `docs/index.md`.
+  - Added GitHub Actions documentation deployment workflow (`.github/workflows/deploy-docs.yml`) to build versioned documentation with `mike` (including historical release backfilling for `3.0.0`, `3.1.0`, and `3.1.1`, automatic `stable` alias updates on `v*` tag pushes, `dev` branch updates on pushes to `main`, and manual `workflow_dispatch` controls) and deploy to the production server via SSH/rsync (`easingthemes/ssh-deploy@v6`).
+  - Added `docs-check` job (`mkdocs build --strict`) and `gh-pages` branch ignore rule to the CI workflow (`.github/workflows/ci.yml`).
 - **Material for MkDocs Documentation Framework**:
   - Migrated the documentation engine from Sphinx to [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) (`mkdocs.yml`).
-  - Re-architected API documentation using `mkdocstrings` (`mkdocstrings-python`) with custom Griffe extension hooks (`docs/_hooks/griffe_sphinx.py`) to parse and render docstrings seamlessly.
-  - Implemented MathJax LaTeX equation rendering via custom math hooks (`docs/_hooks/math_hook.py`) and JavaScript configuration (`docs/javascripts/mathjax.js`).
-  - Added custom styling, branding, and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (slate) palettes, typography, and Mermaid diagram theming.
+  - Configured multi-version documentation management using [`mike`](https://github.com/jimporter/mike) (`mkdocs.yml`, `.github/workflows/deploy-docs.yml`, `docs/_overrides/main.html`), tracking tagged releases under `stable` alongside the active `dev (unreleased)` branch with an automatic warning banner on non-stable versions.
+  - Re-architected modular API reference pages (`docs/api/index.md`, `docs/api/constants.md`, `docs/api/solver.md`, and `docs/api/analytical/*.md`) using `mkdocstrings` (`mkdocstrings-python`) with a custom Griffe extension (`docs/_hooks/griffe_sphinx.py`) to convert Sphinx/RST roles, cross-references, and `.. math::` directives (including automatic `\begin{aligned}` wrapping) into Markdown.
+  - Implemented MathJax LaTeX equation rendering via custom MkDocs hooks (`docs/_hooks/math_hook.py`) and JavaScript configuration (`docs/javascripts/mathjax.js`) across Markdown pages and Jupyter notebooks.
+  - Added custom styling, branding, mascot illustrations ("Chip"), and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (`slate`) palettes, hero landing page, feature cards, and Mermaid diagram theming.
 
 ### Changed
-- Converted all documentation source files, API references, and guides from reStructuredText (`.rst`) to Markdown (`.md`).
-- Reorganized tutorial and notebook structure into dedicated categories (`docs/tutorials/electrochemistry/`, `docs/tutorials/python/`, `docs/tutorials/linux/`).
-- Updated documentation dependencies in `pyproject.toml` (`[project.optional-dependencies].docs`), replacing Sphinx packages with MkDocs, Material for MkDocs, `mkdocstrings`, and markdown extensions.
+- Converted all documentation source files, API references, and guides from reStructuredText (`.rst`) to Markdown (`.md`), and updated display math block formatting in `CHANGELOG.md` and `ROADMAP.md` for MkDocs/MathJax compatibility.
+- Streamlined site navigation (`mkdocs.yml`) into four focused top-level sections (`Home`, `API Reference`, `Tutorials`, `Blog`), organizing interactive electrochemistry notebooks under `docs/tutorials/electrochemistry/` and Python setup under `docs/tutorials/python/`.
+- Refactored module and function docstrings across `softpotato.constants`, `softpotato.solver`, and `softpotato.analytical` to use raw strings (`r"""`), structured Markdown tables for constants, units, and API summaries, and `\begin{aligned}` multi-line math blocks.
+- Updated documentation dependencies in `pyproject.toml` (`[project.optional-dependencies]` for `docs` and `dev`), replacing Sphinx packages with `mkdocs`, `mkdocs-material`, `mkdocstrings[python]`, `mkdocs-jupyter`, and `mike`.
+- Updated documentation URLs in `README.md` and `docs/index.md` from Read the Docs to `https://softpotato.xyz/`.
+
+### Fixed
+- Fixed Markdown formatting of summary takeaways in the cyclic voltammetry tutorial (`examples/cyclic_voltammetry.ipynb`).
 
 ### Removed
-- Removed legacy Sphinx configuration and build infrastructure: `docs/conf.py`, `docs/Makefile`, `docs/make.bat`, `docs/docutils.conf`, `.readthedocs.yaml`, and Sphinx templates/static assets.
+- Removed legacy Sphinx configuration and Read the Docs build infrastructure: `docs/conf.py`, `docs/Makefile`, `docs/make.bat`, `docs/docutils.conf`, `.readthedocs.yaml`, `docs/index.rst`, `docs/installation.rst`, `docs/api.rst`, `docs/_static/custom.css`, and `docs/_templates/layout.html`.
 
 ## [3.1.1] - 2026-10-02
 
