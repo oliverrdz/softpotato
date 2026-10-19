@@ -1,21 +1,25 @@
-"""Analytical and empirical electrochemical equations.
+r"""Analytical and empirical electrochemical equations.
 
 This subpackage provides closed-form solutions, asymptotic expansions, and empirical
 models for electrochemical systems. These analytical equations serve as:
+
 1. Exact ground-truth benchmarks for numerical PDE solvers (:mod:`softpotato.solver`).
 2. Rapid parameter estimation tools for experimental and simulated data.
 3. Diagnostic baselines for transient, steady-state, and voltammetric responses.
 
 Submodules
 ----------
-benchmark : Automated numerical solver validation suite and analytical benchmarking harness.
-fitting : Parameter fitting and experimental data analysis utilities.
-hydrodynamics : Convection and hydrodynamic equations for RDE and RRDE.
-kinetics : Thermodynamics and interfacial kinetics (Nernst, Butler–Volmer, Tafel).
-microelectrodes : Steady-state and transient models for microelectrodes and UMEs.
-secm : Scanning Electrochemical Microscopy (SECM) approach curves.
-step : Potential and current step equations (Cottrell, Anson, Sand, etc.).
-voltammetry : Voltammetry and kinetic diagnostics (Randles–Ševčík, Nicholson, Matsuda–Ayabe).
+
+| Submodule | Focus | Description |
+| :--- | :--- | :--- |
+| :mod:`~softpotato.analytical.step` | Transient steps | Potential and current step equations (Cottrell, Anson, Sand, etc.). |
+| :mod:`~softpotato.analytical.hydrodynamics` | Hydrodynamics / RDE | Convection and hydrodynamic equations for RDE and RRDE systems. |
+| :mod:`~softpotato.analytical.kinetics` | Interfacial kinetics | Thermodynamics and electrode kinetics (Nernst, Butler–Volmer, Tafel). |
+| :mod:`~softpotato.analytical.voltammetry` | Voltammetry | Voltammetric diagnostics and peak currents (Randles–Ševčík, Nicholson, Matsuda–Ayabe). |
+| :mod:`~softpotato.analytical.microelectrodes` | Microelectrodes | Steady-state and transient models for microelectrodes and UMEs. |
+| :mod:`~softpotato.analytical.secm` | SECM | Scanning Electrochemical Microscopy approach curves and feedback kinetics. |
+| :mod:`~softpotato.analytical.fitting` | Parameter fitting | Non-linear regression and parameter estimation utilities for electrochemical data. |
+| :mod:`~softpotato.analytical.benchmark` | Benchmarking | Automated numerical PDE solver validation suite and convergence analysis harness. |
 """
 
 from . import (

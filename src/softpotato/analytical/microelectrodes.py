@@ -1,4 +1,4 @@
-"""Analytical and empirical equations for microelectrodes and ultramicroelectrodes (UMEs).
+r"""Analytical and empirical equations for microelectrodes and ultramicroelectrodes (UMEs).
 
 This module provides closed-form steady-state limiting currents, asymptotic expansions,
 and full-time transient chronoamperometric models for common microelectrode geometries:
@@ -25,14 +25,17 @@ Conventions & Units
 All equations are dimensionally consistent in either standard SI or standard
 electrochemical CGS units:
 
-- **SI**: :math:`t` in :math:`\\text{s}`, :math:`D` in :math:`\\text{m}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{m}^{-3}`, lengths/radii in :math:`\\text{m}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
-- **CGS**: :math:`t` in :math:`\\text{s}`, :math:`D` in :math:`\\text{cm}^2\\cdot\\text{s}^{-1}`,
-  :math:`c^*` in :math:`\\text{mol}\\cdot\\text{cm}^{-3}`, lengths/radii in :math:`\\text{cm}`,
-  :math:`F` in :math:`\\text{C}\\cdot\\text{mol}^{-1}` :math:`\\implies I` in :math:`\\text{A}`.
+| Quantity | Symbol | SI Units | CGS Units |
+| :--- | :---: | :--- | :--- |
+| Time | :math:`t` | :math:`\text{s}` | :math:`\text{s}` |
+| Diffusion coefficient | :math:`D` | :math:`\text{m}^2\cdot\text{s}^{-1}` | :math:`\text{cm}^2\cdot\text{s}^{-1}` |
+| Bulk concentration | :math:`c^*` | :math:`\text{mol}\cdot\text{m}^{-3}` | :math:`\text{mol}\cdot\text{cm}^{-3}` |
+| Characteristic length / radius | :math:`a, r, w, l` | :math:`\text{m}` | :math:`\text{cm}` |
+| Faraday constant | :math:`F` | :math:`\text{C}\cdot\text{mol}^{-1}` | :math:`\text{C}\cdot\text{mol}^{-1}` |
+| Resulting current | :math:`I` | :math:`\text{A}` | :math:`\text{A}` |
 
 Standard IUPAC sign conventions are applied:
+
 - Cathodic (reduction) currents are negative (:math:`I < 0`).
 - Anodic (oxidation) currents are positive (:math:`I > 0`).
 
