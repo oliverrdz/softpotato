@@ -232,6 +232,9 @@ class SolverResult:
         Dictionary mapping species name to 2D concentration array of shape (N_t, N_x).
     fluxes : dict[str, np.ndarray], optional
         Dictionary mapping species name to surface flux at left boundary x=0 of shape (N_t,).
+    right_fluxes : dict[str, np.ndarray], optional
+        Dictionary mapping species name to surface flux at right boundary x=L of shape (N_t,)
+        under the electrode-normal convention (pointing into the solution domain).
     success : bool, default True
         Flag indicating if the numerical solution completed successfully.
     message : str, default "Success"
@@ -251,6 +254,7 @@ class SolverResult:
     ...     x=np.linspace(0, 1, 10),
     ...     concentrations={"A": np.ones((5, 10))},
     ...     fluxes={"A": np.zeros(5)},
+    ...     right_fluxes={"A": np.zeros(5)},
     ... )
     >>> res.species
     ['A']
@@ -258,12 +262,17 @@ class SolverResult:
     (5, 10)
     >>> res.fluxes["A"].shape
     (5,)
+    >>> res.left_fluxes["A"].shape
+    (5,)
+    >>> res.right_fluxes["A"].shape
+    (5,)
     """
 
     t: np.ndarray
     x: np.ndarray
     concentrations: dict[str, np.ndarray]
     fluxes: dict[str, np.ndarray] = field(default_factory=dict)
+    right_fluxes: dict[str, np.ndarray] = field(default_factory=dict)
     success: bool = True
     message: str = "Success"
     raw_output: Any = None
@@ -271,6 +280,11 @@ class SolverResult:
     def __getitem__(self, species_name: str) -> np.ndarray:
         """Shorthand to access concentrations for a species: result['A']."""
         return self.concentrations[species_name]
+
+    @property
+    def left_fluxes(self) -> dict[str, np.ndarray]:
+        """Surface fluxes at the left boundary (alias for ``fluxes``)."""
+        return self.fluxes
 
     @property
     def species(self) -> list[str]:
@@ -432,12 +446,15 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
         self, problem: DiffusionProblem, result: SolverResult
     ) -> SolverResult:
         """Compute surface fluxes and perform post-run integrity checks."""
-        # Calculate surface flux J = -D * dc/dx at left boundary x=0 using 2nd order difference.
-        # Sign convention:
-        # Fick's first law defines the diffusive flux along the +x outward normal into the solution:
-        #   J(0, t) = -D * (dc/dx)|_{x=0}
-        # When an electroactive species is consumed at the electrode (c(0, t) < c_bulk), (dc/dx)|_{x=0} > 0,
-        # so the interfacial flux J(0, t) is strictly NEGATIVE (J < 0).
+        # Calculate surface fluxes at both boundaries using 2nd-order finite differences.
+        # Sign convention (electrode-normal into the solution domain):
+        # - Left boundary (x = x_0, inward normal n_left = +x):
+        #     J_left(t) = -D * (dc/dx)|_{x=x_0}
+        # - Right boundary (x = x_L, inward normal n_right = -x):
+        #     J_right(t) = +D * (dc/dx)|_{x=x_L}
+        # When an electroactive species is consumed at either electrode, its concentration gradient
+        # points away from that electrode into the solution, so the interfacial flux J is strictly
+        # NEGATIVE (J < 0) at both boundaries.
         # Under standard IUPAC sign conventions (cathodic reduction < 0, anodic oxidation > 0):
         # - For reduction (Ox + n e^- -> Red):
         #     I_cathodic = n * F * A * J_Ox < 0 (negative)
@@ -446,12 +463,20 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
         if problem.is_uniform:
             dx = problem.dx
             for sp in problem.species:
+                if sp not in result.concentrations:
+                    continue
+                c = result.concentrations[sp]
+                D = problem.diffusivity[sp]
                 if sp not in result.fluxes:
-                    c = result.concentrations[sp]
-                    D = problem.diffusivity[sp]
                     # 2nd-order forward difference at x=0: (-3*c0 + 4*c1 - c2) / (2*dx)
                     dcdx_left = (-3.0 * c[:, 0] + 4.0 * c[:, 1] - c[:, 2]) / (2.0 * dx)
                     result.fluxes[sp] = -D * dcdx_left
+                if sp not in result.right_fluxes:
+                    # 2nd-order backward difference at x=L: (3*c_{N-1} - 4*c_{N-2} + c_{N-3}) / (2*dx)
+                    dcdx_right = (3.0 * c[:, -1] - 4.0 * c[:, -2] + c[:, -3]) / (
+                        2.0 * dx
+                    )
+                    result.right_fluxes[sp] = D * dcdx_right
         return result
 
 
