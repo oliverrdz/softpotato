@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Dual-Boundary Flux Calculation (`softpotato.solver.base`)**:
+  - Added `right_fluxes` attribute and `left_fluxes` property alias to `SolverResult` to support dual-electrode simulations such as SECM generation–collection, redox competition, and thin-layer cells while preserving backward compatibility for `result.fluxes`.
+  - Updated `BaseSolver._post_process` to automatically compute the 2nd-order backward-difference surface flux at the right boundary ($x = x_{\max}$) alongside the left boundary ($x = x_0$) under the electrode-normal sign convention ($J_{\text{right}} = +D (\partial c / \partial x)|_{x=x_{\max}}$, pointing into the solution domain).
+  - Added unit tests in `tests/test_solvers.py` verifying left and right boundary flux accuracy and polarity across all built-in solvers (`explicit`, `implicit`, `crank_nicolson`, and `scipy_ivp`).
 - **Official Website & Domain (`softpotato.xyz`)**:
   - Launched the official project website and centralized documentation hub at [softpotato.xyz](https://softpotato.xyz).
   - Introduced a project blog and announcements platform (`docs/blog/`) with author profiling, featuring the inaugural announcement post welcoming users to `softpotato.xyz`.
