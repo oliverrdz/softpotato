@@ -69,7 +69,7 @@ Install the latest stable release of Soft Potato from [PyPI](https://pypi.org/pr
 pip install softpotato
 ```
 
-Don't have Python? See [Installing Python](https://softpotato.xyz/tutorials/python/installing-python/).
+Don't have Python? See [Installing Python](https://softpotato.xyz/3.1.1/tutorials/python/installing-python/).
 
 ---
 
