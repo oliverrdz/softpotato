@@ -68,7 +68,7 @@ Install the latest stable release of Soft Potato from [PyPI](https://pypi.org/pr
 pip install softpotato
 ```
 
-For more details, including instructions on how to install from GitHub (bleeding-edge or from source), visit the [full installation page](installation.md).
+Don't have Python? See [Installing Python](https://softpotato.xyz/tutorials/python/installing-python/).
 
 ---
 
