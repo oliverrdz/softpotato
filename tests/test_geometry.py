@@ -353,6 +353,25 @@ def test_surface_flux_and_current_scaling() -> None:
     assert isinstance(i_left, np.ndarray) and i_left.shape == (3,)
     np.testing.assert_allclose(i_left, FARADAY * 0.25 * j_left, rtol=1e-12)
 
+    # Test planar right current
+    i_right = planar.current(j_right, n_electrons=1, side="right", grid=x)
+    np.testing.assert_allclose(i_right, FARADAY * 0.25 * j_right, rtol=1e-12)
+
+    # Test spherical right current scaling with outer radius
+    r_grid = np.linspace(1e-4, 5e-4, 50)
+    sphere = SphericalGeometry(r0=1e-4)
+    i_sph_left = sphere.current(1.0, n_electrons=1, side="left")
+    i_sph_right = sphere.current(1.0, n_electrons=1, side="right", grid=r_grid)
+    np.testing.assert_allclose(i_sph_left, FARADAY * (4.0 * np.pi * (1e-4**2)) * 1.0)
+    np.testing.assert_allclose(i_sph_right, FARADAY * (4.0 * np.pi * (5e-4**2)) * 1.0)
+
+    # Test cylindrical right current scaling with outer radius
+    cyl = CylindricalGeometry(r0=1e-4, length=0.01)
+    i_cyl_left = cyl.current(1.0, n_electrons=1, side="left")
+    i_cyl_right = cyl.current(1.0, n_electrons=1, side="right", grid=r_grid)
+    np.testing.assert_allclose(i_cyl_left, FARADAY * (2.0 * np.pi * 1e-4 * 0.01) * 1.0)
+    np.testing.assert_allclose(i_cyl_right, FARADAY * (2.0 * np.pi * 5e-4 * 0.01) * 1.0)
+
 
 def test_geometry_parameter_and_grid_validation() -> None:
     """Verify parameter validation (r0 > 0, area > 0, valid grid bounds)."""

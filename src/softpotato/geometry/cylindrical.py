@@ -241,6 +241,8 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
         self,
         flux: float | np.ndarray,
         n_electrons: int = 1,
+        side: Literal["left", "right"] = "left",
+        grid: np.ndarray | None = None,
     ) -> float | np.ndarray:
         r"""Integrate normal flux over the cylindrical electrode surface :math:`I = n F A J`.
 
@@ -250,12 +252,20 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
             Interfacial diffusion flux :math:`J`.
         n_electrons : int, default 1
             Number of electrons transferred per reaction (:math:`n > 0`).
+        side : {'left', 'right'}, default 'left'
+            Domain boundary at which to compute the Faradaic current.
+        grid : np.ndarray, optional
+            Spatial grid coordinates used to determine outer boundary area when ``side='right'``.
 
         Returns
         -------
         float or np.ndarray
             Faradaic current :math:`I` in Amperes (:math:`\text{A}`).
         """
+        if side == "right" and grid is not None and self._explicit_area is None:
+            r_right = float(grid[-1])
+            area = 2.0 * math.pi * r_right * self.length
+            return self._eval_1d_current(flux, n_electrons=n_electrons, area=area)
         return self._eval_1d_current(flux, n_electrons=n_electrons)
 
 
