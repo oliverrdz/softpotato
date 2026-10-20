@@ -9,6 +9,8 @@ from typing import Any, ClassVar, Literal, cast
 
 import numpy as np
 
+from softpotato.geometry import Geometry, get_geometry
+
 
 @dataclass
 class BoundaryCondition:
@@ -124,6 +126,14 @@ class DiffusionProblem:
         Reaction kinetics term returning ``{species: reaction_rate_array}``. Defaults to None.
     species : list[str], optional
         List of chemical species names. Inferred from diffusivity if not explicitly provided.
+    geometry : Geometry | str, default 'planar'
+        Coordinate geometry specifying differential operators (:math:`\nabla^2`),
+        normal surface flux evaluations, and active electrode area. Can be a
+        registered alias (e.g., ``'planar'``, ``'spherical'``, ``'cylindrical'``)
+        or a :class:`~softpotato.geometry.Geometry` instance. Defaults to ``'planar'``.
+    n_electrons : int | dict[str, int], default 1
+        Number of electrons transferred per reaction (:math:`n > 0`) for Faradaic
+        current calculations. Can be an integer or a species-to-integer mapping.
 
     Examples
     --------
@@ -161,13 +171,17 @@ class DiffusionProblem:
         | None
     ) = None
     species: list[str] = field(default_factory=list)
+    geometry: Geometry | str = "planar"
+    n_electrons: int | dict[str, int] = 1
 
     def __post_init__(self) -> None:
-        self.grid = np.asarray(self.grid, dtype=float)
-        if self.grid.ndim != 1 or len(self.grid) < 3:
-            raise ValueError("grid must be a 1D array with at least 3 points.")
-        if np.any(np.diff(self.grid) <= 0):
-            raise ValueError("grid points must be strictly monotonically increasing.")
+        if isinstance(self.geometry, str):
+            self.geometry = get_geometry(self.geometry)
+        elif not isinstance(self.geometry, Geometry):
+            raise TypeError(
+                f"geometry must be a str or Geometry instance, got {type(self.geometry)}."
+            )
+        self.grid = self.geometry.validate_grid(self.grid)
 
         if not self.species:
             self.species = list(self.diffusivity.keys())
@@ -235,6 +249,9 @@ class SolverResult:
     right_fluxes : dict[str, np.ndarray], optional
         Dictionary mapping species name to surface flux at right boundary x=L of shape (N_t,)
         under the electrode-normal convention (pointing into the solution domain).
+    currents : dict[str, np.ndarray], optional
+        Dictionary mapping species name to Faradaic current at the electrode of shape (N_t,)
+        in Amperes.
     success : bool, default True
         Flag indicating if the numerical solution completed successfully.
     message : str, default "Success"
@@ -273,6 +290,7 @@ class SolverResult:
     concentrations: dict[str, np.ndarray]
     fluxes: dict[str, np.ndarray] = field(default_factory=dict)
     right_fluxes: dict[str, np.ndarray] = field(default_factory=dict)
+    currents: dict[str, np.ndarray] = field(default_factory=dict)
     success: bool = True
     message: str = "Success"
     raw_output: Any = None
@@ -445,38 +463,37 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
     def _post_process(
         self, problem: DiffusionProblem, result: SolverResult
     ) -> SolverResult:
-        """Compute surface fluxes and perform post-run integrity checks."""
-        # Calculate surface fluxes at both boundaries using 2nd-order finite differences.
+        """Compute surface fluxes, Faradaic currents, and perform post-run integrity checks."""
+        # Calculate surface fluxes and Faradaic currents using problem.geometry.
         # Sign convention (electrode-normal into the solution domain):
-        # - Left boundary (x = x_0, inward normal n_left = +x):
-        #     J_left(t) = -D * (dc/dx)|_{x=x_0}
-        # - Right boundary (x = x_L, inward normal n_right = -x):
-        #     J_right(t) = +D * (dc/dx)|_{x=x_L}
-        # When an electroactive species is consumed at either electrode, its concentration gradient
-        # points away from that electrode into the solution, so the interfacial flux J is strictly
-        # NEGATIVE (J < 0) at both boundaries.
-        # Under standard IUPAC sign conventions (cathodic reduction < 0, anodic oxidation > 0):
-        # - For reduction (Ox + n e^- -> Red):
-        #     I_cathodic = n * F * A * J_Ox < 0 (negative)
-        # - For oxidation (Red -> Ox + n e^-):
-        #     I_anodic = -n * F * A * J_Red > 0 (positive)
-        if problem.is_uniform:
-            dx = problem.dx
-            for sp in problem.species:
-                if sp not in result.concentrations:
-                    continue
-                c = result.concentrations[sp]
-                D = problem.diffusivity[sp]
-                if sp not in result.fluxes:
-                    # 2nd-order forward difference at x=0: (-3*c0 + 4*c1 - c2) / (2*dx)
-                    dcdx_left = (-3.0 * c[:, 0] + 4.0 * c[:, 1] - c[:, 2]) / (2.0 * dx)
-                    result.fluxes[sp] = -D * dcdx_left
-                if sp not in result.right_fluxes:
-                    # 2nd-order backward difference at x=L: (3*c_{N-1} - 4*c_{N-2} + c_{N-3}) / (2*dx)
-                    dcdx_right = (3.0 * c[:, -1] - 4.0 * c[:, -2] + c[:, -3]) / (
-                        2.0 * dx
-                    )
-                    result.right_fluxes[sp] = D * dcdx_right
+        # - Left boundary (r = r_0 / x = 0, inward normal n_left = +r / +x):
+        #     J_left(t) = -D * (dc/dn)|_{left}
+        # - Right boundary (r = r_max / x = L, inward normal n_right = -r / -x):
+        #     J_right(t) = -D * (dc/dn)|_{right} = +D * (dc/dr)|_{right}
+        # Faradaic current:
+        #     I = n * F * A * J
+        for sp in problem.species:
+            if sp not in result.concentrations:
+                continue
+            c = result.concentrations[sp]
+            D = problem.diffusivity[sp]
+            if sp not in result.fluxes:
+                result.fluxes[sp] = problem.geometry.surface_flux(
+                    c, problem.grid, diffusivity=D, side="left"
+                )
+            if sp not in result.right_fluxes:
+                result.right_fluxes[sp] = problem.geometry.surface_flux(
+                    c, problem.grid, diffusivity=D, side="right"
+                )
+            if sp not in result.currents:
+                n_e = (
+                    problem.n_electrons.get(sp, 1)
+                    if isinstance(getattr(problem, "n_electrons", 1), dict)
+                    else getattr(problem, "n_electrons", 1)
+                )
+                result.currents[sp] = problem.geometry.current(
+                    result.fluxes[sp], n_electrons=n_e
+                )
         return result
 
 

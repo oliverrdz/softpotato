@@ -6,6 +6,9 @@ import numpy as np
 import pytest
 from scipy.integrate import trapezoid
 
+from softpotato.analytical.microelectrodes import microsphere_limiting_current
+from softpotato.analytical.step import cottrell_spherical
+from softpotato.geometry import PlanarGeometry, SphericalGeometry
 from softpotato.solver import (
     BaseSolver,
     CrankNicolson,
@@ -331,4 +334,170 @@ def test_left_and_right_boundary_fluxes(solver_name):
     )
     np.testing.assert_allclose(
         result.right_fluxes["A"], expected_right, rtol=1e-5, atol=1e-7
+    )
+
+
+def test_diffusion_problem_geometry_resolution():
+    """Verify DiffusionProblem geometry resolution, defaults, and boundary validation."""
+    grid = np.linspace(0.0, 1.0, 21)
+
+    # 1. Default geometry is PlanarGeometry with area=1.0
+    prob_default = DiffusionProblem(
+        grid=grid,
+        diffusivity={"A": 1.0},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 0.0},
+    )
+    assert isinstance(prob_default.geometry, PlanarGeometry)
+    assert prob_default.geometry.area == 1.0
+
+    # 2. String alias resolution
+    prob_planar = DiffusionProblem(
+        grid=grid,
+        diffusivity={"A": 1.0},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 0.0},
+        geometry="planar",
+    )
+    assert isinstance(prob_planar.geometry, PlanarGeometry)
+
+    # 3. Spherical geometry string alias and r0 inference
+    r_grid = np.linspace(25e-6, 100e-6, 31)
+    prob_sph = DiffusionProblem(
+        grid=r_grid,
+        diffusivity={"A": 1.0},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 0.0},
+        geometry="spherical",
+    )
+    assert isinstance(prob_sph.geometry, SphericalGeometry)
+    assert np.isclose(prob_sph.geometry.r0, 25e-6)
+
+    # 4. Explicit Geometry instance
+    geom_inst = SphericalGeometry(r0=10e-6, hemisphere=True)
+    prob_inst = DiffusionProblem(
+        grid=np.linspace(10e-6, 50e-6, 21),
+        diffusivity={"A": 1.0},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 0.0},
+        geometry=geom_inst,
+    )
+    assert prob_inst.geometry is geom_inst
+    assert prob_inst.geometry.hemisphere is True
+
+    # 5. Invalid geometry type
+    with pytest.raises(TypeError, match="geometry must be a str or Geometry instance"):
+        DiffusionProblem(
+            grid=grid,
+            diffusivity={"A": 1.0},
+            boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+            initial_conditions={"A": 0.0},
+            geometry=12345,  # type: ignore[arg-type]
+        )
+
+    # 6. Radial coordinate constraint (r0 > 0)
+    with pytest.raises(ValueError, match="strictly positive radial coordinates"):
+        DiffusionProblem(
+            grid=np.linspace(0.0, 1.0, 21),  # grid[0] == 0.0 violates r0 > 0
+            diffusivity={"A": 1.0},
+            boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+            initial_conditions={"A": 0.0},
+            geometry="spherical",
+        )
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+def test_spherical_cottrell_benchmark(solver_name):
+    """Verify numerical spherical step response against analytical cottrell_spherical.
+
+    Acceptance criterion: relative error < 0.5% across the transient (t in [0.05, 2.0] s).
+    """
+    n = 1
+    D = 1.0e-9  # m^2/s
+    c_bulk = 1.0  # mol/m^3
+    r0 = 25.0e-6  # 25 um
+    t_max = 2.0  # seconds
+    delta = 6.0 * np.sqrt(D * t_max)
+
+    grid = np.linspace(r0, r0 + delta, 250)
+    geom = SphericalGeometry(r0=r0)
+
+    problem = DiffusionProblem(
+        grid=grid,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"c": c_bulk},
+        geometry=geom,
+        n_electrons=n,
+    )
+
+    t_eval = np.linspace(0.05, t_max, 50)
+    solver_kwargs = {}
+    if solver_name in ("crank_nicolson", "implicit"):
+        solver_kwargs["dt"] = 5e-4
+
+    solver = get_solver(solver_name, **solver_kwargs)
+    result = solver.solve(problem, t_span=(0.0, t_max), t_eval=t_eval)
+
+    assert result.success
+    assert "c" in result.currents
+    assert result.currents["c"].shape == (len(t_eval),)
+
+    # Cathodic reduction currents are negative under IUPAC convention
+    assert np.all(result.currents["c"] < 0.0)
+
+    i_num = np.abs(result.currents["c"])
+    i_ana = cottrell_spherical(t_eval, r=r0, n=n, D=D, c_bulk=c_bulk, area=geom.area)
+
+    rel_error = np.max(np.abs(i_num - i_ana) / i_ana)
+    assert rel_error < 0.005, (
+        f"{solver_name} exceeded 0.5% tolerance on spherical Cottrell: {rel_error * 100:.3f}%"
+    )
+
+
+def test_spherical_steady_state_limiting_current():
+    """Verify long-time numerical current converges toward microsphere_limiting_current."""
+    n = 1
+    D = 1.0e-9  # m^2/s
+    c_bulk = 1.0  # mol/m^3
+    r0 = 5.0e-6  # 5 um microelectrode
+    t_max = 20.0  # seconds
+    delta = 8.0 * np.sqrt(D * t_max)
+
+    # Use non-uniform grid to resolve the boundary layer near r0 accurately
+    grid = np.geomspace(r0, r0 + delta, 180)
+    geom = SphericalGeometry(r0=r0)
+
+    problem = DiffusionProblem(
+        grid=grid,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"c": c_bulk},
+        geometry=geom,
+        n_electrons=n,
+    )
+
+    solver = get_solver("scipy_ivp")
+    result = solver.solve(problem, t_span=(0.0, t_max), t_eval=[1.0, t_max])
+
+    assert result.success
+    i_num_last = np.abs(result.currents["c"][-1])
+    i_ss = microsphere_limiting_current(r0, n=n, D=D, c_bulk=c_bulk)
+
+    # At t = 20 s (theta = D*t/r0^2 = 800), transient is within 2.5% of steady-state
+    rel_diff_ss = abs(i_num_last - i_ss) / i_ss
+    assert rel_diff_ss < 0.025, (
+        f"Long-time spherical current did not match steady-state: {rel_diff_ss * 100:.2f}%"
+    )
+
+    # And matches analytical Cottrell spherical transient to < 0.1%
+    i_ana_last = cottrell_spherical(
+        t_max, r=r0, n=n, D=D, c_bulk=c_bulk, area=geom.area
+    )
+    rel_diff_ana = abs(i_num_last - i_ana_last) / i_ana_last
+    assert rel_diff_ana < 0.001, (
+        f"Long-time spherical current did not match analytical Cottrell: {rel_diff_ana * 100:.3f}%"
     )
