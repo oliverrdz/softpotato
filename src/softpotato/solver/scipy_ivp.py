@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 from scipy.integrate import solve_ivp
 
+from softpotato.geometry import Geometry
+
 from .base import BaseSolver, DiffusionProblem, SolverResult
 
 
@@ -80,6 +82,8 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
         t_eval: np.ndarray | None,
         **kwargs: Any,
     ) -> SolverResult:
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         grid = problem.grid
         N = problem.n_points
         t_start, t_end = t_span
@@ -113,14 +117,6 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                 info["idx_start"] : info["idx_end"]
             ]
 
-        # Precompute spatial discretization weights
-        is_uniform = problem.is_uniform
-        if is_uniform:
-            dx = problem.dx
-            inv_dx2 = 1.0 / (dx**2)
-        else:
-            h = np.diff(grid)  # h[i] = x[i+1] - x[i]
-
         def rhs(t: float, y: np.ndarray) -> np.ndarray:
             """Compute ODE system time derivatives."""
             # 1. Unpack y into full concentration profiles
@@ -153,47 +149,11 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                 D = problem.diffusivity[sp]
                 bc_left, bc_right = problem.boundary_conditions[sp]
 
-                d2c = np.empty(N, dtype=float)
-                if is_uniform:
-                    # Interior points
-                    d2c[1:-1] = (
-                        c_full[2:] - 2.0 * c_full[1:-1] + c_full[:-2]
-                    ) * inv_dx2
-
-                    # Boundary points if Neumann
-                    if not info["left_dirichlet"]:
-                        g_left = bc_left.evaluate(t)
-                        d2c[0] = (
-                            2.0 * c_full[1] - 2.0 * c_full[0] - 2.0 * dx * g_left
-                        ) * inv_dx2
-
-                    if not info["right_dirichlet"]:
-                        g_right = bc_right.evaluate(t)
-                        d2c[-1] = (
-                            2.0 * c_full[-2] - 2.0 * c_full[-1] + 2.0 * dx * g_right
-                        ) * inv_dx2
-                else:
-                    # General 3-point stencil for non-uniform grid
-                    # d²c/dx² ~ 2 / (h_{i-1} + h_i) * [ (c_{i+1}-c_i)/h_i - (c_i-c_{i-1})/h_{i-1} ]
-                    hi_m1 = h[:-1]
-                    hi = h[1:]
-                    d2c[1:-1] = (2.0 / (hi_m1 + hi)) * (
-                        (c_full[2:] - c_full[1:-1]) / hi
-                        - (c_full[1:-1] - c_full[:-2]) / hi_m1
-                    )
-                    if not info["left_dirichlet"]:
-                        g_left = bc_left.evaluate(t)
-                        h0 = h[0]
-                        d2c[0] = (2.0 / h0) * ((c_full[1] - c_full[0]) / h0 - g_left)
-                    if not info["right_dirichlet"]:
-                        g_right = bc_right.evaluate(t)
-                        hm1 = h[-1]
-                        d2c[-1] = (2.0 / hm1) * (
-                            g_right - (c_full[-1] - c_full[-2]) / hm1
-                        )
-
+                lap = geom.laplacian(
+                    c_full, grid, bc_left=bc_left, bc_right=bc_right, t=t
+                )
                 sp_rate = reactions[sp] if reactions and sp in reactions else 0.0
-                sp_dcdt = D * d2c + sp_rate
+                sp_dcdt = D * lap + sp_rate
 
                 dy[info["offset"] : info["offset"] + info["size"]] = sp_dcdt[
                     info["idx_start"] : info["idx_end"]

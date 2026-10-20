@@ -170,6 +170,20 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 | [`verify_spatial_convergence`][softpotato.analytical.benchmark.verify_spatial_convergence] | $\text{solver}, \Delta x_i, D, L$ | $p_x$ | Spatial grid refinement convergence order verification. | [31](#ref-31) |
 | [`verify_temporal_convergence`][softpotato.analytical.benchmark.verify_temporal_convergence] | $\text{solver}, \Delta t_j, D, L$ | $p_t$ | Time-step refinement convergence order verification. | [31](#ref-31) |
 
+## Geometry Module
+
+The [`softpotato.geometry`][softpotato.geometry] subpackage provides coordinate system abstractions, spatial differential operators ($\nabla^2$, $\nabla$), and electrode surface integration across planar, cylindrical, and spherical geometries.
+
+| Class / Function | Inputs | Output | Description | References |
+| :--- | :--- | :--- | :--- | :--- |
+| [`get_geometry`][softpotato.geometry.get_geometry] | $\text{name}$ | $\text{geometry}$ | Factory resolving or instantiating a spatial geometry by alias. |  |
+| [`list_geometries`][softpotato.geometry.list_geometries] | $\varnothing$ | $\text{names}$ | Returns all registered geometry names and aliases. |  |
+| [`register_geometry`][softpotato.geometry.register_geometry] | $\text{name}, \text{cls}$ | $\varnothing$ | Extends geometry registry with a custom geometry class. |  |
+| [`Geometry`][softpotato.geometry.Geometry] | $\varnothing$ | $\text{Geometry}$ | Abstract base class defining spatial operator and flux contracts. | [3](#ref-3), [8](#ref-8) |
+| [`PlanarGeometry`][softpotato.geometry.PlanarGeometry] | $A$ | $\text{geometry}$ | 1D Cartesian planar coordinate geometry ($p = 0$). | [2](#ref-2), [3](#ref-3) |
+| [`CylindricalGeometry`][softpotato.geometry.CylindricalGeometry] | $r_0, L$ | $\text{geometry}$ | 1D axisymmetric cylindrical radial coordinate geometry ($p = 1$). | [4](#ref-4), [5](#ref-5) |
+| [`SphericalGeometry`][softpotato.geometry.SphericalGeometry] | $r_0, \text{hemisphere}$ | $\text{geometry}$ | 1D spherical and hemispherical radial coordinate geometry ($p = 2$). | [3](#ref-3), [22](#ref-22) |
+
 ## Solver Module
 
 The [`softpotato.solver`][softpotato.solver] subpackage provides numerical partial differential equation (PDE)
