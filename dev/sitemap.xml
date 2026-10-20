@@ -2,106 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://softpotato.xyz/dev/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/changelog/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/roadmap/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/constants/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/solver/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/benchmark/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/fitting/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/hydrodynamics/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/kinetics/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/microelectrodes/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/secm/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/step/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/api/analytical/voltammetry/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/2026/10/18/welcome-to-the-new-softpotatoxyz/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/examples/cottrell/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/examples/cyclic_voltammetry/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/tutorials/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/tutorials/electrochemistry/cottrell/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/tutorials/electrochemistry/cyclic_voltammetry/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/tutorials/python/installing-python/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/archive/2026/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/category/announcements/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/category/releases/</loc>
-         <lastmod>2026-10-19</lastmod>
+         <lastmod>2026-10-20</lastmod>
     </url>
 </urlset>
