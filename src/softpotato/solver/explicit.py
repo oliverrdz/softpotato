@@ -108,6 +108,16 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         # Initialize current state
         curr_c = {sp: problem.get_initial_profile(sp) for sp in problem.species}
 
+        # If t_eval starts after t_start, advance from t_start to t_eval[0]
+        t_current = t_start
+        if t_eval[0] > t_start:
+            interval = t_eval[0] - t_start
+            substeps = max(1, int(np.ceil(interval / base_dt)))
+            dt = interval / substeps
+            for _ in range(substeps):
+                curr_c = self._step_explicit(problem, curr_c, t_current, dt, dx)
+                t_current += dt
+
         # Solution records: shape (n_times, n_x) per species
         n_times = len(t_eval)
         records = {
@@ -147,7 +157,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         c_dict: dict[str, np.ndarray],
         t: float,
         dt: float,
-        dx: float,
+        dx: float | None = None,
     ) -> dict[str, np.ndarray]:
         """Advance all species concentration profiles by one time step dt."""
         reactions = (
@@ -161,27 +171,13 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
             D = problem.diffusivity[sp]
             bc_left, bc_right = problem.boundary_conditions[sp]
 
-            d2c = np.empty_like(c)
-            # Interior 2nd-derivative
-            d2c[1:-1] = (c[2:] - 2.0 * c[1:-1] + c[:-2]) / (dx**2)
+            lap = problem.geometry.laplacian(
+                c, problem.grid, bc_left=bc_left, bc_right=bc_right, t=t
+            )
 
-            # Left boundary
-            if bc_left.btype == "neumann":
-                g_left = bc_left.evaluate(t)
-                d2c[0] = (2.0 * c[1] - 2.0 * c[0] - 2.0 * dx * g_left) / (dx**2)
-            else:
-                d2c[0] = 0.0
-
-            # Right boundary
-            if bc_right.btype == "neumann":
-                g_right = bc_right.evaluate(t)
-                d2c[-1] = (2.0 * c[-2] - 2.0 * c[-1] + 2.0 * dx * g_right) / (dx**2)
-            else:
-                d2c[-1] = 0.0
-
-            # Advance state
+            # Advance state: c^{n+1} = c^n + dt * (D * lap + R)
             sp_reaction = reactions[sp] if reactions and sp in reactions else 0.0
-            next_sp_c = c + dt * (D * d2c + sp_reaction)
+            next_sp_c = c + dt * (D * lap + sp_reaction)
 
             # Enforce Dirichlet boundaries at t_next
             if bc_left.btype == "dirichlet":
