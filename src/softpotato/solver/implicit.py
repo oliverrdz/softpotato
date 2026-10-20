@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 from scipy.linalg import solve_banded
 
+from softpotato.geometry import Geometry
+
 from .base import BaseSolver, DiffusionProblem, SolverResult
 
 
@@ -63,6 +65,8 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         t_eval: np.ndarray | None,
         **kwargs: Any,
     ) -> SolverResult:
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         dx = problem.dx if problem.is_uniform else None
         t_start, t_end = t_span
 
@@ -137,6 +141,8 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         reactions = (
             problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
         )
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         new_c: dict[str, np.ndarray] = {}
         N = problem.n_points
         t_next = t + dt
@@ -148,7 +154,7 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
             bc_left, bc_right = problem.boundary_conditions[sp]
 
             # Assemble banded Laplacian L and boundary scaling from geometry
-            l_banded, bc_scale = problem.geometry.laplacian_matrix(
+            l_banded, bc_scale = geom.laplacian_matrix(
                 problem.grid, bc_left=bc_left, bc_right=bc_right
             )
 

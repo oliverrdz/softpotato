@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 
@@ -192,4 +192,3 @@ class PlanarGeometry(Geometry, name="planar"):
 Geometry._registry["cartesian"] = PlanarGeometry
 Geometry._registry["1d"] = PlanarGeometry
 Geometry._registry["linear"] = PlanarGeometry
-

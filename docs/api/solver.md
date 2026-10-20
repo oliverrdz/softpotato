@@ -36,9 +36,9 @@ problem = DiffusionProblem(
 
 solver = get_solver("crank_nicolson", dt=0.01)
 result = solver.solve(problem, t_span=(0.0, 1.0))
-print(result["c"].shape)       # (N_t, N_x) concentration profile
-print(result.fluxes["c"].shape) # (N_t,) interfacial flux
-print(result.currents["c"].shape) # (N_t,) Faradaic current in Amperes
+print(result["c"].shape)  # (N_t, N_x) concentration profile
+print(result.fluxes["c"].shape)  # (N_t,) interfacial flux
+print(result.currents["c"].shape)  # (N_t,) Faradaic current in Amperes
 ```
 
 ### 2. Spherical Microelectrode Step Response

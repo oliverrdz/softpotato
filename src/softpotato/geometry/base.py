@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, ABCMeta, abstractmethod
 from collections.abc import Callable
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Literal
 
 import numpy as np
 

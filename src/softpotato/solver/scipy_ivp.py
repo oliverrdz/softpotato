@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 from scipy.integrate import solve_ivp
 
+from softpotato.geometry import Geometry
+
 from .base import BaseSolver, DiffusionProblem, SolverResult
 
 
@@ -80,6 +82,8 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
         t_eval: np.ndarray | None,
         **kwargs: Any,
     ) -> SolverResult:
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         grid = problem.grid
         N = problem.n_points
         t_start, t_end = t_span
@@ -145,7 +149,7 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
                 D = problem.diffusivity[sp]
                 bc_left, bc_right = problem.boundary_conditions[sp]
 
-                lap = problem.geometry.laplacian(
+                lap = geom.laplacian(
                     c_full, grid, bc_left=bc_left, bc_right=bc_right, t=t
                 )
                 sp_rate = reactions[sp] if reactions and sp in reactions else 0.0
