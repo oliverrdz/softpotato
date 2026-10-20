@@ -429,6 +429,8 @@
       
         
       
+        
+      
     
     
     
@@ -839,6 +841,34 @@
   
   
     <li class="md-nav__item">
+      <a href="geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="solver/" class="md-nav__link">
         
   
@@ -951,6 +981,8 @@
       
         
       
+        
+      
     
     
     
@@ -1011,6 +1043,34 @@
     
   
     Cottrell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/electrochemistry/cottrell_geometries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-Geometry Cottrell
   
 
     
@@ -1596,6 +1656,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geometry-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Geometry Module
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2389,6 +2460,70 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 <td style="text-align: left;"><span class="arithmatex">\(p_t\)</span></td>
 <td style="text-align: left;">Time-step refinement convergence order verification.</td>
 <td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="geometry-module">Geometry Module<a class="headerlink" href="#geometry-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            geometry" href="geometry/#softpotato.geometry"><code>softpotato.geometry</code></a> subpackage provides coordinate system abstractions, spatial differential operators (<span class="arithmatex">\(\nabla^2\)</span>, <span class="arithmatex">\(\nabla\)</span>), and electrode surface integration across planar, cylindrical, and spherical geometries.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class / Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            get_geometry" href="geometry/#softpotato.geometry.get_geometry"><code>get_geometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{name}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{geometry}\)</span></td>
+<td style="text-align: left;">Factory resolving or instantiating a spatial geometry by alias.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            list_geometries" href="geometry/#softpotato.geometry.list_geometries"><code>list_geometries</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{names}\)</span></td>
+<td style="text-align: left;">Returns all registered geometry names and aliases.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            register_geometry" href="geometry/#softpotato.geometry.register_geometry"><code>register_geometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{name}, \text{cls}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;">Extends geometry registry with a custom geometry class.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Geometry" href="geometry/#softpotato.geometry.Geometry"><code>Geometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Geometry}\)</span></td>
+<td style="text-align: left;">Abstract base class defining spatial operator and flux contracts.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-8">8</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            PlanarGeometry" href="geometry/#softpotato.geometry.PlanarGeometry"><code>PlanarGeometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(A\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{geometry}\)</span></td>
+<td style="text-align: left;">1D Cartesian planar coordinate geometry (<span class="arithmatex">\(p = 0\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-2">2</a>, <a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CylindricalGeometry" href="geometry/#softpotato.geometry.CylindricalGeometry"><code>CylindricalGeometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r_0, L\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{geometry}\)</span></td>
+<td style="text-align: left;">1D axisymmetric cylindrical radial coordinate geometry (<span class="arithmatex">\(p = 1\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-4">4</a>, <a href="#ref-5">5</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            SphericalGeometry" href="geometry/#softpotato.geometry.SphericalGeometry"><code>SphericalGeometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(r_0, \text{hemisphere}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{geometry}\)</span></td>
+<td style="text-align: left;">1D spherical and hemispherical radial coordinate geometry (<span class="arithmatex">\(p = 2\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-22">22</a></td>
 </tr>
 </tbody>
 </table>
