@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduced `softpotato.geometry` subpackage abstracting spatial coordinate systems and differential operators for electrochemical simulations across 1D planar, spherical, and cylindrical domains:
     $$\nabla^2 c = \frac{\partial^2 c}{\partial r^2} + \frac{p}{r} \frac{\partial c}{\partial r}$$
     where $p = 0$ for Cartesian planar diffusion, $p = 1$ for cylindrical diffusion, and $p = 2$ for spherical diffusion.
+    
   - Implemented abstract base class `Geometry` (`softpotato.geometry.base`) providing unified methods for finite-difference Laplacian evaluation (`laplacian`), tridiagonal banded matrix assembly (`laplacian_matrix`), surface flux calculation (`surface_flux`), Faradaic current integration (`current`), area (`area`), volume (`volume`), and grid validation (`validate_grid`).
   - Added `PlanarGeometry` (`softpotato.geometry.planar`) for 1D Cartesian diffusion perpendicular to a planar macroelectrode, supporting both uniform and non-uniform grids.
   - Added `SphericalGeometry` (`softpotato.geometry.spherical`) for 1D radial diffusion to spherical and hemispherical microelectrodes, microdroplets, or nanoparticle aggregates with core radius $r_0$.
