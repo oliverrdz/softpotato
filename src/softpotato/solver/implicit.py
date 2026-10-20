@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 from scipy.linalg import solve_banded
 
+from softpotato.geometry import Geometry
+
 from .base import BaseSolver, DiffusionProblem, SolverResult
 
 
@@ -63,12 +65,9 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         t_eval: np.ndarray | None,
         **kwargs: Any,
     ) -> SolverResult:
-        if not problem.is_uniform:
-            raise NotImplementedError(
-                "ImplicitFiniteDifference requires a uniform spatial grid."
-            )
-
-        dx = problem.dx
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
+        dx = problem.dx if problem.is_uniform else None
         t_start, t_end = t_span
 
         user_dt = (
@@ -91,6 +90,16 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         n_times = len(t_eval)
         N = problem.n_points
         curr_c = {sp: problem.get_initial_profile(sp) for sp in problem.species}
+
+        # If t_eval starts after t_start, advance from t_start to t_eval[0]
+        t_current = t_start
+        if t_eval[0] > t_start:
+            interval = t_eval[0] - t_start
+            substeps = max(1, int(np.ceil(interval / base_dt)))
+            dt = interval / substeps
+            for _ in range(substeps):
+                curr_c = self._step_implicit(problem, curr_c, t_current, dt, dx)
+                t_current += dt
 
         records = {sp: np.zeros((n_times, N), dtype=float) for sp in problem.species}
         for sp in problem.species:
@@ -126,35 +135,38 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         c_dict: dict[str, np.ndarray],
         t: float,
         dt: float,
-        dx: float,
+        dx: float | None = None,
     ) -> dict[str, np.ndarray]:
         """Advance all species profiles by one BTCS implicit time step."""
         reactions = (
             problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
         )
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         new_c: dict[str, np.ndarray] = {}
         N = problem.n_points
         t_next = t + dt
+        theta = 1.0
 
         for sp in problem.species:
             c = c_dict[sp]
             D = problem.diffusivity[sp]
             bc_left, bc_right = problem.boundary_conditions[sp]
-            r = D * dt / (dx**2)
 
-            # Assemble banded matrix ab of shape (3, N)
-            # ab[0, 1:] = upper diagonal
-            # ab[1, :]  = main diagonal
-            # ab[2, :-1] = lower diagonal
+            # Assemble banded Laplacian L and boundary scaling from geometry
+            l_banded, bc_scale = geom.laplacian_matrix(
+                problem.grid, bc_left=bc_left, bc_right=bc_right
+            )
+
             ab = np.zeros((3, N), dtype=float)
             rhs = np.copy(c)
             if reactions and sp in reactions:
                 rhs += dt * reactions[sp]
 
-            # Interior rows
-            ab[1, 1:-1] = 1.0 + 2.0 * r
-            ab[0, 2:] = -r  # A[i, i+1]
-            ab[2, :-2] = -r  # A[i, i-1]
+            # Interior rows (1 <= i <= N - 2)
+            ab[1, 1:-1] = 1.0 - theta * dt * D * l_banded[1, 1:-1]
+            ab[0, 2:] = -theta * dt * D * l_banded[0, 2:]
+            ab[2, :-2] = -theta * dt * D * l_banded[2, :-2]
 
             # Left boundary (row 0)
             if bc_left.btype == "dirichlet":
@@ -162,10 +174,10 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
                 ab[0, 1] = 0.0
                 rhs[0] = bc_left.evaluate(t_next)
             else:  # Neumann
-                ab[1, 0] = 1.0 + 2.0 * r
-                ab[0, 1] = -2.0 * r
+                ab[1, 0] = 1.0 - theta * dt * D * l_banded[1, 0]
+                ab[0, 1] = -theta * dt * D * l_banded[0, 1]
                 g_left = bc_left.evaluate(t_next)
-                rhs[0] -= 2.0 * r * dx * g_left
+                rhs[0] += dt * D * bc_scale[0] * g_left
 
             # Right boundary (row N-1)
             if bc_right.btype == "dirichlet":
@@ -173,10 +185,10 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
                 ab[2, -2] = 0.0
                 rhs[-1] = bc_right.evaluate(t_next)
             else:  # Neumann
-                ab[1, -1] = 1.0 + 2.0 * r
-                ab[2, -2] = -2.0 * r
+                ab[1, -1] = 1.0 - theta * dt * D * l_banded[1, -1]
+                ab[2, -2] = -theta * dt * D * l_banded[2, -2]
                 g_right = bc_right.evaluate(t_next)
-                rhs[-1] += 2.0 * r * dx * g_right
+                rhs[-1] += dt * D * bc_scale[-1] * g_right
 
             # Solve tridiagonal system in O(N)
             new_c[sp] = solve_banded((1, 1), ab, rhs)

@@ -82,6 +82,7 @@ warn_unused_configs = true
 [tool.ruff]
 extend-exclude = [
     "docs/examples",
+    "docs/tutorials",
     "docs/_build",
     "site",
 ]
