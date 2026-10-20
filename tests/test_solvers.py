@@ -506,7 +506,9 @@ def test_spherical_steady_state_limiting_current():
 def test_diffusion_problem_electrodes_option():
     """Verify DiffusionProblem options for electrodes ('left', 'right', 'both')."""
     # 1. Parameter validation
-    with pytest.raises(ValueError, match="electrodes must be 'left', 'right', or 'both'"):
+    with pytest.raises(
+        ValueError, match="electrodes must be 'left', 'right', or 'both'"
+    ):
         DiffusionProblem(
             grid=np.linspace(0, 1, 10),
             diffusivity={"A": 1e-5},
@@ -591,4 +593,3 @@ def test_diffusion_problem_electrodes_option():
         res_left.left_currents["A"],
         rtol=1e-12,
     )
-

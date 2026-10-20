@@ -513,43 +513,48 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
             c = result.concentrations[sp]
             D = problem.diffusivity[sp]
             if sp not in result.fluxes:
-                result.fluxes[sp] = geom.surface_flux(
-                    c, problem.grid, diffusivity=D, side="left"
+                result.fluxes[sp] = np.asarray(
+                    geom.surface_flux(c, problem.grid, diffusivity=D, side="left")
                 )
             if sp not in result.right_fluxes:
-                result.right_fluxes[sp] = geom.surface_flux(
-                    c, problem.grid, diffusivity=D, side="right"
+                result.right_fluxes[sp] = np.asarray(
+                    geom.surface_flux(c, problem.grid, diffusivity=D, side="right")
                 )
 
+            n_electrons_val = getattr(problem, "n_electrons", 1)
             n_e = (
-                problem.n_electrons.get(sp, 1)
-                if isinstance(getattr(problem, "n_electrons", 1), dict)
-                else getattr(problem, "n_electrons", 1)
+                n_electrons_val.get(sp, 1)
+                if isinstance(n_electrons_val, dict)
+                else n_electrons_val
             )
 
             # Compute Faradaic currents based on problem.electrodes ('left', 'right', or 'both')
-            if problem.electrodes in ("left", "both"):
-                if sp not in result.left_currents:
-                    result.left_currents[sp] = np.asarray(
-                        geom.current(
-                            result.fluxes[sp],
-                            n_electrons=n_e,
-                            side="left",
-                            grid=problem.grid,
-                        ),
-                        dtype=float,
-                    )
-            if problem.electrodes in ("right", "both"):
-                if sp not in result.right_currents:
-                    result.right_currents[sp] = np.asarray(
-                        geom.current(
-                            result.right_fluxes[sp],
-                            n_electrons=n_e,
-                            side="right",
-                            grid=problem.grid,
-                        ),
-                        dtype=float,
-                    )
+            if (
+                problem.electrodes in ("left", "both")
+                and sp not in result.left_currents
+            ):
+                result.left_currents[sp] = np.asarray(
+                    geom.current(
+                        result.fluxes[sp],
+                        n_electrons=n_e,
+                        side="left",
+                        grid=problem.grid,
+                    ),
+                    dtype=float,
+                )
+            if (
+                problem.electrodes in ("right", "both")
+                and sp not in result.right_currents
+            ):
+                result.right_currents[sp] = np.asarray(
+                    geom.current(
+                        result.right_fluxes[sp],
+                        n_electrons=n_e,
+                        side="right",
+                        grid=problem.grid,
+                    ),
+                    dtype=float,
+                )
 
             if sp not in result.currents:
                 if problem.electrodes == "left":

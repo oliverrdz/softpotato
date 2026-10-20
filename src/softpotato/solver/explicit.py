@@ -6,6 +6,8 @@ from typing import Any
 
 import numpy as np
 
+from softpotato.geometry import Geometry
+
 from .base import BaseSolver, DiffusionProblem, SolverResult
 
 
@@ -71,6 +73,8 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         t_eval: np.ndarray | None,
         **kwargs: Any,
     ) -> SolverResult:
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         if not problem.is_uniform:
             raise NotImplementedError(
                 "ExplicitFiniteDifference requires a uniform spatial grid."
@@ -163,6 +167,8 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         reactions = (
             problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
         )
+        geom = problem.geometry
+        assert isinstance(geom, Geometry)
         new_c: dict[str, np.ndarray] = {}
         t_next = t + dt
 
@@ -171,7 +177,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
             D = problem.diffusivity[sp]
             bc_left, bc_right = problem.boundary_conditions[sp]
 
-            lap = problem.geometry.laplacian(
+            lap = geom.laplacian(
                 c, problem.grid, bc_left=bc_left, bc_right=bc_right, t=t
             )
 

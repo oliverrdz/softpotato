@@ -65,4 +65,3 @@ __all__ = [
     "list_geometries",
     "register_geometry",
 ]
-
