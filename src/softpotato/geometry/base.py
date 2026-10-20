@@ -248,6 +248,8 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         self,
         flux: float | np.ndarray,
         n_electrons: int = 1,
+        side: Literal["left", "right"] = "left",
+        grid: np.ndarray | None = None,
     ) -> float | np.ndarray:
         r"""Integrate normal flux over the active electrode surface to compute Faradaic current.
 
@@ -261,6 +263,10 @@ class Geometry(ABC, metaclass=_GeometryMeta):
             Normal interfacial diffusion flux :math:`J` at the electrode surface.
         n_electrons : int, default 1
             Number of electrons transferred per reaction (:math:`n > 0`).
+        side : {'left', 'right'}, default 'left'
+            Domain boundary at which to compute the Faradaic current.
+        grid : np.ndarray, optional
+            Spatial grid coordinates used to determine surface area if coordinate-dependent.
 
         Returns
         -------
@@ -557,13 +563,15 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         self,
         flux: float | np.ndarray,
         n_electrons: int = 1,
+        area: float | None = None,
     ) -> float | np.ndarray:
         """Compute Faradaic current I = n * F * A * J."""
         if n_electrons <= 0:
             raise ValueError(
                 f"Number of electrons n_electrons must be positive (n_electrons > 0), got {n_electrons}."
             )
-        scale = float(n_electrons) * FARADAY * self.area
+        active_area = self.area if area is None else float(area)
+        scale = float(n_electrons) * FARADAY * active_area
         if np.isscalar(flux):
             return float(scale * float(flux))  # type: ignore[arg-type]
         flux_arr = np.asarray(flux, dtype=float)

@@ -501,3 +501,94 @@ def test_spherical_steady_state_limiting_current():
     assert rel_diff_ana < 0.001, (
         f"Long-time spherical current did not match analytical Cottrell: {rel_diff_ana * 100:.3f}%"
     )
+
+
+def test_diffusion_problem_electrodes_option():
+    """Verify DiffusionProblem options for electrodes ('left', 'right', 'both')."""
+    # 1. Parameter validation
+    with pytest.raises(ValueError, match="electrodes must be 'left', 'right', or 'both'"):
+        DiffusionProblem(
+            grid=np.linspace(0, 1, 10),
+            diffusivity={"A": 1e-5},
+            boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+            initial_conditions={"A": 1.0},
+            electrodes="center",  # type: ignore[arg-type]
+        )
+
+    # 2. Symmetric two-electrode cell (electrodes='both')
+    D = 1e-9
+    c0 = 1.0
+    L = 1e-4
+    grid = np.linspace(0, L, 51)
+    t_eval = np.linspace(0.01, 0.2, 10)
+
+    problem_both = DiffusionProblem(
+        grid=grid,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(0.0))},
+        initial_conditions={"A": c0},
+        electrodes="both",
+        n_electrons=1,
+    )
+    assert problem_both.electrodes == "both"
+    assert problem_both.electrode_side == "both"
+
+    solver = get_solver("scipy_ivp")
+    res_both = solver.solve(problem_both, t_span=(0.0, 0.2), t_eval=t_eval)
+
+    assert "A" in res_both.left_currents
+    assert "A" in res_both.right_currents
+    assert "A" in res_both.currents
+
+    # In symmetric cell with identical Dirichlet BCs, left and right currents must be identical
+    np.testing.assert_allclose(
+        res_both.left_currents["A"],
+        res_both.right_currents["A"],
+        rtol=1e-5,
+    )
+    # Total current must equal sum of left and right currents
+    np.testing.assert_allclose(
+        res_both.currents["A"],
+        res_both.left_currents["A"] + res_both.right_currents["A"],
+        rtol=1e-12,
+    )
+
+    # 3. Right electrode only (electrodes='right')
+    problem_right = DiffusionProblem(
+        grid=grid,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(c0), DirichletBC(0.0))},
+        initial_conditions={"A": c0},
+        electrode_side="right",  # test alias
+        n_electrons=1,
+    )
+    res_right = solver.solve(problem_right, t_span=(0.0, 0.2), t_eval=t_eval)
+
+    assert "A" in res_right.right_currents
+    assert "A" not in res_right.left_currents
+    np.testing.assert_allclose(
+        res_right.currents["A"],
+        res_right.right_currents["A"],
+        rtol=1e-12,
+    )
+    # Cathodic reduction at right electrode must be negative
+    assert np.all(res_right.currents["A"] < 0.0)
+
+    # 4. Left electrode only (default)
+    problem_left = DiffusionProblem(
+        grid=grid,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(c0))},
+        initial_conditions={"A": c0},
+        n_electrons=1,
+    )
+    res_left = solver.solve(problem_left, t_span=(0.0, 0.2), t_eval=t_eval)
+
+    assert "A" in res_left.left_currents
+    assert "A" not in res_left.right_currents
+    np.testing.assert_allclose(
+        res_left.currents["A"],
+        res_left.left_currents["A"],
+        rtol=1e-12,
+    )
+

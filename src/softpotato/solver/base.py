@@ -134,6 +134,13 @@ class DiffusionProblem:
     n_electrons : int | dict[str, int], default 1
         Number of electrons transferred per reaction (:math:`n > 0`) for Faradaic
         current calculations. Can be an integer or a species-to-integer mapping.
+    electrodes : {'left', 'right', 'both'}, default 'left'
+        Domain boundary or boundaries configured as active electrodes for Faradaic
+        current evaluation. Defaults to ``'left'``. If ``'both'``, currents from both
+        sides are evaluated on ``SolverResult.left_currents`` and ``SolverResult.right_currents``,
+        and summed on ``SolverResult.currents``.
+    electrode_side : {'left', 'right', 'both'}, optional
+        Alias for ``electrodes``.
 
     Examples
     --------
@@ -173,8 +180,18 @@ class DiffusionProblem:
     species: list[str] = field(default_factory=list)
     geometry: Geometry | str = "planar"
     n_electrons: int | dict[str, int] = 1
+    electrodes: Literal["left", "right", "both"] = "left"
+    electrode_side: Literal["left", "right", "both"] | None = None
 
     def __post_init__(self) -> None:
+        if self.electrode_side is not None:
+            self.electrodes = self.electrode_side
+        if self.electrodes not in ("left", "right", "both"):
+            raise ValueError(
+                f"electrodes must be 'left', 'right', or 'both', got {self.electrodes!r}."
+            )
+        self.electrode_side = self.electrodes
+
         if isinstance(self.geometry, str):
             self.geometry = get_geometry(self.geometry)
         elif not isinstance(self.geometry, Geometry):
@@ -250,7 +267,14 @@ class SolverResult:
         Dictionary mapping species name to surface flux at right boundary x=L of shape (N_t,)
         under the electrode-normal convention (pointing into the solution domain).
     currents : dict[str, np.ndarray], optional
-        Dictionary mapping species name to Faradaic current at the electrode of shape (N_t,)
+        Dictionary mapping species name to Faradaic current at the active electrode(s)
+        of shape (N_t,) in Amperes. If ``electrodes='both'``, contains the net cell current
+        (:math:`I_{\text{net}} = I_{\text{left}} + I_{\text{right}}`).
+    left_currents : dict[str, np.ndarray], optional
+        Dictionary mapping species name to Faradaic current at the left boundary of shape (N_t,)
+        in Amperes.
+    right_currents : dict[str, np.ndarray], optional
+        Dictionary mapping species name to Faradaic current at the right boundary of shape (N_t,)
         in Amperes.
     success : bool, default True
         Flag indicating if the numerical solution completed successfully.
@@ -283,6 +307,10 @@ class SolverResult:
     (5,)
     >>> res.right_fluxes["A"].shape
     (5,)
+    >>> res.left_currents
+    {}
+    >>> res.right_currents
+    {}
     """
 
     t: np.ndarray
@@ -291,6 +319,8 @@ class SolverResult:
     fluxes: dict[str, np.ndarray] = field(default_factory=dict)
     right_fluxes: dict[str, np.ndarray] = field(default_factory=dict)
     currents: dict[str, np.ndarray] = field(default_factory=dict)
+    left_currents: dict[str, np.ndarray] = field(default_factory=dict)
+    right_currents: dict[str, np.ndarray] = field(default_factory=dict)
     success: bool = True
     message: str = "Success"
     raw_output: Any = None
@@ -472,28 +502,64 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
         #     J_right(t) = -D * (dc/dn)|_{right} = +D * (dc/dr)|_{right}
         # Faradaic current:
         #     I = n * F * A * J
+        geom = (
+            get_geometry(problem.geometry)
+            if isinstance(problem.geometry, str)
+            else problem.geometry
+        )
         for sp in problem.species:
             if sp not in result.concentrations:
                 continue
             c = result.concentrations[sp]
             D = problem.diffusivity[sp]
             if sp not in result.fluxes:
-                result.fluxes[sp] = problem.geometry.surface_flux(
+                result.fluxes[sp] = geom.surface_flux(
                     c, problem.grid, diffusivity=D, side="left"
                 )
             if sp not in result.right_fluxes:
-                result.right_fluxes[sp] = problem.geometry.surface_flux(
+                result.right_fluxes[sp] = geom.surface_flux(
                     c, problem.grid, diffusivity=D, side="right"
                 )
+
+            n_e = (
+                problem.n_electrons.get(sp, 1)
+                if isinstance(getattr(problem, "n_electrons", 1), dict)
+                else getattr(problem, "n_electrons", 1)
+            )
+
+            # Compute Faradaic currents based on problem.electrodes ('left', 'right', or 'both')
+            if problem.electrodes in ("left", "both"):
+                if sp not in result.left_currents:
+                    result.left_currents[sp] = np.asarray(
+                        geom.current(
+                            result.fluxes[sp],
+                            n_electrons=n_e,
+                            side="left",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
+            if problem.electrodes in ("right", "both"):
+                if sp not in result.right_currents:
+                    result.right_currents[sp] = np.asarray(
+                        geom.current(
+                            result.right_fluxes[sp],
+                            n_electrons=n_e,
+                            side="right",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
+
             if sp not in result.currents:
-                n_e = (
-                    problem.n_electrons.get(sp, 1)
-                    if isinstance(getattr(problem, "n_electrons", 1), dict)
-                    else getattr(problem, "n_electrons", 1)
-                )
-                result.currents[sp] = problem.geometry.current(
-                    result.fluxes[sp], n_electrons=n_e
-                )
+                if problem.electrodes == "left":
+                    result.currents[sp] = result.left_currents[sp]
+                elif problem.electrodes == "right":
+                    result.currents[sp] = result.right_currents[sp]
+                elif problem.electrodes == "both":
+                    result.currents[sp] = (
+                        result.left_currents[sp] + result.right_currents[sp]
+                    )
         return result
 
 

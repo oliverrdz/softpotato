@@ -164,6 +164,8 @@ class PlanarGeometry(Geometry, name="planar"):
         self,
         flux: float | np.ndarray,
         n_electrons: int = 1,
+        side: Literal["left", "right"] = "left",
+        grid: np.ndarray | None = None,
     ) -> float | np.ndarray:
         r"""Compute Faradaic current :math:`I = n F A J`.
 
@@ -173,6 +175,10 @@ class PlanarGeometry(Geometry, name="planar"):
             Interfacial diffusion flux :math:`J`.
         n_electrons : int, default 1
             Number of electrons transferred per reaction (:math:`n > 0`).
+        side : {'left', 'right'}, default 'left'
+            Domain boundary at which to compute the Faradaic current.
+        grid : np.ndarray, optional
+            Spatial grid coordinates (unused for planar geometry).
 
         Returns
         -------
