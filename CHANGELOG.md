@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Spatial Coordinate Geometries & Operators (`softpotato.geometry`)**:
+  - Introduced `softpotato.geometry` subpackage abstracting spatial coordinate systems and differential operators for electrochemical simulations across 1D planar, spherical, and cylindrical domains:
+    $$\nabla^2 c = \frac{\partial^2 c}{\partial r^2} + \frac{p}{r} \frac{\partial c}{\partial r}$$
+    where $p = 0$ for Cartesian planar diffusion, $p = 1$ for cylindrical diffusion, and $p = 2$ for spherical diffusion.
+  - Implemented abstract base class `Geometry` (`softpotato.geometry.base`) providing unified methods for finite-difference Laplacian evaluation (`laplacian`), tridiagonal banded matrix assembly (`laplacian_matrix`), surface flux calculation (`surface_flux`), Faradaic current integration (`current`), area (`area`), volume (`volume`), and grid validation (`validate_grid`).
+  - Added `PlanarGeometry` (`softpotato.geometry.planar`) for 1D Cartesian diffusion perpendicular to a planar macroelectrode, supporting both uniform and non-uniform grids.
+  - Added `SphericalGeometry` (`softpotato.geometry.spherical`) for 1D radial diffusion to spherical and hemispherical microelectrodes, microdroplets, or nanoparticle aggregates with core radius $r_0$.
+  - Added `CylindricalGeometry` (`softpotato.geometry.cylindrical`) for 1D axisymmetric radial diffusion to cylindrical wire or carbon fiber microelectrodes with core radius $r_0$ and active length $L$.
+  - Added geometry registry and factory functions (`get_geometry`, `register_geometry`, `list_geometries`, `UnknownGeometryError`) supporting common aliases (`"planar"`, `"1d"`, `"cartesian"`, `"spherical"`, `"sphere"`, `"hemispherical"`, `"hemisphere"`, `"cylindrical"`, `"cylinder"`, `"wire"`).
+  - Exported geometry classes and registry functions directly from top-level `softpotato`.
+  - Added unit test suite in `tests/test_geometry.py` verifying operator accuracy against analytical Laplacians, boundary flux stencils, area/volume metrics, and grid validation.
+- **Geometry-Aware Numerical Solvers & Multi-Electrode Current Evaluation (`softpotato.solver`)**:
+  - Integrated `Geometry` into `DiffusionProblem`:
+    - Added `geometry` parameter accepting a `Geometry` instance or registered alias string (defaulting to `"planar"`).
+    - Added `electrodes` parameter (with `electrode_side` alias) supporting `'left'`, `'right'`, or `'both'` working electrode configurations.
+    - Added `n_electrons` parameter (integer or species-to-integer mapping) for Faradaic current evaluation.
+  - Refactored `ExplicitFiniteDifference`, `ImplicitFiniteDifference`, `CrankNicolson`, and `ScipyIVPSolver` to evaluate spatial derivatives via `Geometry.laplacian` and banded Laplacian matrices (`laplacian_matrix`), decoupling solver algorithms from coordinate metrics.
+  - Updated `SolverResult` with `currents`, `left_currents`, and `right_currents` attributes, and enhanced `BaseSolver._post_process` to compute Faradaic currents in Amperes under IUPAC polarity ($I = n F A J$) across single- and dual-electrode configurations.
+  - Added unit tests in `tests/test_solvers.py` validating geometry resolution, spherical Cottrell transient response against analytical theory (`cottrell_spherical`, $< 0.5\%$ error), convergence to steady-state limiting current (`microsphere_limiting_current`), and multi-electrode current partitioning.
+- **Interactive Tutorial: Cottrell Diffusion Across Geometries (`examples/cottrell_geometries.ipynb`)**:
+  - Added interactive tutorial notebook modeling Cottrell chronoamperometry across planar, spherical, and cylindrical electrode geometries.
+  - Compared numerical transient and steady-state responses against analytical theory: planar Cottrell ($I \propto t^{-1/2}$), spherical steady-state limit ($I_{\mathrm{ss}} = 4 \pi n F D c^* r_0$), and cylindrical Aoki quasi-steady-state series approximation.
+  - Integrated tutorial into the documentation suite (`docs/tutorials/electrochemistry/cottrell_geometries.ipynb` and `docs/examples/cottrell_geometries.ipynb`).
 - **Dual-Boundary Flux Calculation (`softpotato.solver.base`)**:
   - Added `right_fluxes` attribute and `left_fluxes` property alias to `SolverResult` to support dual-electrode simulations such as SECM generation–collection, redox competition, and thin-layer cells while preserving backward compatibility for `result.fluxes`.
   - Updated `BaseSolver._post_process` to automatically compute the 2nd-order backward-difference surface flux at the right boundary ($x = x_{\max}$) alongside the left boundary ($x = x_0$) under the electrode-normal sign convention ($J_{\text{right}} = +D (\partial c / \partial x)|_{x=x_{\max}}$, pointing into the solution domain).
@@ -19,21 +42,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added a **Citation** section with the ChemRxiv preprint DOI badge (`doi:10.26434/chemrxiv-2022-4bs3w`), BibTeX/APA citation blocks, and GitHub Sponsors support links to `README.md` and `docs/index.md`.
   - Added GitHub Actions documentation deployment workflow (`.github/workflows/deploy-docs.yml`) to build versioned documentation with `mike` (including historical release backfilling for `3.0.0`, `3.1.0`, and `3.1.1`, automatic `stable` alias updates on `v*` tag pushes, `dev` branch updates on pushes to `main`, and manual `workflow_dispatch` controls) and deploy to the production server via SSH/rsync (`easingthemes/ssh-deploy@v6`).
   - Added `docs-check` job (`mkdocs build --strict`) and `gh-pages` branch ignore rule to the CI workflow (`.github/workflows/ci.yml`).
-- **Material for MkDocs Documentation Framework**:
+- **Material for MkDocs Documentation Framework & Site Styling**:
   - Migrated the documentation engine from Sphinx to [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) (`mkdocs.yml`).
   - Configured multi-version documentation management using [`mike`](https://github.com/jimporter/mike) (`mkdocs.yml`, `.github/workflows/deploy-docs.yml`, `docs/_overrides/main.html`), tracking tagged releases under `stable` alongside the active `dev (unreleased)` branch with an automatic warning banner on non-stable versions.
+  - Added API reference page for the geometry module (`docs/api/geometry.md`) and updated solver API documentation (`docs/api/solver.md`).
   - Re-architected modular API reference pages (`docs/api/index.md`, `docs/api/constants.md`, `docs/api/solver.md`, and `docs/api/analytical/*.md`) using `mkdocstrings` (`mkdocstrings-python`) with a custom Griffe extension (`docs/_hooks/griffe_sphinx.py`) to convert Sphinx/RST roles, cross-references, and `.. math::` directives (including automatic `\begin{aligned}` wrapping) into Markdown.
   - Implemented MathJax LaTeX equation rendering via custom MkDocs hooks (`docs/_hooks/math_hook.py`) and JavaScript configuration (`docs/javascripts/mathjax.js`) across Markdown pages and Jupyter notebooks.
-  - Added custom styling, branding, mascot illustrations ("Chip"), and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (`slate`) palettes, hero landing page, feature cards, and Mermaid diagram theming.
+  - Added custom styling, branding, mascot illustrations ("Chip"), and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (`slate`) palettes, secondary button styles for dark mode, hero landing page, feature cards, and Mermaid diagram theming.
+  - Configured documentation deployment workflow (`.github/workflows/deploy-docs.yml`) to dynamically configure committer git user info and sync shared stylesheet (`extra.css`) across deployed versions on `gh-pages`.
 
 ### Changed
+- Delegated `DiffusionProblem` grid validation to `Geometry.validate_grid`, enforcing positive radial coordinate constraints ($r_0 > 0$) for non-planar geometries.
+- Enhanced time integration in `CrankNicolson` to automatically sub-step and advance solution state when `t_eval[0] > t_start`.
 - Converted all documentation source files, API references, and guides from reStructuredText (`.rst`) to Markdown (`.md`), and updated display math block formatting in `CHANGELOG.md` and `ROADMAP.md` for MkDocs/MathJax compatibility.
 - Streamlined site navigation (`mkdocs.yml`) into four focused top-level sections (`Home`, `API Reference`, `Tutorials`, `Blog`), organizing interactive electrochemistry notebooks under `docs/tutorials/electrochemistry/` and Python setup under `docs/tutorials/python/`.
 - Refactored module and function docstrings across `softpotato.constants`, `softpotato.solver`, and `softpotato.analytical` to use raw strings (`r"""`), structured Markdown tables for constants, units, and API summaries, and `\begin{aligned}` multi-line math blocks.
 - Updated documentation dependencies in `pyproject.toml` (`[project.optional-dependencies]` for `docs` and `dev`), replacing Sphinx packages with `mkdocs`, `mkdocs-material`, `mkdocstrings[python]`, `mkdocs-jupyter`, and `mike`.
 - Updated documentation URLs in `README.md` and `docs/index.md` from Read the Docs to `https://softpotato.xyz/`.
+- Excluded documentation build and cache directories in Ruff configuration (`pyproject.toml`).
 
 ### Fixed
+- Fixed relative link to Python installation tutorial in `docs/index.md`.
 - Fixed Markdown formatting of summary takeaways in the cyclic voltammetry tutorial (`examples/cyclic_voltammetry.ipynb`).
 
 ### Removed
