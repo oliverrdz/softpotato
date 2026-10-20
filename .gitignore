@@ -34,3 +34,4 @@ htmlcov/
 *.swo
 *~
 .DS_Store
+.env
