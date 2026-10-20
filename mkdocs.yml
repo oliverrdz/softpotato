@@ -144,11 +144,13 @@ nav:
           - SECM Approach Curves: api/analytical/secm.md
           - Parameter Fitting: api/analytical/fitting.md
           - Simulation Benchmarking: api/analytical/benchmark.md
+      - Geometry Module: api/geometry.md
       - Solver Module: api/solver.md
   - Tutorials:
       - tutorials/index.md
       - Electrochemistry Simulations:
           - Cottrell: tutorials/electrochemistry/cottrell.ipynb
+          - Multi-Geometry Cottrell: tutorials/electrochemistry/cottrell_geometries.ipynb
           - Cyclic Voltammetry: tutorials/electrochemistry/cyclic_voltammetry.ipynb
       - Python:
           - Installing Python: tutorials/python/installing-python.md
