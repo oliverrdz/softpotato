@@ -28,6 +28,7 @@ Create `src/softpotato/geometry/`:
 from abc import ABC, abstractmethod
 import numpy as np
 
+
 class Geometry(ABC):
     """Abstract base class representing spatial domain coordinate geometry."""
 

@@ -26,7 +26,9 @@ By delegating spatial derivative evaluations and matrix assembly to the new `Geo
       grid: np.ndarray
       diffusivity: dict[str, float]
       boundary_conditions: dict[str, tuple[BoundaryCondition, BoundaryCondition]]
-      initial_conditions: dict[str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]]
+      initial_conditions: dict[
+          str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]
+      ]
       reactions: Callable[...] | None = None
       species: list[str] = field(default_factory=list)
       geometry: Geometry | str = "planar"  # Backwards-compatible default
