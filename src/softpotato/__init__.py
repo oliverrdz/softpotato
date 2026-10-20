@@ -26,7 +26,7 @@ True
 (101, 50)
 """
 
-from . import analytical, constants, solver
+from . import analytical, constants, geometry, solver
 from .analytical import (
     BenchmarkCaseResult,
     BenchmarkMetrics,
@@ -135,6 +135,16 @@ from .constants import (
     F,
     R,
 )
+from .geometry import (
+    CylindricalGeometry,
+    Geometry,
+    PlanarGeometry,
+    SphericalGeometry,
+    UnknownGeometryError,
+    get_geometry,
+    list_geometries,
+    register_geometry,
+)
 from .solver import (
     BaseSolver,
     BoundaryCondition,
@@ -165,10 +175,12 @@ __all__ = [
     "ButlerVolmerFitResult",
     "ConvergenceResult",
     "CottrellFitResult",
+    "CylindricalGeometry",
     "DiffusionProblem",
     "DirichletBC",
     "F",
     "FitResult",
+    "Geometry",
     "KouteckyLevichFitResult",
     "KouteckyLevichResult",
     "LevichFitResult",
@@ -176,13 +188,16 @@ __all__ = [
     "MicrodiscFitResult",
     "NeumannBC",
     "NicholsonResult",
+    "PlanarGeometry",
     "R",
     "RRDEResult",
     "RandlesSevcikFitResult",
     "SECMApproachFitResult",
     "SolverResult",
+    "SphericalGeometry",
     "TafelFitResult",
     "TafelResult",
+    "UnknownGeometryError",
     "__version__",
     "analytical",
     "anson",
@@ -210,12 +225,15 @@ __all__ = [
     "fit_randles_sevcik",
     "fit_secm_approach",
     "fit_tafel",
+    "geometry",
+    "get_geometry",
     "get_solver",
     "koutecky_levich",
     "koutecky_levich_analysis",
     "levich",
     "levich_constant",
     "list_benchmark_cases",
+    "list_geometries",
     "list_solvers",
     "mahon_oldham_transient",
     "matsuda_ayabe",
@@ -238,6 +256,7 @@ __all__ = [
     "randles_sevcik",
     "randles_sevcik_irreversible",
     "randles_sevcik_quasi",
+    "register_geometry",
     "ring_collection_current",
     "ring_limiting_current",
     "rotating_ring_disk",
