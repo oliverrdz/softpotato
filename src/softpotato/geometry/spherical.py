@@ -7,6 +7,8 @@ from typing import Any, Literal
 
 import numpy as np
 
+from softpotato.grid.base import Mesh1D
+
 from .base import Geometry
 
 
@@ -137,7 +139,7 @@ class SphericalGeometry(Geometry, name="spherical"):
         factor = 2.0 * math.pi if self.hemisphere else 4.0 * math.pi
         return factor * (self.r0**2)
 
-    def validate_grid(self, grid: np.ndarray) -> np.ndarray:
+    def validate_grid(self, grid: np.ndarray | Mesh1D) -> np.ndarray:
         """Validate radial grid bounds (:math:`r_0 > 0`) and infer ``r0`` if not explicitly set."""
         arr = super().validate_grid(grid)
         if not self._r0_explicit:
@@ -147,7 +149,7 @@ class SphericalGeometry(Geometry, name="spherical"):
     def laplacian(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
         t: float = 0.0,
@@ -158,7 +160,7 @@ class SphericalGeometry(Geometry, name="spherical"):
         ----------
         c : np.ndarray
             1D concentration array of shape ``(N,)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial coordinate grid :math:`r \in [r_0, r_{\max}]` of shape ``(N,)`` with :math:`r_0 > 0`.
         bc_left : BoundaryCondition, optional
             Inner boundary condition at :math:`r = r_0`.
@@ -176,7 +178,7 @@ class SphericalGeometry(Geometry, name="spherical"):
 
     def laplacian_matrix(
         self,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -184,7 +186,7 @@ class SphericalGeometry(Geometry, name="spherical"):
 
         Parameters
         ----------
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial grid :math:`r` of shape ``(N,)`` with :math:`r_0 > 0`.
         bc_left : BoundaryCondition, optional
             Inner boundary condition at :math:`r = r_0`.
@@ -203,7 +205,7 @@ class SphericalGeometry(Geometry, name="spherical"):
     def surface_flux(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         diffusivity: float,
         side: str = "left",
     ) -> float | np.ndarray:
@@ -213,7 +215,7 @@ class SphericalGeometry(Geometry, name="spherical"):
         ----------
         c : np.ndarray
             Concentration array of shape ``(N_r,)`` or ``(N_t, N_r)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial grid :math:`r` of shape ``(N_r,)`` with :math:`r_0 > 0`.
         diffusivity : float
             Species diffusion coefficient :math:`D > 0`.
@@ -232,7 +234,7 @@ class SphericalGeometry(Geometry, name="spherical"):
         flux: float | np.ndarray,
         n_electrons: int = 1,
         side: Literal["left", "right"] = "left",
-        grid: np.ndarray | None = None,
+        grid: np.ndarray | Mesh1D | None = None,
     ) -> float | np.ndarray:
         r"""Integrate normal flux over the spherical or hemispherical surface :math:`I = n F A J`.
 
@@ -244,7 +246,7 @@ class SphericalGeometry(Geometry, name="spherical"):
             Number of electrons transferred per reaction (:math:`n > 0`).
         side : {'left', 'right'}, default 'left'
             Domain boundary at which to compute the Faradaic current.
-        grid : np.ndarray, optional
+        grid : np.ndarray or Mesh1D, optional
             Spatial grid coordinates used to determine outer boundary area when ``side='right'``.
 
         Returns
@@ -253,7 +255,7 @@ class SphericalGeometry(Geometry, name="spherical"):
             Faradaic current :math:`I` in Amperes (:math:`\text{A}`).
         """
         if side == "right" and grid is not None and self._explicit_area is None:
-            r_right = float(grid[-1])
+            r_right = float(np.asarray(grid)[-1])
             factor = 2.0 * math.pi if self.hemisphere else 4.0 * math.pi
             area = factor * (r_right**2)
             return self._eval_1d_current(flux, n_electrons=n_electrons, area=area)

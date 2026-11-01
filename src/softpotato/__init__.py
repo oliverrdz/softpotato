@@ -26,7 +26,7 @@ True
 (101, 50)
 """
 
-from . import analytical, constants, geometry, solver
+from . import analytical, constants, geometry, grid, solver
 from .analytical import (
     BenchmarkCaseResult,
     BenchmarkMetrics,
@@ -35,6 +35,8 @@ from .analytical import (
     ConvergenceResult,
     CottrellFitResult,
     FitResult,
+    GridComparisonEntry,
+    GridComparisonResult,
     KouteckyLevichFitResult,
     KouteckyLevichResult,
     LevichFitResult,
@@ -104,7 +106,9 @@ from .analytical import (
     run_benchmark_suite,
     run_cottrell_benchmark,
     run_fourier_decay_benchmark,
+    run_grid_efficiency_benchmark,
     run_mass_conservation_benchmark,
+    run_spherical_cottrell_benchmark,
     sand,
     sand_potential,
     sand_transition_time,
@@ -145,6 +149,14 @@ from .geometry import (
     list_geometries,
     register_geometry,
 )
+from .grid import (
+    ExponentialMesh,
+    GeometricExpandingMesh,
+    Mesh1D,
+    Uniform1DMesh,
+    create_diffusion_mesh,
+    diffusion_layer_thickness,
+)
 from .solver import (
     BaseSolver,
     BoundaryCondition,
@@ -178,13 +190,18 @@ __all__ = [
     "CylindricalGeometry",
     "DiffusionProblem",
     "DirichletBC",
+    "ExponentialMesh",
     "F",
     "FitResult",
+    "GeometricExpandingMesh",
     "Geometry",
+    "GridComparisonEntry",
+    "GridComparisonResult",
     "KouteckyLevichFitResult",
     "KouteckyLevichResult",
     "LevichFitResult",
     "MatsudaAyabeResult",
+    "Mesh1D",
     "MicrodiscFitResult",
     "NeumannBC",
     "NicholsonResult",
@@ -197,6 +214,7 @@ __all__ = [
     "SphericalGeometry",
     "TafelFitResult",
     "TafelResult",
+    "Uniform1DMesh",
     "UnknownGeometryError",
     "__version__",
     "analytical",
@@ -212,6 +230,8 @@ __all__ = [
     "cottrell_cylinder",
     "cottrell_spherical",
     "cottrell_step",
+    "create_diffusion_mesh",
+    "diffusion_layer_thickness",
     "estimate_convergence_order",
     "exchange_current",
     "exchange_current_density",
@@ -228,6 +248,7 @@ __all__ = [
     "geometry",
     "get_geometry",
     "get_solver",
+    "grid",
     "koutecky_levich",
     "koutecky_levich_analysis",
     "levich",
@@ -265,7 +286,9 @@ __all__ = [
     "run_benchmark_suite",
     "run_cottrell_benchmark",
     "run_fourier_decay_benchmark",
+    "run_grid_efficiency_benchmark",
     "run_mass_conservation_benchmark",
+    "run_spherical_cottrell_benchmark",
     "sand",
     "sand_potential",
     "sand_transition_time",

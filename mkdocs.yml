@@ -145,6 +145,7 @@ nav:
           - Parameter Fitting: api/analytical/fitting.md
           - Simulation Benchmarking: api/analytical/benchmark.md
       - Geometry Module: api/geometry.md
+      - Grid Module: api/grid.md
       - Solver Module: api/solver.md
   - Tutorials:
       - tutorials/index.md
@@ -152,6 +153,7 @@ nav:
           - Cottrell: tutorials/electrochemistry/cottrell.ipynb
           - Multi-Geometry Cottrell: tutorials/electrochemistry/cottrell_geometries.ipynb
           - Cyclic Voltammetry: tutorials/electrochemistry/cyclic_voltammetry.ipynb
+          - Non-Uniform & Expanding Grids: tutorials/electrochemistry/expanding_grids.ipynb
       - Python:
           - Installing Python: tutorials/python/installing-python.md
   - Blog:

@@ -6,6 +6,8 @@ from typing import Any, Literal
 
 import numpy as np
 
+from softpotato.grid.base import Mesh1D
+
 from .base import Geometry
 
 
@@ -80,7 +82,7 @@ class PlanarGeometry(Geometry, name="planar"):
     def laplacian(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
         t: float = 0.0,
@@ -91,7 +93,7 @@ class PlanarGeometry(Geometry, name="planar"):
         ----------
         c : np.ndarray
             1D concentration array of shape ``(N,)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D spatial grid :math:`x` of shape ``(N,)``.
         bc_left : BoundaryCondition, optional
             Left boundary condition at :math:`x_0`.
@@ -109,7 +111,7 @@ class PlanarGeometry(Geometry, name="planar"):
 
     def laplacian_matrix(
         self,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -117,7 +119,7 @@ class PlanarGeometry(Geometry, name="planar"):
 
         Parameters
         ----------
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D spatial grid :math:`x` of shape ``(N,)``.
         bc_left : BoundaryCondition, optional
             Left boundary condition at :math:`x_0`.
@@ -136,7 +138,7 @@ class PlanarGeometry(Geometry, name="planar"):
     def surface_flux(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         diffusivity: float,
         side: str = "left",
     ) -> float | np.ndarray:
@@ -146,7 +148,7 @@ class PlanarGeometry(Geometry, name="planar"):
         ----------
         c : np.ndarray
             Concentration array of shape ``(N_x,)`` or ``(N_t, N_x)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D spatial grid :math:`x` of shape ``(N_x,)``.
         diffusivity : float
             Species diffusion coefficient :math:`D > 0`.
@@ -165,7 +167,7 @@ class PlanarGeometry(Geometry, name="planar"):
         flux: float | np.ndarray,
         n_electrons: int = 1,
         side: Literal["left", "right"] = "left",
-        grid: np.ndarray | None = None,
+        grid: np.ndarray | Mesh1D | None = None,
     ) -> float | np.ndarray:
         r"""Compute Faradaic current :math:`I = n F A J`.
 

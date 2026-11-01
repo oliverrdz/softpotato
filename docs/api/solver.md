@@ -6,13 +6,14 @@ The `softpotato.solver` subpackage provides numerical solvers for 1D multi-speci
 
 Solvers follow the Single Responsibility Principle:
 - **Time Stepping & Linear Algebra**: Managed exclusively by solver classes (`ScipyIVPSolver`, `CrankNicolson`, `ImplicitFiniteDifference`, `ExplicitFiniteDifference`).
-- **Spatial Operators & Coordinate Metrics**: Discretization stencils ($\nabla^2 c$), boundary conditions, interfacial fluxes, and Faradaic current calculations are delegated directly to [`Geometry`][softpotato.geometry.Geometry] abstractions (`PlanarGeometry`, `SphericalGeometry`, `CylindricalGeometry`).
+- **Spatial Meshes & Discretization**: [`DiffusionProblem`][softpotato.solver.DiffusionProblem] natively accepts either structured [`Mesh1D`][softpotato.grid.Mesh1D] instances (`Uniform1DMesh`, `GeometricExpandingMesh`, `ExponentialMesh`) from [`softpotato.grid`][softpotato.grid] or raw 1D `numpy.ndarray` coordinate arrays.
+- **Spatial Operators & Coordinate Metrics**: Discretization stencils ($\nabla^2 c$), boundary conditions, interfacial fluxes, and Faradaic current calculations on both uniform and non-uniform meshes are delegated directly to [`Geometry`][softpotato.geometry.Geometry] abstractions (`PlanarGeometry`, `SphericalGeometry`, `CylindricalGeometry`).
 
 ## Solvers and Supported Options
 
 | Solver Class & Aliases | Supported Configuration Options | Description & Defaults |
 | :--- | :--- | :--- |
-| [`ExplicitFiniteDifference`][softpotato.solver.ExplicitFiniteDifference] (`'explicit'`, `'ftcs'`) | `dt` (float, optional) | Explicit Forward-Time Central-Space. If `dt=None`, automatically defaults to $0.45 \times \text{CFL limit}$ ($\Delta t \le \Delta x^2 / 2D_{\max}$). |
+| [`ExplicitFiniteDifference`][softpotato.solver.ExplicitFiniteDifference] (`'explicit'`, `'ftcs'`) | `dt` (float, optional) | Explicit Forward-Time Central-Space. If `dt=None`, automatically defaults to $0.45 \times \text{CFL limit}$ ($\Delta t \le \Delta x_{\min}^2 / 2D_{\max}$). |
 | [`ImplicitFiniteDifference`][softpotato.solver.ImplicitFiniteDifference] (`'implicit'`, `'btcs'`) | `dt` (float, optional) | Backward-Time Central-Space implicit scheme using banded tridiagonal matrix inversion. If `dt=None`, defaults to 100 uniform steps: $(t_{\text{end}} - t_{\text{start}}) / 100$. |
 | [`CrankNicolson`][softpotato.solver.CrankNicolson] (`'crank_nicolson'`, `'crank-nicolson'`) | `dt` (float, optional) | Second-order in time and space Crank–Nicolson implicit scheme using banded tridiagonal solve. If `dt=None`, defaults to 100 uniform steps: $(t_{\text{end}} - t_{\text{start}}) / 100$. |
 | [`ScipyIVPSolver`][softpotato.solver.ScipyIVPSolver] (`'scipy_ivp'`, `'solve_ivp'`) | `method` (str, default `'Radau'`), `rtol` (float, default `1e-6`), `atol` (float, default `1e-8`) | Method of Lines ODE integration using `scipy.integrate.solve_ivp`. Supports stiff (`'Radau'`, `'BDF'`) and non-stiff (`'RK45'`) integrators. |
@@ -41,16 +42,18 @@ print(result.fluxes["c"].shape)  # (N_t,) interfacial flux
 print(result.currents["c"].shape)  # (N_t,) Faradaic current in Amperes
 ```
 
-### 2. Spherical Microelectrode Step Response
+### 2. Spherical Microelectrode Step Response with Expanding Mesh
 ```python
-import numpy as np
-from softpotato.solver import DiffusionProblem, DirichletBC, get_solver
 from softpotato.geometry import SphericalGeometry
+from softpotato.grid import GeometricExpandingMesh
+from softpotato.solver import DiffusionProblem, DirichletBC, get_solver
 
 r0 = 25e-6  # 25 um radius
-r_grid = np.geomspace(r0, r0 + 300e-6, 150)
+r_mesh = GeometricExpandingMesh.from_diffusion_layer(
+    D=1e-9, t_max=2.0, x_min=r0, n_points=75, gamma=1.06
+)
 problem = DiffusionProblem(
-    grid=r_grid,
+    grid=r_mesh,
     diffusivity={"c": 1e-9},
     boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(1.0))},
     initial_conditions={"c": 1.0},
