@@ -184,6 +184,19 @@ The [`softpotato.geometry`][softpotato.geometry] subpackage provides coordinate 
 | [`CylindricalGeometry`][softpotato.geometry.CylindricalGeometry] | $r_0, L$ | $\text{geometry}$ | 1D axisymmetric cylindrical radial coordinate geometry ($p = 1$). | [4](#ref-4), [5](#ref-5) |
 | [`SphericalGeometry`][softpotato.geometry.SphericalGeometry] | $r_0, \text{hemisphere}$ | $\text{geometry}$ | 1D spherical and hemispherical radial coordinate geometry ($p = 2$). | [3](#ref-3), [22](#ref-22) |
 
+## Grid Module
+
+The [`softpotato.grid`][softpotato.grid] subpackage provides 1D spatial discretization meshes and grid generators for numerical PDE simulations across uniform and non-uniform (geometrically expanding, exponential, hyperbolic) coordinate distributions.
+
+| Class / Function | Inputs | Output | Description | References |
+| :--- | :--- | :--- | :--- | :--- |
+| [`diffusion_layer_thickness`][softpotato.grid.diffusion_layer_thickness] | $D, t_{\max}, \text{factor}$ | $\delta$ | Characteristic semi-infinite diffusion layer thickness ($\text{factor}\sqrt{D t_{\max}}$). | [3](#ref-3), [8](#ref-8) |
+| [`create_diffusion_mesh`][softpotato.grid.create_diffusion_mesh] | $D, t_{\max}, \text{kind}$ | $\text{Mesh1D}$ | Factory constructing a 1D mesh sized automatically to $\delta$. | [3](#ref-3) |
+| [`Mesh1D`][softpotato.grid.Mesh1D] | $\varnothing$ | $\text{Mesh1D}$ | Abstract base class defining 1D spatial mesh properties and NumPy array protocol. |  |
+| [`Uniform1DMesh`][softpotato.grid.Uniform1DMesh] | $x_{\min}, x_{\max}, N \text{ or } \Delta x$ | $\text{mesh}$ | Equidistant 1D spatial mesh with constant spacing $\Delta x$. | [31](#ref-31) |
+| [`GeometricExpandingMesh`][softpotato.grid.GeometricExpandingMesh] | $x_{\min}, x_{\max}, (N, \gamma, \Delta x_0)$ | $\text{mesh}$ | Non-uniform 1D mesh with geometric interval expansion $\Delta x_j = \Delta x_0 \gamma^j$. | [3](#ref-3) |
+| [`ExponentialMesh`][softpotato.grid.ExponentialMesh] | $x_{\min}, x_{\max}, N, \beta, \text{mapping}$ | $\text{mesh}$ | Non-uniform 1D mesh with exponential, $\tanh$, or $\sinh$ coordinate stretching. | [31](#ref-31) |
+
 ## Solver Module
 
 The [`softpotato.solver`][softpotato.solver] subpackage provides numerical partial differential equation (PDE)

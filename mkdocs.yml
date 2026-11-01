@@ -145,6 +145,7 @@ nav:
           - Parameter Fitting: api/analytical/fitting.md
           - Simulation Benchmarking: api/analytical/benchmark.md
       - Geometry Module: api/geometry.md
+      - Grid Module: api/grid.md
       - Solver Module: api/solver.md
   - Tutorials:
       - tutorials/index.md
