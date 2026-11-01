@@ -105,6 +105,16 @@ class Mesh1D(ABC):
         return len(self.nodes)
 
     @property
+    def shape(self) -> tuple[int, ...]:
+        """Array shape of the spatial nodes `(N,)`."""
+        return self.nodes.shape
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (`1`)."""
+        return 1
+
+    @property
     def bounds(self) -> tuple[float, float]:
         """Spatial domain boundaries (x_min, x_max)."""
         return float(self.nodes[0]), float(self.nodes[-1])
@@ -120,11 +130,21 @@ class Mesh1D(ABC):
         return self.bounds[1]
 
     @property
+    def dx_min(self) -> float:
+        """Minimum interval spacing across the mesh."""
+        return float(np.min(self.dx))
+
+    @property
+    def dx_max(self) -> float:
+        """Maximum interval spacing across the mesh."""
+        return float(np.max(self.dx))
+
+    @property
     def is_uniform(self) -> bool:
         """Whether the grid spacing is uniform within numerical tolerance."""
         if len(self.dx) <= 1:
             return True
-        return bool(np.allclose(self.dx, self.dx[0], rtol=1e-5, atol=1e-8))
+        return bool(np.allclose(self.dx, self.dx[0], rtol=1e-5, atol=0.0))
 
     def __array__(
         self, dtype: np.typing.DTypeLike | None = None, copy: bool | None = None

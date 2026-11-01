@@ -89,6 +89,37 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
         n_times = len(t_eval)
         N = problem.n_points
         curr_c = {sp: problem.get_initial_profile(sp) for sp in problem.species}
+        laplacian_ops = {
+            sp: geom.laplacian_matrix(
+                problem.grid,
+                bc_left=problem.boundary_conditions[sp][0],
+                bc_right=problem.boundary_conditions[sp][1],
+            )
+            for sp in problem.species
+        }
+
+        has_initial_discontinuity = any(
+            (
+                problem.boundary_conditions[sp][0].btype == "dirichlet"
+                and not np.isclose(
+                    curr_c[sp][0],
+                    problem.boundary_conditions[sp][0].evaluate(t_start),
+                    rtol=1e-6,
+                    atol=1e-9,
+                )
+            )
+            or (
+                problem.boundary_conditions[sp][1].btype == "dirichlet"
+                and not np.isclose(
+                    curr_c[sp][-1],
+                    problem.boundary_conditions[sp][1].evaluate(t_start),
+                    rtol=1e-6,
+                    atol=1e-9,
+                )
+            )
+            for sp in problem.species
+        )
+        rannacher_steps_remaining = 2 if has_initial_discontinuity else 0
 
         # If t_eval starts after t_start, advance from t_start to t_eval[0]
         t_current = t_start
@@ -97,8 +128,29 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
             substeps = max(1, int(np.ceil(interval / base_dt)))
             dt = interval / substeps
             for _ in range(substeps):
-                curr_c = self._step_crank_nicolson(problem, curr_c, t_current, dt, dx)
-                t_current += dt
+                if rannacher_steps_remaining > 0:
+                    for _ in range(2):
+                        curr_c = self._step_crank_nicolson(
+                            problem,
+                            curr_c,
+                            t_current,
+                            dt / 2.0,
+                            dx,
+                            theta=1.0,
+                            laplacian_ops=laplacian_ops,
+                        )
+                        t_current += dt / 2.0
+                    rannacher_steps_remaining -= 1
+                else:
+                    curr_c = self._step_crank_nicolson(
+                        problem,
+                        curr_c,
+                        t_current,
+                        dt,
+                        dx,
+                        laplacian_ops=laplacian_ops,
+                    )
+                    t_current += dt
 
         records = {sp: np.zeros((n_times, N), dtype=float) for sp in problem.species}
         for sp in problem.species:
@@ -114,15 +166,36 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
 
             t_current = t_k
             for _ in range(substeps):
-                curr_c = self._step_crank_nicolson(problem, curr_c, t_current, dt, dx)
-                t_current += dt
+                if rannacher_steps_remaining > 0:
+                    for _ in range(2):
+                        curr_c = self._step_crank_nicolson(
+                            problem,
+                            curr_c,
+                            t_current,
+                            dt / 2.0,
+                            dx,
+                            theta=1.0,
+                            laplacian_ops=laplacian_ops,
+                        )
+                        t_current += dt / 2.0
+                    rannacher_steps_remaining -= 1
+                else:
+                    curr_c = self._step_crank_nicolson(
+                        problem,
+                        curr_c,
+                        t_current,
+                        dt,
+                        dx,
+                        laplacian_ops=laplacian_ops,
+                    )
+                    t_current += dt
 
             for sp in problem.species:
                 records[sp][k + 1, :] = curr_c[sp]
 
         return SolverResult(
             t=t_eval,
-            x=problem.grid,
+            x=np.asarray(problem.grid, dtype=float),
             concentrations=records,
             success=True,
             message="Crank-Nicolson solution completed successfully.",
@@ -135,27 +208,33 @@ class CrankNicolson(BaseSolver, name="crank_nicolson"):
         t: float,
         dt: float,
         dx: float | None = None,
+        *,
+        theta: float = 0.5,
+        laplacian_ops: dict[str, tuple[np.ndarray, np.ndarray]] | None = None,
     ) -> dict[str, np.ndarray]:
         """Advance all species profiles by one Crank-Nicolson time step."""
+        grid_arr = np.asarray(problem.grid, dtype=float)
         reactions = (
-            problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+            problem.reactions(c_dict, grid_arr, t) if problem.reactions else None
         )
         geom = problem.geometry
         assert isinstance(geom, Geometry)
         new_c: dict[str, np.ndarray] = {}
         N = problem.n_points
         t_next = t + dt
-        theta = 0.5
 
         for sp in problem.species:
             c = c_dict[sp]
             D = problem.diffusivity[sp]
             bc_left, bc_right = problem.boundary_conditions[sp]
 
-            # Assemble banded Laplacian L and boundary scaling from geometry
-            l_banded, bc_scale = geom.laplacian_matrix(
-                problem.grid, bc_left=bc_left, bc_right=bc_right
-            )
+            # Assemble or reuse banded Laplacian L and boundary scaling from geometry
+            if laplacian_ops is not None and sp in laplacian_ops:
+                l_banded, bc_scale = laplacian_ops[sp]
+            else:
+                l_banded, bc_scale = geom.laplacian_matrix(
+                    problem.grid, bc_left=bc_left, bc_right=bc_right
+                )
 
             ab = np.zeros((3, N), dtype=float)
             rhs = np.zeros(N, dtype=float)
