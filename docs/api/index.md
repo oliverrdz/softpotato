@@ -4,7 +4,7 @@
 <div markdown>
 Welcome to the **Soft Potato** API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
-and numerical PDE solvers.
+coordinate geometries, non-uniform spatial discretization meshes, and numerical PDE solvers.
 </div>
 <img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" />
 </div>
@@ -164,8 +164,10 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 | [`list_benchmark_cases`][softpotato.analytical.benchmark.list_benchmark_cases] | $\varnothing$ | $\text{cases}$ | Names of available standard benchmark cases. |  |
 | [`run_benchmark`][softpotato.analytical.benchmark.run_benchmark] | $\text{case}, \text{solver}$ | $\text{result}$ | Unified runner executing a specified validation benchmark. |  |
 | [`run_cottrell_benchmark`][softpotato.analytical.benchmark.run_cottrell_benchmark] | $\text{solver}, D, c^*, A$ | $\text{result}$ | Chronoamperometric potential step solver accuracy benchmark. | [2](#ref-2) |
+| [`run_spherical_cottrell_benchmark`][softpotato.analytical.benchmark.run_spherical_cottrell_benchmark] | $\text{solver}, D, c^*, r_0$ | $\text{result}$ | Spherical microelectrode potential step accuracy benchmark. | [3](#ref-3), [22](#ref-22) |
 | [`run_fourier_decay_benchmark`][softpotato.analytical.benchmark.run_fourier_decay_benchmark] | $\text{solver}, D, L, t_{\text{end}}$ | $\text{result}$ | 1D Fourier sine diffusion series analytical validation. | [30](#ref-30) |
 | [`run_mass_conservation_benchmark`][softpotato.analytical.benchmark.run_mass_conservation_benchmark] | $\text{solver}, D, L, t$ | $\text{result}$ | Zero-flux total mass conservation test across simulation time. |  |
+| [`run_grid_efficiency_benchmark`][softpotato.analytical.benchmark.run_grid_efficiency_benchmark] | $\text{case}, \text{solver}, N_{\text{exp}}, N_{\text{uni}}$ | $\text{comparison}$ | Comparative accuracy, runtime speedup, and memory benchmark across expanding vs. uniform meshes. | [3](#ref-3), [31](#ref-31) |
 | [`run_benchmark_suite`][softpotato.analytical.benchmark.run_benchmark_suite] | $\text{solvers}, \text{cases}$ | $\text{suite}$ | Comprehensive benchmark suite execution across multiple solvers. |  |
 | [`verify_spatial_convergence`][softpotato.analytical.benchmark.verify_spatial_convergence] | $\text{solver}, \Delta x_i, D, L$ | $p_x$ | Spatial grid refinement convergence order verification. | [31](#ref-31) |
 | [`verify_temporal_convergence`][softpotato.analytical.benchmark.verify_temporal_convergence] | $\text{solver}, \Delta t_j, D, L$ | $p_t$ | Time-step refinement convergence order verification. | [31](#ref-31) |
@@ -183,6 +185,19 @@ The [`softpotato.geometry`][softpotato.geometry] subpackage provides coordinate 
 | [`PlanarGeometry`][softpotato.geometry.PlanarGeometry] | $A$ | $\text{geometry}$ | 1D Cartesian planar coordinate geometry ($p = 0$). | [2](#ref-2), [3](#ref-3) |
 | [`CylindricalGeometry`][softpotato.geometry.CylindricalGeometry] | $r_0, L$ | $\text{geometry}$ | 1D axisymmetric cylindrical radial coordinate geometry ($p = 1$). | [4](#ref-4), [5](#ref-5) |
 | [`SphericalGeometry`][softpotato.geometry.SphericalGeometry] | $r_0, \text{hemisphere}$ | $\text{geometry}$ | 1D spherical and hemispherical radial coordinate geometry ($p = 2$). | [3](#ref-3), [22](#ref-22) |
+
+## Grid Module
+
+The [`softpotato.grid`][softpotato.grid] subpackage provides 1D spatial discretization meshes and grid generators for numerical PDE simulations across uniform and non-uniform (geometrically expanding, exponential, hyperbolic) coordinate distributions.
+
+| Class / Function | Inputs | Output | Description | References |
+| :--- | :--- | :--- | :--- | :--- |
+| [`diffusion_layer_thickness`][softpotato.grid.diffusion_layer_thickness] | $D, t_{\max}, \text{factor}$ | $\delta$ | Characteristic semi-infinite diffusion layer thickness ($\text{factor}\sqrt{D t_{\max}}$). | [3](#ref-3), [8](#ref-8) |
+| [`create_diffusion_mesh`][softpotato.grid.create_diffusion_mesh] | $D, t_{\max}, \text{kind}$ | $\text{Mesh1D}$ | Factory constructing a 1D mesh sized automatically to $\delta$. | [3](#ref-3) |
+| [`Mesh1D`][softpotato.grid.Mesh1D] | $\varnothing$ | $\text{Mesh1D}$ | Abstract base class defining 1D spatial mesh properties and NumPy array protocol. |  |
+| [`Uniform1DMesh`][softpotato.grid.Uniform1DMesh] | $x_{\min}, x_{\max}, N \text{ or } \Delta x$ | $\text{mesh}$ | Equidistant 1D spatial mesh with constant spacing $\Delta x$. | [31](#ref-31) |
+| [`GeometricExpandingMesh`][softpotato.grid.GeometricExpandingMesh] | $x_{\min}, x_{\max}, (N, \gamma, \Delta x_0)$ | $\text{mesh}$ | Non-uniform 1D mesh with geometric interval expansion $\Delta x_j = \Delta x_0 \gamma^j$. | [3](#ref-3) |
+| [`ExponentialMesh`][softpotato.grid.ExponentialMesh] | $x_{\min}, x_{\max}, N, \beta, \text{mapping}$ | $\text{mesh}$ | Non-uniform 1D mesh with exponential, $\tanh$, or $\sinh$ coordinate stretching. | [31](#ref-31) |
 
 ## Solver Module
 

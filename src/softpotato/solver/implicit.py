@@ -90,6 +90,14 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         n_times = len(t_eval)
         N = problem.n_points
         curr_c = {sp: problem.get_initial_profile(sp) for sp in problem.species}
+        laplacian_ops = {
+            sp: geom.laplacian_matrix(
+                problem.grid,
+                bc_left=problem.boundary_conditions[sp][0],
+                bc_right=problem.boundary_conditions[sp][1],
+            )
+            for sp in problem.species
+        }
 
         # If t_eval starts after t_start, advance from t_start to t_eval[0]
         t_current = t_start
@@ -98,7 +106,9 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
             substeps = max(1, int(np.ceil(interval / base_dt)))
             dt = interval / substeps
             for _ in range(substeps):
-                curr_c = self._step_implicit(problem, curr_c, t_current, dt, dx)
+                curr_c = self._step_implicit(
+                    problem, curr_c, t_current, dt, dx, laplacian_ops=laplacian_ops
+                )
                 t_current += dt
 
         records = {sp: np.zeros((n_times, N), dtype=float) for sp in problem.species}
@@ -115,7 +125,9 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
 
             t_current = t_k
             for _ in range(substeps):
-                curr_c = self._step_implicit(problem, curr_c, t_current, dt, dx)
+                curr_c = self._step_implicit(
+                    problem, curr_c, t_current, dt, dx, laplacian_ops=laplacian_ops
+                )
                 t_current += dt
 
             for sp in problem.species:
@@ -123,7 +135,7 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
 
         return SolverResult(
             t=t_eval,
-            x=problem.grid,
+            x=np.asarray(problem.grid, dtype=float),
             concentrations=records,
             success=True,
             message="Implicit finite difference solution completed successfully.",
@@ -136,10 +148,13 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
         t: float,
         dt: float,
         dx: float | None = None,
+        *,
+        laplacian_ops: dict[str, tuple[np.ndarray, np.ndarray]] | None = None,
     ) -> dict[str, np.ndarray]:
         """Advance all species profiles by one BTCS implicit time step."""
+        grid_arr = np.asarray(problem.grid, dtype=float)
         reactions = (
-            problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+            problem.reactions(c_dict, grid_arr, t) if problem.reactions else None
         )
         geom = problem.geometry
         assert isinstance(geom, Geometry)
@@ -153,10 +168,13 @@ class ImplicitFiniteDifference(BaseSolver, name="implicit"):
             D = problem.diffusivity[sp]
             bc_left, bc_right = problem.boundary_conditions[sp]
 
-            # Assemble banded Laplacian L and boundary scaling from geometry
-            l_banded, bc_scale = geom.laplacian_matrix(
-                problem.grid, bc_left=bc_left, bc_right=bc_right
-            )
+            # Assemble or reuse banded Laplacian L and boundary scaling from geometry
+            if laplacian_ops is not None and sp in laplacian_ops:
+                l_banded, bc_scale = laplacian_ops[sp]
+            else:
+                l_banded, bc_scale = geom.laplacian_matrix(
+                    problem.grid, bc_left=bc_left, bc_right=bc_right
+                )
 
             ab = np.zeros((3, N), dtype=float)
             rhs = np.copy(c)
