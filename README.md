@@ -1,6 +1,7 @@
 # Soft Potato
 
 [![PyPI](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
 [![DOI](https://img.shields.io/badge/DOI-10.26434%2Fchemrxiv--2022--4bs3w-orange.svg)](https://doi.org/10.26434/chemrxiv-2022-4bs3w)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
@@ -10,16 +11,21 @@
 
 > [!NOTE]
 > **Active Development (Milestone 2 in progress):**
-> The `main` branch contains work-in-progress features for **Milestone 2** (v3.2.0: Grids).
+> The `main` branch contains work-in-progress features for **Milestone 2** (v3.2.0: Grids & Geometries).
 > The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.1.1**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
 > ```
 
-**Full documentation**: [https://softpotato.xyz/](https://softpotato.xyz/) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+**Full documentation**: [https://softpotato.xyz/](https://softpotato.xyz/) | **Try Live**: [Google Colab Starter](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ## Installation
+
+### Zero-Install Browser Trial (Google Colab)
+
+Run Soft Potato directly in your browser with no local Python setup required:
+- [**Launch Soft Potato v3 Starter in Google Colab**](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
 
 ### Stable Release (v3.1.1)
 
@@ -105,6 +111,30 @@ problem = DiffusionProblem(
 result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 1.0))
 ```
 
+## Electrode Coordinate Geometries (`softpotato.geometry`)
+
+Soft Potato natively supports 1D Cartesian planar (`PlanarGeometry`), radial spherical/hemispherical (`SphericalGeometry`), and radial cylindrical (`CylindricalGeometry`) coordinate systems, with automatic Faradaic current integration ($I = n F A J$):
+
+```python
+from softpotato.geometry import SphericalGeometry
+from softpotato.grid import GeometricExpandingMesh
+from softpotato.solver import DiffusionProblem, DirichletBC, get_solver
+
+r0 = 10e-6  # 10 um spherical microelectrode radius
+mesh = GeometricExpandingMesh(x_min=r0, x_max=r0 + 500e-6, n_points=80, gamma=1.06)
+
+problem = DiffusionProblem(
+    grid=mesh,
+    diffusivity={"Ox": 1e-9},
+    boundary_conditions={"Ox": (DirichletBC(0.0), DirichletBC(1.0))},
+    initial_conditions={"Ox": 1.0},
+    geometry=SphericalGeometry(r0=r0),
+    n_electrons={"Ox": -1},
+)
+result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 2.0))
+i_cathodic = result.currents["Ox"]  # Faradaic current in Amperes (IUPAC sign convention)
+```
+
 ## Analytical Equations & Benchmarking (`softpotato.analytical`)
 
 Soft Potato provides exact closed-form analytical solutions and empirical models for benchmarking numerical solvers and rapid parameter estimation:
@@ -121,6 +151,17 @@ i_transient = sp.cottrell(t, n=1, D=1e-5, c_bulk=1e-3, area=1e-4)
 i_sphere = sp.cottrell_spherical(t, r=1e-5, n=1, D=1e-5, c_bulk=1e-3)
 ```
 
+## Interactive Tutorials & Examples
+
+Step-by-step Jupyter notebook tutorials are located in [`examples/`](examples/) and rendered in the [online documentation](https://softpotato.xyz/tutorials/):
+
+| Tutorial | Description | Notebook |
+| :--- | :--- | :--- |
+| **Cottrell Chronoamperometry** | 1D potential-step diffusion, error metrics, and parameter fitting | [`examples/cottrell.ipynb`](examples/cottrell.ipynb) |
+| **Cyclic Voltammetry** | Reversible Nernstian CV, concentration profiles, and Randles–Ševčík diagnostics | [`examples/cyclic_voltammetry.ipynb`](examples/cyclic_voltammetry.ipynb) |
+| **Cottrell Across Geometries** | Planar, spherical, and cylindrical electrode transients and steady-state limits | [`examples/cottrell_geometries.ipynb`](examples/cottrell_geometries.ipynb) |
+| **Non-Uniform Expanding Grids** | Geometric and exponential mesh clustering, convergence, and 5–20× solver speedups | [`examples/expanding_grids.ipynb`](examples/expanding_grids.ipynb) |
+
 ## Development Roadmap & Milestones
 
 Soft Potato follows a staged milestone development roadmap for the 3.x series, maintaining strict backwards compatibility across releases:
@@ -129,7 +170,7 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | :--- | :--- | :--- | :--- |
 | **Current Baseline** | `v3.0.0` | 1D multi-species diffusion solvers (`scipy_ivp`, Crank–Nicolson, BTCS, FTCS) | Released |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Vectorized analytical models (`step`, `voltammetry`, `hydrodynamics`, `microelectrodes`, `secm`, `kinetics`), automated solver benchmarking (`benchmark`), and parameter fitting (`fitting`) | Released |
-| **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) | In Development |
+| **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | In Development |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Planned |
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | Planned |
 
