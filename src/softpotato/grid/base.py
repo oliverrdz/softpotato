@@ -168,4 +168,3 @@ class Mesh1D(ABC):
             f"n_points={self.n_points} "
             f"bounds=({self.bounds[0]:.4g}, {self.bounds[1]:.4g})>"
         )
-

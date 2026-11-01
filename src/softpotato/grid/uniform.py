@@ -118,7 +118,9 @@ class Uniform1DMesh(Mesh1D):
         domain_len = x_max_f - x_min_f
 
         if n_points is not None:
-            if isinstance(n_points, bool) or not isinstance(n_points, (int, np.integer)):
+            if isinstance(n_points, bool) or not isinstance(
+                n_points, (int, np.integer)
+            ):
                 raise TypeError(
                     f"n_points must be an integer, got {type(n_points).__name__}."
                 )

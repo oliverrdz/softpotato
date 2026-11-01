@@ -283,7 +283,9 @@ class TestUniform1DMesh:
             Uniform1DMesh(0.0, 1.0, dx=-0.1)
 
         # dx > domain length
-        with pytest.raises(ValueError, match="cannot be greater than the domain length"):
+        with pytest.raises(
+            ValueError, match="cannot be greater than the domain length"
+        ):
             Uniform1DMesh(0.0, 1.0, dx=1.5)
 
         # Non-integer multiple

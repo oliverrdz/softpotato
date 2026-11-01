@@ -9,4 +9,3 @@ __all__ = [
     "Mesh1D",
     "Uniform1DMesh",
 ]
-
