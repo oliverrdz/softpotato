@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Re-architected modular API reference pages (`docs/api/index.md`, `docs/api/constants.md`, `docs/api/solver.md`, and `docs/api/analytical/*.md`) using `mkdocstrings` (`mkdocstrings-python`) with a custom Griffe extension (`docs/_hooks/griffe_sphinx.py`) to convert Sphinx/RST roles, cross-references, and `.. math::` directives (including automatic `\begin{aligned}` wrapping) into Markdown.
   - Implemented MathJax LaTeX equation rendering via custom MkDocs hooks (`docs/_hooks/math_hook.py`) and JavaScript configuration (`docs/javascripts/mathjax.js`) across Markdown pages and Jupyter notebooks.
   - Added custom styling, branding, mascot illustrations ("Chip"), and assets (`docs/stylesheets/extra.css`, `docs/assets/images/`), featuring custom light and dark (`slate`) palettes, secondary button styles for dark mode, hero landing page, feature cards, and Mermaid diagram theming.
+  - Reframed the documentation landing page (`docs/index.md`, `docs/stylesheets/extra.css`) around laboratory bench electrochemistry workflows, zero-install browser execution via Google Colab, high-speed PDE solver performance metrics (`5–20× Faster PDE Solves`), interactive feature cards, and open-source research reproducibility.
   - Configured documentation deployment workflow (`.github/workflows/deploy-docs.yml`) to dynamically configure committer git user info and sync shared stylesheet (`extra.css`) across deployed versions on `gh-pages`.
 
 ### Changed
