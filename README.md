@@ -132,7 +132,7 @@ problem = DiffusionProblem(
     n_electrons={"Ox": -1},
 )
 result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 2.0))
-i_cathodic = result.currents["Ox"]  # Faradaic current in Amperes (IUPAC sign convention)
+i_cathodic = result.currents["Ox"]  # Faradaic current in Amperes (IUPAC convention)
 ```
 
 ## Analytical Equations & Benchmarking (`softpotato.analytical`)

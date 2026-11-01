@@ -31,19 +31,24 @@ jobs:
           pip install ruff
 
       - name: Auto-fix Lint Rules
+        if: github.ref != 'refs/heads/main'
         run: ruff check --fix .
         continue-on-error: true
 
       - name: Format Code
+        if: github.ref != 'refs/heads/main'
         run: ruff format .
 
       - name: Commit and push changes
+        if: github.ref != 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "style: auto-fix and format with Ruff"
 
-      - name: Check Lint Rules
-        run: ruff check .
+      - name: Check Lint and Format Rules
+        run: |
+          ruff check .
+          ruff format --check .
 
   type-check:
     name: Static Type Check (mypy)
