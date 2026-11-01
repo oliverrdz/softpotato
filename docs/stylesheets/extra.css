@@ -101,18 +101,60 @@
     flex: 1 1 62%;
 }
 
+.sp-hero__eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sp-orange);
+    background-color: rgba(253, 128, 49, 0.12);
+    border: 1px solid rgba(253, 128, 49, 0.35);
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    margin: 0 0 0.65rem 0 !important;
+}
+
 .sp-hero__content h1 {
     margin: 0 0 0.65rem 0 !important;
-    font-size: 2.4rem;
+    font-size: 2.05rem;
     font-weight: 800;
-    line-height: 1.15;
+    line-height: 1.2;
 }
 
 .sp-hero__tagline {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 1.6;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1.15rem 0;
     opacity: 0.92;
+}
+
+.sp-hero__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0 0 1.35rem 0;
+}
+
+.sp-metric-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.45rem;
+    background-color: rgba(131, 190, 178, 0.18);
+    border: 1px solid rgba(131, 190, 178, 0.55);
+}
+
+[data-md-color-scheme="slate"] .sp-metric-pill {
+    background-color: rgba(154, 222, 237, 0.12);
+    border-color: rgba(154, 222, 237, 0.35);
+}
+
+.sp-metric-pill strong {
+    color: var(--sp-orange);
 }
 
 .sp-hero__actions {
@@ -124,6 +166,20 @@
 
 .sp-hero__actions .md-button {
     margin: 0 !important;
+}
+
+.sp-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.sp-hero__badges a,
+.sp-hero__badges img {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .sp-hero__mascot {
@@ -152,7 +208,9 @@
         text-align: center;
         padding: 1.5rem;
     }
-    .sp-hero__actions {
+    .sp-hero__actions,
+    .sp-hero__badges,
+    .sp-hero__metrics {
         justify-content: center;
     }
     .sp-hero__mascot {
@@ -176,9 +234,16 @@
 .md-typeset .grid.cards.sp-feature-grid > ul > li {
     padding: 1.25rem 1.4rem;
     border-radius: 0.65rem;
+    border-top: 3px solid var(--sp-mint);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.md-typeset .grid.cards.sp-feature-grid > ul > li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(52, 64, 80, 0.12);
 }
 
 .md-typeset .grid.cards.sp-feature-grid > ul > li > p:first-child {
