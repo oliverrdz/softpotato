@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -413,6 +413,8 @@
       
         
           
+        
+      
         
       
         
@@ -855,6 +857,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../api/grid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grid Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/solver/" class="md-nav__link">
         
   
@@ -962,6 +992,8 @@
   
     
     
+      
+        
       
         
       
@@ -1085,6 +1117,34 @@
     
   
     Cyclic Voltammetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/electrochemistry/expanding_grids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Uniform & Expanding Grids
   
 
     
@@ -1933,6 +1993,18 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
 <ul>
+<li><strong>Non-Uniform Spatial Discretization &amp; Expanding Meshes (<code>softpotato.grid</code>)</strong>:</li>
+<li>Introduced <code>softpotato.grid</code> subpackage providing 1D spatial discretization meshes and physics-informed grid generators for numerical PDE simulations:<ul>
+<li><code>Mesh1D</code>: Abstract base class implementing the 1D mesh interface (<code>nodes</code>, <code>dx</code>, <code>n_points</code>, <code>bounds</code>, <code>x_min</code>, <code>x_max</code>, <code>dx_min</code>, <code>dx_max</code>, <code>is_uniform</code>) and full NumPy array protocol (<code>__array__</code>, <code>__array_ufunc__</code>, indexing, slicing, arithmetic).</li>
+<li><code>Uniform1DMesh</code>: Equidistant 1D spatial mesh constructible from <code>n_points</code> or <code>dx</code>, plus <code>Uniform1DMesh.from_diffusion_layer</code>.</li>
+<li><code>GeometricExpandingMesh</code>: Geometrically expanding 1D spatial mesh (<span class="arithmatex">\(\Delta x_j = \Delta x_0 \gamma^j\)</span>, <span class="arithmatex">\(\gamma &gt; 1\)</span>) supporting three parameterizations (<code>(n_points, gamma)</code>, <code>(dx_min, gamma)</code>, <code>(n_points, dx_min)</code>), two-sided symmetric boundary clustering (<code>two_sided=True</code>), and <code>GeometricExpandingMesh.from_diffusion_layer</code>.</li>
+<li><code>ExponentialMesh</code>: Smooth non-uniform 1D spatial mesh parameterized by stretching factor <span class="arithmatex">\(\beta &gt; 0\)</span> across <code>"exponential"</code>, <code>"tanh"</code> (<code>ExponentialMesh.from_tanh</code>), and <code>"sinh"</code> (<code>ExponentialMesh.from_sinh</code>) coordinate mappings, with <code>two_sided=True</code> and <code>ExponentialMesh.from_diffusion_layer</code>.</li>
+<li><code>diffusion_layer_thickness</code> and <code>create_diffusion_mesh</code>: Physics-informed domain sizing (<span class="arithmatex">\(\delta = \text{factor} \cdot \sqrt{D \, t_{\max}}\)</span>) and unified mesh factory.</li>
+</ul>
+</li>
+<li>Integrated <code>Mesh1D</code> and non-uniform finite-difference stencils across <code>DiffusionProblem</code>, <code>SolverResult</code>, <code>Geometry</code> (<code>PlanarGeometry</code>, <code>SphericalGeometry</code>, <code>CylindricalGeometry</code>), and all built-in solvers (<code>ScipyIVPSolver</code>, <code>CrankNicolson</code>, <code>ImplicitFiniteDifference</code>, <code>ExplicitFiniteDifference</code>).</li>
+<li>Extended <code>softpotato.analytical.benchmark</code> with non-uniform spatial order-of-convergence verification (<code>verify_spatial_convergence</code>), spherical Cottrell benchmarking (<code>run_spherical_cottrell_benchmark</code>), comparative grid efficiency benchmarking (<code>run_grid_efficiency_benchmark</code>, <code>GridComparisonEntry</code>, <code>GridComparisonResult</code>), and <code>benchmarks/benchmark_expanding_grids.py</code>.</li>
+<li>Added API reference, mathematical user guides (<code>docs/api/grid.md</code>, <code>docs/api/index.md</code>, <code>docs/api/solver.md</code>), and interactive Jupyter tutorial notebook (<code>examples/expanding_grids.ipynb</code>, linked under <code>docs/tutorials/electrochemistry/expanding_grids.ipynb</code> and <code>docs/examples/expanding_grids.ipynb</code>).</li>
 <li><strong>Spatial Coordinate Geometries &amp; Operators (<code>softpotato.geometry</code>)</strong>:</li>
 <li>
 <p>Introduced <code>softpotato.geometry</code> subpackage abstracting spatial coordinate systems and differential operators for electrochemical simulations across 1D planar, spherical, and cylindrical domains:</p>
@@ -2560,10 +2632,10 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       

@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -421,6 +421,8 @@
       
         
           
+        
+      
         
       
         
@@ -869,6 +871,34 @@
   
   
     <li class="md-nav__item">
+      <a href="grid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grid Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="solver/" class="md-nav__link">
         
   
@@ -976,6 +1006,8 @@
   
     
     
+      
+        
       
         
       
@@ -1099,6 +1131,34 @@
     
   
     Cyclic Voltammetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/electrochemistry/expanding_grids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Uniform & Expanding Grids
   
 
     
@@ -1671,6 +1731,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#grid-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grid Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#solver-module" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1717,7 +1788,7 @@
 <div>
 <p>Welcome to the <strong>Soft Potato</strong> API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
-and numerical PDE solvers.</p>
+coordinate geometries, non-uniform spatial discretization meshes, and numerical PDE solvers.</p>
 </div>
 <p><img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" /></p>
 </div>
@@ -2427,6 +2498,13 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 <td style="text-align: left;"><a href="#ref-2">2</a></td>
 </tr>
 <tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_spherical_cottrell_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_spherical_cottrell_benchmark"><code>run_spherical_cottrell_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{solver}, D, c^*, r_0\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
+<td style="text-align: left;">Spherical microelectrode potential step accuracy benchmark.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-22">22</a></td>
+</tr>
+<tr>
 <td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_fourier_decay_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_fourier_decay_benchmark"><code>run_fourier_decay_benchmark</code></a></td>
 <td style="text-align: left;"><span class="arithmatex">\(\text{solver}, D, L, t_{\text{end}}\)</span></td>
 <td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
@@ -2439,6 +2517,13 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 <td style="text-align: left;"><span class="arithmatex">\(\text{result}\)</span></td>
 <td style="text-align: left;">Zero-flux total mass conservation test across simulation time.</td>
 <td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_grid_efficiency_benchmark" href="analytical/benchmark/#softpotato.analytical.benchmark.run_grid_efficiency_benchmark"><code>run_grid_efficiency_benchmark</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{case}, \text{solver}, N_{\text{exp}}, N_{\text{uni}}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{comparison}\)</span></td>
+<td style="text-align: left;">Comparative accuracy, runtime speedup, and memory benchmark across expanding vs. uniform meshes.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-31">31</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><a class="autorefs autorefs-internal" title="            run_benchmark_suite" href="analytical/benchmark/#softpotato.analytical.benchmark.run_benchmark_suite"><code>run_benchmark_suite</code></a></td>
@@ -2524,6 +2609,63 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 <td style="text-align: left;"><span class="arithmatex">\(\text{geometry}\)</span></td>
 <td style="text-align: left;">1D spherical and hemispherical radial coordinate geometry (<span class="arithmatex">\(p = 2\)</span>).</td>
 <td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-22">22</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="grid-module">Grid Module<a class="headerlink" href="#grid-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            grid" href="grid/#softpotato.grid"><code>softpotato.grid</code></a> subpackage provides 1D spatial discretization meshes and grid generators for numerical PDE simulations across uniform and non-uniform (geometrically expanding, exponential, hyperbolic) coordinate distributions.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class / Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            diffusion_layer_thickness" href="grid/#softpotato.grid.diffusion_layer_thickness"><code>diffusion_layer_thickness</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(D, t_{\max}, \text{factor}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\delta\)</span></td>
+<td style="text-align: left;">Characteristic semi-infinite diffusion layer thickness (<span class="arithmatex">\(\text{factor}\sqrt{D t_{\max}}\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-8">8</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            create_diffusion_mesh" href="grid/#softpotato.grid.create_diffusion_mesh"><code>create_diffusion_mesh</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(D, t_{\max}, \text{kind}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Mesh1D}\)</span></td>
+<td style="text-align: left;">Factory constructing a 1D mesh sized automatically to <span class="arithmatex">\(\delta\)</span>.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Mesh1D" href="grid/#softpotato.grid.Mesh1D"><code>Mesh1D</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Mesh1D}\)</span></td>
+<td style="text-align: left;">Abstract base class defining 1D spatial mesh properties and NumPy array protocol.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Uniform1DMesh" href="grid/#softpotato.grid.Uniform1DMesh"><code>Uniform1DMesh</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x_{\min}, x_{\max}, N \text{ or } \Delta x\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{mesh}\)</span></td>
+<td style="text-align: left;">Equidistant 1D spatial mesh with constant spacing <span class="arithmatex">\(\Delta x\)</span>.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            GeometricExpandingMesh" href="grid/#softpotato.grid.GeometricExpandingMesh"><code>GeometricExpandingMesh</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x_{\min}, x_{\max}, (N, \gamma, \Delta x_0)\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{mesh}\)</span></td>
+<td style="text-align: left;">Non-uniform 1D mesh with geometric interval expansion <span class="arithmatex">\(\Delta x_j = \Delta x_0 \gamma^j\)</span>.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ExponentialMesh" href="grid/#softpotato.grid.ExponentialMesh"><code>ExponentialMesh</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(x_{\min}, x_{\max}, N, \beta, \text{mapping}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{mesh}\)</span></td>
+<td style="text-align: left;">Non-uniform 1D mesh with exponential, <span class="arithmatex">\(\tanh\)</span>, or <span class="arithmatex">\(\sinh\)</span> coordinate stretching.</td>
+<td style="text-align: left;"><a href="#ref-31">31</a></td>
 </tr>
 </tbody>
 </table>
@@ -2761,10 +2903,10 @@ solvers and boundary condition primitives for 1D multi-species diffusion and rea
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
