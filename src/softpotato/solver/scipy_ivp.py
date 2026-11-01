@@ -84,7 +84,7 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
     ) -> SolverResult:
         geom = problem.geometry
         assert isinstance(geom, Geometry)
-        grid = problem.grid
+        grid = np.asarray(problem.grid, dtype=float)
         N = problem.n_points
         t_start, t_end = t_span
 

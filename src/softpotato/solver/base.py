@@ -10,6 +10,7 @@ from typing import Any, ClassVar, Literal, cast
 import numpy as np
 
 from softpotato.geometry import Geometry, get_geometry
+from softpotato.grid.base import Mesh1D
 
 
 @dataclass
@@ -114,8 +115,12 @@ class DiffusionProblem:
 
     Parameters
     ----------
-    grid : np.ndarray
-        1D spatial grid points :math:`x \in [x_{\min}, x_{\max}]`.
+    grid : np.ndarray or Mesh1D
+        1D spatial grid points :math:`x \in [x_{\min}, x_{\max}]` or a
+        :class:`~softpotato.grid.Mesh1D` mesh object (e.g.,
+        :class:`~softpotato.grid.Uniform1DMesh`,
+        :class:`~softpotato.grid.GeometricExpandingMesh`,
+        :class:`~softpotato.grid.ExponentialMesh`).
     diffusivity : dict[str, float]
         Mapping from chemical species name to its diffusion coefficient :math:`D_i > 0`.
     boundary_conditions : dict[str, tuple[BoundaryCondition, BoundaryCondition]]
@@ -167,7 +172,7 @@ class DiffusionProblem:
     True
     """
 
-    grid: np.ndarray
+    grid: np.ndarray | Mesh1D
     diffusivity: dict[str, float]
     boundary_conditions: dict[str, tuple[BoundaryCondition, BoundaryCondition]]
     initial_conditions: dict[
@@ -182,6 +187,7 @@ class DiffusionProblem:
     n_electrons: int | dict[str, int] = 1
     electrodes: Literal["left", "right", "both"] = "left"
     electrode_side: Literal["left", "right", "both"] | None = None
+    mesh: Mesh1D | None = field(init=False, default=None, repr=False)
 
     def __post_init__(self) -> None:
         if self.electrode_side is not None:
@@ -198,7 +204,12 @@ class DiffusionProblem:
             raise TypeError(
                 f"geometry must be a str or Geometry instance, got {type(self.geometry)}."
             )
-        self.grid = self.geometry.validate_grid(self.grid)
+        if isinstance(self.grid, Mesh1D):
+            self.mesh = self.grid
+            self.grid = self.geometry.validate_grid(self.grid.nodes)
+        else:
+            self.mesh = None
+            self.grid = self.geometry.validate_grid(self.grid)
 
         if not self.species:
             self.species = list(self.diffusivity.keys())
@@ -219,32 +230,56 @@ class DiffusionProblem:
         return len(self.grid)
 
     @property
+    def bounds(self) -> tuple[float, float]:
+        """Spatial domain boundaries (x_min, x_max)."""
+        return float(self.grid[0]), float(self.grid[-1])
+
+    @property
+    def dx_array(self) -> np.ndarray:
+        """1D array of consecutive spatial interval spacings."""
+        if self.mesh is not None:
+            return self.mesh.dx
+        return np.diff(self.grid)
+
+    @property
+    def dx_min(self) -> float:
+        """Minimum spatial interval spacing across the grid."""
+        return float(np.min(self.dx_array))
+
+    @property
+    def dx_max(self) -> float:
+        """Maximum spatial interval spacing across the grid."""
+        return float(np.max(self.dx_array))
+
+    @property
     def dx(self) -> float:
         """Grid step size for uniform grids."""
-        diffs = np.diff(self.grid)
-        if not np.allclose(diffs, diffs[0], rtol=1e-5, atol=1e-8):
+        if not self.is_uniform:
             raise ValueError("Grid is non-uniform; uniform dx is not defined.")
-        return float(diffs[0])
+        return float(self.dx_array[0])
 
     @property
     def is_uniform(self) -> bool:
         """Check whether the spatial grid is uniformly spaced."""
+        if self.mesh is not None:
+            return self.mesh.is_uniform
         diffs = np.diff(self.grid)
-        return bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=1e-8))
+        return bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=0.0))
 
     def get_initial_profile(self, sp: str) -> np.ndarray:
         """Evaluate initial concentration profile for a given species."""
+        grid_arr = np.asarray(self.grid, dtype=float)
         ic = self.initial_conditions[sp]
         if callable(ic):
-            arr = np.asarray(ic(self.grid), dtype=float)
+            arr = np.asarray(ic(grid_arr), dtype=float)
         elif np.isscalar(ic):
-            arr = np.full_like(self.grid, float(cast(Any, ic)), dtype=float)
+            arr = np.full_like(grid_arr, float(cast(Any, ic)), dtype=float)
         else:
             arr = np.asarray(ic, dtype=float)
 
-        if arr.shape != self.grid.shape:
+        if arr.shape != grid_arr.shape:
             raise ValueError(
-                f"Initial condition for '{sp}' has shape {arr.shape}, expected {self.grid.shape}"
+                f"Initial condition for '{sp}' has shape {arr.shape}, expected {grid_arr.shape}"
             )
         return arr
 
@@ -324,6 +359,7 @@ class SolverResult:
     success: bool = True
     message: str = "Success"
     raw_output: Any = None
+    mesh: Mesh1D | None = None
 
     def __getitem__(self, species_name: str) -> np.ndarray:
         """Shorthand to access concentrations for a species: result['A']."""
@@ -507,6 +543,8 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
             if isinstance(problem.geometry, str)
             else problem.geometry
         )
+        if result.mesh is None and problem.mesh is not None:
+            result.mesh = problem.mesh
         for sp in problem.species:
             if sp not in result.concentrations:
                 continue
