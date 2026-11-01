@@ -6,16 +6,32 @@ hide:
 
 <div class="sp-hero">
   <div class="sp-hero__content">
-    <h1>Soft Potato</h1>
+    <p class="sp-hero__eyebrow">Soft Potato &bull; Open-Source Electrochemistry Toolkit</p>
+    <h1>Electrochemical Simulation Designed for the Laboratory Bench</h1>
     <p class="sp-hero__tagline">
-      An open-source electrochemical simulation and analysis toolkit in Python.
+      Predict voltammetric, chronoamperometric, hydrodynamic, and SECM responses—or extract transport and kinetic parameters directly from experimental data—using pure physical inputs (<i>E</i><sup>0</sup>, <i>k</i><sup>0</sup>, &alpha;, <i>D</i>, scan rates) without touching numerical meshes or differential equation code.
     </p>
     <div class="sp-hero__actions">
-      <a class="md-button md-button--primary" href="api/">API Reference</a>
-      <a class="md-button" href="tutorials/">Tutorials</a>
-      <a class="md-button" href="blog/">Blog</a>
-      <a class="md-button" href="roadmap/">Roadmap</a>
-      <a class="md-button" href="changelog/">Changelog</a>
+      <a class="md-button md-button--primary" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+        Try Live in Google Colab
+      </a>
+      <a class="md-button" href="tutorials/">
+        Explore Bench Tutorials
+      </a>
+      <a class="md-button" href="api/analytical/">
+        Analytical Toolkit
+      </a>
+    </div>
+    <div class="sp-hero__badges">
+      <a href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+      </a>
+      <a href="https://pypi.org/project/softpotato/" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/pypi/v/softpotato?color=FD8031&label=PyPI" alt="PyPI Version" />
+      </a>
+      <a href="https://github.com/oliverrdz/softpotato/blob/main/LICENSE" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/pypi/l/softpotato?color=83BEB2&label=License" alt="License" />
+      </a>
     </div>
   </div>
   <div class="sp-hero__mascot">
@@ -25,35 +41,35 @@ hide:
 
 <div class="grid cards sp-feature-grid" markdown>
 
--   ![Analytical Electrochemistry](assets/images/chip-electrodes.png){ .sp-card-icon } **Analytical Electrochemistry**
+-   ![Benchmarking & Analytical Toolkit](assets/images/chip-electrodes.png){ .sp-card-icon } **Benchmarking & Analytical Toolkit**
 
     ---
 
-    A library of commonly used electrochemical equations such as Cottrell, Nernst, Levich, Randles-Sevick, Butler-Volmer, SECM, etc.
+    Generate exact theoretical baselines for **Cottrell**, **Levich**, **Koutecký–Levich**, **Randles–Ševčík**, **Butler–Volmer**, microelectrodes, and **SECM approach curves** ($I_T$ vs. $L$) in a single function call.
 
-    [:octicons-arrow-right-24: Analytical Module](api/analytical/index.md)
+    [:octicons-arrow-right-24: Explore Analytical Equations](api/analytical/index.md)
 
--   ![Numerical PDE Solvers](assets/images/chip-coding.png){ .sp-card-icon } **Numerical PDE Solvers**
-
-    ---
-
-    1D multi-species reaction-diffusion solvers including stiff Method of Lines ODE integration (`scipy_ivp` Radau/BDF), Crank–Nicolson, and implicit/explicit finite-difference engines.
-
-    [:octicons-arrow-right-24: Solver Module](api/solver.md)
-
--   ![Parameter Fitting & Benchmarking](assets/images/chip-lab.png){ .sp-card-icon } **Parameter Fitting & Benchmarking**
+-   ![Diffusion Layer Visualizer](assets/images/chip-coding.png){ .sp-card-icon } **Diffusion Layer Visualizer**
 
     ---
 
-    Extract diffusion coefficients ($D$), rate constants ($k^0$), transfer coefficients ($\alpha$), and SECM parameters ($R_g$, $d_{\text{offset}}$) with full confidence intervals, or validate numerical solvers against exact analytical solutions.
+    Inspect how transient concentration profiles $c(x, t)$ and interfacial depletion zones evolve in time across planar, spherical, and cylindrical electrode geometries.
 
-    [:octicons-arrow-right-24: Fitting & Benchmarks](api/analytical/fitting.md)
+    [:octicons-arrow-right-24: Visualize Diffusion Profiles](tutorials/electrochemistry/cottrell_geometries.ipynb)
 
--   ![Tutorials](assets/images/chip-greeting.png){ .sp-card-icon } **Tutorials: Electrochemistry, Python & Linux**
+-   ![Quantitative Experimental Data Extraction](assets/images/chip-lab.png){ .sp-card-icon } **Quantitative Experimental Data Extraction**
 
     ---
 
-    Interactive Jupyter notebooks for electrochemical simulations alongside practical tutorials on basic programming in Python.
+    Automatically extract diffusion coefficients ($D$), heterogeneous rate constants ($k^0$), transfer coefficients ($\alpha$), and SECM parameters ($RG$, $d_0$) with 95% confidence intervals and $R^2$ diagnostics—no spreadsheets required.
+
+    [:octicons-arrow-right-24: Data Fitting Toolkit](api/analytical/fitting.md)
+
+-   ![Interactive Tutorials & Zero-Install Trial](assets/images/chip-greeting.png){ .sp-card-icon } **Interactive Tutorials & Zero-Install Trial**
+
+    ---
+
+    Run Soft Potato v3 immediately in your browser with Google Colab or follow step-by-step guides covering chronoamperometry, cyclic voltammetry, and scientific Python for bench chemists.
 
     [:octicons-arrow-right-24: Browse Tutorials](tutorials/index.md)
 
@@ -61,43 +77,56 @@ hide:
 
 ---
 
-## Installation
+## Try in Your Browser or Install Locally
 
-Install the latest stable release of Soft Potato from [PyPI](https://pypi.org/project/softpotato/) using `pip`:
+=== "Zero-Install (Google Colab)"
 
-```bash
-pip install softpotato
-```
+    New to Python or want to test Soft Potato right at the bench? Open our interactive starter notebook in **Google Colab** to calculate chronoamperometric currents with `analytical.cottrell()` in seconds—nothing to install on your computer:
 
-Don't have Python? See [Installing Python](tutorials/python/installing-python.md).
+    [:octicons-play-24: Launch Soft Potato v3 Starter in Google Colab](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2){ .md-button .md-button--primary target="_blank" rel="noopener" }
+
+=== "Local Installation (`pip`)"
+
+    Install the latest stable release of Soft Potato from [PyPI](https://pypi.org/project/softpotato/) using `pip`:
+
+    ```bash
+    pip install softpotato
+    ```
+
+    Don't have Python installed yet? Follow our step-by-step guide: [Installing Python](tutorials/python/installing-python.md).
 
 ---
 
-## Quick Example
+## Why Open-Source for Electrochemistry Research?
 
-Simulate or evaluate analytical electrochemistry in just a few lines of Python:
+<div class="sp-section-banner" markdown>
+<div markdown>
+**Built for Experimental Transparency & Education.** Commercial simulation suites often lock electrochemical models behind hardware dongles, per-seat licenses, and opaque algorithms. Soft Potato empowers laboratories, students, and reviewers with a transparent, peer-reviewable toolkit. Follow our ongoing progress in the [Development Roadmap](roadmap.md) and [Changelog](changelog.md).
+</div>
+<img src="assets/images/chip-lab.png" alt="Chip in the Laboratory" />
+</div>
 
-```python
-import numpy as np
-import softpotato as sp
+<div class="grid cards" markdown>
 
-# 1. Analytical Cottrell current transient at a planar electrode
-t = np.linspace(0.01, 10.0, 200)
-current = sp.analytical.cottrell(
-    t=t,
-    n=1,
-    D=1e-9,  # m^2 / s
-    c_bulk=1.0,  # mol / m^3 (1 mM)
-    A=1e-4,  # m^2 (1 cm^2)
-)
+-   :material-check-decagram: **Transparent, Verifiable Equations**
 
-# 2. Fit experimental chronoamperometric data to recover diffusivity D
-fit = sp.analytical.fit_cottrell(t=t, current=current, n=1, A=1e-4, c_bulk=1.0)
-print(f"Extracted D = {fit.D:.3e} m^2/s (R^2 = {fit.r_squared:.5f})")
-```
+    ---
 
-!!! chip "Chip's Tip: Always Use SI Units!"
-    Soft Potato functions use **SI base units** throughout: lengths in meters ($\text{m}$), areas in $\text{m}^2$, diffusion coefficients in $\text{m}^2\cdot\text{s}^{-1}$, and concentrations in $\text{mol}\cdot\text{m}^{-3}$ (conveniently, $1\text{ mM} = 1\text{ mol}\cdot\text{m}^{-3}$!).
+    Every analytical model, regression bound, and transport equation is open and documented against standard electrochemical literature—eliminating black-box curve fits in your manuscripts.
+
+-   :material-school: **Zero-Cost Classroom & Lab Access**
+
+    ---
+
+    Free for every student, postdoc, and teaching lab worldwide. Run simulations on any operating system or directly in a web browser via Google Colab without license servers.
+
+-   :material-file-check: **Reproducible Supplementary Information**
+
+    ---
+
+    Share a concise Python script or Jupyter notebook alongside your raw potentiostat data so collaborators and peer reviewers can reproduce your kinetic extractions and figures in one click.
+
+</div>
 
 ---
 
