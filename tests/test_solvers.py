@@ -7,8 +7,14 @@ import pytest
 from scipy.integrate import trapezoid
 
 from softpotato.analytical.microelectrodes import microsphere_limiting_current
-from softpotato.analytical.step import cottrell_spherical
-from softpotato.geometry import PlanarGeometry, SphericalGeometry
+from softpotato.analytical.step import cottrell, cottrell_spherical
+from softpotato.geometry import CylindricalGeometry, PlanarGeometry, SphericalGeometry
+from softpotato.grid import (
+    ExponentialMesh,
+    GeometricExpandingMesh,
+    Uniform1DMesh,
+    create_diffusion_mesh,
+)
 from softpotato.solver import (
     BaseSolver,
     CrankNicolson,
@@ -593,3 +599,268 @@ def test_diffusion_problem_electrodes_option():
         res_left.left_currents["A"],
         rtol=1e-12,
     )
+
+
+def test_diffusion_problem_mesh1d_integration():
+    """Verify DiffusionProblem accepts Mesh1D subclasses and preserves problem.mesh."""
+    # 1. Uniform1DMesh
+    u_mesh = Uniform1DMesh(0.0, 1.0, n_points=21)
+    prob_u = DiffusionProblem(
+        grid=u_mesh,
+        diffusivity={"A": 1e-5},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 1.0},
+    )
+    assert prob_u.mesh is u_mesh
+    assert isinstance(prob_u.grid, np.ndarray)
+    np.testing.assert_array_equal(prob_u.grid, u_mesh.nodes)
+    assert prob_u.n_points == 21
+    assert prob_u.bounds == (0.0, 1.0)
+    assert prob_u.is_uniform is True
+    assert np.isclose(prob_u.dx, 0.05)
+    assert np.isclose(prob_u.dx_min, 0.05)
+    assert np.isclose(prob_u.dx_max, 0.05)
+    np.testing.assert_allclose(prob_u.dx_array, u_mesh.dx)
+
+    # 2. GeometricExpandingMesh (including sub-micron spacings < 1e-8 m)
+    g_mesh = GeometricExpandingMesh(0.0, 1e-6, n_points=31, gamma=1.08)
+    prob_g = DiffusionProblem(
+        grid=g_mesh,
+        diffusivity={"A": 1e-9},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 1.0},
+    )
+    assert prob_g.mesh is g_mesh
+    assert isinstance(prob_g.grid, np.ndarray)
+    np.testing.assert_array_equal(prob_g.grid, g_mesh.nodes)
+    assert prob_g.is_uniform is False
+    assert np.isclose(prob_g.dx_min, g_mesh.dx_min)
+    assert np.isclose(prob_g.dx_max, g_mesh.dx_max)
+    with pytest.raises(ValueError, match="Grid is non-uniform"):
+        _ = prob_g.dx
+
+    # 3. ExponentialMesh with create_diffusion_mesh and callable initial condition
+    e_mesh = create_diffusion_mesh(
+        D=1e-9, t_max=1.0, kind="exponential", n_points=41, beta=2.5
+    )
+    prob_e = DiffusionProblem(
+        grid=e_mesh,
+        diffusivity={"A": 1e-9},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": lambda x: np.exp(-x * 1e4)},
+    )
+    assert prob_e.mesh is e_mesh
+    assert prob_e.is_uniform is False
+    res_e = get_solver("scipy_ivp").solve(prob_e, t_span=(0.0, 0.1))
+    assert res_e.success
+    assert res_e.mesh is e_mesh
+
+    # 4. Raw np.ndarray leaves problem.mesh as None
+    prob_raw = DiffusionProblem(
+        grid=g_mesh.nodes,
+        diffusivity={"A": 1e-9},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 1.0},
+    )
+    assert prob_raw.mesh is None
+    assert prob_raw.is_uniform is False
+
+    # 5. Radial coordinate bounds validation on Mesh1D
+    with pytest.raises(ValueError, match="strictly positive radial coordinates"):
+        DiffusionProblem(
+            grid=Uniform1DMesh(0.0, 1.0, n_points=11),
+            diffusivity={"A": 1.0},
+            boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+            initial_conditions={"A": 1.0},
+            geometry="spherical",
+        )
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+@pytest.mark.parametrize("mesh_kind", ["geometric", "exponential"])
+def test_nonuniform_mesh_dirichlet_benchmark(solver_name: str, mesh_kind: str):
+    """Verify all solvers on non-uniform Mesh1D against exact Fourier sine decay."""
+    L = 1.0
+    D = 0.05
+    if mesh_kind == "geometric":
+        mesh = GeometricExpandingMesh(0.0, L, n_points=51, gamma=1.04, two_sided=True)
+    else:
+        mesh = ExponentialMesh(0.0, L, n_points=51, beta=1.5, two_sided=True)
+
+    t_eval = np.linspace(0.0, 0.4, 9)
+    problem = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(0.0))},
+        initial_conditions={"c": lambda x_pts: np.sin(np.pi * x_pts / L)},
+    )
+
+    solver = get_solver(solver_name)
+    result = solver.solve(problem, t_span=(0.0, 0.4), t_eval=t_eval)
+
+    assert result.success
+    assert result.mesh is mesh
+    T, X = np.meshgrid(t_eval, mesh.nodes, indexing="ij")
+    c_exact = np.sin(np.pi * X / L) * np.exp(-D * (np.pi / L) ** 2 * T)
+
+    max_error = float(np.max(np.abs(result["c"] - c_exact)))
+    assert max_error < 5e-3, (
+        f"{solver_name} on {mesh_kind} mesh exceeded tolerance: {max_error:.4e}"
+    )
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+def test_nonuniform_mesh_planar_cottrell_benchmark(solver_name: str):
+    """Verify planar Cottrell step response on GeometricExpandingMesh across all solvers."""
+    D = 1.0e-9
+    c_bulk = 1.0
+    t_max = 1.0
+    mesh = GeometricExpandingMesh.from_diffusion_layer(
+        D=D, t_max=t_max, n_points=55, gamma=1.07
+    )
+
+    problem = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"A": c_bulk},
+        n_electrons=1,
+    )
+
+    t_eval = np.linspace(0.05, t_max, 20)
+    solver_kwargs = {}
+    if solver_name in ("crank_nicolson", "implicit"):
+        solver_kwargs["dt"] = 1e-3
+
+    solver = get_solver(solver_name, **solver_kwargs)
+    result = solver.solve(problem, t_span=(0.0, t_max), t_eval=t_eval)
+
+    assert result.success
+    i_num = np.abs(result.currents["A"])
+    i_ana = cottrell(t_eval, n=1, area=1.0, D=D, c_bulk=c_bulk)
+
+    rel_error = float(np.max(np.abs(i_num - i_ana) / i_ana))
+    tol = 0.01 if solver_name == "implicit" else 0.005
+    assert rel_error < tol, (
+        f"{solver_name} exceeded tolerance on expanding-mesh Cottrell: {rel_error * 100:.3f}%"
+    )
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+def test_nonuniform_mesh_neumann_mass_conservation(solver_name: str):
+    """Verify mass conservation under zero-flux Neumann BCs on non-uniform Mesh1D."""
+    mesh = ExponentialMesh(0.0, 1.0, n_points=61, beta=2.0, two_sided=True)
+    init_func = lambda x_pts: np.exp(-80.0 * (x_pts - 0.5) ** 2)
+
+    problem = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"A": 0.02},
+        boundary_conditions={"A": (NeumannBC(0.0), NeumannBC(0.0))},
+        initial_conditions={"A": init_func},
+    )
+
+    solver = get_solver(solver_name)
+    t_eval = np.linspace(0.0, 0.2, 5)
+    result = solver.solve(problem, t_span=(0.0, 0.2), t_eval=t_eval)
+
+    assert result.success
+    c = result["A"]
+    initial_mass = trapezoid(c[0, :], mesh.nodes)
+    for k in range(len(t_eval)):
+        current_mass = trapezoid(c[k, :], mesh.nodes)
+        rel_diff = abs(current_mass - initial_mass) / initial_mass
+        assert rel_diff < 2e-3, (
+            f"{solver_name} failed non-uniform mass conservation at step {k}: {rel_diff:.4e}"
+        )
+
+
+@pytest.mark.parametrize(
+    "solver_name",
+    ["explicit", "implicit", "crank_nicolson", "scipy_ivp"],
+)
+def test_nonuniform_mesh_spherical_and_cylindrical_solvers(solver_name: str):
+    """Verify spherical and cylindrical geometries with GeometricExpandingMesh across all solvers."""
+    D = 1.0e-9
+    c_bulk = 1.0
+    r0 = 25.0e-6
+    t_max = 1.0
+    mesh = GeometricExpandingMesh.from_diffusion_layer(
+        D=D, t_max=t_max, x_min=r0, n_points=55, gamma=1.07
+    )
+
+    # Spherical Cottrell benchmark on GeometricExpandingMesh
+    sph_geom = SphericalGeometry(r0=r0)
+    prob_sph = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"c": c_bulk},
+        geometry=sph_geom,
+        n_electrons=1,
+    )
+    t_eval = np.linspace(0.05, t_max, 20)
+    solver_kwargs = (
+        {"dt": 1e-3} if solver_name in ("crank_nicolson", "implicit") else {}
+    )
+    res_sph = get_solver(solver_name, **solver_kwargs).solve(
+        prob_sph, t_span=(0.0, t_max), t_eval=t_eval
+    )
+    assert res_sph.success
+    i_num = np.abs(res_sph.currents["c"])
+    i_ana = cottrell_spherical(
+        t_eval, r=r0, n=1, D=D, c_bulk=c_bulk, area=sph_geom.area
+    )
+    rel_err = float(np.max(np.abs(i_num - i_ana) / i_ana))
+    tol = 0.01 if solver_name == "implicit" else 0.005
+    assert rel_err < tol
+
+    # Cylindrical diffusion on GeometricExpandingMesh
+    cyl_geom = CylindricalGeometry(r0=r0, length=1e-2)
+    prob_cyl = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"c": c_bulk},
+        geometry=cyl_geom,
+        n_electrons=1,
+    )
+    res_cyl = get_solver(solver_name, **solver_kwargs).solve(
+        prob_cyl, t_span=(0.0, 0.2), t_eval=np.linspace(0.02, 0.2, 5)
+    )
+    assert res_cyl.success
+    assert np.all(res_cyl.currents["c"] < 0.0)
+
+
+def test_explicit_cfl_nonuniform_mesh():
+    """Verify ExplicitFiniteDifference enforces CFL stability using dx_min on non-uniform grids."""
+    mesh = GeometricExpandingMesh(0.0, 1.0, n_points=21, gamma=1.15)
+    D = 0.05
+    cfl_min = (mesh.dx_min**2) / (2.0 * D)
+    cfl_max = (mesh.dx_max**2) / (2.0 * D)
+    assert cfl_min < cfl_max
+
+    problem = DiffusionProblem(
+        grid=mesh,
+        diffusivity={"A": D},
+        boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(1.0))},
+        initial_conditions={"A": 0.0},
+    )
+
+    # dt between cfl_min and cfl_max must raise ValueError based on dx_min
+    bad_dt = 2.0 * cfl_min
+    with pytest.raises(ValueError, match="exceeds the CFL stability limit"):
+        ExplicitFiniteDifference(dt=bad_dt).solve(problem, t_span=(0.0, 0.05))
+
+    # dt <= cfl_min succeeds
+    good_dt = 0.8 * cfl_min
+    res = ExplicitFiniteDifference(dt=good_dt).solve(problem, t_span=(0.0, 0.05))
+    assert res.success

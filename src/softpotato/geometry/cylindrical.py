@@ -7,6 +7,8 @@ from typing import Any, Literal
 
 import numpy as np
 
+from softpotato.grid.base import Mesh1D
+
 from .base import Geometry
 
 
@@ -147,7 +149,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
             return self._explicit_area
         return 2.0 * math.pi * self.r0 * self.length
 
-    def validate_grid(self, grid: np.ndarray) -> np.ndarray:
+    def validate_grid(self, grid: np.ndarray | Mesh1D) -> np.ndarray:
         """Validate radial grid bounds (:math:`r_0 > 0`) and infer ``r0`` if not explicitly set."""
         arr = super().validate_grid(grid)
         if not self._r0_explicit:
@@ -157,7 +159,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
     def laplacian(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
         t: float = 0.0,
@@ -168,7 +170,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
         ----------
         c : np.ndarray
             1D concentration array of shape ``(N,)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial coordinate grid :math:`r \in [r_0, r_{\max}]` of shape ``(N,)`` with :math:`r_0 > 0`.
         bc_left : BoundaryCondition, optional
             Inner boundary condition at :math:`r = r_0`.
@@ -186,7 +188,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
 
     def laplacian_matrix(
         self,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -194,7 +196,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
 
         Parameters
         ----------
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial grid :math:`r` of shape ``(N,)`` with :math:`r_0 > 0`.
         bc_left : BoundaryCondition, optional
             Inner boundary condition at :math:`r = r_0`.
@@ -213,7 +215,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
     def surface_flux(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         diffusivity: float,
         side: str = "left",
     ) -> float | np.ndarray:
@@ -223,7 +225,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
         ----------
         c : np.ndarray
             Concentration array of shape ``(N_r,)`` or ``(N_t, N_r)``.
-        grid : np.ndarray
+        grid : np.ndarray or Mesh1D
             1D radial grid :math:`r` of shape ``(N_r,)`` with :math:`r_0 > 0`.
         diffusivity : float
             Species diffusion coefficient :math:`D > 0`.
@@ -242,7 +244,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
         flux: float | np.ndarray,
         n_electrons: int = 1,
         side: Literal["left", "right"] = "left",
-        grid: np.ndarray | None = None,
+        grid: np.ndarray | Mesh1D | None = None,
     ) -> float | np.ndarray:
         r"""Integrate normal flux over the cylindrical electrode surface :math:`I = n F A J`.
 
@@ -254,7 +256,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
             Number of electrons transferred per reaction (:math:`n > 0`).
         side : {'left', 'right'}, default 'left'
             Domain boundary at which to compute the Faradaic current.
-        grid : np.ndarray, optional
+        grid : np.ndarray or Mesh1D, optional
             Spatial grid coordinates used to determine outer boundary area when ``side='right'``.
 
         Returns
@@ -263,7 +265,7 @@ class CylindricalGeometry(Geometry, name="cylindrical"):
             Faradaic current :math:`I` in Amperes (:math:`\text{A}`).
         """
         if side == "right" and grid is not None and self._explicit_area is None:
-            r_right = float(grid[-1])
+            r_right = float(np.asarray(grid)[-1])
             area = 2.0 * math.pi * r_right * self.length
             return self._eval_1d_current(flux, n_electrons=n_electrons, area=area)
         return self._eval_1d_current(flux, n_electrons=n_electrons)
