@@ -26,7 +26,7 @@ True
 (101, 50)
 """
 
-from . import analytical, constants, geometry, solver
+from . import analytical, constants, geometry, grid, solver
 from .analytical import (
     BenchmarkCaseResult,
     BenchmarkMetrics,
@@ -145,6 +145,10 @@ from .geometry import (
     list_geometries,
     register_geometry,
 )
+from .grid import (
+    Mesh1D,
+    Uniform1DMesh,
+)
 from .solver import (
     BaseSolver,
     BoundaryCondition,
@@ -185,6 +189,7 @@ __all__ = [
     "KouteckyLevichResult",
     "LevichFitResult",
     "MatsudaAyabeResult",
+    "Mesh1D",
     "MicrodiscFitResult",
     "NeumannBC",
     "NicholsonResult",
@@ -197,6 +202,7 @@ __all__ = [
     "SphericalGeometry",
     "TafelFitResult",
     "TafelResult",
+    "Uniform1DMesh",
     "UnknownGeometryError",
     "__version__",
     "analytical",
@@ -228,6 +234,7 @@ __all__ = [
     "geometry",
     "get_geometry",
     "get_solver",
+    "grid",
     "koutecky_levich",
     "koutecky_levich_analysis",
     "levich",
