@@ -6,7 +6,7 @@ import math
 
 import numpy as np
 
-from .base import Mesh1D
+from .base import Mesh1D, diffusion_layer_thickness
 
 
 class Uniform1DMesh(Mesh1D):
@@ -162,6 +162,62 @@ class Uniform1DMesh(Mesh1D):
         self._spacing = float(spacing)
         self._dx = np.diff(self._nodes)
         self._dx.flags.writeable = False
+
+    @classmethod
+    def from_diffusion_layer(
+        cls,
+        D: float,
+        t_max: float,
+        *,
+        x_min: float = 0.0,
+        factor: float = 6.0,
+        n_points: int | None = None,
+        dx: float | None = None,
+    ) -> Uniform1DMesh:
+        r"""Create a uniform mesh sized to the diffusion layer thickness.
+
+        Sets :math:`x_{\max} = x_{\min} + \text{factor} \cdot \sqrt{D \, t_{\max}}`,
+        where ``factor`` defaults to :math:`6.0` (:math:`\delta \approx 6 \sqrt{D t_{\max}}`).
+
+        Parameters
+        ----------
+        D : float
+            Diffusion coefficient :math:`D > 0` (:math:`\text{m}^2/\text{s}`).
+        t_max : float
+            Maximum characteristic simulation time :math:`t_{\max} > 0` (:math:`\text{s}`).
+        x_min : float, default 0.0
+            Electrode surface coordinate :math:`x_{\min}`.
+        factor : float, default 6.0
+            Dimensionless multiplier for diffusion layer thickness
+            :math:`\delta = \text{factor} \cdot \sqrt{D t_{\max}}`.
+        n_points : int | None, optional
+            Total number of grid nodes :math:`N`. Defaults to ``100`` if neither
+            ``n_points`` nor ``dx`` is specified.
+        dx : float | None, optional
+            Uniform grid spacing :math:`\Delta x`.
+
+        Returns
+        -------
+        Uniform1DMesh
+            Configured uniform mesh spanning :math:`[x_{\min}, x_{\min} + \delta]`.
+        """
+        delta = diffusion_layer_thickness(D, t_max, factor=factor)
+        if isinstance(x_min, bool):
+            raise TypeError("x_min must be a real number.")
+        try:
+            x_min_f = float(x_min)
+        except (TypeError, ValueError) as exc:
+            raise TypeError("x_min must be a real number.") from exc
+
+        if n_points is None and dx is None:
+            n_points = 100
+
+        return cls(
+            x_min=x_min_f,
+            x_max=x_min_f + delta,
+            n_points=n_points,
+            dx=dx,
+        )
 
     @property
     def nodes(self) -> np.ndarray:
