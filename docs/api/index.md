@@ -4,7 +4,7 @@
 <div markdown>
 Welcome to the **Soft Potato** API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
-and numerical PDE solvers.
+coordinate geometries, non-uniform spatial discretization meshes, and numerical PDE solvers.
 </div>
 <img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" />
 </div>
@@ -164,8 +164,10 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 | [`list_benchmark_cases`][softpotato.analytical.benchmark.list_benchmark_cases] | $\varnothing$ | $\text{cases}$ | Names of available standard benchmark cases. |  |
 | [`run_benchmark`][softpotato.analytical.benchmark.run_benchmark] | $\text{case}, \text{solver}$ | $\text{result}$ | Unified runner executing a specified validation benchmark. |  |
 | [`run_cottrell_benchmark`][softpotato.analytical.benchmark.run_cottrell_benchmark] | $\text{solver}, D, c^*, A$ | $\text{result}$ | Chronoamperometric potential step solver accuracy benchmark. | [2](#ref-2) |
+| [`run_spherical_cottrell_benchmark`][softpotato.analytical.benchmark.run_spherical_cottrell_benchmark] | $\text{solver}, D, c^*, r_0$ | $\text{result}$ | Spherical microelectrode potential step accuracy benchmark. | [3](#ref-3), [22](#ref-22) |
 | [`run_fourier_decay_benchmark`][softpotato.analytical.benchmark.run_fourier_decay_benchmark] | $\text{solver}, D, L, t_{\text{end}}$ | $\text{result}$ | 1D Fourier sine diffusion series analytical validation. | [30](#ref-30) |
 | [`run_mass_conservation_benchmark`][softpotato.analytical.benchmark.run_mass_conservation_benchmark] | $\text{solver}, D, L, t$ | $\text{result}$ | Zero-flux total mass conservation test across simulation time. |  |
+| [`run_grid_efficiency_benchmark`][softpotato.analytical.benchmark.run_grid_efficiency_benchmark] | $\text{case}, \text{solver}, N_{\text{exp}}, N_{\text{uni}}$ | $\text{comparison}$ | Comparative accuracy, runtime speedup, and memory benchmark across expanding vs. uniform meshes. | [3](#ref-3), [31](#ref-31) |
 | [`run_benchmark_suite`][softpotato.analytical.benchmark.run_benchmark_suite] | $\text{solvers}, \text{cases}$ | $\text{suite}$ | Comprehensive benchmark suite execution across multiple solvers. |  |
 | [`verify_spatial_convergence`][softpotato.analytical.benchmark.verify_spatial_convergence] | $\text{solver}, \Delta x_i, D, L$ | $p_x$ | Spatial grid refinement convergence order verification. | [31](#ref-31) |
 | [`verify_temporal_convergence`][softpotato.analytical.benchmark.verify_temporal_convergence] | $\text{solver}, \Delta t_j, D, L$ | $p_t$ | Time-step refinement convergence order verification. | [31](#ref-31) |
