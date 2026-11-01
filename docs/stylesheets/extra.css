@@ -101,20 +101,6 @@
     flex: 1 1 62%;
 }
 
-.sp-hero__eyebrow {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--sp-orange);
-    background-color: rgba(253, 128, 49, 0.12);
-    border: 1px solid rgba(253, 128, 49, 0.35);
-    padding: 0.2rem 0.65rem;
-    border-radius: 999px;
-    margin: 0 0 0.65rem 0 !important;
-}
-
 .sp-hero__content h1 {
     margin: 0 0 0.65rem 0 !important;
     font-size: 2.05rem;
@@ -125,7 +111,7 @@
 .sp-hero__tagline {
     font-size: 1.05rem;
     line-height: 1.6;
-    margin: 0 0 1.15rem 0;
+    margin: 0 0 1.5rem 0;
     opacity: 0.92;
 }
 
@@ -208,9 +194,7 @@
         text-align: center;
         padding: 1.5rem;
     }
-    .sp-hero__actions,
-    .sp-hero__badges,
-    .sp-hero__metrics {
+    .sp-hero__actions {
         justify-content: center;
     }
     .sp-hero__mascot {

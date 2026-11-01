@@ -6,10 +6,10 @@ hide:
 
 <div class="sp-hero">
   <div class="sp-hero__content">
-    <p class="sp-hero__eyebrow">Soft Potato v3.2 &bull; Open-Source Electrochemistry Toolkit</p>
-    <h1>Simulate Fast Voltammetry and Microscale Diffusion Layers in Milliseconds</h1>
+    <p class="sp-hero__eyebrow">Soft Potato &bull; Open-Source Electrochemistry Toolkit</p>
+    <h1>Electrochemical Simulation Designed for the Laboratory Bench</h1>
     <p class="sp-hero__tagline">
-      Predict voltammetric, chronoamperometric, hydrodynamic, and SECM responses—or extract transport and kinetic parameters directly from experimental data—using pure physical inputs (<i>E</i><sup>0</sup>, <i>k</i><sup>0</sup>, &alpha;, <i>D</i>, scan rates). Resolving steep interfacial concentration gradients (&part;<i>c</i>/&part;<i>x</i> at <i>x</i> = 0) no longer requires millions of spatial points or heavy computing resources.
+      Predict voltammetric, chronoamperometric, hydrodynamic, and SECM responses—or extract transport and kinetic parameters directly from experimental data—using pure physical inputs (<i>E</i><sup>0</sup>, <i>k</i><sup>0</sup>, &alpha;, <i>D</i>, scan rates) without touching numerical meshes or differential equation code.
     </p>
     <div class="sp-hero__metrics">
       <span class="sp-metric-pill"><strong>5–20&times; Faster</strong>&nbsp;PDE Solves</span>
@@ -18,14 +18,11 @@ hide:
       <a class="md-button md-button--primary" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
         Try Live in Google Colab
       </a>
-      <a class="md-button" href="tutorials/electrochemistry/expanding_grids">
-        Expanding Grids Tutorial
-      </a>
       <a class="md-button" href="tutorials/">
         Explore Bench Tutorials
       </a>
-      <a class="md-button" href="api/">
-        API Reference
+      <a class="md-button" href="api/analytical/">
+        Analytical Toolkit
       </a>
     </div>
     <div class="sp-hero__badges">
@@ -55,13 +52,13 @@ hide:
 
     [:octicons-arrow-right-24: Explore Analytical Equations](api/analytical/index.md)
 
--   ![High-Speed Interfacial Meshing](assets/images/chip-coding.png){ .sp-card-icon } **High-Speed Interfacial Resolution (`softpotato.grid`)**
+-   ![Diffusion Layer Visualizer](assets/images/chip-coding.png){ .sp-card-icon } **Diffusion Layer Visualizer**
 
     ---
 
-    Cluster sub-micron spatial nodes directly at the working electrode ($x = 0$) where concentration gradients are steepest while smoothly expanding into the bulk—cutting simulation times by **5–20×** across planar, spherical, and cylindrical geometries.
+    Inspect how transient concentration profiles $c(x, t)$ and interfacial depletion zones evolve in time across planar, spherical, and cylindrical electrode geometries.
 
-    [:octicons-arrow-right-24: Grid Module API](api/grid.md) &nbsp;&bull;&nbsp; [:octicons-book-24: Grids Tutorial](tutorials/electrochemistry/expanding_grids.ipynb)
+    [:octicons-arrow-right-24: Visualize Diffusion Profiles](tutorials/electrochemistry/cottrell_geometries.ipynb)
 
 -   ![Quantitative Experimental Data Extraction](assets/images/chip-lab.png){ .sp-card-icon } **Quantitative Experimental Data Extraction**
 
@@ -75,7 +72,7 @@ hide:
 
     ---
 
-    Run Soft Potato v3 immediately in your browser with Google Colab or follow step-by-step guides covering chronoamperometry, cyclic voltammetry, multi-geometry diffusion, and expanding grids.
+    Run Soft Potato v3 immediately in your browser with Google Colab or follow step-by-step guides covering chronoamperometry, cyclic voltammetry, and scientific Python for bench chemists.
 
     [:octicons-arrow-right-24: Browse Tutorials](tutorials/index.md)
 
