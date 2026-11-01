@@ -2,11 +2,65 @@
 
 from __future__ import annotations
 
+import math
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from typing import Any
 
 import numpy as np
+
+
+def diffusion_layer_thickness(
+    D: float,
+    t_max: float,
+    factor: float = 6.0,
+) -> float:
+    r"""Estimate the semi-infinite diffusion layer thickness :math:`\delta`.
+
+    Computes the characteristic domain extent required to simulate semi-infinite
+    diffusion over duration :math:`t_{\max}` without outer boundary interference:
+
+    .. math::
+
+        \delta = \text{factor} \cdot \sqrt{D \, t_{\max}}
+
+    At the default ``factor=6.0``, :math:`\operatorname{erfc}(6 / 2) \approx 2.2 \times 10^{-5}`,
+    ensuring concentration perturbations at :math:`x = \delta` remain negligible.
+
+    Parameters
+    ----------
+    D : float
+        Species diffusion coefficient :math:`D > 0` (:math:`\text{m}^2/\text{s}`).
+    t_max : float
+        Maximum characteristic simulation time :math:`t_{\max} > 0` (:math:`\text{s}`).
+    factor : float, default 6.0
+        Dimensionless multiplier :math:`> 0` applied to :math:`\sqrt{D t_{\max}}`.
+
+    Returns
+    -------
+    float
+        Estimated diffusion layer thickness :math:`\delta > 0`.
+
+    Raises
+    ------
+    ValueError
+        If ``D <= 0``, ``t_max <= 0``, ``factor <= 0``, or any input is non-finite.
+    TypeError
+        If inputs are not real numbers.
+    """
+    for name, val in (("D", D), ("t_max", t_max), ("factor", factor)):
+        if isinstance(val, (bool, str, bytes)):
+            raise TypeError(f"{name} must be a real number.")
+        try:
+            val_f = float(val)
+        except (TypeError, ValueError) as exc:
+            raise TypeError(f"{name} must be a real number.") from exc
+        if not math.isfinite(val_f):
+            raise ValueError(f"{name} must be finite, got {val}.")
+        if val_f <= 0.0:
+            raise ValueError(f"{name} must be strictly positive, got {val_f}.")
+
+    return float(factor) * math.sqrt(float(D) * float(t_max))
 
 
 class Mesh1D(ABC):

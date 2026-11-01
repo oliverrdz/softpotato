@@ -146,8 +146,12 @@ from .geometry import (
     register_geometry,
 )
 from .grid import (
+    ExponentialMesh,
+    GeometricExpandingMesh,
     Mesh1D,
     Uniform1DMesh,
+    create_diffusion_mesh,
+    diffusion_layer_thickness,
 )
 from .solver import (
     BaseSolver,
@@ -182,8 +186,10 @@ __all__ = [
     "CylindricalGeometry",
     "DiffusionProblem",
     "DirichletBC",
+    "ExponentialMesh",
     "F",
     "FitResult",
+    "GeometricExpandingMesh",
     "Geometry",
     "KouteckyLevichFitResult",
     "KouteckyLevichResult",
@@ -218,6 +224,8 @@ __all__ = [
     "cottrell_cylinder",
     "cottrell_spherical",
     "cottrell_step",
+    "create_diffusion_mesh",
+    "diffusion_layer_thickness",
     "estimate_convergence_order",
     "exchange_current",
     "exchange_current_density",
