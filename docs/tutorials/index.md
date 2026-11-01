@@ -16,6 +16,7 @@ Interactive simulations, numerical solvers, and analytical benchmarking with Sof
 - [**Cottrell**](electrochemistry/cottrell.ipynb) — 1D potential-step diffusion simulation, concentration profiles, Cottrell plots, and diffusivity extraction.
 - [**Multi-Geometry Cottrell**](electrochemistry/cottrell_geometries.ipynb) — Equivalent potential step across planar, spherical, and cylindrical geometries with native and 2D Cartesian concentration mapping.
 - [**Cyclic Voltammetry**](electrochemistry/cyclic_voltammetry.ipynb) — Reversible electron transfer ($O + e^- \rightleftharpoons R$), triangular sweep generation, Randles–Ševčík diagnostics, and peak separation analysis.
+- [**Non-Uniform & Expanding Grids**](electrochemistry/expanding_grids.ipynb) — Physics-informed domain sizing ($\delta = 6\sqrt{D t_{\max}}$), geometric and exponential coordinate stretching (`softpotato.grid`), boundary-layer resolution in chronoamperometry and cyclic voltammetry, and $\mathcal{O}(\Delta x^2)$ spatial convergence benchmarks.
 
 ---
 

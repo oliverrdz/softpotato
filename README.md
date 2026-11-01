@@ -75,6 +75,36 @@ c_profile = result["c"]  # 2D array of shape (N_times, N_points)
 c_flux = result.fluxes["c"]  # The current can be calculated with i = n*F*A*c_flux
 ```
 
+## Non-Uniform Spatial Discretization (`softpotato.grid`)
+
+Concentration gradients in electrochemical experiments are confined to a thin diffusion boundary layer ($\delta \approx 6\sqrt{D t_{\max}}$) adjacent to the working electrode. Soft Potato's `grid` module provides uniform, geometrically expanding, and exponential/hyperbolic coordinate meshes that cluster nodes near active interfaces while coarsening into the bulk solution:
+
+```python
+from softpotato.grid import (
+    create_diffusion_mesh,
+    GeometricExpandingMesh,
+    ExponentialMesh,
+)
+from softpotato.solver import DiffusionProblem, DirichletBC, get_solver
+
+# Automatically size a geometrically expanding mesh to delta = 6 * sqrt(D * t_max)
+mesh = create_diffusion_mesh(
+    D=1e-9,
+    t_max=1.0,
+    kind="geometric",
+    n_points=60,
+    gamma=1.08,
+)
+
+problem = DiffusionProblem(
+    grid=mesh,
+    diffusivity={"Ox": 1e-9},
+    boundary_conditions={"Ox": (DirichletBC(0.0), DirichletBC(1.0))},
+    initial_conditions={"Ox": 1.0},
+)
+result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 1.0))
+```
+
 ## Analytical Equations & Benchmarking (`softpotato.analytical`)
 
 Soft Potato provides exact closed-form analytical solutions and empirical models for benchmarking numerical solvers and rapid parameter estimation:

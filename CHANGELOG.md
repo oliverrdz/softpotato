@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Non-Uniform Spatial Discretization & Expanding Meshes (`softpotato.grid`)**:
+  - Introduced `softpotato.grid` subpackage providing 1D spatial discretization meshes and physics-informed grid generators for numerical PDE simulations:
+    - `Mesh1D`: Abstract base class implementing the 1D mesh interface (`nodes`, `dx`, `n_points`, `bounds`, `x_min`, `x_max`, `dx_min`, `dx_max`, `is_uniform`) and full NumPy array protocol (`__array__`, `__array_ufunc__`, indexing, slicing, arithmetic).
+    - `Uniform1DMesh`: Equidistant 1D spatial mesh constructible from `n_points` or `dx`, plus `Uniform1DMesh.from_diffusion_layer`.
+    - `GeometricExpandingMesh`: Geometrically expanding 1D spatial mesh ($\Delta x_j = \Delta x_0 \gamma^j$, $\gamma > 1$) supporting three parameterizations (`(n_points, gamma)`, `(dx_min, gamma)`, `(n_points, dx_min)`), two-sided symmetric boundary clustering (`two_sided=True`), and `GeometricExpandingMesh.from_diffusion_layer`.
+    - `ExponentialMesh`: Smooth non-uniform 1D spatial mesh parameterized by stretching factor $\beta > 0$ across `"exponential"`, `"tanh"` (`ExponentialMesh.from_tanh`), and `"sinh"` (`ExponentialMesh.from_sinh`) coordinate mappings, with `two_sided=True` and `ExponentialMesh.from_diffusion_layer`.
+    - `diffusion_layer_thickness` and `create_diffusion_mesh`: Physics-informed domain sizing ($\delta = \text{factor} \cdot \sqrt{D \, t_{\max}}$) and unified mesh factory.
+  - Integrated `Mesh1D` and non-uniform finite-difference stencils across `DiffusionProblem`, `SolverResult`, `Geometry` (`PlanarGeometry`, `SphericalGeometry`, `CylindricalGeometry`), and all built-in solvers (`ScipyIVPSolver`, `CrankNicolson`, `ImplicitFiniteDifference`, `ExplicitFiniteDifference`).
+  - Extended `softpotato.analytical.benchmark` with non-uniform spatial order-of-convergence verification (`verify_spatial_convergence`), spherical Cottrell benchmarking (`run_spherical_cottrell_benchmark`), comparative grid efficiency benchmarking (`run_grid_efficiency_benchmark`, `GridComparisonEntry`, `GridComparisonResult`), and `benchmarks/benchmark_expanding_grids.py`.
+  - Added API reference, mathematical user guides (`docs/api/grid.md`, `docs/api/index.md`, `docs/api/solver.md`), and interactive Jupyter tutorial notebook (`examples/expanding_grids.ipynb`, linked under `docs/tutorials/electrochemistry/expanding_grids.ipynb` and `docs/examples/expanding_grids.ipynb`).
 - **Spatial Coordinate Geometries & Operators (`softpotato.geometry`)**:
   - Introduced `softpotato.geometry` subpackage abstracting spatial coordinate systems and differential operators for electrochemical simulations across 1D planar, spherical, and cylindrical domains:
     $$\nabla^2 c = \frac{\partial^2 c}{\partial r^2} + \frac{p}{r} \frac{\partial c}{\partial r}$$
