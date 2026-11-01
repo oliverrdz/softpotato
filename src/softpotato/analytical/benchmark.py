@@ -43,7 +43,9 @@ Functions & Classes
 | :func:`~softpotato.analytical.benchmark.verify_temporal_convergence` | Function | Verify temporal discretization convergence order across a sequence of time step refinements. |
 | :func:`~softpotato.analytical.benchmark.run_fourier_decay_benchmark` | Function | Benchmark a solver against the exact 1D Fourier sine-mode diffusion decay solution. |
 | :func:`~softpotato.analytical.benchmark.run_cottrell_benchmark` | Function | Benchmark a solver against the exact planar Cottrell concentration profile and surface flux. |
+| :func:`~softpotato.analytical.benchmark.run_spherical_cottrell_benchmark` | Function | Benchmark a solver against the exact spherical Cottrell transient current and profile. |
 | :func:`~softpotato.analytical.benchmark.run_mass_conservation_benchmark` | Function | Benchmark total mass conservation in an insulated domain with zero-flux Neumann boundaries. |
+| :func:`~softpotato.analytical.benchmark.run_grid_efficiency_benchmark` | Function | Evaluate runtime, memory scaling, and :math:`L_2` error norms across uniform vs. expanding meshes. |
 | :func:`~softpotato.analytical.benchmark.list_benchmark_cases` | Function | Return the list of registered canonical benchmark case identifiers. |
 | :func:`~softpotato.analytical.benchmark.run_benchmark` | Function | Run a single named benchmark problem for a specified solver. |
 | :func:`~softpotato.analytical.benchmark.run_benchmark_suite` | Function | Execute the full validation suite across one or more solvers and generate a summary report. |
@@ -51,21 +53,38 @@ Functions & Classes
 | :class:`~softpotato.analytical.benchmark.ConvergenceResult` | Dataclass | Container for grid/time-step refinement errors and observed convergence order. |
 | :class:`~softpotato.analytical.benchmark.BenchmarkCaseResult` | Dataclass | Container for the outcome, timing, and error metrics of a single benchmark case. |
 | :class:`~softpotato.analytical.benchmark.BenchmarkSuiteResult` | Dataclass | Container aggregating results across multiple solvers and benchmark cases. |
+| :class:`~softpotato.analytical.benchmark.GridComparisonEntry` | Dataclass | Container for a single mesh configuration in a uniform vs. expanding grid benchmark. |
+| :class:`~softpotato.analytical.benchmark.GridComparisonResult` | Dataclass | Container comparing accuracy, runtime speedup, and memory scaling across meshes. |
 """
 
 from __future__ import annotations
 
 import math
 import time
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
 from scipy.integrate import trapezoid
+from scipy.special import erfc
 
-from softpotato.analytical.step import cottrell, step_concentration_profile
+from softpotato.analytical.kinetics import nernst_equilibrium_concentrations
+from softpotato.analytical.step import (
+    cottrell,
+    cottrell_spherical,
+    step_concentration_profile,
+)
+from softpotato.analytical.voltammetry import randles_sevcik
 from softpotato.constants import FARADAY
+from softpotato.geometry import SphericalGeometry
+from softpotato.grid import (
+    ExponentialMesh,
+    GeometricExpandingMesh,
+    Mesh1D,
+    Uniform1DMesh,
+    create_diffusion_mesh,
+)
 from softpotato.solver import (
     BaseSolver,
     DiffusionProblem,
@@ -320,6 +339,143 @@ class BenchmarkSuiteResult:
         return "\n".join([title, sep, header_row, sep, *data_rows, sep])
 
 
+@dataclass(frozen=True, kw_only=True)
+class GridComparisonEntry:
+    r"""Performance and accuracy metrics for a single spatial mesh configuration.
+
+    Parameters
+    ----------
+    label : str
+        Human-readable label describing the mesh configuration (e.g. ``'geometric (N=60)'``).
+    mesh_kind : str
+        Mesh family identifier (``'uniform'``, ``'geometric'``, or ``'exponential'``).
+    n_points : int
+        Total number of spatial grid nodes :math:`N_x`.
+    dx_min : float
+        Minimum interval spacing :math:`\Delta x_{\min}` across the mesh.
+    dx_max : float
+        Maximum interval spacing :math:`\Delta x_{\max}` across the mesh.
+    execution_time : float
+        Wall-clock solver runtime in seconds.
+    memory_bytes : int
+        Memory footprint in bytes of the stored concentration state array(s).
+    current_metrics : BenchmarkMetrics
+        Standardized error metrics (:math:`L_2`, :math:`L_\infty`, RMSE, relative error)
+        for the Faradaic current transient or voltammogram.
+    concentration_metrics : BenchmarkMetrics or None
+        Standardized error metrics for the spatial concentration field, if available.
+    details : dict[str, Any]
+        Additional diagnostic metadata (e.g., peak current error in cyclic voltammetry).
+    """
+
+    label: str
+    mesh_kind: str
+    n_points: int
+    dx_min: float
+    dx_max: float
+    execution_time: float
+    memory_bytes: int
+    current_metrics: BenchmarkMetrics
+    concentration_metrics: BenchmarkMetrics | None = None
+    details: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def l2_error(self) -> float:
+        r"""Discrete relative :math:`L_2` error norm of the Faradaic current."""
+        return self.current_metrics.l2_error
+
+    @property
+    def max_rel_error(self) -> float:
+        r"""Maximum relative error of the Faradaic current (or peak current error for CV)."""
+        if "peak_current_rel_error" in self.details:
+            return float(self.details["peak_current_rel_error"])
+        return self.current_metrics.max_rel_error
+
+
+@dataclass(frozen=True, kw_only=True)
+class GridComparisonResult:
+    r"""Comparative benchmark outcome evaluating uniform vs. expanding meshes.
+
+    Parameters
+    ----------
+    case_name : str
+        Electrochemical benchmark problem evaluated (e.g. ``'cottrell'``,
+        ``'spherical_cottrell'``, ``'cyclic_voltammetry'``).
+    solver_name : str
+        Name of the numerical solver evaluated.
+    entries : list[GridComparisonEntry]
+        Ordered list of evaluated mesh configurations and their error/timing metrics.
+    point_reduction_factor : float
+        Ratio of uniform grid points to expanding grid points required for target precision.
+    speedup_factor : float
+        Wall-clock runtime speedup of the expanding mesh relative to the finest uniform mesh.
+    memory_reduction_factor : float
+        Memory footprint reduction ratio of the expanding mesh relative to the finest uniform mesh.
+    passed : bool
+        Whether the expanding mesh met the target precision and efficiency criteria.
+    """
+
+    case_name: str
+    solver_name: str
+    entries: list[GridComparisonEntry]
+    point_reduction_factor: float
+    speedup_factor: float
+    memory_reduction_factor: float
+    passed: bool
+
+    def summary(self) -> str:
+        """Generate a formatted ASCII table comparing runtime, memory, and accuracy across meshes."""
+        headers = [
+            "Mesh Configuration",
+            "Kind",
+            "N_points",
+            "dx_min (m)",
+            "Current L_2",
+            "Max Rel Err (%)",
+            "Memory (KB)",
+            "Time (ms)",
+        ]
+        rows: list[list[str]] = []
+        for entry in self.entries:
+            rows.append(
+                [
+                    entry.label,
+                    entry.mesh_kind,
+                    str(entry.n_points),
+                    f"{entry.dx_min:.3e}",
+                    f"{entry.current_metrics.l2_error:.3e}",
+                    f"{entry.current_metrics.max_rel_error * 100.0:.4f}",
+                    f"{entry.memory_bytes / 1024.0:.2f}",
+                    f"{entry.execution_time * 1000.0:.2f}",
+                ]
+            )
+
+        col_widths = [len(h) for h in headers]
+        for row in rows:
+            for i, val in enumerate(row):
+                col_widths[i] = max(col_widths[i], len(val))
+
+        sep = "+-" + "-+-".join("-" * w for w in col_widths) + "-+"
+        header_row = (
+            "| "
+            + " | ".join(h.ljust(w) for h, w in zip(headers, col_widths, strict=True))
+            + " |"
+        )
+        data_rows = [
+            "| "
+            + " | ".join(val.ljust(w) for val, w in zip(row, col_widths, strict=True))
+            + " |"
+            for row in rows
+        ]
+
+        title = (
+            f"Grid Efficiency Benchmark: {self.case_name} (Solver: {self.solver_name} | "
+            f"Point Reduction: {self.point_reduction_factor:.1f}x | "
+            f"Speedup: {self.speedup_factor:.2f}x | Passed: {self.passed})"
+        )
+        return "\n".join([title, sep, header_row, sep, *data_rows, sep])
+
+
 # ==============================================================================
 # 2. Error Computation & Regression Utilities
 # ==============================================================================
@@ -523,6 +679,7 @@ def run_fourier_decay_benchmark(
     solver: BaseSolver | str = "crank_nicolson",
     *,
     n_points: int = 51,
+    grid: Mesh1D | np.ndarray | None = None,
     D: float = 0.05,
     L: float = 1.0,
     t_end: float = 0.2,
@@ -561,7 +718,10 @@ def run_fourier_decay_benchmark(
     solver : BaseSolver or str, default "crank_nicolson"
         Numerical solver instance or registered string name.
     n_points : int, default 51
-        Number of spatial grid points :math:`N_x`.
+        Number of spatial grid points :math:`N_x` (used when ``grid`` is None).
+    grid : Mesh1D or np.ndarray, optional
+        Custom 1D spatial mesh or coordinate array. If None, uses a uniform grid
+        spanning :math:`[0, L]` with ``n_points`` nodes.
     D : float, default 0.05
         Diffusion coefficient :math:`D > 0`.
     L : float, default 1.0
@@ -592,14 +752,25 @@ def run_fourier_decay_benchmark(
     """
     solver_inst, solver_name = _resolve_solver_instance(solver)
 
-    grid = np.linspace(0.0, L, n_points)
+    mesh_or_grid: Mesh1D | np.ndarray = (
+        np.linspace(0.0, L, n_points) if grid is None else grid
+    )
+    grid_nodes = (
+        mesh_or_grid.nodes
+        if isinstance(mesh_or_grid, Mesh1D)
+        else np.asarray(mesh_or_grid, dtype=float)
+    )
+    domain_len = float(grid_nodes[-1] - grid_nodes[0])
+    x0 = float(grid_nodes[0])
     t_eval = np.linspace(0.0, t_end, n_times)
 
     problem = DiffusionProblem(
-        grid=grid,
+        grid=mesh_or_grid,
         diffusivity={"c": D},
         boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(0.0))},
-        initial_conditions={"c": lambda x_pts: np.sin(np.pi * x_pts / L)},
+        initial_conditions={
+            "c": lambda x_pts: np.sin(np.pi * (x_pts - x0) / domain_len)
+        },
     )
 
     t0 = time.perf_counter()
@@ -628,15 +799,15 @@ def run_fourier_decay_benchmark(
         )
 
     # Exact 2D grid evaluation
-    t_grid, x_grid = np.meshgrid(t_eval, grid, indexing="ij")
-    decay_rate = D * (np.pi / L) ** 2
-    c_exact = np.sin(np.pi * x_grid / L) * np.exp(-decay_rate * t_grid)
+    t_grid, x_grid = np.meshgrid(t_eval, grid_nodes, indexing="ij")
+    decay_rate = D * (np.pi / domain_len) ** 2
+    c_exact = np.sin(np.pi * (x_grid - x0) / domain_len) * np.exp(-decay_rate * t_grid)
     c_num = result["c"]
 
     conc_metrics = compute_error_metrics(c_num, c_exact)
 
     # Exact interfacial flux J(0, t)
-    j_exact = -D * (np.pi / L) * np.exp(-decay_rate * t_eval)
+    j_exact = -D * (np.pi / domain_len) * np.exp(-decay_rate * t_eval)
     j_num = result.fluxes.get("c", None)
     flux_metrics = compute_error_metrics(j_num, j_exact) if j_num is not None else None
 
@@ -650,11 +821,14 @@ def run_fourier_decay_benchmark(
         execution_time=wall_time,
         passed=passed,
         details={
-            "n_points": n_points,
+            "n_points": len(grid_nodes),
             "D": D,
-            "L": L,
+            "L": domain_len,
             "t_end": t_end,
-            "dx": float(grid[1] - grid[0]),
+            "dx": float(grid_nodes[1] - grid_nodes[0]),
+            "dx_min": problem.dx_min,
+            "dx_max": problem.dx_max,
+            "is_uniform": problem.is_uniform,
             "max_error_threshold": max_error_threshold,
         },
     )
@@ -664,6 +838,10 @@ def run_cottrell_benchmark(
     solver: BaseSolver | str = "crank_nicolson",
     *,
     n_points: int = 101,
+    grid: Mesh1D | np.ndarray | None = None,
+    mesh_kind: Literal["uniform", "geometric", "exponential"] = "uniform",
+    gamma: float = 1.07,
+    beta: float = 3.0,
     D: float = 1e-5,
     c_bulk: float = 1e-3,
     n_electrons: int = 1,
@@ -700,6 +878,14 @@ def run_cottrell_benchmark(
         Numerical solver instance or registered string name.
     n_points : int, default 101
         Number of spatial grid points :math:`N_x`.
+    grid : Mesh1D or np.ndarray, optional
+        Custom 1D spatial mesh or coordinate array. Overrides ``mesh_kind`` and ``n_points``.
+    mesh_kind : {'uniform', 'geometric', 'exponential'}, default 'uniform'
+        Mesh generator used when ``grid`` is None.
+    gamma : float, default 1.07
+        Expansion ratio :math:`\gamma > 1` when ``mesh_kind='geometric'``.
+    beta : float, default 3.0
+        Stretching parameter :math:`\beta > 0` when ``mesh_kind='exponential'``.
     D : float, default 1e-5
         Diffusion coefficient :math:`D > 0`.
     c_bulk : float, default 1e-3
@@ -747,8 +933,28 @@ def run_cottrell_benchmark(
             f"t_span end must be strictly greater than start, got {t_span}."
         )
 
-    l_domain = domain_factor * math.sqrt(D * t_end)
-    grid = np.linspace(0.0, l_domain, n_points)
+    if grid is not None:
+        mesh_or_grid: Mesh1D | np.ndarray = grid
+    elif mesh_kind == "uniform":
+        l_domain = domain_factor * math.sqrt(D * t_end)
+        mesh_or_grid = np.linspace(0.0, l_domain, n_points)
+    else:
+        mesh_or_grid = create_diffusion_mesh(
+            D=D,
+            t_max=t_end,
+            kind=mesh_kind,
+            factor=domain_factor,
+            n_points=n_points,
+            gamma=gamma,
+            beta=beta,
+        )
+
+    grid_nodes = (
+        mesh_or_grid.nodes
+        if isinstance(mesh_or_grid, Mesh1D)
+        else np.asarray(mesh_or_grid, dtype=float)
+    )
+    l_domain = float(grid_nodes[-1] - grid_nodes[0])
 
     # Solve from 0.0 to t_end so transient starts at t=0
     # Include 0.0 in integration grid, then evaluate metrics for t >= t_start
@@ -759,7 +965,7 @@ def run_cottrell_benchmark(
     full_t_eval = np.concatenate([pre_t, t_eval_window])
 
     problem = DiffusionProblem(
-        grid=grid,
+        grid=mesh_or_grid,
         diffusivity={"c": D},
         boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
         initial_conditions={"c": c_bulk},
@@ -799,7 +1005,7 @@ def run_cottrell_benchmark(
     c_exact = np.zeros_like(c_num)
     for k, t_k in enumerate(t_eval):
         c_exact[k, :] = step_concentration_profile(
-            grid, t=float(t_k), D=D, c_bulk=c_bulk
+            grid_nodes, t=float(t_k), D=D, c_bulk=c_bulk
         )
 
     conc_metrics = compute_error_metrics(c_num, c_exact)
@@ -823,12 +1029,208 @@ def run_cottrell_benchmark(
         execution_time=wall_time,
         passed=passed,
         details={
-            "n_points": n_points,
+            "n_points": len(grid_nodes),
             "D": D,
             "c_bulk": c_bulk,
             "t_span": t_span,
             "domain_length": l_domain,
+            "dx_min": problem.dx_min,
+            "dx_max": problem.dx_max,
+            "is_uniform": problem.is_uniform,
             "max_error_threshold": max_error_threshold,
+        },
+    )
+
+
+def run_spherical_cottrell_benchmark(
+    solver: BaseSolver | str = "scipy_ivp",
+    *,
+    n_points: int = 60,
+    grid: Mesh1D | np.ndarray | None = None,
+    mesh_kind: Literal["geometric", "exponential", "uniform"] = "geometric",
+    gamma: float = 1.07,
+    beta: float = 3.0,
+    r0: float = 25e-6,
+    D: float = 1e-9,
+    c_bulk: float = 1.0,
+    n_electrons: int = 1,
+    hemisphere: bool = False,
+    t_span: tuple[float, float] = (0.02, 1.0),
+    n_times: int = 20,
+    domain_factor: float = 6.0,
+    max_rel_error_threshold: float = 1e-2,
+    **solver_kwargs: Any,
+) -> BenchmarkCaseResult:
+    r"""Run spherical Cottrell potential step benchmark against exact analytical theory.
+
+    Simulates radial diffusion to a spherical or hemispherical electrode of radius
+    :math:`r_0` following a potential step to zero surface concentration
+    (:math:`c(r_0, t) = 0`):
+
+    .. math::
+
+        \frac{\partial c}{\partial t} = D \left( \frac{\partial^2 c}{\partial r^2} + \frac{2}{r} \frac{\partial c}{\partial r} \right), \quad r \in [r_0, r_{\max}]
+
+    Exact analytical concentration profile:
+
+    .. math::
+
+        c(r, t) = c^* \left[ 1 - \frac{r_0}{r} \operatorname{erfc}\left( \frac{r - r_0}{2 \sqrt{D t}} \right) \right]
+
+    Exact analytical spherical Cottrell current:
+
+    .. math::
+
+        I(t) = n F A D c^* \left( \frac{1}{\sqrt{\pi D t}} + \frac{1}{r_0} \right)
+
+    Parameters
+    ----------
+    solver : BaseSolver or str, default "scipy_ivp"
+        Numerical solver instance or registered string name.
+    n_points : int, default 60
+        Number of spatial grid points :math:`N_r`.
+    grid : Mesh1D or np.ndarray, optional
+        Custom 1D radial mesh or coordinate array starting at :math:`r_0 > 0`.
+    mesh_kind : {'geometric', 'exponential', 'uniform'}, default 'geometric'
+        Mesh generator used when ``grid`` is None.
+    gamma : float, default 1.07
+        Expansion ratio :math:`\gamma > 1` when ``mesh_kind='geometric'``.
+    beta : float, default 3.0
+        Stretching parameter :math:`\beta > 0` when ``mesh_kind='exponential'``.
+    r0 : float, default 25e-6
+        Electrode radius :math:`r_0 > 0` in meters.
+    D : float, default 1e-9
+        Diffusion coefficient :math:`D > 0` in :math:`\text{m}^2/\text{s}`.
+    c_bulk : float, default 1.0
+        Bulk concentration :math:`c^* > 0` in :math:`\text{mol}/\text{m}^3`.
+    n_electrons : int, default 1
+        Number of electrons transferred per redox event :math:`n \ge 1`.
+    hemisphere : bool, default False
+        If True, uses hemispherical surface area :math:`A = 2\pi r_0^2` instead
+        of full sphere :math:`A = 4\pi r_0^2`.
+    t_span : tuple[float, float], default (0.02, 1.0)
+        Evaluation time window :math:`(t_{\min}, t_{\max})` with :math:`t_{\min} > 0`.
+    n_times : int, default 20
+        Number of evaluation time points across :attr:`t_span`.
+    domain_factor : float, default 6.0
+        Diffusion layer multiplier setting outer boundary :math:`r_{\max} = r_0 + \text{domain\_factor} \sqrt{D t_{\max}}`.
+    max_rel_error_threshold : float, default 1e-2
+        Maximum allowable relative current error to consider the run passed.
+    **solver_kwargs : Any
+        Additional keyword arguments forwarded to the solver.
+
+    Returns
+    -------
+    BenchmarkCaseResult
+        Outcome containing concentration metrics, spherical Cottrell current metrics,
+        wall-clock runtime, and pass/fail indicator.
+    """
+    solver_inst, solver_name = _resolve_solver_instance(solver)
+
+    t_start, t_end = t_span
+    if t_start <= 0.0:
+        raise ValueError(
+            f"t_span start must be strictly positive (t_start > 0), got {t_start}."
+        )
+    if t_start >= t_end:
+        raise ValueError(
+            f"t_span end must be strictly greater than start, got {t_span}."
+        )
+
+    if grid is not None:
+        mesh_or_grid: Mesh1D | np.ndarray = grid
+        grid_nodes = (
+            mesh_or_grid.nodes
+            if isinstance(mesh_or_grid, Mesh1D)
+            else np.asarray(mesh_or_grid, dtype=float)
+        )
+        r0_eff = float(grid_nodes[0])
+    else:
+        r0_eff = float(r0)
+        mesh_or_grid = create_diffusion_mesh(
+            D=D,
+            t_max=t_end,
+            kind=mesh_kind,
+            x_min=r0_eff,
+            factor=domain_factor,
+            n_points=n_points,
+            gamma=gamma,
+            beta=beta,
+        )
+        grid_nodes = mesh_or_grid.nodes
+
+    geom = SphericalGeometry(r0=r0_eff, hemisphere=hemisphere)
+    t_eval = np.linspace(t_start, t_end, n_times)
+
+    problem = DiffusionProblem(
+        grid=mesh_or_grid,
+        diffusivity={"c": D},
+        boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(c_bulk))},
+        initial_conditions={"c": c_bulk},
+        geometry=geom,
+        n_electrons=n_electrons,
+    )
+
+    t0 = time.perf_counter()
+    result = solver_inst.solve(
+        problem, t_span=(0.0, t_end), t_eval=t_eval, **solver_kwargs
+    )
+    wall_time = time.perf_counter() - t0
+
+    if not result.success:
+        failed_metrics = BenchmarkMetrics(
+            rmse=float("inf"),
+            max_abs_error=float("inf"),
+            l2_error=float("inf"),
+            mean_abs_error=float("inf"),
+            mean_rel_error=float("inf"),
+            max_rel_error=float("inf"),
+        )
+        return BenchmarkCaseResult(
+            case_name="spherical_cottrell",
+            solver_name=solver_name,
+            concentration_metrics=failed_metrics,
+            flux_metrics=None,
+            execution_time=wall_time,
+            passed=False,
+            details={"error_message": result.message},
+        )
+
+    c_num = result["c"]
+    c_exact = np.empty_like(c_num)
+    for k, t_k in enumerate(t_eval):
+        eta = (grid_nodes - r0_eff) / (2.0 * math.sqrt(D * float(t_k)))
+        c_exact[k, :] = c_bulk * (1.0 - (r0_eff / grid_nodes) * erfc(eta))
+
+    conc_metrics = compute_error_metrics(c_num, c_exact)
+
+    i_num = np.abs(result.currents["c"])
+    i_exact = cottrell_spherical(
+        t_eval, r=r0_eff, n=n_electrons, D=D, c_bulk=c_bulk, area=geom.area
+    )
+    flux_metrics = compute_error_metrics(i_num, i_exact)
+
+    passed = bool(
+        result.success and flux_metrics.max_rel_error <= max_rel_error_threshold
+    )
+
+    return BenchmarkCaseResult(
+        case_name="spherical_cottrell",
+        solver_name=solver_name,
+        concentration_metrics=conc_metrics,
+        flux_metrics=flux_metrics,
+        execution_time=wall_time,
+        passed=passed,
+        details={
+            "n_points": len(grid_nodes),
+            "r0": r0_eff,
+            "D": D,
+            "c_bulk": c_bulk,
+            "t_span": t_span,
+            "dx_min": problem.dx_min,
+            "dx_max": problem.dx_max,
+            "is_uniform": problem.is_uniform,
+            "max_rel_error_threshold": max_rel_error_threshold,
         },
     )
 
@@ -837,6 +1239,11 @@ def run_mass_conservation_benchmark(
     solver: BaseSolver | str = "crank_nicolson",
     *,
     n_points: int = 61,
+    grid: Mesh1D | np.ndarray | None = None,
+    mesh_kind: Literal["uniform", "geometric", "exponential"] = "uniform",
+    gamma: float = 1.05,
+    beta: float = 2.0,
+    two_sided: bool = True,
     D: float = 0.02,
     L: float = 1.0,
     t_span: tuple[float, float] = (0.0, 0.2),
@@ -870,6 +1277,16 @@ def run_mass_conservation_benchmark(
         Numerical solver instance or registered string name.
     n_points : int, default 61
         Number of spatial grid points :math:`N_x`.
+    grid : Mesh1D or np.ndarray, optional
+        Custom 1D spatial mesh or coordinate array. Overrides ``mesh_kind`` and ``n_points``.
+    mesh_kind : {'uniform', 'geometric', 'exponential'}, default 'uniform'
+        Mesh generator used when ``grid`` is None.
+    gamma : float, default 1.05
+        Expansion ratio :math:`\gamma > 1` when ``mesh_kind='geometric'``.
+    beta : float, default 2.0
+        Stretching parameter :math:`\beta > 0` when ``mesh_kind='exponential'``.
+    two_sided : bool, default True
+        Whether to use symmetric two-sided node clustering for non-uniform meshes.
     D : float, default 0.02
         Diffusion coefficient :math:`D > 0`.
     L : float, default 1.0
@@ -899,14 +1316,35 @@ def run_mass_conservation_benchmark(
     """
     solver_inst, solver_name = _resolve_solver_instance(solver)
 
-    grid = np.linspace(0.0, L, n_points)
+    if grid is not None:
+        mesh_or_grid: Mesh1D | np.ndarray = grid
+    elif mesh_kind == "uniform":
+        mesh_or_grid = np.linspace(0.0, L, n_points)
+    elif mesh_kind == "geometric":
+        mesh_or_grid = GeometricExpandingMesh(
+            0.0, L, n_points=n_points, gamma=gamma, two_sided=two_sided
+        )
+    elif mesh_kind == "exponential":
+        mesh_or_grid = ExponentialMesh(
+            0.0, L, n_points=n_points, beta=beta, two_sided=two_sided
+        )
+    else:
+        raise ValueError(
+            f"Unknown mesh_kind '{mesh_kind}'. Expected 'uniform', 'geometric', or 'exponential'."
+        )
+
+    grid_nodes = (
+        mesh_or_grid.nodes
+        if isinstance(mesh_or_grid, Mesh1D)
+        else np.asarray(mesh_or_grid, dtype=float)
+    )
     t_eval = np.linspace(t_span[0], t_span[1], n_times)
 
-    pulse_center = 0.5 * L
+    pulse_center = 0.5 * float(grid_nodes[0] + grid_nodes[-1])
     init_func = lambda x_pts: np.exp(-50.0 * (x_pts - pulse_center) ** 2)
 
     problem = DiffusionProblem(
-        grid=grid,
+        grid=mesh_or_grid,
         diffusivity={"c": D},
         boundary_conditions={"c": (NeumannBC(0.0), NeumannBC(0.0))},
         initial_conditions={"c": init_func},
@@ -937,7 +1375,7 @@ def run_mass_conservation_benchmark(
 
     # Compute numerical total mass M(t) = integral c(x, t) dx
     c = result["c"]
-    masses = np.array([trapezoid(c[k, :], grid) for k in range(len(t_eval))])
+    masses = np.array([trapezoid(c[k, :], grid_nodes) for k in range(len(t_eval))])
     m0 = masses[0]
 
     exact_masses = np.full_like(masses, m0)
@@ -956,10 +1394,12 @@ def run_mass_conservation_benchmark(
         execution_time=wall_time,
         passed=passed,
         details={
+            "n_points": len(grid_nodes),
             "initial_mass": float(m0),
             "final_mass": float(masses[-1]),
             "max_relative_drift": max_drift,
             "max_drift_threshold": max_drift_threshold,
+            "is_uniform": problem.is_uniform,
         },
     )
 
@@ -973,6 +1413,13 @@ def verify_spatial_convergence(
     solver: BaseSolver | str = "crank_nicolson",
     *,
     n_points_list: Sequence[int] = (21, 41, 81, 161),
+    mesh_kind: Literal["uniform", "geometric", "exponential"] = "uniform",
+    expansion_span: float = 4.0,
+    beta: float = 1.5,
+    two_sided: bool = False,
+    mapping: str = "exponential",
+    grid_factory: Callable[[int], Mesh1D | np.ndarray] | None = None,
+    target: Literal["concentration", "flux"] = "concentration",
     D: float = 0.05,
     L: float = 1.0,
     t_fixed: float = 0.1,
@@ -992,12 +1439,36 @@ def verify_spatial_convergence(
 
         \ln(\text{error}) = p \cdot \ln(\Delta x) + C
 
+    Supports uniform meshes (:class:`~softpotato.grid.Uniform1DMesh`), geometrically
+    expanding meshes (:class:`~softpotato.grid.GeometricExpandingMesh` with fixed
+    total stretching span :math:`\Delta x_{\max} / \Delta x_{\min} = \text{expansion\_span}`
+    so that :math:`\gamma_N = \text{expansion\_span}^{1/(N-1)}` and adjacent step differences
+    scale as :math:`\Delta x_{j+1} - \Delta x_j = \mathcal{O}(\Delta x^2)`), and smooth
+    coordinate-mapped exponential meshes (:class:`~softpotato.grid.ExponentialMesh`).
+
     Parameters
     ----------
     solver : BaseSolver or str, default "crank_nicolson"
         Numerical solver instance or registered string name.
     n_points_list : sequence of int, default (21, 41, 81, 161)
         List of spatial grid point counts to evaluate.
+    mesh_kind : {'uniform', 'geometric', 'exponential'}, default 'uniform'
+        Spatial mesh family to refine when ``grid_factory`` is None.
+    expansion_span : float, default 4.0
+        Global ratio :math:`\Delta x_{\max} / \Delta x_{\min} > 1` maintained across
+        refinements when ``mesh_kind='geometric'``.
+    beta : float, default 1.5
+        Stretching parameter :math:`\beta > 0` when ``mesh_kind='exponential'``.
+    two_sided : bool, default False
+        Whether to use symmetric two-sided clustering for expanding meshes.
+    mapping : str, default 'exponential'
+        Coordinate transformation (``'exponential'``, ``'tanh'``, or ``'sinh'``)
+        when ``mesh_kind='exponential'``.
+    grid_factory : Callable[[int], Mesh1D | np.ndarray], optional
+        Custom callable ``f(n_points)`` returning a 1D mesh or array for each refinement level.
+    target : {'concentration', 'flux'}, default 'concentration'
+        Quantity whose discretization error is regressed against characteristic spacing:
+        spatial concentration profile or interfacial surface flux :math:`J(0, t)`.
     D : float, default 0.05
         Diffusion coefficient :math:`D > 0`.
     L : float, default 1.0
@@ -1031,18 +1502,55 @@ def verify_spatial_convergence(
     2.0
     """
     solver_inst, solver_name = _resolve_solver_instance(solver)
+    if target not in ("concentration", "flux"):
+        raise ValueError(
+            f"Unknown target '{target}'. Expected 'concentration' or 'flux'."
+        )
+    if mesh_kind == "geometric" and expansion_span <= 1.0:
+        raise ValueError(
+            f"expansion_span must be > 1.0 for geometric meshes, got {expansion_span}."
+        )
 
     dx_list: list[float] = []
     error_list: list[float] = []
 
     decay_factor = math.exp(-D * (math.pi / L) ** 2 * t_fixed)
+    j_exact = -D * (math.pi / L) * decay_factor
 
     for n_pts in n_points_list:
-        grid = np.linspace(0.0, L, n_pts)
-        dx = float(grid[1] - grid[0])
+        if grid_factory is not None:
+            mesh_or_grid = grid_factory(n_pts)
+        elif mesh_kind == "uniform":
+            mesh_or_grid = np.linspace(0.0, L, n_pts)
+        elif mesh_kind == "geometric":
+            m_intervals = max(1, (n_pts - 1) // 2 if two_sided else (n_pts - 1))
+            gamma_n = float(expansion_span) ** (1.0 / m_intervals)
+            mesh_or_grid = GeometricExpandingMesh(
+                0.0, L, n_points=n_pts, gamma=gamma_n, two_sided=two_sided
+            )
+        elif mesh_kind == "exponential":
+            mesh_or_grid = ExponentialMesh(
+                0.0,
+                L,
+                n_points=n_pts,
+                beta=beta,
+                two_sided=two_sided,
+                mapping=mapping,
+            )
+        else:
+            raise ValueError(
+                f"Unknown mesh_kind '{mesh_kind}'. Expected 'uniform', 'geometric', or 'exponential'."
+            )
+
+        grid_nodes = (
+            mesh_or_grid.nodes
+            if isinstance(mesh_or_grid, Mesh1D)
+            else np.asarray(mesh_or_grid, dtype=float)
+        )
+        dx = float((grid_nodes[-1] - grid_nodes[0]) / (len(grid_nodes) - 1))
 
         problem = DiffusionProblem(
-            grid=grid,
+            grid=mesh_or_grid,
             diffusivity={"c": D},
             boundary_conditions={"c": (DirichletBC(0.0), DirichletBC(0.0))},
             initial_conditions={"c": lambda x_pts: np.sin(np.pi * x_pts / L)},
@@ -1063,11 +1571,14 @@ def verify_spatial_convergence(
                 f"Solver {solver_name} failed during spatial convergence run: {res.message}"
             )
 
-        c_num = res["c"][-1, :]
-        c_exact = np.sin(np.pi * grid / L) * decay_factor
-
-        m = compute_error_metrics(c_num, c_exact)
-        err_val = getattr(m, metric)
+        if target == "flux":
+            j_num = float(res.fluxes["c"][-1])
+            err_val = abs(j_num - j_exact)
+        else:
+            c_num = res["c"][-1, :]
+            c_exact = np.sin(np.pi * grid_nodes / L) * decay_factor
+            m = compute_error_metrics(c_num, c_exact)
+            err_val = getattr(m, metric)
 
         dx_list.append(dx)
         error_list.append(err_val)
@@ -1088,6 +1599,8 @@ def verify_spatial_convergence(
         spacing_type="spatial",
         details={
             "solver_name": solver_name,
+            "mesh_kind": mesh_kind,
+            "target": target,
             "metric": metric,
             "n_points_list": list(n_points_list),
             "order_tolerance": order_tolerance,
@@ -1247,11 +1760,22 @@ def verify_temporal_convergence(
 
 def list_benchmark_cases() -> list[str]:
     """Return list of standard benchmark case names."""
-    return ["fourier_decay", "cottrell_step", "mass_conservation"]
+    return [
+        "fourier_decay",
+        "cottrell_step",
+        "spherical_cottrell",
+        "mass_conservation",
+    ]
 
 
 def run_benchmark(
-    case: Literal["fourier_decay", "cottrell_step", "cottrell", "mass_conservation"],
+    case: Literal[
+        "fourier_decay",
+        "cottrell_step",
+        "cottrell",
+        "spherical_cottrell",
+        "mass_conservation",
+    ],
     solver: BaseSolver | str = "crank_nicolson",
     **kwargs: Any,
 ) -> BenchmarkCaseResult:
@@ -1259,7 +1783,7 @@ def run_benchmark(
 
     Parameters
     ----------
-    case : {'fourier_decay', 'cottrell_step', 'cottrell', 'mass_conservation'}
+    case : {'fourier_decay', 'cottrell_step', 'cottrell', 'spherical_cottrell', 'mass_conservation'}
         Benchmark problem to execute.
     solver : BaseSolver or str, default "crank_nicolson"
         Numerical solver instance or registered string name.
@@ -1288,6 +1812,8 @@ def run_benchmark(
         return run_fourier_decay_benchmark(solver, **kwargs)
     if case_norm in ("cottrell", "cottrell_step"):
         return run_cottrell_benchmark(solver, **kwargs)
+    if case_norm == "spherical_cottrell":
+        return run_spherical_cottrell_benchmark(solver, **kwargs)
     if case_norm == "mass_conservation":
         return run_mass_conservation_benchmark(solver, **kwargs)
 
@@ -1300,7 +1826,13 @@ def run_benchmark_suite(
     solvers: Sequence[BaseSolver | str] | None = None,
     cases: (
         Sequence[
-            Literal["fourier_decay", "cottrell_step", "cottrell", "mass_conservation"]
+            Literal[
+                "fourier_decay",
+                "cottrell_step",
+                "cottrell",
+                "spherical_cottrell",
+                "mass_conservation",
+            ]
         ]
         | None
     ) = None,
@@ -1338,7 +1870,13 @@ def run_benchmark_suite(
     )
 
     eval_cases: Sequence[
-        Literal["fourier_decay", "cottrell_step", "cottrell", "mass_conservation"]
+        Literal[
+            "fourier_decay",
+            "cottrell_step",
+            "cottrell",
+            "spherical_cottrell",
+            "mass_conservation",
+        ]
     ] = (
         ("fourier_decay", "cottrell_step", "mass_conservation")
         if cases is None
@@ -1360,4 +1898,331 @@ def run_benchmark_suite(
         cases=all_results,
         total_time=total_time,
         all_passed=all_passed,
+    )
+
+
+def run_grid_efficiency_benchmark(
+    case: Literal[
+        "cottrell", "cottrell_step", "spherical_cottrell", "cyclic_voltammetry"
+    ] = "cottrell",
+    solver: BaseSolver | str = "scipy_ivp",
+    *,
+    expanding_points: int = 60,
+    uniform_points_list: Sequence[int] = (60, 300, 600),
+    gamma: float = 1.08,
+    beta: float = 4.0,
+    include_exponential: bool = True,
+    D: float = 1e-9,
+    c_bulk: float = 1.0,
+    n_electrons: int = 1,
+    area: float = 1.0,
+    r0: float = 50e-6,
+    t_span: tuple[float, float] = (0.02, 1.0),
+    n_times: int = 25,
+    scan_rate: float = 0.1,
+    domain_factor: float = 6.0,
+    target_rel_error: float = 1e-3,
+    **solver_kwargs: Any,
+) -> GridComparisonResult:
+    r"""Evaluate runtime, memory scaling, and :math:`L_2` error norms across uniform vs. expanding meshes.
+
+    Compares :class:`~softpotato.grid.GeometricExpandingMesh` (and optionally
+    :class:`~softpotato.grid.ExponentialMesh`) against :class:`~softpotato.grid.Uniform1DMesh`
+    at matched and refined spatial point counts (:math:`5\times` to :math:`10\times` more nodes)
+    for planar Cottrell chronoamperometry, spherical Cottrell chronoamperometry, or
+    reversible cyclic voltammetry.
+
+    Parameters
+    ----------
+    case : {'cottrell', 'cottrell_step', 'spherical_cottrell', 'cyclic_voltammetry'}, default 'cottrell'
+        Electrochemical benchmark problem to run.
+    solver : BaseSolver or str, default "scipy_ivp"
+        Numerical solver instance or registered string name.
+    expanding_points : int, default 60
+        Number of spatial nodes :math:`N_x` for the expanding mesh(es).
+    uniform_points_list : sequence of int, default (60, 300, 600)
+        Sequence of node counts :math:`N_x` for the uniform meshes.
+    gamma : float, default 1.08
+        Expansion ratio :math:`\gamma > 1` for :class:`~softpotato.grid.GeometricExpandingMesh`.
+    beta : float, default 4.0
+        Stretching parameter :math:`\beta > 0` for :class:`~softpotato.grid.ExponentialMesh`.
+    include_exponential : bool, default True
+        Whether to also benchmark an :class:`~softpotato.grid.ExponentialMesh` of size
+        ``expanding_points``.
+    D : float, default 1e-9
+        Diffusion coefficient :math:`D > 0` (:math:`\text{m}^2/\text{s}`).
+    c_bulk : float, default 1.0
+        Bulk concentration :math:`c^* > 0` (:math:`\text{mol}/\text{m}^3`).
+    n_electrons : int, default 1
+        Number of electrons transferred :math:`n \ge 1`.
+    area : float, default 1.0
+        Planar electrode area :math:`A` (:math:`\text{m}^2`).
+    r0 : float, default 50e-6
+        Spherical electrode radius :math:`r_0 > 0` (:math:`\text{m}`) when ``case='spherical_cottrell'``.
+    t_span : tuple[float, float], default (0.02, 1.0)
+        Evaluation time interval :math:`(t_{\min}, t_{\max})` for Cottrell benchmarks.
+    n_times : int, default 25
+        Number of time evaluation points.
+    scan_rate : float, default 0.1
+        Potential sweep rate :math:`v > 0` (:math:`\text{V}/\text{s}`) when ``case='cyclic_voltammetry'``.
+    domain_factor : float, default 6.0
+        Diffusion layer thickness multiplier :math:`\delta = \text{domain\_factor} \sqrt{D t_{\max}}`.
+    target_rel_error : float, default 1e-3
+        Target maximum relative error threshold (default :math:`10^{-3} = 0.1\%`) used
+        to determine ``passed``.
+    **solver_kwargs : Any
+        Additional keyword arguments forwarded to the solver.
+
+    Returns
+    -------
+    GridComparisonResult
+        Structured comparison of runtime, memory footprint, :math:`L_2` error norm,
+        and relative error across uniform and expanding meshes.
+    """
+    solver_inst, solver_name = _resolve_solver_instance(solver)
+    case_norm = case.lower().strip()
+    if case_norm == "cottrell_step":
+        case_norm = "cottrell"
+    if case_norm not in ("cottrell", "spherical_cottrell", "cyclic_voltammetry"):
+        raise ValueError(
+            f"Unknown grid efficiency benchmark case '{case}'. "
+            f"Expected 'cottrell', 'spherical_cottrell', or 'cyclic_voltammetry'."
+        )
+
+    kwargs = dict(solver_kwargs)
+    if solver_name in ("scipy_ivp", "solve_ivp"):
+        kwargs.setdefault("rtol", 1e-8)
+        kwargs.setdefault("atol", 1e-10)
+
+    x_min = float(r0) if case_norm == "spherical_cottrell" else 0.0
+    if case_norm == "cyclic_voltammetry":
+        e_start = 0.3
+        e_vertex = -0.3
+        e0 = 0.0
+        t_half = abs(e_start - e_vertex) / scan_rate
+        t_max = 2.0 * t_half
+        t_eval = np.linspace(0.05, t_max, max(n_times, 120))
+    else:
+        t_start, t_max = t_span
+        if t_start <= 0.0 or t_start >= t_max:
+            raise ValueError(f"t_span must satisfy 0 < t_start < t_max, got {t_span}.")
+        t_eval = np.linspace(t_start, t_max, n_times)
+
+    # Build mesh list: GeometricExpandingMesh, optional ExponentialMesh, and Uniform1DMesh sequence
+    meshes_to_run: list[tuple[str, str, Mesh1D]] = [
+        (
+            f"GeometricExpandingMesh (N={expanding_points}, gamma={gamma})",
+            "geometric",
+            GeometricExpandingMesh.from_diffusion_layer(
+                D=D,
+                t_max=t_max,
+                x_min=x_min,
+                factor=domain_factor,
+                n_points=expanding_points,
+                gamma=gamma,
+            ),
+        )
+    ]
+    if include_exponential:
+        meshes_to_run.append(
+            (
+                f"ExponentialMesh (N={expanding_points}, beta={beta})",
+                "exponential",
+                ExponentialMesh.from_diffusion_layer(
+                    D=D,
+                    t_max=t_max,
+                    x_min=x_min,
+                    factor=domain_factor,
+                    n_points=expanding_points,
+                    beta=beta,
+                ),
+            )
+        )
+    for n_uni in uniform_points_list:
+        meshes_to_run.append(
+            (
+                f"Uniform1DMesh (N={n_uni})",
+                "uniform",
+                Uniform1DMesh.from_diffusion_layer(
+                    D=D,
+                    t_max=t_max,
+                    x_min=x_min,
+                    factor=domain_factor,
+                    n_points=int(n_uni),
+                ),
+            )
+        )
+
+    entries: list[GridComparisonEntry] = []
+
+    if case_norm in ("cottrell", "spherical_cottrell"):
+        geom: Any = (
+            SphericalGeometry(r0=x_min)
+            if case_norm == "spherical_cottrell"
+            else "planar"
+        )
+        eff_area = geom.area if case_norm == "spherical_cottrell" else area
+        i_exact = (
+            cottrell_spherical(
+                t_eval, r=x_min, n=n_electrons, D=D, c_bulk=c_bulk, area=eff_area
+            )
+            if case_norm == "spherical_cottrell"
+            else cottrell(t_eval, n=n_electrons, D=D, c_bulk=c_bulk, area=eff_area)
+        )
+
+        for label, m_kind, mesh in meshes_to_run:
+            problem = DiffusionProblem(
+                grid=mesh,
+                diffusivity={"A": D},
+                boundary_conditions={"A": (DirichletBC(0.0), DirichletBC(c_bulk))},
+                initial_conditions={"A": c_bulk},
+                geometry=geom,
+                n_electrons=n_electrons,
+            )
+            t0 = time.perf_counter()
+            res = solver_inst.solve(
+                problem, t_span=(0.0, t_max), t_eval=t_eval, **kwargs
+            )
+            elapsed = time.perf_counter() - t0
+
+            c_num = res["A"]
+            c_exact = np.empty_like(c_num)
+            for k, t_k in enumerate(t_eval):
+                if case_norm == "spherical_cottrell":
+                    eta = (mesh.nodes - x_min) / (2.0 * math.sqrt(D * float(t_k)))
+                    c_exact[k, :] = c_bulk * (1.0 - (x_min / mesh.nodes) * erfc(eta))
+                else:
+                    c_exact[k, :] = step_concentration_profile(
+                        mesh.nodes, t=float(t_k), D=D, c_bulk=c_bulk
+                    )
+
+            conc_metrics = compute_error_metrics(c_num, c_exact)
+            i_num = np.abs(res.currents["A"]) * (
+                eff_area if case_norm == "cottrell" else 1.0
+            )
+            curr_metrics = compute_error_metrics(i_num, i_exact)
+
+            entries.append(
+                GridComparisonEntry(
+                    label=label,
+                    mesh_kind=m_kind,
+                    n_points=mesh.n_points,
+                    dx_min=mesh.dx_min,
+                    dx_max=mesh.dx_max,
+                    execution_time=elapsed,
+                    memory_bytes=int(c_num.nbytes),
+                    current_metrics=curr_metrics,
+                    concentration_metrics=conc_metrics,
+                )
+            )
+    else:
+        # Reversible Cyclic Voltammetry (O + n e- <-> R)
+        e_start = 0.3
+        e_vertex = -0.3
+        e0 = 0.0
+        t_half = abs(e_start - e_vertex) / scan_rate
+
+        def _e_waveform(t: float) -> float:
+            if t <= t_half:
+                return e_start - scan_rate * t
+            return e_vertex + scan_rate * (t - t_half)
+
+        def _c_surf_ox(t: float) -> float:
+            c_ox, _ = nernst_equilibrium_concentrations(
+                _e_waveform(t), E0=e0, c_total=c_bulk, n=n_electrons
+            )
+            return float(c_ox)
+
+        ip_theory = abs(
+            float(
+                randles_sevcik(scan_rate, n=n_electrons, area=area, D=D, c_bulk=c_bulk)
+            )
+        )
+
+        # High-resolution expanding reference solution for full waveform L_2 comparison
+        ref_mesh = GeometricExpandingMesh.from_diffusion_layer(
+            D=D, t_max=t_max, factor=domain_factor, n_points=250, gamma=1.025
+        )
+        ref_prob = DiffusionProblem(
+            grid=ref_mesh,
+            diffusivity={"Ox": D},
+            boundary_conditions={"Ox": (DirichletBC(_c_surf_ox), DirichletBC(c_bulk))},
+            initial_conditions={"Ox": c_bulk},
+            n_electrons=n_electrons,
+        )
+        ref_res = solver_inst.solve(
+            ref_prob, t_span=(0.0, t_max), t_eval=t_eval, **kwargs
+        )
+        i_ref = ref_res.currents["Ox"] * area
+
+        for label, m_kind, mesh in meshes_to_run:
+            problem = DiffusionProblem(
+                grid=mesh,
+                diffusivity={"Ox": D},
+                boundary_conditions={
+                    "Ox": (DirichletBC(_c_surf_ox), DirichletBC(c_bulk))
+                },
+                initial_conditions={"Ox": c_bulk},
+                n_electrons=n_electrons,
+            )
+            t0 = time.perf_counter()
+            res = solver_inst.solve(
+                problem, t_span=(0.0, t_max), t_eval=t_eval, **kwargs
+            )
+            elapsed = time.perf_counter() - t0
+
+            c_num = res["Ox"]
+            i_num = res.currents["Ox"] * area
+            ip_num = float(np.max(np.abs(i_num)))
+            ip_rel_err = abs(ip_num - ip_theory) / ip_theory
+            curr_metrics = compute_error_metrics(i_num, i_ref)
+
+            entries.append(
+                GridComparisonEntry(
+                    label=label,
+                    mesh_kind=m_kind,
+                    n_points=mesh.n_points,
+                    dx_min=mesh.dx_min,
+                    dx_max=mesh.dx_max,
+                    execution_time=elapsed,
+                    memory_bytes=int(c_num.nbytes),
+                    current_metrics=curr_metrics,
+                    concentration_metrics=None,
+                    details={
+                        "peak_current_sim": ip_num,
+                        "peak_current_theory": ip_theory,
+                        "peak_current_rel_error": ip_rel_err,
+                    },
+                )
+            )
+
+    geom_entry = entries[0]
+    finest_uni_entry = max(
+        (e for e in entries if e.mesh_kind == "uniform"),
+        key=lambda e: e.n_points,
+    )
+
+    point_reduction = float(finest_uni_entry.n_points) / float(geom_entry.n_points)
+    speedup = float(finest_uni_entry.execution_time) / max(
+        1e-12, float(geom_entry.execution_time)
+    )
+    mem_reduction = float(finest_uni_entry.memory_bytes) / float(
+        geom_entry.memory_bytes
+    )
+
+    if case_norm == "cyclic_voltammetry":
+        geom_err = float(geom_entry.details["peak_current_rel_error"])
+    else:
+        geom_err = geom_entry.max_rel_error
+
+    passed = bool(geom_err <= target_rel_error and point_reduction >= 5.0)
+
+    return GridComparisonResult(
+        case_name=case_norm,
+        solver_name=solver_name,
+        entries=entries,
+        point_reduction_factor=point_reduction,
+        speedup_factor=speedup,
+        memory_reduction_factor=mem_reduction,
+        passed=passed,
     )
