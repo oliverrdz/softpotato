@@ -9,6 +9,7 @@ from typing import Any, ClassVar, Literal
 import numpy as np
 
 from softpotato.constants import FARADAY
+from softpotato.grid.base import Mesh1D
 
 
 class UnknownGeometryError(KeyError, ValueError):
@@ -109,13 +110,13 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         r"""Radial coordinate symmetry exponent :math:`p \in \{0, 1, 2\}`."""
         return self.p
 
-    def validate_grid(self, grid: np.ndarray) -> np.ndarray:
+    def validate_grid(self, grid: np.ndarray | Mesh1D) -> np.ndarray:
         """Validate that a spatial grid satisfies the coordinate domain constraints.
 
         Parameters
         ----------
-        grid : np.ndarray
-            1D array of spatial coordinates.
+        grid : np.ndarray or Mesh1D
+            1D array or mesh of spatial coordinates.
 
         Returns
         -------
@@ -128,7 +129,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
             If ``grid`` is not 1D, has fewer than 3 points, is not strictly
             monotonically increasing, or violates radial domain bounds (:math:`r_0 > 0`).
         """
-        arr = np.asarray(grid, dtype=float)
+        arr = np.asarray(grid.nodes if isinstance(grid, Mesh1D) else grid, dtype=float)
         if arr.ndim != 1 or len(arr) < 3:
             raise ValueError("grid must be a 1D array with at least 3 points.")
         if np.any(np.diff(arr) <= 0.0):
@@ -144,7 +145,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
     def laplacian(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
         t: float = 0.0,
@@ -155,8 +156,8 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         ----------
         c : np.ndarray
             1D concentration profile array of shape ``(N,)``.
-        grid : np.ndarray
-            1D spatial coordinate array of shape ``(N,)``.
+        grid : np.ndarray or Mesh1D
+            1D spatial coordinate array or mesh of shape ``(N,)``.
         bc_left : BoundaryCondition, optional
             Boundary condition at the inner/left boundary (:math:`i = 0`).
         bc_right : BoundaryCondition, optional
@@ -174,7 +175,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
     @abstractmethod
     def laplacian_matrix(
         self,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -193,8 +194,8 @@ class Geometry(ABC, metaclass=_GeometryMeta):
 
         Parameters
         ----------
-        grid : np.ndarray
-            1D spatial coordinate array of shape ``(N,)``.
+        grid : np.ndarray or Mesh1D
+            1D spatial coordinate array or mesh of shape ``(N,)``.
         bc_left : BoundaryCondition, optional
             Boundary condition at the left boundary (:math:`i = 0`).
         bc_right : BoundaryCondition, optional
@@ -214,7 +215,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
     def surface_flux(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         diffusivity: float,
         side: str = "left",
     ) -> float | np.ndarray:
@@ -228,8 +229,8 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         ----------
         c : np.ndarray
             Concentration profile of shape ``(N_x,)`` or time series of shape ``(N_t, N_x)``.
-        grid : np.ndarray
-            1D spatial coordinate array of shape ``(N_x,)``.
+        grid : np.ndarray or Mesh1D
+            1D spatial coordinate array or mesh of shape ``(N_x,)``.
         diffusivity : float
             Species diffusion coefficient :math:`D > 0`.
         side : {'left', 'right'}, default 'left'
@@ -249,7 +250,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         flux: float | np.ndarray,
         n_electrons: int = 1,
         side: Literal["left", "right"] = "left",
-        grid: np.ndarray | None = None,
+        grid: np.ndarray | Mesh1D | None = None,
     ) -> float | np.ndarray:
         r"""Integrate normal flux over the active electrode surface to compute Faradaic current.
 
@@ -265,7 +266,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
             Number of electrons transferred per reaction (:math:`n > 0`).
         side : {'left', 'right'}, default 'left'
             Domain boundary at which to compute the Faradaic current.
-        grid : np.ndarray, optional
+        grid : np.ndarray or Mesh1D, optional
             Spatial grid coordinates used to determine surface area if coordinate-dependent.
 
         Returns
@@ -278,7 +279,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
     def _eval_1d_laplacian(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
         t: float = 0.0,
@@ -293,7 +294,11 @@ class Geometry(ABC, metaclass=_GeometryMeta):
 
         n_pts = len(grid_arr)
         diffs = np.diff(grid_arr)
-        is_uniform = bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=1e-8))
+        is_uniform = (
+            grid.is_uniform
+            if isinstance(grid, Mesh1D)
+            else bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=0.0))
+        )
         p = self.p
 
         lap = np.empty(n_pts, dtype=float)
@@ -415,7 +420,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
 
     def _build_1d_laplacian_matrix(
         self,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         bc_left: Any = None,
         bc_right: Any = None,
     ) -> tuple[np.ndarray, np.ndarray]:
@@ -423,7 +428,11 @@ class Geometry(ABC, metaclass=_GeometryMeta):
         grid_arr = self.validate_grid(grid)
         n_pts = len(grid_arr)
         diffs = np.diff(grid_arr)
-        is_uniform = bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=1e-8))
+        is_uniform = (
+            grid.is_uniform
+            if isinstance(grid, Mesh1D)
+            else bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=0.0))
+        )
         p = self.p
 
         l_banded = np.zeros((3, n_pts), dtype=float)
@@ -504,7 +513,7 @@ class Geometry(ABC, metaclass=_GeometryMeta):
     def _eval_1d_surface_flux(
         self,
         c: np.ndarray,
-        grid: np.ndarray,
+        grid: np.ndarray | Mesh1D,
         diffusivity: float,
         side: str = "left",
     ) -> float | np.ndarray:
@@ -524,7 +533,11 @@ class Geometry(ABC, metaclass=_GeometryMeta):
             )
 
         diffs = np.diff(grid_arr)
-        is_uniform = bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=1e-8))
+        is_uniform = (
+            grid.is_uniform
+            if isinstance(grid, Mesh1D)
+            else bool(np.allclose(diffs, diffs[0], rtol=1e-5, atol=0.0))
+        )
 
         if side == "left":
             if is_uniform:

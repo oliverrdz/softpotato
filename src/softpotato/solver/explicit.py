@@ -20,11 +20,12 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
 
         c_i^{n+1} = c_i^n + \Delta t \left[ D \frac{c_{i+1}^n - 2c_i^n + c_{i-1}^n}{\Delta x^2} + R_i^n \right]
 
-    Enforces the Courant-Friedrichs-Lewy (CFL) stability criterion:
+    Enforces the Courant-Friedrichs-Lewy (CFL) stability criterion using the minimum
+    spatial interval :math:`\Delta x_{\min} = \min_j \Delta x_j`:
 
     .. math::
 
-        \Delta t \le \frac{\Delta x^2}{2 \max_i(D_i)}
+        \Delta t \le \frac{(\Delta x_{\min})^2}{2 \max_i(D_i)}
 
     Parameters
     ----------
@@ -34,7 +35,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
 
         .. math::
 
-            \Delta t \le \frac{\Delta x^2}{2 \max_i(D_i)}
+            \Delta t \le \frac{(\Delta x_{\min})^2}{2 \max_i(D_i)}
 
         If None (default), automatically selects a conservative stable step size
         equal to :math:`0.45 \times \text{CFL limit}`.
@@ -75,14 +76,10 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
     ) -> SolverResult:
         geom = problem.geometry
         assert isinstance(geom, Geometry)
-        if not problem.is_uniform:
-            raise NotImplementedError(
-                "ExplicitFiniteDifference requires a uniform spatial grid."
-            )
-
-        dx = problem.dx
+        dx_min = problem.dx_min
+        dx = problem.dx if problem.is_uniform else dx_min
         max_D = max(problem.diffusivity.values())
-        cfl_limit = (dx**2) / (2.0 * max_D)
+        cfl_limit = (dx_min**2) / (2.0 * max_D)
 
         user_dt = (
             kwargs.get("dt")
@@ -94,7 +91,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
             if dt_req > cfl_limit:
                 raise ValueError(
                     f"Specified time step dt={dt_req:.3e} exceeds the CFL stability limit "
-                    f"dx²/(2*D_max)={cfl_limit:.3e}."
+                    f"dx_min²/(2*D_max)={cfl_limit:.3e}."
                 )
             base_dt = dt_req
         else:
@@ -149,7 +146,7 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
 
         return SolverResult(
             t=t_eval,
-            x=problem.grid,
+            x=np.asarray(problem.grid, dtype=float),
             concentrations=records,
             success=True,
             message="Explicit finite difference solution completed successfully.",
@@ -164,8 +161,9 @@ class ExplicitFiniteDifference(BaseSolver, name="explicit"):
         dx: float | None = None,
     ) -> dict[str, np.ndarray]:
         """Advance all species concentration profiles by one time step dt."""
+        grid_arr = np.asarray(problem.grid, dtype=float)
         reactions = (
-            problem.reactions(c_dict, problem.grid, t) if problem.reactions else None
+            problem.reactions(c_dict, grid_arr, t) if problem.reactions else None
         )
         geom = problem.geometry
         assert isinstance(geom, Geometry)
