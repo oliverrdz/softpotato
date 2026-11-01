@@ -92,7 +92,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#try-in-your-browser-or-install-locally" class="md-skip">
           Skip to content
         </a>
       
@@ -444,10 +444,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#try-in-your-browser-or-install-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation
+        Try in Your Browser or Install Locally
       
     </span>
   </a>
@@ -455,10 +455,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
+  <a href="#why-open-source-for-electrochemistry-research" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Example
+        Why Open-Source for Electrochemistry Research?
       
     </span>
   </a>
@@ -1672,10 +1672,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#try-in-your-browser-or-install-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation
+        Try in Your Browser or Install Locally
       
     </span>
   </a>
@@ -1683,10 +1683,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
+  <a href="#why-open-source-for-electrochemistry-research" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Example
+        Why Open-Source for Electrochemistry Research?
       
     </span>
   </a>
@@ -1728,16 +1728,32 @@
 
 <div class="sp-hero">
   <div class="sp-hero__content">
-    <h1>Soft Potato</h1>
+    <p class="sp-hero__eyebrow">Soft Potato &bull; Open-Source Electrochemistry Toolkit</p>
+    <h1>Electrochemical Simulation Designed for the Laboratory Bench</h1>
     <p class="sp-hero__tagline">
-      An open-source electrochemical simulation and analysis toolkit in Python.
+      Predict voltammetric, chronoamperometric, hydrodynamic, and SECM responses—or extract transport and kinetic parameters directly from experimental data—using pure physical inputs (<i>E</i><sup>0</sup>, <i>k</i><sup>0</sup>, &alpha;, <i>D</i>, scan rates) without touching numerical meshes or differential equation code.
     </p>
     <div class="sp-hero__actions">
-      <a class="md-button md-button--primary" href="api/">API Reference</a>
-      <a class="md-button" href="tutorials/">Tutorials</a>
-      <a class="md-button" href="blog/">Blog</a>
-      <a class="md-button" href="roadmap/">Roadmap</a>
-      <a class="md-button" href="changelog/">Changelog</a>
+      <a class="md-button md-button--primary" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+        Try Live in Google Colab
+      </a>
+      <a class="md-button" href="tutorials/">
+        Explore Bench Tutorials
+      </a>
+      <a class="md-button" href="api/analytical/">
+        Analytical Toolkit
+      </a>
+    </div>
+    <div class="sp-hero__badges">
+      <a href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+      </a>
+      <a href="https://pypi.org/project/softpotato/" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/pypi/v/softpotato?color=FD8031&label=PyPI" alt="PyPI Version" />
+      </a>
+      <a href="https://github.com/oliverrdz/softpotato/blob/main/LICENSE" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/pypi/l/softpotato?color=83BEB2&label=License" alt="License" />
+      </a>
     </div>
   </div>
   <div class="sp-hero__mascot">
@@ -1748,60 +1764,73 @@
 <div class="grid cards sp-feature-grid">
 <ul>
 <li>
-<p><img alt="Analytical Electrochemistry" class="sp-card-icon" src="assets/images/chip-electrodes.png" /> <strong>Analytical Electrochemistry</strong></p>
+<p><img alt="Benchmarking &amp; Analytical Toolkit" class="sp-card-icon" src="assets/images/chip-electrodes.png" /> <strong>Benchmarking &amp; Analytical Toolkit</strong></p>
 <hr />
-<p>A library of commonly used electrochemical equations such as Cottrell, Nernst, Levich, Randles-Sevick, Butler-Volmer, SECM, etc.</p>
-<p><a href="api/analytical/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Analytical Module</a></p>
+<p>Generate exact theoretical baselines for <strong>Cottrell</strong>, <strong>Levich</strong>, <strong>Koutecký–Levich</strong>, <strong>Randles–Ševčík</strong>, <strong>Butler–Volmer</strong>, microelectrodes, and <strong>SECM approach curves</strong> (<span class="arithmatex">\(I_T\)</span> vs. <span class="arithmatex">\(L\)</span>) in a single function call.</p>
+<p><a href="api/analytical/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Explore Analytical Equations</a></p>
 </li>
 <li>
-<p><img alt="Numerical PDE Solvers" class="sp-card-icon" src="assets/images/chip-coding.png" /> <strong>Numerical PDE Solvers</strong></p>
+<p><img alt="Diffusion Layer Visualizer" class="sp-card-icon" src="assets/images/chip-coding.png" /> <strong>Diffusion Layer Visualizer</strong></p>
 <hr />
-<p>1D multi-species reaction-diffusion solvers including stiff Method of Lines ODE integration (<code>scipy_ivp</code> Radau/BDF), Crank–Nicolson, and implicit/explicit finite-difference engines.</p>
-<p><a href="api/solver/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Solver Module</a></p>
+<p>Inspect how transient concentration profiles <span class="arithmatex">\(c(x, t)\)</span> and interfacial depletion zones evolve in time across planar, spherical, and cylindrical electrode geometries.</p>
+<p><a href="tutorials/electrochemistry/cottrell_geometries/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Visualize Diffusion Profiles</a></p>
 </li>
 <li>
-<p><img alt="Parameter Fitting &amp; Benchmarking" class="sp-card-icon" src="assets/images/chip-lab.png" /> <strong>Parameter Fitting &amp; Benchmarking</strong></p>
+<p><img alt="Quantitative Experimental Data Extraction" class="sp-card-icon" src="assets/images/chip-lab.png" /> <strong>Quantitative Experimental Data Extraction</strong></p>
 <hr />
-<p>Extract diffusion coefficients (<span class="arithmatex">\(D\)</span>), rate constants (<span class="arithmatex">\(k^0\)</span>), transfer coefficients (<span class="arithmatex">\(\alpha\)</span>), and SECM parameters (<span class="arithmatex">\(R_g\)</span>, <span class="arithmatex">\(d_{\text{offset}}\)</span>) with full confidence intervals, or validate numerical solvers against exact analytical solutions.</p>
-<p><a href="api/analytical/fitting/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Fitting &amp; Benchmarks</a></p>
+<p>Automatically extract diffusion coefficients (<span class="arithmatex">\(D\)</span>), heterogeneous rate constants (<span class="arithmatex">\(k^0\)</span>), transfer coefficients (<span class="arithmatex">\(\alpha\)</span>), and SECM parameters (<span class="arithmatex">\(RG\)</span>, <span class="arithmatex">\(d_0\)</span>) with 95% confidence intervals and <span class="arithmatex">\(R^2\)</span> diagnostics—no spreadsheets required.</p>
+<p><a href="api/analytical/fitting/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Data Fitting Toolkit</a></p>
 </li>
 <li>
-<p><img alt="Tutorials" class="sp-card-icon" src="assets/images/chip-greeting.png" /> <strong>Tutorials: Electrochemistry, Python &amp; Linux</strong></p>
+<p><img alt="Interactive Tutorials &amp; Zero-Install Trial" class="sp-card-icon" src="assets/images/chip-greeting.png" /> <strong>Interactive Tutorials &amp; Zero-Install Trial</strong></p>
 <hr />
-<p>Interactive Jupyter notebooks for electrochemical simulations alongside practical tutorials on basic programming in Python.</p>
+<p>Run Soft Potato v3 immediately in your browser with Google Colab or follow step-by-step guides covering chronoamperometry, cyclic voltammetry, and scientific Python for bench chemists.</p>
 <p><a href="tutorials/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Browse Tutorials</a></p>
 </li>
 </ul>
 </div>
 <hr />
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h2 id="try-in-your-browser-or-install-locally">Try in Your Browser or Install Locally<a class="headerlink" href="#try-in-your-browser-or-install-locally" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Zero-Install (Google Colab)</label><label for="__tabbed_1_2">Local Installation (<code>pip</code>)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>New to Python or want to test Soft Potato right at the bench? Open our interactive starter notebook in <strong>Google Colab</strong> to calculate chronoamperometric currents with <code>analytical.cottrell()</code> in seconds—nothing to install on your computer:</p>
+<p><a class="md-button md-button--primary" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" rel="noopener" target="_blank"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 15.584V8.416a.5.5 0 0 1 .77-.42l5.576 3.583a.5.5 0 0 1 0 .842l-5.576 3.584a.5.5 0 0 1-.77-.42Z"/><path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12m11-9.5A9.5 9.5 0 0 0 2.5 12a9.5 9.5 0 0 0 9.5 9.5 9.5 9.5 0 0 0 9.5-9.5A9.5 9.5 0 0 0 12 2.5"/></svg></span> Launch Soft Potato v3 Starter in Google Colab</a></p>
+</div>
+<div class="tabbed-block">
 <p>Install the latest stable release of Soft Potato from <a href="https://pypi.org/project/softpotato/">PyPI</a> using <code>pip</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>softpotato
 </code></pre></div>
-<p>Don't have Python? See <a href="tutorials/python/installing-python/">Installing Python</a>.</p>
+<p>Don't have Python installed yet? Follow our step-by-step guide: <a href="tutorials/python/installing-python/">Installing Python</a>.</p>
+</div>
+</div>
+</div>
 <hr />
-<h2 id="quick-example">Quick Example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h2>
-<p>Simulate or evaluate analytical electrochemistry in just a few lines of Python:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">softpotato</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 1. Analytical Cottrell current transient at a planar electrode</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">current</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">analytical</span><span class="o">.</span><span class="n">cottrell</span><span class="p">(</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">D</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span>  <span class="c1"># m^2 / s</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">c_bulk</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># mol / m^3 (1 mM)</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">A</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>  <span class="c1"># m^2 (1 cm^2)</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">)</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># 2. Fit experimental chronoamperometric data to recover diffusivity D</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">fit</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">analytical</span><span class="o">.</span><span class="n">fit_cottrell</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">current</span><span class="o">=</span><span class="n">current</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">c_bulk</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Extracted D = </span><span class="si">{</span><span class="n">fit</span><span class="o">.</span><span class="n">D</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> m^2/s (R^2 = </span><span class="si">{</span><span class="n">fit</span><span class="o">.</span><span class="n">r_squared</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-</code></pre></div>
-<div class="admonition chip">
-<p class="admonition-title">Chip's Tip: Always Use SI Units!</p>
-<p>Soft Potato functions use <strong>SI base units</strong> throughout: lengths in meters (<span class="arithmatex">\(\text{m}\)</span>), areas in <span class="arithmatex">\(\text{m}^2\)</span>, diffusion coefficients in <span class="arithmatex">\(\text{m}^2\cdot\text{s}^{-1}\)</span>, and concentrations in <span class="arithmatex">\(\text{mol}\cdot\text{m}^{-3}\)</span> (conveniently, <span class="arithmatex">\(1\text{ mM} = 1\text{ mol}\cdot\text{m}^{-3}\)</span>!).</p>
+<h2 id="why-open-source-for-electrochemistry-research">Why Open-Source for Electrochemistry Research?<a class="headerlink" href="#why-open-source-for-electrochemistry-research" title="Permanent link">&para;</a></h2>
+<div class="sp-section-banner">
+<div>
+<p><strong>Built for Experimental Transparency &amp; Education.</strong> Commercial simulation suites often lock electrochemical models behind hardware dongles, per-seat licenses, and opaque algorithms. Soft Potato empowers laboratories, students, and reviewers with a transparent, peer-reviewable toolkit. Follow our ongoing progress in the <a href="roadmap/">Development Roadmap</a> and <a href="changelog/">Changelog</a>.</p>
+</div>
+<p><img src="assets/images/chip-lab.png" alt="Chip in the Laboratory" /></p>
+</div>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 12-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68zm-13 5-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9z"/></svg></span> <strong>Transparent, Verifiable Equations</strong></p>
+<hr />
+<p>Every analytical model, regression bound, and transport equation is open and documented against standard electrochemical literature—eliminating black-box curve fits in your manuscripts.</p>
+</li>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17z"/></svg></span> <strong>Zero-Cost Classroom &amp; Lab Access</strong></p>
+<hr />
+<p>Free for every student, postdoc, and teaching lab worldwide. Run simulations on any operating system or directly in a web browser via Google Colab without license servers.</p>
+</li>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23.5 17-5 5-3.5-3.5 1.5-1.5 2 2 3.5-3.5zM6 2c-1.11 0-2 .89-2 2v16c0 1.11.89 2 2 2h7.81c-.53-.91-.81-1.95-.81-3 0-3.31 2.69-6 6-6 .34 0 .67.03 1 .08V8l-6-6m-1 1.5L18.5 9H13Z"/></svg></span> <strong>Reproducible Supplementary Information</strong></p>
+<hr />
+<p>Share a concise Python script or Jupyter notebook alongside your raw potentiostat data so collaborators and peer reviewers can reproduce your kinetic extractions and figures in one click.</p>
+</li>
+</ul>
 </div>
 <hr />
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h2>
@@ -1809,21 +1838,21 @@
 <blockquote>
 <p>Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. <em>ChemRxiv</em>. <a href="https://doi.org/10.26434/chemrxiv-2022-4bs3w">doi:10.26434/chemrxiv-2022-4bs3w</a></p>
 </blockquote>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">BibTeX</label><label for="__tabbed_1_2">APA</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">BibTeX</label><label for="__tabbed_2_2">APA</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nc">@article</span><span class="p">{</span><span class="nl">rodriguez2022softpotato</span><span class="p">,</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="na">author</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{Rodr{\'i}guez, Oliver}</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="na">title</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="s">{Soft Potato: an open source electrochemical simulator and toolkit}</span><span class="p">,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="na">journal</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="s">{ChemRxiv}</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="na">year</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="s">{2022}</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="na">doi</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{10.26434/chemrxiv-2022-4bs3w}</span><span class="p">,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="na">url</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{https://chemrxiv.org/doi/full/10.26434/chemrxiv-2022-4bs3w}</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nc">@article</span><span class="p">{</span><span class="nl">rodriguez2022softpotato</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="na">author</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{Rodr{\'i}guez, Oliver}</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="na">title</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="s">{Soft Potato: an open source electrochemical simulator and toolkit}</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="na">journal</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="s">{ChemRxiv}</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="na">year</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="s">{2022}</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="na">doi</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{10.26434/chemrxiv-2022-4bs3w}</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="na">url</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{https://chemrxiv.org/doi/full/10.26434/chemrxiv-2022-4bs3w}</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. ChemRxiv. https://doi.org/10.26434/chemrxiv-2022-4bs3w
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Rodríguez, O. (2022). Soft Potato: an open source electrochemical simulator and toolkit. ChemRxiv. https://doi.org/10.26434/chemrxiv-2022-4bs3w
 </code></pre></div>
 </div>
 </div>
