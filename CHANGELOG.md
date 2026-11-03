@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-11-03
+
+### Milestone 2 Release: Non-Uniform Expanding Grids, Coordinate Geometries & Documentation Suite
+Soft Potato 3.2.0 delivers Milestone 2 of the strategic development roadmap, introducing non-uniform, geometric, and exponentially expanding spatial discretization meshes (`softpotato.grid`), spatial coordinate geometries and finite-difference operators for 1D planar, spherical, and cylindrical electrode systems (`softpotato.geometry`), geometry-aware numerical solvers and multi-electrode Faradaic current evaluation (`softpotato.solver`), interactive tutorials for Cottrell chronoamperometry across geometries and non-uniform grid convergence (`examples/`), the official website at [softpotato.xyz](https://softpotato.xyz), and a modernized Material for MkDocs documentation suite with multi-version deployment via `mike`.
+
 ### Added
 - **Non-Uniform Spatial Discretization & Expanding Meshes (`softpotato.grid`)**:
   - Introduced `softpotato.grid` subpackage providing 1D spatial discretization meshes and physics-informed grid generators for numerical PDE simulations:

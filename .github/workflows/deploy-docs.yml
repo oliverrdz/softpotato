@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to deploy (leave empty for 'dev', or e.g. '3.1.1')"
+        description: "Version to deploy (leave empty for 'dev', or e.g. '3.2.0')"
         required: false
         default: ""
         type: string

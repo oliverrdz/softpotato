@@ -168,7 +168,7 @@ from .solver import (
     list_solvers,
 )
 
-__version__ = "3.1.1"
+__version__ = "3.2.0"
 
 __all__ = [
     "AVOGADRO",
