@@ -15,8 +15,8 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | :--- | :--- | :--- | :--- | :--- |
 | **Current State Stabilization** | `v3.0.0` | Finalize core solver module & `solve_ivp` integration | Released | **Stable Baseline** |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Released | **Minor Feature Addition** |
-| **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | In Development | **Minor Feature Addition** |
-| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Planned | **Minor Feature Addition** |
+| **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
+| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | In Development | **Minor Feature Addition** |
 | **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | Planned | **Minor Feature Addition** |
 
 ---
@@ -182,7 +182,7 @@ Analytical and empirical equations form the classical bedrock of electrochemistr
 
 ## Milestone 2 (Grids): v3.2.0
 
-**Status**: In Development
+**Status**: Released
 
 **Goal**: Introduce a dedicated spatial discretization and meshing module (`softpotato.grid`), adding non-uniform and expanding grids as a new, backwards-compatible feature.
 
@@ -207,10 +207,14 @@ In electrochemical simulations, diffusion layers are typically confined to a nar
   - Existing `v3.0.0`, `v3.1.0`, and `v3.1.1` solver scripts and tutorials continue executing with zero code changes.
 - **Solver Adaptations**:
   - Enable `ScipyIVPSolver` and banded implicit solvers to consume non-uniform spatial discretizations natively.
+- **Release Status**:
+  - Successfully implemented, benchmarked, tested, and released as `v3.2.0`.
 
 ---
 
 ## Milestone 3 (Reactions): v3.3.0
+
+**Status**: In Development
 
 **Goal**: Introduce a comprehensive chemical and electrochemical kinetics module (`softpotato.reactions`), providing modular multi-species reaction mechanisms.
 

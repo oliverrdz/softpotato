@@ -10,9 +10,9 @@
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
 
 > [!NOTE]
-> **Active Development (Milestone 2 in progress):**
-> The `main` branch contains work-in-progress features for **Milestone 2** (v3.2.0: Grids & Geometries).
-> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.1.1**.
+> **Active Development (Milestone 3 in progress):**
+> The `main` branch contains work-in-progress features for **Milestone 3** (v3.3.0: Reactions).
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.2.0**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
@@ -27,15 +27,15 @@
 Run Soft Potato directly in your browser with no local Python setup required:
 - [**Launch Soft Potato v3 Starter in Google Colab**](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
 
-### Stable Release (v3.1.1)
+### Stable Release (v3.2.0)
 
-Soft Potato v3.1.1 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.2.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
 ```
 
-### Development Version (Milestone 2 in progress)
+### Development Version (Milestone 3 in progress)
 
 To install the latest development version directly from GitHub:
 
@@ -170,8 +170,8 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | :--- | :--- | :--- | :--- |
 | **Current Baseline** | `v3.0.0` | 1D multi-species diffusion solvers (`scipy_ivp`, Crank–Nicolson, BTCS, FTCS) | Released |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Vectorized analytical models (`step`, `voltammetry`, `hydrodynamics`, `microelectrodes`, `secm`, `kinetics`), automated solver benchmarking (`benchmark`), and parameter fitting (`fitting`) | Released |
-| **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | In Development |
-| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Planned |
+| **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
+| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | In Development |
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | Planned |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
