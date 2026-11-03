@@ -44,7 +44,7 @@ hide:
 
 <div class="grid cards sp-feature-grid" markdown>
 
--   ![Benchmarking & Analytical Toolkit](assets/images/chip-electrodes.png){ .sp-card-icon } **Benchmarking & Analytical Toolkit**
+-   ![Instant Electrochemical Calculations](assets/images/chip-electrodes.png){ .sp-card-icon } **Instant Electrochemical Calculations**
 
     ---
 
