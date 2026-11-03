@@ -1852,14 +1852,14 @@
 <td style="text-align: left;"><strong>Milestone 2: Grids</strong></td>
 <td style="text-align: left;"><code>v3.2.0</code></td>
 <td style="text-align: left;">Spatial discretization &amp; non-uniform/expanding meshes</td>
-<td style="text-align: left;">In Development</td>
+<td style="text-align: left;">Released</td>
 <td style="text-align: left;"><strong>Minor Feature Addition</strong></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Milestone 3: Reactions</strong></td>
 <td style="text-align: left;"><code>v3.3.0</code></td>
 <td style="text-align: left;">Homogeneous &amp; heterogeneous chemical reaction kinetics</td>
-<td style="text-align: left;">Planned</td>
+<td style="text-align: left;">In Development</td>
 <td style="text-align: left;"><strong>Minor Feature Addition</strong></td>
 </tr>
 <tr>
@@ -2043,7 +2043,7 @@ I = I_0 \left[\exp\left(\frac{(1 - \alpha) n F \eta}{R T}\right) - \exp\left(-\f
 </ul>
 <hr />
 <h2 id="milestone-2-grids-v320">Milestone 2 (Grids): v3.2.0<a class="headerlink" href="#milestone-2-grids-v320" title="Permanent link">&para;</a></h2>
-<p><strong>Status</strong>: In Development</p>
+<p><strong>Status</strong>: Released</p>
 <p><strong>Goal</strong>: Introduce a dedicated spatial discretization and meshing module (<code>softpotato.grid</code>), adding non-uniform and expanding grids as a new, backwards-compatible feature.</p>
 <h3 id="rationale_1">Rationale<a class="headerlink" href="#rationale_1" title="Permanent link">&para;</a></h3>
 <p>In electrochemical simulations, diffusion layers are typically confined to a narrow region adjacent to the electrode surface (<span class="arithmatex">\(x=0\)</span>). Uniform grids require an excessively large number of spatial points (<span class="arithmatex">\(N_x\)</span>) to resolve steep surface gradients, inflating computational cost. Expanding grids concentrate spatial resolution near the electrode while coarsening into the bulk solution, delivering orders-of-magnitude faster simulations without sacrificing precision.</p>
@@ -2068,9 +2068,12 @@ I = I_0 \left[\exp\left(\frac{(1 - \alpha) n F \eta}{R T}\right) - \exp\left(-\f
 <li>Existing <code>v3.0.0</code>, <code>v3.1.0</code>, and <code>v3.1.1</code> solver scripts and tutorials continue executing with zero code changes.</li>
 <li><strong>Solver Adaptations</strong>:</li>
 <li>Enable <code>ScipyIVPSolver</code> and banded implicit solvers to consume non-uniform spatial discretizations natively.</li>
+<li><strong>Release Status</strong>:</li>
+<li>Successfully implemented, benchmarked, tested, and released as <code>v3.2.0</code>.</li>
 </ul>
 <hr />
 <h2 id="milestone-3-reactions-v330">Milestone 3 (Reactions): v3.3.0<a class="headerlink" href="#milestone-3-reactions-v330" title="Permanent link">&para;</a></h2>
+<p><strong>Status</strong>: In Development</p>
 <p><strong>Goal</strong>: Introduce a comprehensive chemical and electrochemical kinetics module (<code>softpotato.reactions</code>), providing modular multi-species reaction mechanisms.</p>
 <h3 id="rationale_2">Rationale<a class="headerlink" href="#rationale_2" title="Permanent link">&para;</a></h3>
 <p>Electrochemical systems frequently involve coupled chemical transformations (e.g., EC, EC', ECE, catalytic, and disproportionation pathways) as well as non-linear interfacial charge-transfer kinetics. A dedicated reactions module decouples kinetic mechanism definitions from the spatial diffusion solvers.</p>
