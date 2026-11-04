@@ -9,20 +9,22 @@ Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering
 
 ---
 
+## Python
+
+Foundational scientific programming tutorials designed for researchers and engineers:
+
+- [**Soft Potato on your browser**](python/google-colab-start.md) — Run Soft Potato in Google Colab. No Python installation needed!
+- [**Installing Python on your computer**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
+
+
 ## Electrochemistry Simulations
 
 Interactive simulations, numerical solvers, and analytical benchmarking with Soft Potato:
 
 - [**Cottrell**](electrochemistry/cottrell.ipynb) — 1D potential-step diffusion simulation, concentration profiles, Cottrell plots, and diffusivity extraction.
-- [**Multi-Geometry Cottrell**](electrochemistry/cottrell_geometries.ipynb) — Equivalent potential step across planar, spherical, and cylindrical geometries with native and 2D Cartesian concentration mapping.
 - [**Cyclic Voltammetry**](electrochemistry/cyclic_voltammetry.ipynb) — Reversible electron transfer ($O + e^- \rightleftharpoons R$), triangular sweep generation, Randles–Ševčík diagnostics, and peak separation analysis.
+- [**Multi-Geometry Cottrell**](electrochemistry/cottrell_geometries.ipynb) — Equivalent potential step across planar, spherical, and cylindrical geometries with native and 2D Cartesian concentration mapping.
 - [**Non-Uniform & Expanding Grids**](electrochemistry/expanding_grids.ipynb) — Physics-informed domain sizing ($\delta = 6\sqrt{D t_{\max}}$), geometric and exponential coordinate stretching (`softpotato.grid`), boundary-layer resolution in chronoamperometry and cyclic voltammetry, and $\mathcal{O}(\Delta x^2)$ spatial convergence benchmarks.
 
 ---
-
-## Python
-
-Foundational scientific programming tutorials designed for researchers and engineers:
-
-- [**Installing Python**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
 
