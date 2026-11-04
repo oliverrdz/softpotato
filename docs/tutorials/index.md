@@ -22,6 +22,7 @@ Foundational scientific programming tutorials designed for researchers and engin
 Hands-on guides exploring specific modules in the Soft Potato toolkit:
 
 - [**Analytical Module**](modules/analytical.ipynb) — How to call closed-form electrochemical equations (`cottrell`, `levich`, `butler_volmer`, and `secm_approach_curve`) across analytical submodules and visualize results.
+- [**Parameter Fitting**](modules/fitting.ipynb) — How to use `softpotato.analytical.fitting` (`fit_cottrell`, `fit_randles_sevcik`, `fit_secm_approach`, and `fit_curve`) to extract physical parameters from experimental data with statistical confidence.
 
 
 ## Electrochemistry Simulations
