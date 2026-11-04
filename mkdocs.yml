@@ -156,6 +156,7 @@ nav:
           - Analytical Module: tutorials/modules/analytical.ipynb
           - Parameter Fitting: tutorials/modules/fitting.ipynb
           - Numerical Solver: tutorials/modules/solver.ipynb
+          - Geometries Module: tutorials/modules/geometries.ipynb
       - Electrochemistry Simulations:
           - Cottrell: tutorials/electrochemistry/cottrell.ipynb
           - Multi-Geometry Cottrell: tutorials/electrochemistry/cottrell_geometries.ipynb
