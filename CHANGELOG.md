@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Interactive Module Tutorials (`docs/tutorials/modules/`)**:
+  - Added the **Soft Potato Modules** tutorial suite in the documentation navigation (`mkdocs.yml`) and Tutorials hub (`docs/tutorials/index.md`), along with a top-level `tutorials` directory symlink:
+    - **Analytical Module (`docs/tutorials/modules/analytical.ipynb`)**: Hands-on guide demonstrating how to import and evaluate closed-form electrochemical equations across `softpotato.analytical` submodules (`cottrell`, `levich`, `butler_volmer`, and `secm_approach_curve`) and visualize current–overpotential and approach curve responses.
+    - **Parameter Fitting (`docs/tutorials/modules/fitting.ipynb`)**: Step-by-step workflow for extracting physical, transport, and kinetic parameters ($D$, $I_{\text{bg}}$, $RG$, $d_{\text{offset}}$, $\kappa$, and custom Langmuir adsorption isotherm parameters) from synthetic noisy experimental data using `fit_cottrell`, `fit_randles_sevcik`, `fit_secm_approach`, and general bounded non-linear regression via `fit_curve`, complete with 95% confidence intervals, parameter correlation matrices, and residual diagnostics.
+    - **Numerical Solver (`docs/tutorials/modules/solver.ipynb`)**: Walkthrough of the `softpotato.solver` framework using the explicit finite difference solver (`'explicit'` / FTCS) for a two-species redox system ($O/R$), covering spatial grid generation, `DirichletBC` and `NeumannBC` boundary conditions, `DiffusionProblem` formulation, concentration profile visualization, and interfacial flux and Faradaic current extraction from `SolverResult`.
+    - **Geometry Module (`docs/tutorials/modules/geometries.ipynb`)**: Interactive guide to spatial coordinate abstractions in `softpotato.geometry` (`PlanarGeometry`, `CylindricalGeometry`, `SphericalGeometry`), demonstrating spherical microelectrode diffusion simulations with `SphericalGeometry(r0=r0)`, 1D radial concentration profiles $c(r)$, 2D Cartesian cross-sectional concentration heatmaps ($x, y$), and analytical validation against `cottrell_spherical`.
+- **Google Colab Browser Quickstart Tutorial (`docs/tutorials/python/google-colab-start.md`)**:
+  - Added a beginner-friendly guide to running Soft Potato directly in the browser via Google Colab (`!pip install softpotato`) with a ready-to-run chronoamperometry transient simulation using `softpotato.analytical.cottrell`.
+
 ## [3.2.0] - 2026-11-03
 
 ### Milestone 2 Release: Non-Uniform Expanding Grids, Coordinate Geometries & Documentation Suite
@@ -69,10 +79,12 @@ Soft Potato 3.2.0 delivers Milestone 2 of the strategic development roadmap, int
   - Configured documentation deployment workflow (`.github/workflows/deploy-docs.yml`) to dynamically configure committer git user info and sync shared stylesheet (`extra.css`) across deployed versions on `gh-pages`.
 
 ### Changed
+- Enhanced the `softpotato.analytical` API overview (`docs/api/analytical/index.md`) with core experimental electrochemistry applications (transient chronoamperometry, Randles–Ševčík voltammetric peak predictions, convective and steady-state UME mass-transport limits, Tafel/Butler–Volmer kinetic benchmarks, and ground-truth solver verification) and a quickstart Cottrell calculation example.
+- Expanded and streamlined the Python installation tutorial (`docs/tutorials/python/installing-python.md`) with OS-specific setup instructions (Windows, macOS, and Ubuntu/Debian), `venv` virtual environment management, an IDLE chronoamperometry verification script, and guidance for resuming Python sessions and installing additional scientific libraries.
 - Delegated `DiffusionProblem` grid validation to `Geometry.validate_grid`, enforcing positive radial coordinate constraints ($r_0 > 0$) for non-planar geometries.
 - Enhanced time integration in `CrankNicolson` to automatically sub-step and advance solution state when `t_eval[0] > t_start`.
 - Converted all documentation source files, API references, and guides from reStructuredText (`.rst`) to Markdown (`.md`), and updated display math block formatting in `CHANGELOG.md` and `ROADMAP.md` for MkDocs/MathJax compatibility.
-- Streamlined site navigation (`mkdocs.yml`) into four focused top-level sections (`Home`, `API Reference`, `Tutorials`, `Blog`), organizing interactive electrochemistry notebooks under `docs/tutorials/electrochemistry/` and Python setup under `docs/tutorials/python/`.
+- Streamlined site navigation (`mkdocs.yml`, `docs/tutorials/index.md`) into four focused top-level sections (`Home`, `API Reference`, `Tutorials`, `Blog`), organizing tutorials under `Python` (`docs/tutorials/python/`), `Soft Potato Modules` (`docs/tutorials/modules/`), and `Electrochemistry Simulations` (`docs/tutorials/electrochemistry/`).
 - Refactored module and function docstrings across `softpotato.constants`, `softpotato.solver`, and `softpotato.analytical` to use raw strings (`r"""`), structured Markdown tables for constants, units, and API summaries, and `\begin{aligned}` multi-line math blocks.
 - Updated documentation dependencies in `pyproject.toml` (`[project.optional-dependencies]` for `docs` and `dev`), replacing Sphinx packages with `mkdocs`, `mkdocs-material`, `mkdocstrings[python]`, `mkdocs-jupyter`, and `mike`.
 - Updated documentation URLs in `README.md` and `docs/index.md` from Read the Docs to `https://softpotato.xyz/`.
