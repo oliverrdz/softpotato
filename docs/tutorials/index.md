@@ -17,6 +17,13 @@ Foundational scientific programming tutorials designed for researchers and engin
 - [**Installing Python on your computer**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
 
 
+## Soft Potato Modules
+
+Hands-on guides exploring specific modules in the Soft Potato toolkit:
+
+- [**Analytical Module**](modules/analytical.ipynb) — How to call closed-form electrochemical equations (`cottrell`, `levich`, `butler_volmer`, and `secm_approach_curve`) across analytical submodules and visualize results.
+
+
 ## Electrochemistry Simulations
 
 Interactive simulations, numerical solvers, and analytical benchmarking with Soft Potato:
