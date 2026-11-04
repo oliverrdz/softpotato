@@ -154,6 +154,7 @@ nav:
           - Installing Python on your computer: tutorials/python/installing-python.md
       - Soft Potato Modules:
           - Analytical Module: tutorials/modules/analytical.ipynb
+          - Numerical Solver: tutorials/modules/solver.ipynb
           - Parameter Fitting: tutorials/modules/fitting.ipynb
       - Electrochemistry Simulations:
           - Cottrell: tutorials/electrochemistry/cottrell.ipynb
