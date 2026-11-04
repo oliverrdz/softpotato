@@ -152,6 +152,8 @@ nav:
       - Python:
           - Soft Potato on your browser: tutorials/python/google-colab-start.md
           - Installing Python on your computer: tutorials/python/installing-python.md
+      - Soft Potato Modules:
+          - Analytical Module: tutorials/modules/analytical.ipynb
       - Electrochemistry Simulations:
           - Cottrell: tutorials/electrochemistry/cottrell.ipynb
           - Multi-Geometry Cottrell: tutorials/electrochemistry/cottrell_geometries.ipynb
