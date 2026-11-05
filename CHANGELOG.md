@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-11-05
+
 ### Added
 - **Interactive Module Tutorials (`docs/tutorials/modules/`)**:
   - Added the **Soft Potato Modules** tutorial suite in the documentation navigation (`mkdocs.yml`) and Tutorials hub (`docs/tutorials/index.md`), along with a top-level `tutorials` directory symlink:
