@@ -18,15 +18,14 @@ To import a specific equation, follow the rule `softpotato.analytical.submodule`
 ```python
 from softpotato.analytical.step import cottrell
 
-A = 1 # cm2, area
-n = 1 # number of electrons
-c_bulk = 1e-6 # mol/cm3, bulk concentration, 1 mM
-D = 1e-5 # cm2/s, diffusion coefficient
-t = 10 # s, time to calculate the current
+A = 1  # cm2, area
+n = 1  # number of electrons
+c_bulk = 1e-6  # mol/cm3, bulk concentration, 1 mM
+D = 1e-5  # cm2/s, diffusion coefficient
+t = 10  # s, time to calculate the current
 
-i_cottrell = cottrell(t, n=n, D=D, c_bulk=c_bulk, area=A) # current at 10 s
+i_cottrell = cottrell(t, n=n, D=D, c_bulk=c_bulk, area=A)  # current at 10 s
 print(i_cottrell)
-
 ```
 
 ## Submodules
