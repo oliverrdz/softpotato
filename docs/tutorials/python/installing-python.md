@@ -79,10 +79,10 @@ Once activated, your terminal prompt will show `(.venv)`.
 
 ## 3. Install Soft Potato
 
-With your environment activated, install `softpotato`, `numpy` and `matplotlib`:
+With your environment activated, install `softpotato`:
 
 ```bash
-pip install softpotato numpy matplotlib
+pip install softpotato
 ```
 
 ---
@@ -92,7 +92,7 @@ pip install softpotato numpy matplotlib
 Run a quick check in your terminal:
 
 ```bash
-python -c "import softpotato, numpy, matplotlib; print('Installed successfully!')"
+python -c "import softpotato; print('Installed successfully!')"
 ```
 
 To verify calculations and plotting, run a test script:
