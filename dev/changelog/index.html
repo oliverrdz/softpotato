@@ -1658,7 +1658,18 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="[Unreleased]">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#321-2026-11-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        [3.2.1] - 2026-11-05
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[3.2.1] - 2026-11-05">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1666,6 +1677,28 @@
     <span class="md-ellipsis">
       
         Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removed
       
     </span>
   </a>
@@ -1712,7 +1745,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed" class="md-nav__link">
+  <a href="#changed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -1734,7 +1767,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#removed" class="md-nav__link">
+  <a href="#removed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Removed
@@ -1795,7 +1828,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_1" class="md-nav__link">
+  <a href="#changed_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -1834,7 +1867,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#removed_1" class="md-nav__link">
+  <a href="#removed_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Removed
@@ -1895,7 +1928,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_2" class="md-nav__link">
+  <a href="#changed_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -1917,7 +1950,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#removed_2" class="md-nav__link">
+  <a href="#removed_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Removed
@@ -1967,7 +2000,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_3" class="md-nav__link">
+  <a href="#changed_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -1989,7 +2022,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#removed_3" class="md-nav__link">
+  <a href="#removed_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Removed
@@ -2039,7 +2072,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_4" class="md-nav__link">
+  <a href="#changed_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -2050,7 +2083,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#removed_4" class="md-nav__link">
+  <a href="#removed_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         Removed
@@ -2090,6 +2123,7 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a> and <a href="https://peps.python.org/pep-0440/">PEP 440</a>.</p>
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<h2 id="321-2026-11-05">[3.2.1] - 2026-11-05<a class="headerlink" href="#321-2026-11-05" title="Permanent link">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Interactive Module Tutorials (<code>docs/tutorials/modules/</code>)</strong>:</li>
@@ -2098,10 +2132,21 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><strong>Parameter Fitting (<code>docs/tutorials/modules/fitting.ipynb</code>)</strong>: Step-by-step workflow for extracting physical, transport, and kinetic parameters (<span class="arithmatex">\(D\)</span>, <span class="arithmatex">\(I_{\text{bg}}\)</span>, <span class="arithmatex">\(RG\)</span>, <span class="arithmatex">\(d_{\text{offset}}\)</span>, <span class="arithmatex">\(\kappa\)</span>, and custom Langmuir adsorption isotherm parameters) from synthetic noisy experimental data using <code>fit_cottrell</code>, <code>fit_randles_sevcik</code>, <code>fit_secm_approach</code>, and general bounded non-linear regression via <code>fit_curve</code>, complete with 95% confidence intervals, parameter correlation matrices, and residual diagnostics.</li>
 <li><strong>Numerical Solver (<code>docs/tutorials/modules/solver.ipynb</code>)</strong>: Walkthrough of the <code>softpotato.solver</code> framework using the explicit finite difference solver (<code>'explicit'</code> / FTCS) for a two-species redox system (<span class="arithmatex">\(O/R\)</span>), covering spatial grid generation, <code>DirichletBC</code> and <code>NeumannBC</code> boundary conditions, <code>DiffusionProblem</code> formulation, concentration profile visualization, and interfacial flux and Faradaic current extraction from <code>SolverResult</code>.</li>
 <li><strong>Geometry Module (<code>docs/tutorials/modules/geometries.ipynb</code>)</strong>: Interactive guide to spatial coordinate abstractions in <code>softpotato.geometry</code> (<code>PlanarGeometry</code>, <code>CylindricalGeometry</code>, <code>SphericalGeometry</code>), demonstrating spherical microelectrode diffusion simulations with <code>SphericalGeometry(r0=r0)</code>, 1D radial concentration profiles <span class="arithmatex">\(c(r)\)</span>, 2D Cartesian cross-sectional concentration heatmaps (<span class="arithmatex">\(x, y\)</span>), and analytical validation against <code>cottrell_spherical</code>.</li>
+<li><strong>Grid Module (<code>docs/tutorials/modules/grids.ipynb</code>)</strong>: Interactive guide demonstrating how to construct non-uniform spatial discretization meshes with <code>ExponentialMesh</code> in <code>softpotato.grid</code>, couple them with <code>DiffusionProblem</code>, and compare near-electrode concentration profiles and Faradaic current transients against <code>Uniform1DMesh</code> for the same number of nodes.</li>
 </ul>
 </li>
 <li><strong>Google Colab Browser Quickstart Tutorial (<code>docs/tutorials/python/google-colab-start.md</code>)</strong>:</li>
 <li>Added a beginner-friendly guide to running Soft Potato directly in the browser via Google Colab (<code>!pip install softpotato</code>) with a ready-to-run chronoamperometry transient simulation using <code>softpotato.analytical.cottrell</code>.</li>
+</ul>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Streamlined site navigation across <code>mkdocs.yml</code> and <code>docs/tutorials/index.md</code>: removed the legacy <code>Electrochemistry Simulations</code> section in favor of the structured <code>Soft Potato Modules</code> tutorials (<code>docs/tutorials/modules/</code>).</li>
+<li>Updated home page feature cards and action buttons (<code>docs/index.md</code>) to link directly to the new interactive module tutorials (<code>tutorials/modules/analytical.ipynb</code>, <code>tutorials/modules/geometries.ipynb</code>, <code>tutorials/modules/fitting.ipynb</code>, and <code>tutorials/python/google-colab-start.md</code>).</li>
+<li>Added Griffe / <code>mkdocstrings</code> documentation directive (<code>options: members: false</code>) to <code>docs/api/analytical/index.md</code> to prevent duplicate member listings, and formatted Python API examples to adhere to Ruff formatting standards.</li>
+</ul>
+<h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Removed obsolete tutorial symlinks in <code>docs/tutorials/electrochemistry/</code> (<code>cottrell.ipynb</code>, <code>cottrell_geometries.ipynb</code>, <code>cyclic_voltammetry.ipynb</code>, <code>expanding_grids.ipynb</code>) following the transition to the modular <code>Soft Potato Modules</code> suite.</li>
 </ul>
 <h2 id="320-2026-11-03">[3.2.0] - 2026-11-03<a class="headerlink" href="#320-2026-11-03" title="Permanent link">&para;</a></h2>
 <h3 id="milestone-2-release-non-uniform-expanding-grids-coordinate-geometries-documentation-suite">Milestone 2 Release: Non-Uniform Expanding Grids, Coordinate Geometries &amp; Documentation Suite<a class="headerlink" href="#milestone-2-release-non-uniform-expanding-grids-coordinate-geometries-documentation-suite" title="Permanent link">&para;</a></h3>
@@ -2172,7 +2217,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Reframed the documentation landing page (<code>docs/index.md</code>, <code>docs/stylesheets/extra.css</code>) around laboratory bench electrochemistry workflows, zero-install browser execution via Google Colab, high-speed PDE solver performance metrics (<code>5–20× Faster PDE Solves</code>), interactive feature cards, and open-source research reproducibility.</li>
 <li>Configured documentation deployment workflow (<code>.github/workflows/deploy-docs.yml</code>) to dynamically configure committer git user info and sync shared stylesheet (<code>extra.css</code>) across deployed versions on <code>gh-pages</code>.</li>
 </ul>
-<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Enhanced the <code>softpotato.analytical</code> API overview (<code>docs/api/analytical/index.md</code>) with core experimental electrochemistry applications (transient chronoamperometry, Randles–Ševčík voltammetric peak predictions, convective and steady-state UME mass-transport limits, Tafel/Butler–Volmer kinetic benchmarks, and ground-truth solver verification) and a quickstart Cottrell calculation example.</li>
 <li>Expanded and streamlined the Python installation tutorial (<code>docs/tutorials/python/installing-python.md</code>) with OS-specific setup instructions (Windows, macOS, and Ubuntu/Debian), <code>venv</code> virtual environment management, an IDLE chronoamperometry verification script, and guidance for resuming Python sessions and installing additional scientific libraries.</li>
@@ -2190,7 +2235,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fixed relative link to Python installation tutorial in <code>docs/index.md</code>.</li>
 <li>Fixed Markdown formatting of summary takeaways in the cyclic voltammetry tutorial (<code>examples/cyclic_voltammetry.ipynb</code>).</li>
 </ul>
-<h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">&para;</a></h3>
+<h3 id="removed_1">Removed<a class="headerlink" href="#removed_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Removed legacy Sphinx configuration and Read the Docs build infrastructure: <code>docs/conf.py</code>, <code>docs/Makefile</code>, <code>docs/make.bat</code>, <code>docs/docutils.conf</code>, <code>.readthedocs.yaml</code>, <code>docs/index.rst</code>, <code>docs/installation.rst</code>, <code>docs/api.rst</code>, <code>docs/_static/custom.css</code>, and <code>docs/_templates/layout.html</code>.</li>
 </ul>
@@ -2225,7 +2270,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Enhanced GitHub Actions CI workflow (<code>.github/workflows/ci.yml</code>) to automatically apply Ruff lint fixes and code formatting via <code>stefanzweifel/git-auto-commit-action</code>.</li>
 <li>Added <code>[tool.ruff]</code> section in <code>pyproject.toml</code> with <code>extend-exclude</code> configuration for documentation build artifacts and example notebooks.</li>
 </ul>
-<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h3>
+<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Documentation &amp; Metadata</strong>:</li>
 <li>Enhanced installation documentation (<code>docs/installation.rst</code>) with detailed setup instructions for PyPI (<code>pip</code>), GitHub bleeding-edge installation, source development environments, and optional dependency extras (<code>[test]</code>, <code>[docs]</code>, <code>[dev]</code>).</li>
@@ -2234,7 +2279,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="310-2026-10-01">[3.1.0] - 2026-10-01<a class="headerlink" href="#310-2026-10-01" title="Permanent link">&para;</a></h2>
 <h3 id="milestone-1-release-analytical-equations-benchmarking-parameter-fitting">Milestone 1 Release: Analytical Equations, Benchmarking &amp; Parameter Fitting<a class="headerlink" href="#milestone-1-release-analytical-equations-benchmarking-parameter-fitting" title="Permanent link">&para;</a></h3>
 <p>Soft Potato 3.1.0 delivers Milestone 1 of the strategic development roadmap, introducing a comprehensive suite of closed-form and empirical electrochemical equations (<code>softpotato.analytical</code>), automated numerical solver verification and benchmarking (<code>softpotato.analytical.benchmark</code>), non-linear least-squares parameter estimation and regression (<code>softpotato.analytical.fitting</code>), centralized physical and electrochemical constants (<code>softpotato.constants</code>), and an interactive Cottrell tutorial notebook (<code>examples/cottrell.ipynb</code>).</p>
-<h3 id="removed_1">Removed<a class="headerlink" href="#removed_1" title="Permanent link">&para;</a></h3>
+<h3 id="removed_2">Removed<a class="headerlink" href="#removed_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Removed previous tutorial notebooks and documentation entries ahead of creating a redesigned tutorial suite.</li>
 </ul>
@@ -2396,7 +2441,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added custom stylesheet <code>docs/_static/custom.css</code> for consistent presentation.</li>
 <li>Configured <code>IPython.sphinxext.ipython_console_highlighting</code> in <code>docs/conf.py</code> for reliable syntax highlighting of Jupyter notebook cells on Read the Docs.</li>
 </ul>
-<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h3>
+<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Promoted package version to <code>3.0.0</code> and PyPI classifier to <code>Development Status :: 5 - Production/Stable</code> in <code>pyproject.toml</code>.</li>
 <li>Stabilized the <code>softpotato.solver</code> module as the official v3.0.0 baseline.</li>
@@ -2411,7 +2456,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fixed LaTeX/MathJax math delimiters rendering across Jupyter notebook tutorials and documentation pages on Read the Docs.</li>
 <li>Fixed Ruff formatting and lint violations across tutorials and source files.</li>
 </ul>
-<h3 id="removed_2">Removed<a class="headerlink" href="#removed_2" title="Permanent link">&para;</a></h3>
+<h3 id="removed_3">Removed<a class="headerlink" href="#removed_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Removed legacy preliminary notebook <code>examples/1d_diffusion_comparison.ipynb</code>.</li>
 <li>Removed redundant <code>.github/workflows/docs.yml</code> workflow file in favor of direct Read the Docs integration.</li>
@@ -2499,7 +2544,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 </li>
 </ul>
-<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h3>
+<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Refactored <code>README.md</code>:</li>
 <li>Added active rewrite warning banner for <code>v3.0.0a1</code>.</li>
@@ -2530,7 +2575,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>Fixed Python 3.10 class creation failure (<code>TypeError: ABCMeta.__new__() got multiple values for argument 'name'</code>) across all solvers by introducing <code>_BaseSolverMeta</code> on <code>BaseSolver</code> to safely extract <code>name</code> and <code>solver_name</code> class keyword arguments prior to delegating to <code>ABCMeta.__new__</code>.</li>
 </ul>
-<h3 id="removed_3">Removed<a class="headerlink" href="#removed_3" title="Permanent link">&para;</a></h3>
+<h3 id="removed_4">Removed<a class="headerlink" href="#removed_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Removed <code>.github/workflows/docs.yml</code> (obsolete standalone workflow referencing non-existent <code>readthedocs/upload-action@v1</code>; documentation builds and deployments are managed natively via Read the Docs GitHub webhook integration configured in <code>.readthedocs.yaml</code>).</li>
 <li>Removed legacy pre-3.0 codebase (monolithic <code>softpotato.core</code>, <code>softpotato.analytical</code>, <code>softpotato.geometry</code>, <code>softpotato.simulate</code>, <code>softpotato.techniques</code>, and <code>softpotato.kinetics</code>) to establish a modular, maintainable, and rigorously tested foundation.</li>
@@ -2639,14 +2684,14 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><strong>Dependencies (<code>pyproject.toml</code>)</strong>:</li>
 <li>Added optional <code>docs</code> dependency group (<code>sphinx</code>, <code>sphinx-rtd-theme</code>, <code>sphinx-autodoc-typehints</code>, <code>nbsphinx</code>, <code>nbsphinx-link</code>, <code>ipython</code>, <code>ipykernel</code>).</li>
 </ul>
-<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h3>
+<h3 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Configured Black <code>target-version = ["py310"]</code> in <code>pyproject.toml</code> to ensure consistent AST checks across the Python 3.10–3.12 CI matrix.</li>
 <li>Structured package exports in <code>softpotato/__init__.py</code> using explicit <code>__all__</code> declarations.</li>
 <li>Cleaned up docstrings in <code>src/softpotato/core/reactions.py</code> by removing redundant <code>Attributes:</code> sections to optimize Sphinx autodoc rendering.</li>
 <li>Formatted <code>src/softpotato/core/reactions.py</code> and <code>tests/test_core.py</code> to adhere strictly to Ruff formatting and lint rules.</li>
 </ul>
-<h3 id="removed_4">Removed<a class="headerlink" href="#removed_4" title="Permanent link">&para;</a></h3>
+<h3 id="removed_5">Removed<a class="headerlink" href="#removed_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Removed legacy <code>src/softpotato/core/README.md</code> in favor of Sphinx documentation.</li>
 </ul>
