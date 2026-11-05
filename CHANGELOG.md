@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-11-05
+
 ### Added
 - **Interactive Module Tutorials (`docs/tutorials/modules/`)**:
   - Added the **Soft Potato Modules** tutorial suite in the documentation navigation (`mkdocs.yml`) and Tutorials hub (`docs/tutorials/index.md`), along with a top-level `tutorials` directory symlink:
@@ -14,8 +16,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - **Parameter Fitting (`docs/tutorials/modules/fitting.ipynb`)**: Step-by-step workflow for extracting physical, transport, and kinetic parameters ($D$, $I_{\text{bg}}$, $RG$, $d_{\text{offset}}$, $\kappa$, and custom Langmuir adsorption isotherm parameters) from synthetic noisy experimental data using `fit_cottrell`, `fit_randles_sevcik`, `fit_secm_approach`, and general bounded non-linear regression via `fit_curve`, complete with 95% confidence intervals, parameter correlation matrices, and residual diagnostics.
     - **Numerical Solver (`docs/tutorials/modules/solver.ipynb`)**: Walkthrough of the `softpotato.solver` framework using the explicit finite difference solver (`'explicit'` / FTCS) for a two-species redox system ($O/R$), covering spatial grid generation, `DirichletBC` and `NeumannBC` boundary conditions, `DiffusionProblem` formulation, concentration profile visualization, and interfacial flux and Faradaic current extraction from `SolverResult`.
     - **Geometry Module (`docs/tutorials/modules/geometries.ipynb`)**: Interactive guide to spatial coordinate abstractions in `softpotato.geometry` (`PlanarGeometry`, `CylindricalGeometry`, `SphericalGeometry`), demonstrating spherical microelectrode diffusion simulations with `SphericalGeometry(r0=r0)`, 1D radial concentration profiles $c(r)$, 2D Cartesian cross-sectional concentration heatmaps ($x, y$), and analytical validation against `cottrell_spherical`.
+    - **Grid Module (`docs/tutorials/modules/grids.ipynb`)**: Interactive guide demonstrating how to construct non-uniform spatial discretization meshes with `ExponentialMesh` in `softpotato.grid`, couple them with `DiffusionProblem`, and compare near-electrode concentration profiles and Faradaic current transients against `Uniform1DMesh` for the same number of nodes.
 - **Google Colab Browser Quickstart Tutorial (`docs/tutorials/python/google-colab-start.md`)**:
   - Added a beginner-friendly guide to running Soft Potato directly in the browser via Google Colab (`!pip install softpotato`) with a ready-to-run chronoamperometry transient simulation using `softpotato.analytical.cottrell`.
+
+### Changed
+- Streamlined site navigation across `mkdocs.yml` and `docs/tutorials/index.md`: removed the legacy `Electrochemistry Simulations` section in favor of the structured `Soft Potato Modules` tutorials (`docs/tutorials/modules/`).
+- Updated home page feature cards and action buttons (`docs/index.md`) to link directly to the new interactive module tutorials (`tutorials/modules/analytical.ipynb`, `tutorials/modules/geometries.ipynb`, `tutorials/modules/fitting.ipynb`, and `tutorials/python/google-colab-start.md`).
+- Added Griffe / `mkdocstrings` documentation directive (`options: members: false`) to `docs/api/analytical/index.md` to prevent duplicate member listings, and formatted Python API examples to adhere to Ruff formatting standards.
+
+### Removed
+- Removed obsolete tutorial symlinks in `docs/tutorials/electrochemistry/` (`cottrell.ipynb`, `cottrell_geometries.ipynb`, `cyclic_voltammetry.ipynb`, `expanding_grids.ipynb`) following the transition to the modular `Soft Potato Modules` suite.
 
 ## [3.2.0] - 2026-11-03
 
