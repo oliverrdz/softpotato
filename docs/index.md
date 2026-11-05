@@ -11,18 +11,12 @@ hide:
     <p class="sp-hero__tagline">
       Predict voltammetric, chronoamperometric, hydrodynamic, and SECM responses—or extract transport and kinetic parameters directly from experimental data—using pure physical inputs (<i>E</i><sup>0</sup>, <i>k</i><sup>0</sup>, &alpha;, <i>D</i>, scan rates) without touching numerical meshes or differential equation code.
     </p>
-    <div class="sp-hero__metrics">
-      <span class="sp-metric-pill"><strong>5–20&times; Faster</strong>&nbsp;PDE Solves</span>
-    </div>
     <div class="sp-hero__actions">
       <a class="md-button md-button--primary" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
         Try Live in Google Colab
       </a>
       <a class="md-button" href="tutorials/">
-        Explore Bench Tutorials
-      </a>
-      <a class="md-button" href="api/analytical/">
-        Analytical Toolkit
+        Explore Tutorials
       </a>
     </div>
     <div class="sp-hero__badges">
@@ -50,7 +44,7 @@ hide:
 
     Generate exact theoretical baselines for **Cottrell**, **Levich**, **Koutecký–Levich**, **Randles–Ševčík**, **Butler–Volmer**, microelectrodes, and **SECM approach curves** ($I_T$ vs. $L$) in a single function call.
 
-    [:octicons-arrow-right-24: Explore Analytical Equations](api/analytical/index.md)
+    [:octicons-arrow-right-24: Explore Analytical Equations](tutorials/modules/analytical.ipynb)
 
 -   ![Diffusion Layer Visualizer](assets/images/chip-coding.png){ .sp-card-icon } **Diffusion Layer Visualizer**
 
@@ -58,7 +52,7 @@ hide:
 
     Inspect how transient concentration profiles $c(x, t)$ and interfacial depletion zones evolve in time across planar, spherical, and cylindrical electrode geometries.
 
-    [:octicons-arrow-right-24: Visualize Diffusion Profiles](tutorials/electrochemistry/cottrell_geometries.ipynb)
+    [:octicons-arrow-right-24: Visualize Diffusion Profiles](tutorials/modules/geometries.ipynb)
 
 -   ![Quantitative Experimental Data Extraction](assets/images/chip-lab.png){ .sp-card-icon } **Quantitative Experimental Data Extraction**
 
@@ -66,7 +60,7 @@ hide:
 
     Automatically extract diffusion coefficients ($D$), heterogeneous rate constants ($k^0$), transfer coefficients ($\alpha$), and SECM parameters ($RG$, $d_0$) with 95% confidence intervals and $R^2$ diagnostics—no spreadsheets required.
 
-    [:octicons-arrow-right-24: Data Fitting Toolkit](api/analytical/fitting.md)
+    [:octicons-arrow-right-24: Data Fitting Toolkit](tutorials/modules/fitting.ipynb)
 
 -   ![Interactive Tutorials & Zero-Install Trial](assets/images/chip-greeting.png){ .sp-card-icon } **Interactive Tutorials & Zero-Install Trial**
 
@@ -74,7 +68,7 @@ hide:
 
     Run Soft Potato v3 immediately in your browser with Google Colab or follow step-by-step guides covering chronoamperometry, cyclic voltammetry, and scientific Python for bench chemists.
 
-    [:octicons-arrow-right-24: Browse Tutorials](tutorials/index.md)
+    [:octicons-arrow-right-24: Try Soft Potato in your browser!](tutorials/python/google-colab-start.md)
 
 </div>
 
