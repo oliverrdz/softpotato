@@ -28,6 +28,10 @@ i_cottrell = cottrell(t, n=n, D=D, c_bulk=c_bulk, area=A)  # current at 10 s
 print(i_cottrell)
 ```
 
+::: softpotato.analytical
+    options:
+      members: false
+
 ## Submodules
 
 - [Transient Step Techniques (`softpotato.analytical.step`)](step.md)
