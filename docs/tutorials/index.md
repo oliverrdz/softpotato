@@ -2,7 +2,7 @@
 
 <div class="sp-section-banner" markdown>
 <div markdown>
-Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **Soft Potato modules**, and scientific **Python programming**, for students, researchers, and computational scientists. This section is in active development and will be updated continuously.
+Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **electrochemistry**, **Soft Potato modules**, and scientific **Python programming**, for students, researchers, and computational scientists. This section is in active development and will be updated continuously.
 </div>
 <img src="../assets/images/chip-coding.png" alt="Chip — Code & Mesh Analyst" />
 </div>
@@ -26,6 +26,13 @@ Hands-on guides exploring specific modules in the Soft Potato toolkit:
 - [**Numerical Solver**](modules/solver.ipynb) — Simulating multi-species reaction-diffusion problems with `DiffusionProblem()`, configuring Dirichlet and Neumann boundary conditions, and extracting concentration profiles and Faradaic currents with `SolverResult`.
 - [**Geometry Module**](modules/geometries.ipynb) — Setting up spatial coordinate systems with `softpotato.geometry` (planar, cylindrical, and spherical), running spherical diffusion simulations, and visualizing 1D radial profiles, 2D Cartesian cross-sections, and Faradaic currents.
 - [**Grid Module**](modules/grids.ipynb) — Constructing non-uniform spatial discretization meshes with `ExponentialMesh` in `softpotato.grid`, coupling with `DiffusionProblem()`, and comparing near-electrode concentration profiles and Faradaic current transients against `Uniform1DMesh` for the same number of nodes.
+
+
+## Electrochemistry
+
+Hands-on simulation workflows and benchmarks for classical electrochemical techniques:
+
+- [**Chronoamperometry**](electrochemistry/ca.ipynb) — How to perform a chronoamperometry simulation and compare it with the `cottrell` function from the analytical module to demonstrate the full modeling workflow with Soft Potato.
 
 
 
