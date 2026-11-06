@@ -158,5 +158,7 @@ nav:
           - Numerical Solver: tutorials/modules/solver.ipynb
           - Geometry Module: tutorials/modules/geometries.ipynb
           - Grid Module: tutorials/modules/grids.ipynb
+      - Electrochemistry:
+          - Chronoamperometry: tutorials/electrochemistry/ca.ipynb
   - Blog:
       - blog/index.md
