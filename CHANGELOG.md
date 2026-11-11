@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.2] - 2026-11-11
+
+### Added
+- **Electrochemistry Simulation Tutorials (`docs/tutorials/electrochemistry/`)**:
+  - Re-introduced the **Electrochemistry Simulations** tutorial section in the documentation navigation (`mkdocs.yml`) and Tutorials hub (`docs/tutorials/index.md`).
+  - Added **Chronoamperometry Tutorial (`docs/tutorials/electrochemistry/ca.ipynb`)**: Hands-on guide demonstrating how to simulate 1D potential-step chronoamperometry using `softpotato.solver`, visualize time-dependent concentration profiles, compute boundary fluxes, and benchmark numerical results against analytical Cottrell equation predictions.
+  - Added **Cyclic Voltammetry Tutorial (`docs/tutorials/electrochemistry/cv.ipynb`)**: Interactive notebook demonstrating 1D simulation of reversible cyclic voltammetry at planar macroelectrodes, implementing triangular potential sweep waveforms $E(t)$, applying dynamic Nernstian boundary conditions, tracking time-dependent concentration profiles ($O$ and $R$), and validating peak currents and separation against Randles–Ševčík theory.
+- **Electrochemical Simulations Jargon Buster (`docs/blog/posts/simulations-jargon.md`)**:
+  - Published a guide translating numerical simulation jargon (governing PDEs, spatial discretization meshes, boundary conditions, time stepping schemes, Newton–Raphson solvers, and post-processing flux integration) into intuitive laboratory electrochemistry concepts.
+
+### Fixed
+- Fixed relative cross-reference links to API documentation across all interactive module tutorial notebooks (`analytical.ipynb`, `fitting.ipynb`, `geometries.ipynb`, `grids.ipynb`, `solver.ipynb`).
+- Normalized notebook cell execution counts in the Cyclic Voltammetry tutorial notebook (`docs/tutorials/electrochemistry/cv.ipynb`).
+- Updated author website link in `docs/blog/.authors.yml`.
+
 ## [3.2.1] - 2026-11-05
 
 ### Added
