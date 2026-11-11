@@ -34,7 +34,7 @@ Hands-on simulation workflows and benchmarks for classical electrochemical techn
 
 - [**Chronoamperometry**](electrochemistry/ca.ipynb) — How to perform a chronoamperometry simulation and compare it with the `cottrell` function from the analytical module to demonstrate the full modeling workflow with Soft Potato.
 
-
+- [**Cyclic Voltammetry**](electrochemistry/cv.ipynb) - How to perform a cyclic voltammetry simulation of a reversible couple and use the Randles-Sevcik equation from the analytical module to estimate the error.
 
 ---
 

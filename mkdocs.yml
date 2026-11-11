@@ -160,5 +160,6 @@ nav:
           - Grid Module: tutorials/modules/grids.ipynb
       - Electrochemistry:
           - Chronoamperometry: tutorials/electrochemistry/ca.ipynb
+          - Cyclic Voltammetry: tutorials/electrochemistry/cv.ipynb
   - Blog:
       - blog/index.md
