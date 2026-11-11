@@ -12,7 +12,7 @@
 > [!NOTE]
 > **Active Development (Milestone 3 in progress):**
 > The `main` branch contains work-in-progress features for **Milestone 3** (v3.3.0: Reactions).
-> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.2.1**.
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.2.2**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
@@ -27,9 +27,9 @@
 Run Soft Potato directly in your browser with no local Python setup required:
 - [**Launch Soft Potato v3 Starter in Google Colab**](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
 
-### Stable Release (v3.2.1)
+### Stable Release (v3.2.2)
 
-Soft Potato v3.2.1 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.2.2 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
