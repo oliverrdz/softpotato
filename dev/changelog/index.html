@@ -1817,6 +1817,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#322-2026-11-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        [3.2.2] - 2026-11-11
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[3.2.2] - 2026-11-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#321-2026-11-05" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1829,7 +1868,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -1890,7 +1929,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -1912,7 +1951,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fixed" class="md-nav__link">
+  <a href="#fixed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -1962,7 +2001,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fixed_1" class="md-nav__link">
+  <a href="#fixed_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -1973,7 +2012,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_2" class="md-nav__link">
+  <a href="#added_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -2034,7 +2073,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_3" class="md-nav__link">
+  <a href="#added_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -2073,7 +2112,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_4" class="md-nav__link">
+  <a href="#added_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -2095,7 +2134,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fixed_2" class="md-nav__link">
+  <a href="#fixed_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -2145,7 +2184,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_5" class="md-nav__link">
+  <a href="#added_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -2167,7 +2206,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fixed_3" class="md-nav__link">
+  <a href="#fixed_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -2217,7 +2256,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_6" class="md-nav__link">
+  <a href="#added_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -2279,8 +2318,24 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a> and <a href="https://peps.python.org/pep-0440/">PEP 440</a>.</p>
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
-<h2 id="321-2026-11-05">[3.2.1] - 2026-11-05<a class="headerlink" href="#321-2026-11-05" title="Permanent link">&para;</a></h2>
+<h2 id="322-2026-11-11">[3.2.2] - 2026-11-11<a class="headerlink" href="#322-2026-11-11" title="Permanent link">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Electrochemistry Simulation Tutorials (<code>docs/tutorials/electrochemistry/</code>)</strong>:</li>
+<li>Re-introduced the <strong>Electrochemistry Simulations</strong> tutorial section in the documentation navigation (<code>mkdocs.yml</code>) and Tutorials hub (<code>docs/tutorials/index.md</code>).</li>
+<li>Added <strong>Chronoamperometry Tutorial (<code>docs/tutorials/electrochemistry/ca.ipynb</code>)</strong>: Hands-on guide demonstrating how to simulate 1D potential-step chronoamperometry using <code>softpotato.solver</code>, visualize time-dependent concentration profiles, compute boundary fluxes, and benchmark numerical results against analytical Cottrell equation predictions.</li>
+<li>Added <strong>Cyclic Voltammetry Tutorial (<code>docs/tutorials/electrochemistry/cv.ipynb</code>)</strong>: Interactive notebook demonstrating 1D simulation of reversible cyclic voltammetry at planar macroelectrodes, implementing triangular potential sweep waveforms <span class="arithmatex">\(E(t)\)</span>, applying dynamic Nernstian boundary conditions, tracking time-dependent concentration profiles (<span class="arithmatex">\(O\)</span> and <span class="arithmatex">\(R\)</span>), and validating peak currents and separation against Randles–Ševčík theory.</li>
+<li><strong>Electrochemical Simulations Jargon Buster (<code>docs/blog/posts/simulations-jargon.md</code>)</strong>:</li>
+<li>Published a guide translating numerical simulation jargon (governing PDEs, spatial discretization meshes, boundary conditions, time stepping schemes, Newton–Raphson solvers, and post-processing flux integration) into intuitive laboratory electrochemistry concepts.</li>
+</ul>
+<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed relative cross-reference links to API documentation across all interactive module tutorial notebooks (<code>analytical.ipynb</code>, <code>fitting.ipynb</code>, <code>geometries.ipynb</code>, <code>grids.ipynb</code>, <code>solver.ipynb</code>).</li>
+<li>Normalized notebook cell execution counts in the Cyclic Voltammetry tutorial notebook (<code>docs/tutorials/electrochemistry/cv.ipynb</code>).</li>
+<li>Updated author website link in <code>docs/blog/.authors.yml</code>.</li>
+</ul>
+<h2 id="321-2026-11-05">[3.2.1] - 2026-11-05<a class="headerlink" href="#321-2026-11-05" title="Permanent link">&para;</a></h2>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Interactive Module Tutorials (<code>docs/tutorials/modules/</code>)</strong>:</li>
 <li>Added the <strong>Soft Potato Modules</strong> tutorial suite in the documentation navigation (<code>mkdocs.yml</code>) and Tutorials hub (<code>docs/tutorials/index.md</code>), along with a top-level <code>tutorials</code> directory symlink:<ul>
@@ -2307,7 +2362,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="320-2026-11-03">[3.2.0] - 2026-11-03<a class="headerlink" href="#320-2026-11-03" title="Permanent link">&para;</a></h2>
 <h3 id="milestone-2-release-non-uniform-expanding-grids-coordinate-geometries-documentation-suite">Milestone 2 Release: Non-Uniform Expanding Grids, Coordinate Geometries &amp; Documentation Suite<a class="headerlink" href="#milestone-2-release-non-uniform-expanding-grids-coordinate-geometries-documentation-suite" title="Permanent link">&para;</a></h3>
 <p>Soft Potato 3.2.0 delivers Milestone 2 of the strategic development roadmap, introducing non-uniform, geometric, and exponentially expanding spatial discretization meshes (<code>softpotato.grid</code>), spatial coordinate geometries and finite-difference operators for 1D planar, spherical, and cylindrical electrode systems (<code>softpotato.geometry</code>), geometry-aware numerical solvers and multi-electrode Faradaic current evaluation (<code>softpotato.solver</code>), interactive tutorials for Cottrell chronoamperometry across geometries and non-uniform grid convergence (<code>examples/</code>), the official website at <a href="https://softpotato.xyz">softpotato.xyz</a>, and a modernized Material for MkDocs documentation suite with multi-version deployment via <code>mike</code>.</p>
-<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Non-Uniform Spatial Discretization &amp; Expanding Meshes (<code>softpotato.grid</code>)</strong>:</li>
 <li>Introduced <code>softpotato.grid</code> subpackage providing 1D spatial discretization meshes and physics-informed grid generators for numerical PDE simulations:<ul>
@@ -2386,7 +2441,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Updated documentation URLs in <code>README.md</code> and <code>docs/index.md</code> from Read the Docs to <code>https://softpotato.xyz/</code>.</li>
 <li>Excluded documentation build and cache directories in Ruff configuration (<code>pyproject.toml</code>).</li>
 </ul>
-<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
+<h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed relative link to Python installation tutorial in <code>docs/index.md</code>.</li>
 <li>Fixed Markdown formatting of summary takeaways in the cyclic voltammetry tutorial (<code>examples/cyclic_voltammetry.ipynb</code>).</li>
@@ -2398,7 +2453,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="311-2026-10-02">[3.1.1] - 2026-10-02<a class="headerlink" href="#311-2026-10-02" title="Permanent link">&para;</a></h2>
 <h3 id="patch-release-iupac-sign-convention-bug-fix-cyclic-voltammetry-tutorial">Patch Release: IUPAC Sign Convention Bug Fix &amp; Cyclic Voltammetry Tutorial<a class="headerlink" href="#patch-release-iupac-sign-convention-bug-fix-cyclic-voltammetry-tutorial" title="Permanent link">&para;</a></h3>
 <p>Soft Potato 3.1.1 is a patch release resolving a sign convention bug in electrochemical current calculations to strictly enforce IUPAC polarity across analytical, solver, and fitting modules (cathodic reduction currents are negative, <span class="arithmatex">\(I &lt; 0\)</span>; anodic oxidation currents are positive, <span class="arithmatex">\(I &gt; 0\)</span>), introducing an interactive cyclic voltammetry tutorial notebook, and enhancing CI workflow automation.</p>
-<h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="Permanent link">&para;</a></h3>
+<h3 id="fixed_2">Fixed<a class="headerlink" href="#fixed_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Electrochemical Current IUPAC Sign Convention Bug</strong>:</li>
 <li>Resolved sign convention bug across analytical equations, numerical solvers, and parameter fitting routines to strictly enforce the IUPAC convention (cathodic reduction currents are negative, <span class="arithmatex">\(I &lt; 0\)</span>; anodic oxidation currents are positive, <span class="arithmatex">\(I &gt; 0\)</span>).</li>
@@ -2413,7 +2468,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Corrected terminology in the Cottrell tutorial describing the process as a one-electron oxidation.</li>
 <li>Refined LaTeX math formatting and Markdown rendering in <code>examples/cottrell.ipynb</code> for consistency.</li>
 </ul>
-<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">&para;</a></h3>
+<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Interactive Cyclic Voltammetry Tutorial (<code>examples/cyclic_voltammetry.ipynb</code>)</strong>:</li>
 <li>Added comprehensive interactive tutorial demonstrating 1D simulation of cyclic voltammetry with reversible electron transfer (<span class="arithmatex">\(O + e^- \rightleftharpoons R\)</span>) under Nernstian equilibrium.</li>
@@ -2439,7 +2494,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>Removed previous tutorial notebooks and documentation entries ahead of creating a redesigned tutorial suite.</li>
 </ul>
-<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Permanent link">&para;</a></h3>
+<h3 id="added_4">Added<a class="headerlink" href="#added_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Interactive Cottrell Chronoamperometry Tutorial (<code>examples/cottrell.ipynb</code>)</strong>:</li>
 <li>Redesigned and refactored Cottrell chronoamperometry tutorial demonstrating 1D potential-step simulation with Soft Potato 3.1.</li>
@@ -2558,7 +2613,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="300-2026-09-27">[3.0.0] - 2026-09-27<a class="headerlink" href="#300-2026-09-27" title="Permanent link">&para;</a></h2>
 <h3 id="stable-baseline-release-1d-diffusion-solvers-scipy-method-of-lines-benchmark-suite">Stable Baseline Release: 1D Diffusion Solvers, SciPy Method of Lines &amp; Benchmark Suite<a class="headerlink" href="#stable-baseline-release-1d-diffusion-solvers-scipy-method-of-lines-benchmark-suite" title="Permanent link">&para;</a></h3>
 <p>Soft Potato 3.0.0 is the official stable baseline release following the ground-up architecture reboot. This release finalizes the numerical solver module (<code>softpotato.solver</code>), integrating the stiff <code>scipy.integrate.solve_ivp</code> Method of Lines integration alongside classical tridiagonal finite difference schemes, analytical validation benchmarks, and a publication-quality suite of interactive electrochemical tutorials.</p>
-<h3 id="added_4">Added<a class="headerlink" href="#added_4" title="Permanent link">&para;</a></h3>
+<h3 id="added_5">Added<a class="headerlink" href="#added_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Interactive Tutorials &amp; Validation Notebooks</strong> (<code>examples/</code>):</li>
 <li><strong>Cottrell Chronoamperometry with <code>solve_ivp</code></strong> (<code>examples/cottrell_solve_ivp_tutorial.ipynb</code>):<ul>
@@ -2606,7 +2661,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added structured <strong>Tutorials &amp; Examples</strong> table indexing all five interactive notebooks.</li>
 <li>Removed pre-release rewrite warning banner.</li>
 </ul>
-<h3 id="fixed_2">Fixed<a class="headerlink" href="#fixed_2" title="Permanent link">&para;</a></h3>
+<h3 id="fixed_3">Fixed<a class="headerlink" href="#fixed_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed Python 3.10 <code>TypeError: ABCMeta.__new__() got multiple values for argument 'name'</code> during <code>BaseSolver</code> subclass registration via <code>_BaseSolverMeta</code> metaclass.</li>
 <li>Fixed LaTeX/MathJax math delimiters rendering across Jupyter notebook tutorials and documentation pages on Read the Docs.</li>
@@ -2621,7 +2676,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="300a1-2026-09-23">[3.0.0a1] - 2026-09-23<a class="headerlink" href="#300a1-2026-09-23" title="Permanent link">&para;</a></h2>
 <h3 id="complete-architecture-reboot-1d-numerical-diffusion-solvers">Complete Architecture Reboot &amp; 1D Numerical Diffusion Solvers<a class="headerlink" href="#complete-architecture-reboot-1d-numerical-diffusion-solvers" title="Permanent link">&para;</a></h3>
 <p>Ground-up redesign and modern reimplementation of Soft Potato (<code>v3.0.0a1</code>), introducing a clean repository foundation, modernized packaging, Sphinx documentation with Read the Docs and GitHub Actions CI workflows, a unified numerical solver framework for multi-species 1D diffusion and reaction-diffusion systems (<code>softpotato.solver</code>), a comprehensive test suite with analytical validation, and interactive benchmark tutorials.</p>
-<h3 id="added_5">Added<a class="headerlink" href="#added_5" title="Permanent link">&para;</a></h3>
+<h3 id="added_6">Added<a class="headerlink" href="#added_6" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>1D Numerical Diffusion Solvers Framework (<code>softpotato.solver</code>)</strong>:</li>
 <li>
@@ -2727,7 +2782,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Updated <code>docs/conf.py</code> and <code>docs/index.rst</code> to integrate <code>nbsphinx</code> and <code>myst_parser</code>, configuring <code>source_suffix</code> for both <code>.rst</code> and <code>.md</code>.</li>
 <li>Updated <code>pyproject.toml</code> with <code>[tool.mypy]</code> configuration and added <code>pytest-cov&gt;=4.1.0</code>, <code>nbmake&gt;=1.5.0</code>, and <code>mypy&gt;=1.5.0</code> to optional dependencies.</li>
 </ul>
-<h3 id="fixed_3">Fixed<a class="headerlink" href="#fixed_3" title="Permanent link">&para;</a></h3>
+<h3 id="fixed_4">Fixed<a class="headerlink" href="#fixed_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed Python 3.10 class creation failure (<code>TypeError: ABCMeta.__new__() got multiple values for argument 'name'</code>) across all solvers by introducing <code>_BaseSolverMeta</code> on <code>BaseSolver</code> to safely extract <code>name</code> and <code>solver_name</code> class keyword arguments prior to delegating to <code>ABCMeta.__new__</code>.</li>
 </ul>
@@ -2739,7 +2794,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="300rc1-2026-09-20-yanked-pre-rewrite">[3.0.0rc1] - 2026-09-20 [Yanked / Pre-Rewrite]<a class="headerlink" href="#300rc1-2026-09-20-yanked-pre-rewrite" title="Permanent link">&para;</a></h2>
 <h3 id="release-candidate-1">Release Candidate 1<a class="headerlink" href="#release-candidate-1" title="Permanent link">&para;</a></h3>
 <p>First release candidate (<code>rc1</code>) for <strong>Soft Potato 3.0.0</strong>, delivering an end-to-end simulation MVP for Cyclic Voltammetry alongside the core mechanisms, analytical solutions, and revised 4-stage development roadmap.</p>
-<h3 id="added_6">Added<a class="headerlink" href="#added_6" title="Permanent link">&para;</a></h3>
+<h3 id="added_7">Added<a class="headerlink" href="#added_7" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Core Module (<code>softpotato.core</code>)</strong>:</li>
 <li>Implemented the <code>Species</code> class with strict CGS unit enforcement:<ul>
