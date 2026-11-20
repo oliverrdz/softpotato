@@ -45,18 +45,26 @@ from .homogeneous import (
     ReversibleReaction,
     SecondOrderReaction,
 )
+from .mechanisms import (
+    CustomMechanism,
+    ElectrochemicalStep,
+    Mechanism,
+)
 from .species import Species, SpeciesCollection
 
 __all__ = [
     "ButlerVolmer",
     "CatalyticReaction",
+    "CustomMechanism",
     "CustomReaction",
     "DimerizationReaction",
     "DisproportionationReaction",
+    "ElectrochemicalStep",
     "FirstOrderReaction",
     "HeterogeneousKinetics",
     "HomogeneousReaction",
     "MassActionReaction",
+    "Mechanism",
     "NernstianEquilibrium",
     "ReactionNetwork",
     "ReversibleReaction",
