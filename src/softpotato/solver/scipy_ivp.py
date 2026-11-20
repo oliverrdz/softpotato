@@ -47,12 +47,10 @@ class ScipyIVPSolver(BaseSolver, name="scipy_ivp"):
         When ``True`` and using an implicit method (``'Radau'``, ``'BDF'``,
         ``'LSODA'``), automatically assemble and pass the coupled sparse
         analytical Jacobian :math:`\mathbf{J}_{\text{diffusion}} + \mathbf{J}_{\text{reactions}}`
-        whenever ``problem.reactions`` provides a kinetic
-        Jacobian (e.g. :class:`~softpotato.reactions.ReactionNetwork`,
-        :class:`~softpotato.reactions.HomogeneousReaction`,
-        :class:`~softpotato.reactions.Mechanism`, or a custom object
-        implementing ``local_jacobian`` / ``jacobian``). Set to ``False`` to
-        force SciPy's numerical finite-difference Jacobian.
+        whenever ``problem.reactions`` provides a kinetic Jacobian (e.g.
+        ``ReactionNetwork``, ``HomogeneousReaction``, ``Mechanism``, or a
+        custom object implementing ``local_jacobian`` / ``jacobian``). Set to
+        ``False`` to force SciPy's numerical finite-difference Jacobian.
     **options : Any
         Additional solver options passed to ``scipy.integrate.solve_ivp``.
 

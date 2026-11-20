@@ -128,30 +128,27 @@ class DiffusionProblem:
         :class:`~softpotato.grid.ExponentialMesh`).
     diffusivity : dict[str, float], optional
         Mapping from chemical species name to its diffusion coefficient :math:`D_i > 0`.
-        Automatically populated from :class:`~softpotato.reactions.Species` objects
-        when ``species`` contains :class:`~softpotato.reactions.Species` instances
-        or a :class:`~softpotato.reactions.SpeciesCollection` (or when ``mechanism``
-        is supplied). Explicit entries override species defaults.
+        Automatically populated from ``Species`` objects when ``species`` contains
+        ``Species`` instances or a ``SpeciesCollection`` (or when ``mechanism`` is
+        supplied). Explicit entries override species defaults.
     boundary_conditions : dict[str, tuple[BoundaryCondition, BoundaryCondition]]
         Mapping from species name to a tuple of ``(left_bc, right_bc)``.
     initial_conditions : dict[str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]], optional
         Mapping from species name to initial concentration profile (scalar, array, or callable).
         Automatically populated from ``Species.bulk_concentration`` when
-        :class:`~softpotato.reactions.Species` instances are provided. Explicit entries
-        override species defaults.
+        ``Species`` instances are provided. Explicit entries override species defaults.
     reactions : ReactionNetwork, HomogeneousReaction, Mechanism, or Callable, optional
         Reaction kinetics term returning ``{species: reaction_rate_array}``.
-        When a :class:`~softpotato.reactions.ReactionNetwork`,
-        :class:`~softpotato.reactions.HomogeneousReaction`,
-        :class:`~softpotato.reactions.Mechanism`, or any object implementing
-        ``local_jacobian`` / ``jacobian`` is provided, stiff solvers such as
-        :class:`ScipyIVPSolver` (``Radau``, ``BDF``) automatically assemble the
-        coupled analytical diffusion-reaction Jacobian. Defaults to None.
+        When a ``ReactionNetwork``, ``HomogeneousReaction``, ``Mechanism``, or
+        any object implementing ``local_jacobian`` / ``jacobian`` is provided,
+        stiff solvers such as :class:`ScipyIVPSolver` (``Radau``, ``BDF``)
+        automatically assemble the coupled analytical diffusion-reaction
+        Jacobian. Defaults to None.
     species : Sequence[str | Species] or SpeciesCollection, optional
-        List of chemical species names, :class:`~softpotato.reactions.Species`
-        instances, or a :class:`~softpotato.reactions.SpeciesCollection`.
-        Normalized to ``list[str]`` after extracting species metadata. Inferred
-        from ``mechanism`` or ``diffusivity`` if not explicitly provided.
+        List of chemical species names, ``Species`` instances, or a
+        ``SpeciesCollection``. Normalized to ``list[str]`` after extracting
+        species metadata. Inferred from ``mechanism`` or ``diffusivity`` if not
+        explicitly provided.
     geometry : Geometry | str, default 'planar'
         Coordinate geometry specifying differential operators (:math:`\nabla^2`),
         normal surface flux evaluations, and active electrode area. Can be a
@@ -160,9 +157,8 @@ class DiffusionProblem:
     n_electrons : int | dict[str, int], optional
         Number of electrons transferred per reaction for Faradaic current
         calculations. Can be an integer or a species-to-integer mapping.
-        Automatically populated from ``Species.n_electrons`` when
-        :class:`~softpotato.reactions.Species` instances define it, otherwise
-        defaults to ``1``.
+        Automatically populated from ``Species.n_electrons`` when ``Species``
+        instances define it, otherwise defaults to ``1``.
     electrodes : {'left', 'right', 'both'}, default 'left'
         Domain boundary or boundaries configured as active electrodes for Faradaic
         current evaluation. Defaults to ``'left'``. If ``'both'``, currents from both
@@ -171,10 +167,10 @@ class DiffusionProblem:
     electrode_side : {'left', 'right', 'both'}, optional
         Alias for ``electrodes``.
     mechanism : Mechanism, optional
-        High-level chemical or electrochemical :class:`~softpotato.reactions.Mechanism`
-        (including :class:`~softpotato.reactions.CustomMechanism`). Automatically
-        populates ``species``, ``diffusivity``, ``initial_conditions``,
-        ``n_electrons``, and ``reactions`` when not explicitly provided.
+        High-level chemical or electrochemical ``Mechanism`` (including
+        ``CustomMechanism``). Automatically populates ``species``,
+        ``diffusivity``, ``initial_conditions``, ``n_electrons``, and
+        ``reactions`` when not explicitly provided.
 
     Examples
     --------
