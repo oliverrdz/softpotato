@@ -26,7 +26,7 @@ True
 (101, 50)
 """
 
-from . import analytical, constants, geometry, grid, solver
+from . import analytical, constants, geometry, grid, reactions, solver
 from .analytical import (
     BenchmarkCaseResult,
     BenchmarkMetrics,
@@ -157,6 +157,10 @@ from .grid import (
     create_diffusion_mesh,
     diffusion_layer_thickness,
 )
+from .reactions import (
+    Species,
+    SpeciesCollection,
+)
 from .solver import (
     BaseSolver,
     BoundaryCondition,
@@ -211,6 +215,8 @@ __all__ = [
     "RandlesSevcikFitResult",
     "SECMApproachFitResult",
     "SolverResult",
+    "Species",
+    "SpeciesCollection",
     "SphericalGeometry",
     "TafelFitResult",
     "TafelResult",
@@ -277,6 +283,7 @@ __all__ = [
     "randles_sevcik",
     "randles_sevcik_irreversible",
     "randles_sevcik_quasi",
+    "reactions",
     "register_geometry",
     "ring_collection_current",
     "ring_limiting_current",
