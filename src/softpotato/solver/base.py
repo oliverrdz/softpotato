@@ -3,14 +3,19 @@
 from __future__ import annotations
 
 from abc import ABC, ABCMeta, abstractmethod
-from collections.abc import Callable
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Literal, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
 
 import numpy as np
 
 from softpotato.geometry import Geometry, get_geometry
 from softpotato.grid.base import Mesh1D
+
+if TYPE_CHECKING:
+    from softpotato.reactions.homogeneous import HomogeneousReaction, ReactionNetwork
+    from softpotato.reactions.mechanisms import Mechanism
+    from softpotato.reactions.species import Species, SpeciesCollection
 
 
 @dataclass
@@ -103,7 +108,7 @@ def NeumannBC(value: float | Callable[[float], float]) -> BoundaryCondition:
     return BoundaryCondition(btype="neumann", value=value)
 
 
-@dataclass
+@dataclass(init=False)
 class DiffusionProblem:
     r"""Formulation of a 1D multi-species chemical diffusion problem.
 
@@ -121,24 +126,39 @@ class DiffusionProblem:
         :class:`~softpotato.grid.Uniform1DMesh`,
         :class:`~softpotato.grid.GeometricExpandingMesh`,
         :class:`~softpotato.grid.ExponentialMesh`).
-    diffusivity : dict[str, float]
+    diffusivity : dict[str, float], optional
         Mapping from chemical species name to its diffusion coefficient :math:`D_i > 0`.
+        Automatically populated from ``Species`` objects when ``species`` contains
+        ``Species`` instances or a ``SpeciesCollection`` (or when ``mechanism`` is
+        supplied). Explicit entries override species defaults.
     boundary_conditions : dict[str, tuple[BoundaryCondition, BoundaryCondition]]
         Mapping from species name to a tuple of ``(left_bc, right_bc)``.
-    initial_conditions : dict[str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]]
+    initial_conditions : dict[str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]], optional
         Mapping from species name to initial concentration profile (scalar, array, or callable).
-    reactions : Callable[[dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]], optional
-        Reaction kinetics term returning ``{species: reaction_rate_array}``. Defaults to None.
-    species : list[str], optional
-        List of chemical species names. Inferred from diffusivity if not explicitly provided.
+        Automatically populated from ``Species.bulk_concentration`` when
+        ``Species`` instances are provided. Explicit entries override species defaults.
+    reactions : ReactionNetwork, HomogeneousReaction, Mechanism, or Callable, optional
+        Reaction kinetics term returning ``{species: reaction_rate_array}``.
+        When a ``ReactionNetwork``, ``HomogeneousReaction``, ``Mechanism``, or
+        any object implementing ``local_jacobian`` / ``jacobian`` is provided,
+        stiff solvers such as :class:`ScipyIVPSolver` (``Radau``, ``BDF``)
+        automatically assemble the coupled analytical diffusion-reaction
+        Jacobian. Defaults to None.
+    species : Sequence[str | Species] or SpeciesCollection, optional
+        List of chemical species names, ``Species`` instances, or a
+        ``SpeciesCollection``. Normalized to ``list[str]`` after extracting
+        species metadata. Inferred from ``mechanism`` or ``diffusivity`` if not
+        explicitly provided.
     geometry : Geometry | str, default 'planar'
         Coordinate geometry specifying differential operators (:math:`\nabla^2`),
         normal surface flux evaluations, and active electrode area. Can be a
         registered alias (e.g., ``'planar'``, ``'spherical'``, ``'cylindrical'``)
         or a :class:`~softpotato.geometry.Geometry` instance. Defaults to ``'planar'``.
-    n_electrons : int | dict[str, int], default 1
-        Number of electrons transferred per reaction (:math:`n > 0`) for Faradaic
-        current calculations. Can be an integer or a species-to-integer mapping.
+    n_electrons : int | dict[str, int], optional
+        Number of electrons transferred per reaction for Faradaic current
+        calculations. Can be an integer or a species-to-integer mapping.
+        Automatically populated from ``Species.n_electrons`` when ``Species``
+        instances define it, otherwise defaults to ``1``.
     electrodes : {'left', 'right', 'both'}, default 'left'
         Domain boundary or boundaries configured as active electrodes for Faradaic
         current evaluation. Defaults to ``'left'``. If ``'both'``, currents from both
@@ -146,6 +166,11 @@ class DiffusionProblem:
         and summed on ``SolverResult.currents``.
     electrode_side : {'left', 'right', 'both'}, optional
         Alias for ``electrodes``.
+    mechanism : Mechanism, optional
+        High-level chemical or electrochemical ``Mechanism`` (including
+        ``CustomMechanism``). Automatically populates ``species``,
+        ``diffusivity``, ``initial_conditions``, ``n_electrons``, and
+        ``reactions`` when not explicitly provided.
 
     Examples
     --------
@@ -179,40 +204,158 @@ class DiffusionProblem:
         str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]
     ]
     reactions: (
-        Callable[[dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]]
+        ReactionNetwork
+        | HomogeneousReaction
+        | Mechanism
+        | Callable[[dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]]
         | None
-    ) = None
-    species: list[str] = field(default_factory=list)
-    geometry: Geometry | str = "planar"
-    n_electrons: int | dict[str, int] = 1
-    electrodes: Literal["left", "right", "both"] = "left"
-    electrode_side: Literal["left", "right", "both"] | None = None
-    mesh: Mesh1D | None = field(init=False, default=None, repr=False)
+    )
+    species: list[str]
+    geometry: Geometry | str
+    n_electrons: int | dict[str, int]
+    electrodes: Literal["left", "right", "both"]
+    electrode_side: Literal["left", "right", "both"] | None
+    mechanism: Mechanism | None
+    mesh: Mesh1D | None = field(default=None, repr=False)
+    species_objects: dict[str, Species] = field(default_factory=dict, repr=False)
 
-    def __post_init__(self) -> None:
-        if self.electrode_side is not None:
-            self.electrodes = self.electrode_side
-        if self.electrodes not in ("left", "right", "both"):
+    def __init__(
+        self,
+        grid: np.ndarray | Mesh1D,
+        diffusivity: Mapping[str, float] | None = None,
+        boundary_conditions: Mapping[str, tuple[BoundaryCondition, BoundaryCondition]]
+        | None = None,
+        initial_conditions: Mapping[
+            str, float | np.ndarray | Callable[[np.ndarray], np.ndarray]
+        ]
+        | None = None,
+        reactions: (
+            ReactionNetwork
+            | HomogeneousReaction
+            | Mechanism
+            | Callable[
+                [dict[str, np.ndarray], np.ndarray, float], dict[str, np.ndarray]
+            ]
+            | None
+        ) = None,
+        species: Sequence[str | Species] | SpeciesCollection | None = None,
+        geometry: Geometry | str = "planar",
+        n_electrons: int | Mapping[str, int] | None = None,
+        electrodes: Literal["left", "right", "both"] = "left",
+        electrode_side: Literal["left", "right", "both"] | None = None,
+        mechanism: Mechanism | None = None,
+    ) -> None:
+        from softpotato.reactions.mechanisms import Mechanism
+        from softpotato.reactions.species import Species, SpeciesCollection
+
+        if electrode_side is not None:
+            electrodes = electrode_side
+        if electrodes not in ("left", "right", "both"):
             raise ValueError(
-                f"electrodes must be 'left', 'right', or 'both', got {self.electrodes!r}."
+                f"electrodes must be 'left', 'right', or 'both', got {electrodes!r}."
             )
-        self.electrode_side = self.electrodes
+        self.electrodes = electrodes
+        self.electrode_side = electrodes
 
-        if isinstance(self.geometry, str):
-            self.geometry = get_geometry(self.geometry)
-        elif not isinstance(self.geometry, Geometry):
+        if isinstance(geometry, str):
+            resolved_geom: Geometry = get_geometry(geometry)
+        elif isinstance(geometry, Geometry):
+            resolved_geom = geometry
+        else:
             raise TypeError(
-                f"geometry must be a str or Geometry instance, got {type(self.geometry)}."
+                f"geometry must be a str or Geometry instance, got {type(geometry)}."
             )
-        if isinstance(self.grid, Mesh1D):
-            self.mesh = self.grid
-            self.grid = self.geometry.validate_grid(self.grid.nodes)
+        self.geometry = resolved_geom
+
+        if isinstance(grid, Mesh1D):
+            self.mesh = grid
+            self.grid = resolved_geom.validate_grid(grid.nodes)
         else:
             self.mesh = None
-            self.grid = self.geometry.validate_grid(self.grid)
+            self.grid = resolved_geom.validate_grid(grid)
 
-        if not self.species:
-            self.species = list(self.diffusivity.keys())
+        # Copy caller dicts so auto-population never mutates external mappings
+        self.diffusivity = dict(diffusivity) if diffusivity is not None else {}
+        self.boundary_conditions = (
+            dict(boundary_conditions) if boundary_conditions is not None else {}
+        )
+        self.initial_conditions = (
+            dict(initial_conditions) if initial_conditions is not None else {}
+        )
+        self.reactions = reactions
+        self.mechanism = mechanism
+
+        # Populate from Mechanism when provided
+        raw_species: Sequence[str | Species] | SpeciesCollection | None = species
+        if mechanism is not None:
+            if not isinstance(mechanism, Mechanism):
+                raise TypeError(
+                    "mechanism must be an instance of Mechanism, "
+                    f"got {type(mechanism).__name__}."
+                )
+            if not raw_species:
+                raw_species = mechanism.species
+            if self.reactions is None:
+                self.reactions = mechanism
+
+        # Normalize species input (list[str], Sequence[str | Species], SpeciesCollection)
+        species_names: list[str] = []
+        species_objs: dict[str, Species] = {}
+
+        if isinstance(raw_species, SpeciesCollection):
+            for sp_obj in raw_species.values():
+                species_names.append(sp_obj.name)
+                species_objs[sp_obj.name] = sp_obj
+        elif raw_species:
+            for item in raw_species:
+                if isinstance(item, Species):
+                    if item.name in species_names:
+                        raise ValueError(
+                            f"Duplicate species '{item.name}' in species list."
+                        )
+                    species_names.append(item.name)
+                    species_objs[item.name] = item
+                elif isinstance(item, str):
+                    if item in species_names:
+                        raise ValueError(f"Duplicate species '{item}' in species list.")
+                    species_names.append(item)
+                else:
+                    raise TypeError(
+                        "species entries must be str or Species instances, "
+                        f"got {type(item).__name__}."
+                    )
+        else:
+            species_names = list(self.diffusivity.keys())
+
+        self.species = species_names
+        self.species_objects = species_objs
+
+        # Auto-populate diffusivity, initial_conditions, and n_electrons from Species
+        if species_objs:
+            for name, sp_obj in species_objs.items():
+                self.diffusivity.setdefault(name, sp_obj.diffusivity)
+                self.initial_conditions.setdefault(name, sp_obj.bulk_concentration)
+
+            sp_n_e = {
+                name: sp_obj.n_electrons
+                for name, sp_obj in species_objs.items()
+                if sp_obj.n_electrons is not None
+            }
+            if n_electrons is None:
+                self.n_electrons = sp_n_e if sp_n_e else 1
+            elif isinstance(n_electrons, Mapping):
+                merged_n_e = dict(sp_n_e)
+                merged_n_e.update(n_electrons)
+                self.n_electrons = merged_n_e
+            else:
+                self.n_electrons = n_electrons
+        else:
+            if n_electrons is None:
+                self.n_electrons = 1
+            elif isinstance(n_electrons, Mapping):
+                self.n_electrons = dict(n_electrons)
+            else:
+                self.n_electrons = n_electrons
 
         for sp in self.species:
             if sp not in self.diffusivity:
@@ -571,28 +714,58 @@ class BaseSolver(ABC, metaclass=_BaseSolverMeta):
                 problem.electrodes in ("left", "both")
                 and sp not in result.left_currents
             ):
-                result.left_currents[sp] = np.asarray(
-                    geom.current(
-                        result.fluxes[sp],
-                        n_electrons=n_e,
-                        side="left",
-                        grid=problem.grid,
-                    ),
-                    dtype=float,
-                )
+                if n_e == 0:
+                    result.left_currents[sp] = np.zeros_like(
+                        result.fluxes[sp], dtype=float
+                    )
+                elif n_e < 0:
+                    result.left_currents[sp] = -np.asarray(
+                        geom.current(
+                            result.fluxes[sp],
+                            n_electrons=-n_e,
+                            side="left",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
+                else:
+                    result.left_currents[sp] = np.asarray(
+                        geom.current(
+                            result.fluxes[sp],
+                            n_electrons=n_e,
+                            side="left",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
             if (
                 problem.electrodes in ("right", "both")
                 and sp not in result.right_currents
             ):
-                result.right_currents[sp] = np.asarray(
-                    geom.current(
-                        result.right_fluxes[sp],
-                        n_electrons=n_e,
-                        side="right",
-                        grid=problem.grid,
-                    ),
-                    dtype=float,
-                )
+                if n_e == 0:
+                    result.right_currents[sp] = np.zeros_like(
+                        result.right_fluxes[sp], dtype=float
+                    )
+                elif n_e < 0:
+                    result.right_currents[sp] = -np.asarray(
+                        geom.current(
+                            result.right_fluxes[sp],
+                            n_electrons=-n_e,
+                            side="right",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
+                else:
+                    result.right_currents[sp] = np.asarray(
+                        geom.current(
+                            result.right_fluxes[sp],
+                            n_electrons=n_e,
+                            side="right",
+                            grid=problem.grid,
+                        ),
+                        dtype=float,
+                    )
 
             if sp not in result.currents:
                 if problem.electrodes == "left":
