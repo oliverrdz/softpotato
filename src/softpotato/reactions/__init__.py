@@ -1,7 +1,8 @@
 """Chemical species and electrochemical reaction kinetics for Soft Potato.
 
-This subpackage provides modular abstractions for chemical species metadata and
-(in upcoming Milestone 3 additions) homogeneous and heterogeneous reaction kinetics.
+This subpackage provides modular abstractions for chemical species metadata,
+homogeneous (solution-phase) reaction kinetics with automated analytical
+Jacobians, and (in upcoming Milestone 3 additions) heterogeneous kinetics.
 
 Examples
 --------
@@ -11,11 +12,41 @@ Examples
 >>> species = SpeciesCollection([ox, red])
 >>> species.diffusivities
 {'Ox': 1e-09, 'Red': 1e-09}
+
+Homogeneous reactions are combined in a :class:`ReactionNetwork`, which can be
+passed directly to ``DiffusionProblem(..., reactions=network)``:
+
+>>> from softpotato.reactions import FirstOrderReaction, ReactionNetwork
+>>> network = ReactionNetwork([FirstOrderReaction(red, "P", k=1.0)])
+>>> network.species
+['Red', 'P']
 """
 
+from .homogeneous import (
+    CatalyticReaction,
+    CustomReaction,
+    DimerizationReaction,
+    DisproportionationReaction,
+    FirstOrderReaction,
+    HomogeneousReaction,
+    MassActionReaction,
+    ReactionNetwork,
+    ReversibleReaction,
+    SecondOrderReaction,
+)
 from .species import Species, SpeciesCollection
 
 __all__ = [
+    "CatalyticReaction",
+    "CustomReaction",
+    "DimerizationReaction",
+    "DisproportionationReaction",
+    "FirstOrderReaction",
+    "HomogeneousReaction",
+    "MassActionReaction",
+    "ReactionNetwork",
+    "ReversibleReaction",
+    "SecondOrderReaction",
     "Species",
     "SpeciesCollection",
 ]
