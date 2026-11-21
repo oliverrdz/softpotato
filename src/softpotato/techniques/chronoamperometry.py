@@ -9,6 +9,7 @@ import numpy as np
 
 from .base import (
     BaseTechnique,
+    PlotSpec,
     _deduplicate_interior_events,
     _normalize_time_input,
     _validate_finite_real,
@@ -262,6 +263,24 @@ class Chronoamperometry(BaseTechnique):
         indices = np.clip(indices, 0, n_steps - 1)
         indices = np.where(clamped >= self._duration, n_steps - 1, indices)
         return self._values[indices].reshape(orig_shape)
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="i_vs_t",
+                title="Chronoamperogram",
+                x_label="Time, $t$ / s",
+                y_label="Current, $I$ / A",
+                description="Faradaic current transient following potential step(s).",
+            ),
+            PlotSpec(
+                kind="Q_vs_t",
+                title="Chronocoulogram",
+                x_label="Time, $t$ / s",
+                y_label="Charge, $Q$ / C",
+                description="Cumulative Faradaic charge Q(t) vs. time.",
+            ),
+        )
 
     def __repr__(self) -> str:
         return (

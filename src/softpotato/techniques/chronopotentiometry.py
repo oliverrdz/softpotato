@@ -13,6 +13,7 @@ from softpotato.constants import FARADAY, GAS_CONSTANT, STANDARD_TEMPERATURE
 
 from .base import (
     BaseTechnique,
+    PlotSpec,
     _deduplicate_interior_events,
     _normalize_time_input,
     _validate_finite_real,
@@ -567,6 +568,17 @@ class Chronopotentiometry(BaseTechnique):
             return t1
         frac = (c0 - cutoff) / (c0 - c1)
         return float(t0 + frac * (t1 - t0))
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="E_vs_t",
+                title="Chronopotentiogram",
+                x_label="Time, $t$ / s",
+                y_label="Potential, $E$ / V",
+                description="Electrode potential response E(t) under controlled current.",
+            ),
+        )
 
     def __repr__(self) -> str:
         return (
