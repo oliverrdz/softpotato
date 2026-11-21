@@ -34,7 +34,11 @@ Hands-on simulation workflows and benchmarks for classical electrochemical techn
 
 - [**Chronoamperometry**](electrochemistry/ca.ipynb) — How to perform a chronoamperometry simulation and compare it with the `cottrell` function from the analytical module to demonstrate the full modeling workflow with Soft Potato.
 
-- [**Cyclic Voltammetry**](electrochemistry/cv.ipynb) - How to perform a cyclic voltammetry simulation of a reversible couple and use the Randles-Sevcik equation from the analytical module to estimate the error.
+- [**Cyclic Voltammetry**](electrochemistry/cv.ipynb) — How to perform a cyclic voltammetry simulation of a reversible couple and use the Randles-Sevcik equation from the analytical module to estimate the error.
+
+- [**Catalytic EC' Mechanism**](../examples/catalytic_ec.ipynb) — Step-by-step simulation of an EC' catalytic regeneration mechanism using `softpotato.reactions`, visualizing steady-state concentration profiles and benchmarking transient and limiting currents against analytical theory.
+
+- [**Heterogeneous Kinetics (CV)**](../examples/heterogeneous_kinetics.ipynb) — Simulating Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes, and analyzing peak separation $\Delta E_p$ vs. scan rate against Randles–Ševčík and Nicholson theory.
 
 ---
 
