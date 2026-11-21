@@ -1,6 +1,6 @@
 """Electrochemical experimental techniques and excitation waveform generators."""
 
-from .base import BaseTechnique, ControlMode
+from .base import PLOT_ALIASES, BaseTechnique, ControlMode, PlotSpec, resolve_plot_kind
 from .chronoamperometry import Chronoamperometry
 from .chronopotentiometry import Chronopotentiometry
 from .diagnostics import (
@@ -19,6 +19,25 @@ from .diagnostics import (
     find_peaks,
 )
 from .pipeline import simulate, simulate_sweep
+from .plotting import (
+    plot_charge_vs_time,
+    plot_concentration_profile,
+    plot_cottrell,
+    plot_current_vs_time,
+    plot_dpv,
+    plot_koutecky_levich,
+    plot_levich,
+    plot_peaks,
+    plot_potential_vs_time,
+    plot_randles_sevcik,
+    plot_result,
+    plot_scv,
+    plot_summary,
+    plot_sweep,
+    plot_swv,
+    plot_tafel,
+    plot_voltammogram,
+)
 from .pulse import (
     DifferentialPulseVoltammetry,
     SampledCurrentVoltammetry,
@@ -44,6 +63,7 @@ from .waveforms import (
 )
 
 __all__ = [
+    "PLOT_ALIASES",
     "BaseTechnique",
     "CVDiagnostics",
     "CallableSegment",
@@ -59,6 +79,7 @@ __all__ = [
     "NicholsonDiagnostics",
     "PeakInfo",
     "PeakPolarity",
+    "PlotSpec",
     "RDEConvectionTerm",
     "RDEModel",
     "RDESweep",
@@ -78,6 +99,24 @@ __all__ = [
     "analyze_sand",
     "analyze_tafel",
     "find_peaks",
+    "plot_charge_vs_time",
+    "plot_concentration_profile",
+    "plot_cottrell",
+    "plot_current_vs_time",
+    "plot_dpv",
+    "plot_koutecky_levich",
+    "plot_levich",
+    "plot_peaks",
+    "plot_potential_vs_time",
+    "plot_randles_sevcik",
+    "plot_result",
+    "plot_scv",
+    "plot_summary",
+    "plot_sweep",
+    "plot_swv",
+    "plot_tafel",
+    "plot_voltammogram",
+    "resolve_plot_kind",
     "simulate",
     "simulate_rde_sweep",
     "simulate_sweep",

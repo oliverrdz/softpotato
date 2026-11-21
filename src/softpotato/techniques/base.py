@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Mapping, Sequence
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Literal, overload
 
 import numpy as np
@@ -24,6 +25,115 @@ ControlMode = Literal["potentiostatic", "galvanostatic"]
 
 _VALID_MODES: tuple[str, ...] = ("potentiostatic", "galvanostatic")
 _DEFAULT_TIME_GRID_POINTS = 1001
+
+
+@dataclass(frozen=True)
+class PlotSpec:
+    """Declarative specification for a plot supported by an electrochemical technique.
+
+    Attributes
+    ----------
+    kind : str
+        Canonical concise plot key (e.g., ``'voltammogram'``, ``'i_vs_t'``,
+        ``'E_vs_t'``, ``'c_vs_x'``).
+    title : str
+        Default plot title.
+    x_label : str
+        Default horizontal axis label including units.
+    y_label : str
+        Default vertical axis label including units.
+    description : str, default ''
+        Short human-readable description of the plot.
+    """
+
+    kind: str
+    title: str
+    x_label: str
+    y_label: str
+    description: str = ""
+
+
+PLOT_ALIASES: dict[str, str] = {
+    "current_vs_potential": "voltammogram",
+    "i_vs_e": "voltammogram",
+    "current_vs_time": "i_vs_t",
+    "chronoamperogram": "i_vs_t",
+    "potential_vs_time": "E_vs_t",
+    "e_vs_t": "E_vs_t",
+    "chronopotentiogram": "E_vs_t",
+    "concentration_profile": "c_vs_x",
+    "concentration_vs_distance": "c_vs_x",
+    "charge_vs_time": "Q_vs_t",
+    "q_vs_t": "Q_vs_t",
+    "chronocoulogram": "Q_vs_t",
+    "differential_pulse": "dpv",
+    "differential_pulse_voltammogram": "dpv",
+    "square_wave": "swv",
+    "square_wave_voltammogram": "swv",
+    "sampled_current": "scv",
+    "sampled_current_voltammogram": "scv",
+}
+
+_CANONICAL_PLOT_KINDS: dict[str, str] = {
+    "voltammogram": "voltammogram",
+    "i_vs_t": "i_vs_t",
+    "e_vs_t": "E_vs_t",
+    "c_vs_x": "c_vs_x",
+    "q_vs_t": "Q_vs_t",
+    "dpv": "dpv",
+    "swv": "swv",
+    "scv": "scv",
+}
+
+_UNIVERSAL_PLOT_SPECS: tuple[PlotSpec, ...] = (
+    PlotSpec(
+        kind="i_vs_t",
+        title="Current vs. Time",
+        x_label="Time, $t$ / s",
+        y_label="Current, $I$ / A",
+        description="Net Faradaic current transient I(t).",
+    ),
+    PlotSpec(
+        kind="E_vs_t",
+        title="Potential vs. Time",
+        x_label="Time, $t$ / s",
+        y_label="Potential, $E$ / V",
+        description="Electrode potential E(t) vs. time.",
+    ),
+    PlotSpec(
+        kind="c_vs_x",
+        title="Concentration Profile",
+        x_label="Distance, $x$ / m",
+        y_label=r"Concentration, $c$ / $\mathrm{mol\,m^{-3}}$",
+        description="Spatial species concentration profile c(x, t) at a specified time.",
+    ),
+)
+
+
+def resolve_plot_kind(kind: str) -> str:
+    """Resolve a concise plot key or verbose alias to its canonical plot kind.
+
+    Parameters
+    ----------
+    kind : str
+        Concise plot key (e.g., ``'i_vs_t'``, ``'E_vs_t'``, ``'c_vs_x'``,
+        ``'voltammogram'``) or verbose alias (e.g., ``'current_vs_time'``,
+        ``'potential_vs_time'``, ``'concentration_profile'``).
+
+    Returns
+    -------
+    str
+        Canonical plot key if recognized, otherwise the stripped input string.
+    """
+    if not isinstance(kind, str):
+        raise TypeError(f"Plot kind must be a string, got {type(kind).__name__}.")
+    cleaned = kind.strip()
+    lowered = cleaned.lower()
+    if lowered in _CANONICAL_PLOT_KINDS:
+        return _CANONICAL_PLOT_KINDS[lowered]
+    if lowered in PLOT_ALIASES:
+        return PLOT_ALIASES[lowered]
+    return cleaned
 
 
 def _validate_finite_real(value: object, name: str) -> float:
@@ -198,6 +308,43 @@ class BaseTechnique(ABC):
     def event_times(self) -> tuple[float, ...]:
         """Sorted interior discontinuity/vertex timestamps in ``(0, duration)``."""
         return ()
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        """Return technique-specific :class:`PlotSpec` entries (default plot first)."""
+        return ()
+
+    @property
+    def plot_specs(self) -> dict[str, PlotSpec]:
+        """Ordered mapping of canonical plot kind to :class:`PlotSpec`.
+
+        Includes technique-specific plots first (with the primary/default plot
+        listed first), followed by universal plots (``'i_vs_t'``, ``'E_vs_t'``,
+        ``'c_vs_x'``) without duplicates.
+        """
+        specs: dict[str, PlotSpec] = {}
+        for spec in self._technique_plots():
+            specs.setdefault(spec.kind, spec)
+
+        universal = _UNIVERSAL_PLOT_SPECS
+        if self.mode == "galvanostatic":
+            universal = (
+                _UNIVERSAL_PLOT_SPECS[1],
+                _UNIVERSAL_PLOT_SPECS[0],
+                _UNIVERSAL_PLOT_SPECS[2],
+            )
+        for spec in universal:
+            specs.setdefault(spec.kind, spec)
+        return specs
+
+    @property
+    def available_plots(self) -> tuple[str, ...]:
+        """Ordered tuple of canonical plot kinds supported by this technique."""
+        return tuple(self.plot_specs.keys())
+
+    @property
+    def default_plot(self) -> str:
+        """Canonical plot kind used by default when plotting results of this technique."""
+        return self.available_plots[0]
 
     @overload
     def excitation(self, t: float) -> float: ...

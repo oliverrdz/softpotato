@@ -10,6 +10,7 @@ import numpy as np
 
 from .base import (
     BaseTechnique,
+    PlotSpec,
     _deduplicate_interior_events,
     _normalize_time_input,
     _validate_finite_real,
@@ -355,6 +356,17 @@ class SampledCurrentVoltammetry(BaseTechnique):
     def duration(self) -> float:
         """Total duration ``t_quiet + step_duration`` in seconds (same for all steps)."""
         return self._duration
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="scv",
+                title="Sampled-Current Voltammogram",
+                x_label="Step Potential, $E$ / V",
+                y_label=r"Sampled Current, $I(\tau)$ / A",
+                description="Current sampled at fixed time(s) tau vs. step potential.",
+            ),
+        )
 
     @property
     def E_start(self) -> float:
@@ -707,6 +719,17 @@ class DifferentialPulseVoltammetry(BaseTechnique):
     def duration(self) -> float:
         """Total experiment duration :math:`N \\tau` in seconds."""
         return self._duration
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="dpv",
+                title="Differential Pulse Voltammogram",
+                x_label=r"Base Potential, $E_{\mathrm{base}}$ / V",
+                y_label=r"Differential Current, $\Delta I$ / A",
+                description="Differential pulse current (i_pulse - i_pre) vs. base potential.",
+            ),
+        )
 
     @property
     def event_times(self) -> tuple[float, ...]:
@@ -1081,6 +1104,17 @@ class SquareWaveVoltammetry(BaseTechnique):
         E_step = np.asarray(self._step_potentials, dtype=float)
         i_net = i_forward - i_reverse
         return E_step, i_forward, i_reverse, i_net
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="swv",
+                title="Square-Wave Voltammogram",
+                x_label=r"Step Potential, $E_{\mathrm{step}}$ / V",
+                y_label="Current, $I$ / A",
+                description="Net square-wave current (i_forward - i_reverse) vs. step potential.",
+            ),
+        )
 
     def __repr__(self) -> str:
         return (
