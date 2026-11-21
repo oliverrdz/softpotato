@@ -362,8 +362,8 @@ class SampledCurrentVoltammetry(BaseTechnique):
             PlotSpec(
                 kind="scv",
                 title="Sampled-Current Voltammogram",
-                x_label="Step Potential, $E$ / V",
-                y_label=r"Sampled Current, $I(\tau)$ / A",
+                x_label="$E$ / V",
+                y_label=r"$I(\tau)$ / A",
                 description="Current sampled at fixed time(s) tau vs. step potential.",
             ),
         )
@@ -725,8 +725,8 @@ class DifferentialPulseVoltammetry(BaseTechnique):
             PlotSpec(
                 kind="dpv",
                 title="Differential Pulse Voltammogram",
-                x_label=r"Base Potential, $E_{\mathrm{base}}$ / V",
-                y_label=r"Differential Current, $\Delta I$ / A",
+                x_label=r"$E_{\mathrm{base}}$ / V",
+                y_label=r"$\Delta I$ / A",
                 description="Differential pulse current (i_pulse - i_pre) vs. base potential.",
             ),
         )
@@ -1110,8 +1110,8 @@ class SquareWaveVoltammetry(BaseTechnique):
             PlotSpec(
                 kind="swv",
                 title="Square-Wave Voltammogram",
-                x_label=r"Step Potential, $E_{\mathrm{step}}$ / V",
-                y_label="Current, $I$ / A",
+                x_label=r"$E_{\mathrm{step}}$ / V",
+                y_label="$I$ / A",
                 description="Net square-wave current (i_forward - i_reverse) vs. step potential.",
             ),
         )

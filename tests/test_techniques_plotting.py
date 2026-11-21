@@ -124,8 +124,8 @@ class TestDeclarativePlotSpecs:
         assert cv.available_plots == ("voltammogram", "i_vs_t", "E_vs_t", "c_vs_x")
         spec = cv.plot_specs["voltammogram"]
         assert isinstance(spec, PlotSpec)
-        assert "Potential" in spec.x_label and "V" in spec.x_label
-        assert "Current" in spec.y_label and "A" in spec.y_label
+        assert "$E$" in spec.x_label and "V" in spec.x_label
+        assert "$I$" in spec.y_label and "A" in spec.y_label
 
     def test_lsv_available_and_default_plots(self) -> None:
         lsv = LinearSweepVoltammetry(E_start=0.4, E_end=-0.4, scan_rate=0.5)
@@ -219,8 +219,8 @@ class TestTechniquePlotting:
 
         # Default plot
         _, ax = res.plot()
-        assert ax.get_xlabel() == "Potential, $E$ / V"
-        assert ax.get_ylabel() == "Current, $I$ / A"
+        assert ax.get_xlabel() == "$E$ / V"
+        assert ax.get_ylabel() == "$I$ / A"
         assert len(ax.lines) == 1
 
         # Verbose alias + per-cycle plotting + peaks overlay
@@ -230,13 +230,13 @@ class TestTechniquePlotting:
 
         # Universal plots via both concise and verbose keys
         _, ax_it = res.plot("current_vs_time")
-        assert "Time" in ax_it.get_xlabel() and "Current" in ax_it.get_ylabel()
+        assert ax_it.get_xlabel() == "$t$ / s" and ax_it.get_ylabel() == "$I$ / A"
 
         _, ax_et = res.plot("potential_vs_time")
-        assert "Time" in ax_et.get_xlabel() and "Potential" in ax_et.get_ylabel()
+        assert ax_et.get_xlabel() == "$t$ / s" and ax_et.get_ylabel() == "$E$ / V"
 
         _, ax_cx = res.plot("concentration_profile", t=0.5, species=["Ox"])
-        assert "Distance" in ax_cx.get_xlabel()
+        assert ax_cx.get_xlabel() == "$x$ / m"
         assert len(ax_cx.lines) == 1
         assert ax_cx.lines[0].get_label() == "Ox"
 
@@ -246,12 +246,12 @@ class TestTechniquePlotting:
 
         _, ax = res.plot()
         assert ax.get_title() == "Chronoamperogram"
-        assert "Time" in ax.get_xlabel()
-        assert "Current" in ax.get_ylabel()
+        assert ax.get_xlabel() == "$t$ / s"
+        assert ax.get_ylabel() == "$I$ / A"
 
         _, ax_q = res.plot("charge_vs_time")
         assert ax_q.get_title() == "Chronocoulogram"
-        assert "Charge" in ax_q.get_ylabel()
+        assert ax_q.get_ylabel() == "$Q$ / C"
 
     def test_cp_default_and_transition_time_marker(self) -> None:
         cp = Chronopotentiometry(current=-5e-4, duration=1.0)
@@ -259,7 +259,7 @@ class TestTechniquePlotting:
 
         _, ax = res.plot()
         assert ax.get_title() == "Chronopotentiogram"
-        assert "Potential" in ax.get_ylabel()
+        assert ax.get_ylabel() == "$E$ / V"
         if res.transition_time is not None:
             # Main curve + vertical dashed tau line
             assert len(ax.lines) == 2
@@ -304,7 +304,7 @@ class TestTechniquePlotting:
             ca, _reversible_mechanism(), geometry=geom, mesh_kwargs={"n_points": 30}
         )
         _, ax = res.plot("c_vs_x", t=0.25)
-        assert "Radial distance" in ax.get_xlabel()
+        assert ax.get_xlabel() == "$r$ / m"
 
     def test_multi_time_concentration_profile_and_validation(self) -> None:
         ca = Chronoamperometry(E_step=-0.5, duration=1.0)
