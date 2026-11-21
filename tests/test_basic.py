@@ -2,4 +2,4 @@ import softpotato
 
 
 def test_version():
-    assert softpotato.__version__ == "3.2.2"
+    assert softpotato.__version__ == "3.3.0"
