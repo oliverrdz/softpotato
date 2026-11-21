@@ -672,8 +672,10 @@ class Mechanism:
                             resolved_bcs[step.red_name][0],
                             NeumannBC(0.0),
                         )
+                    kinetics = step.kinetics
+                    assert isinstance(kinetics, HeterogeneousKinetics)
                     step_specs.append(
-                        (step.ox_name, step.red_name, step.kinetics, node_idx, inv_half_cell)
+                        (step.ox_name, step.red_name, kinetics, node_idx, inv_half_cell)
                     )
 
                 reactions_obj = _MechanismWithInterfacialKinetics(
