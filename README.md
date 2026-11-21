@@ -10,9 +10,9 @@
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
 
 > [!NOTE]
-> **Active Development (Milestone 3 in progress):**
-> The `main` branch contains work-in-progress features for **Milestone 3** (v3.3.0: Reactions).
-> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.2.2**.
+> **Active Development (Milestone 4 in progress):**
+> The `main` branch contains work-in-progress features for **Milestone 4** (v3.4.0: Techniques).
+> The current stable release available on [PyPI](https://pypi.org/project/softpotato/) is **v3.3.0**.
 > To test or use in-development features, install directly from GitHub:
 > ```bash
 > pip install git+https://github.com/oliverrdz/softpotato.git
@@ -27,15 +27,15 @@
 Run Soft Potato directly in your browser with no local Python setup required:
 - [**Launch Soft Potato v3 Starter in Google Colab**](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
 
-### Stable Release (v3.2.2)
+### Stable Release (v3.3.0)
 
-Soft Potato v3.2.2 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.3.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
 ```
 
-### Development Version (Milestone 3 in progress)
+### Development Version (Milestone 4 in progress)
 
 To install the latest development version directly from GitHub:
 
@@ -135,6 +135,38 @@ result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 2.0))
 i_cathodic = result.currents["Ox"]  # Faradaic current in Amperes (IUPAC convention)
 ```
 
+## Chemical & Electrochemical Reaction Kinetics (`softpotato.reactions`)
+
+Soft Potato's `reactions` module couples solution-phase homogeneous mechanisms (EC, EC', reversible, dimerization, disproportionation, and custom rate laws) and heterogeneous charge-transfer kinetics (`ButlerVolmer`, `TafelKinetics`, `NernstianEquilibrium`) directly to `DiffusionProblem` with automated analytical sparse Jacobians for stiff ODE solvers:
+
+```python
+from softpotato.grid import create_diffusion_mesh
+from softpotato.reactions import (
+    CatalyticReaction,
+    ReactionNetwork,
+    Species,
+    SpeciesCollection,
+)
+from softpotato.solver import DiffusionProblem, DirichletBC, get_solver
+
+ox = Species("Ox", diffusivity=1e-9, bulk_concentration=1.0, n_electrons=-1)
+red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, n_electrons=1)
+species = SpeciesCollection([ox, red])
+reactions = ReactionNetwork([CatalyticReaction(reactant=red, regenerated=ox, k=5.0)])
+
+mesh = create_diffusion_mesh(D=1e-9, t_max=2.0, kind="geometric", n_points=80, gamma=1.06)
+problem = DiffusionProblem(
+    grid=mesh,
+    species=species,
+    reactions=reactions,
+    boundary_conditions={
+        "Ox": (DirichletBC(0.0), DirichletBC(1.0)),
+        "Red": (DirichletBC(1.0), DirichletBC(0.0)),
+    },
+)
+result = get_solver("scipy_ivp").solve(problem, t_span=(0.0, 2.0))
+```
+
 ## Analytical Equations & Benchmarking (`softpotato.analytical`)
 
 Soft Potato provides exact closed-form analytical solutions and empirical models for benchmarking numerical solvers and rapid parameter estimation:
@@ -161,6 +193,8 @@ Step-by-step Jupyter notebook tutorials are located in [`examples/`](examples/) 
 | **Cyclic Voltammetry** | Reversible Nernstian CV, concentration profiles, and Randles–Ševčík diagnostics | [`examples/cyclic_voltammetry.ipynb`](examples/cyclic_voltammetry.ipynb) |
 | **Cottrell Across Geometries** | Planar, spherical, and cylindrical electrode transients and steady-state limits | [`examples/cottrell_geometries.ipynb`](examples/cottrell_geometries.ipynb) |
 | **Non-Uniform Expanding Grids** | Geometric and exponential mesh clustering, convergence, and 5–20× solver speedups | [`examples/expanding_grids.ipynb`](examples/expanding_grids.ipynb) |
+| **Catalytic EC' Mechanism** | Coupled catalytic chronoamperometry, reaction-layer profiles, and analytical benchmarking | [`examples/catalytic_ec.ipynb`](examples/catalytic_ec.ipynb) |
+| **Heterogeneous Kinetics (Butler–Volmer CV)** | Reversible, quasi-reversible, and irreversible CV regimes and Nicholson $\Delta E_p$ analysis | [`examples/heterogeneous_kinetics.ipynb`](examples/heterogeneous_kinetics.ipynb) |
 
 ## Development Roadmap & Milestones
 
@@ -171,8 +205,8 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Current Baseline** | `v3.0.0` | 1D multi-species diffusion solvers (`scipy_ivp`, Crank–Nicolson, BTCS, FTCS) | Released |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Vectorized analytical models (`step`, `voltammetry`, `hydrodynamics`, `microelectrodes`, `secm`, `kinetics`), automated solver benchmarking (`benchmark`), and parameter fitting (`fitting`) | Released |
 | **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
-| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | In Development |
-| **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | Planned |
+| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Released |
+| **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | In Development |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 
