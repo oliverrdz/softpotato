@@ -9,6 +9,7 @@ import numpy as np
 
 from .base import (
     BaseTechnique,
+    PlotSpec,
     _deduplicate_interior_events,
     _normalize_time_input,
     _validate_finite_real,
@@ -188,6 +189,17 @@ class LinearSweepVoltammetry(BaseTechnique):
         if self._dE is not None:
             return super().time_grid(dt=self._dE / self._scan_rate)
         return super().time_grid()
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="voltammogram",
+                title="Linear Sweep Voltammogram",
+                x_label="Potential, $E$ / V",
+                y_label="Current, $I$ / A",
+                description="Faradaic current vs. applied potential during linear sweep.",
+            ),
+        )
 
     def __repr__(self) -> str:
         return (
@@ -485,6 +497,17 @@ class CyclicVoltammetry(BaseTechnique):
         if self._dE is not None:
             return super().time_grid(dt=self._dE / self._scan_rate)
         return super().time_grid()
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        return (
+            PlotSpec(
+                kind="voltammogram",
+                title="Cyclic Voltammogram",
+                x_label="Potential, $E$ / V",
+                y_label="Current, $I$ / A",
+                description="Faradaic current vs. applied potential across voltammetric cycle(s).",
+            ),
+        )
 
     def __repr__(self) -> str:
         return (
