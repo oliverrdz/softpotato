@@ -26,7 +26,7 @@ True
 (101, 50)
 """
 
-from . import analytical, constants, geometry, grid, reactions, solver
+from . import analytical, constants, geometry, grid, reactions, solver, techniques
 from .analytical import (
     BenchmarkCaseResult,
     BenchmarkMetrics,
@@ -187,6 +187,19 @@ from .solver import (
     get_solver,
     list_solvers,
 )
+from .techniques import (
+    BaseTechnique,
+    CallableSegment,
+    Chronoamperometry,
+    ConstantSegment,
+    ControlMode,
+    CustomWaveform,
+    CyclicVoltammetry,
+    LinearRampSegment,
+    LinearSweepVoltammetry,
+    SinusoidalSegment,
+    WaveformSegment,
+)
 
 __version__ = "3.3.0"
 
@@ -200,16 +213,23 @@ __all__ = [
     "T_STD",
     "VACUUM_PERMITTIVITY",
     "BaseSolver",
+    "BaseTechnique",
     "BenchmarkCaseResult",
     "BenchmarkMetrics",
     "BenchmarkSuiteResult",
     "BoundaryCondition",
     "ButlerVolmer",
     "ButlerVolmerFitResult",
+    "CallableSegment",
     "CatalyticReaction",
+    "Chronoamperometry",
+    "ConstantSegment",
+    "ControlMode",
     "ConvergenceResult",
     "CottrellFitResult",
     "CustomReaction",
+    "CustomWaveform",
+    "CyclicVoltammetry",
     "CylindricalGeometry",
     "DiffusionProblem",
     "DimerizationReaction",
@@ -228,6 +248,8 @@ __all__ = [
     "KouteckyLevichFitResult",
     "KouteckyLevichResult",
     "LevichFitResult",
+    "LinearRampSegment",
+    "LinearSweepVoltammetry",
     "MassActionReaction",
     "MatsudaAyabeResult",
     "Mesh1D",
@@ -243,6 +265,7 @@ __all__ = [
     "ReversibleReaction",
     "SECMApproachFitResult",
     "SecondOrderReaction",
+    "SinusoidalSegment",
     "SolverResult",
     "Species",
     "SpeciesCollection",
@@ -253,6 +276,7 @@ __all__ = [
     "TafelResult",
     "Uniform1DMesh",
     "UnknownGeometryError",
+    "WaveformSegment",
     "__version__",
     "analytical",
     "anson",
@@ -344,6 +368,7 @@ __all__ = [
     "tafel_analysis",
     "tafel_overpotential",
     "tafel_slope",
+    "techniques",
     "verify_spatial_convergence",
     "verify_temporal_convergence",
 ]
