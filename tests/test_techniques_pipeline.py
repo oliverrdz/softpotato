@@ -643,3 +643,47 @@ class TestOverridesAndSweeps:
             simulate_sweep(lsv, mech)  # type: ignore[call-overload]
         with pytest.raises(ValueError, match="values"):
             simulate_sweep(lambda v: lsv, mech)  # type: ignore[call-overload]
+
+
+def test_cv_simulate_with_butler_volmer_kinetics() -> None:
+    """Passing ButlerVolmer kinetics to simulate() couples surface concentrations."""
+    D = 1e-9
+    area = 1e-4
+    c_red_bulk = 1.0
+    cv = CyclicVoltammetry(E_start=-0.4, E_vertex1=0.4, E_vertex2=-0.4, scan_rate=0.1)
+    red = Species("Red", diffusivity=D, bulk_concentration=c_red_bulk, n_electrons=-1)
+    ox = Species("Ox", diffusivity=D, bulk_concentration=0.0, n_electrons=1)
+    geom = PlanarGeometry(area=area)
+
+    res_rev = simulate(
+        cv,
+        [ox, red],
+        geometry=geom,
+        kinetics=ButlerVolmer(k0=1e-2, alpha=0.5, E0=0.0, n=1),
+    )
+    res_qrev = simulate(
+        cv,
+        [ox, red],
+        geometry=geom,
+        kinetics=ButlerVolmer(k0=1e-4, alpha=0.5, E0=0.0, n=1),
+    )
+
+    for res in (res_rev, res_qrev):
+        assert res.success
+        # Surface concentrations must remain bounded in [0, c_red_bulk]
+        assert np.all(res.concentrations["Ox"][:, 0] >= -1e-6)
+        assert np.all(res.concentrations["Ox"][:, 0] <= c_red_bulk + 1e-6)
+        assert np.all(res.concentrations["Red"][:, 0] >= -1e-6)
+        assert np.all(res.concentrations["Red"][:, 0] <= c_red_bulk + 1e-6)
+        # Both anodic and cathodic peaks are present
+        assert res.current.max() > 0.0
+        assert res.current.min() < 0.0
+
+    # Near-reversible k0=1e-2 matches Randles-Sevcik peak current
+    i_rs = -randles_sevcik(v=cv.scan_rate, c_bulk=c_red_bulk, D=D, area=area, n=1)
+    assert res_rev.current.max() == pytest.approx(i_rs, rel=2e-2)
+
+    # Sluggish k0 widens peak-to-peak separation
+    dEp_rev = res_rev.potential[res_rev.current.argmax()] - res_rev.potential[res_rev.current.argmin()]
+    dEp_qrev = res_qrev.potential[res_qrev.current.argmax()] - res_qrev.potential[res_qrev.current.argmin()]
+    assert dEp_qrev > dEp_rev

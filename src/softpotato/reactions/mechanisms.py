@@ -166,6 +166,76 @@ def _normalize_reaction_network(
     return ReactionNetwork(reactions, species=species_names)
 
 
+class _MechanismWithInterfacialKinetics:
+    """Wrap a Mechanism to inject state-dependent interfacial flux at electrode nodes."""
+
+    def __init__(
+        self,
+        mechanism: Mechanism,
+        eval_potential: Callable[[float], float],
+        step_specs: Sequence[tuple[str, str, HeterogeneousKinetics, int, float]],
+    ) -> None:
+        self._mechanism = mechanism
+        self._eval_potential = eval_potential
+        self._step_specs = tuple(step_specs)
+
+    def __call__(
+        self, c: ConcentrationDict, x: Any, t: float
+    ) -> dict[str, np.ndarray]:
+        base = self._mechanism.evaluate(c, x, t)
+        rates: dict[str, np.ndarray] = {
+            name: np.array(arr, dtype=float, copy=True) for name, arr in base.items()
+        }
+        e_val = float(self._eval_potential(t))
+        for ox_name, red_name, kinetics, node_idx, inv_half_cell in self._step_specs:
+            if ox_name not in rates:
+                rates[ox_name] = np.zeros_like(c[ox_name], dtype=float)
+            if red_name not in rates:
+                rates[red_name] = np.zeros_like(c[red_name], dtype=float)
+            kf, kb = kinetics.rate_constants(e_val)
+            j_int = float(kf) * float(c[ox_name][node_idx]) - float(kb) * float(
+                c[red_name][node_idx]
+            )
+            rates[ox_name][node_idx] -= inv_half_cell * j_int
+            rates[red_name][node_idx] += inv_half_cell * j_int
+        return rates
+
+    def local_jacobian(
+        self,
+        c: ConcentrationDict,
+        x: Any,
+        t: float,
+        species: Sequence[str] | None = None,
+    ) -> np.ndarray:
+        """Return homogeneous local Jacobian augmented with interfacial flux derivatives."""
+        names = list(species) if species is not None else self._mechanism.species_names
+        jac = np.array(
+            self._mechanism.local_jacobian(c, x, t, species=names),
+            dtype=float,
+            copy=True,
+        )
+        e_val = float(self._eval_potential(t))
+        name_to_idx = {name: idx for idx, name in enumerate(names)}
+        for ox_name, red_name, kinetics, node_idx, inv_half_cell in self._step_specs:
+            kf, kb = kinetics.rate_constants(e_val)
+            kf_f = float(kf)
+            kb_f = float(kb)
+            io = name_to_idx.get(ox_name)
+            ir = name_to_idx.get(red_name)
+            if io is not None:
+                jac[io, io, node_idx] -= inv_half_cell * kf_f
+                if ir is not None:
+                    jac[io, ir, node_idx] += inv_half_cell * kb_f
+            if ir is not None:
+                if io is not None:
+                    jac[ir, io, node_idx] += inv_half_cell * kf_f
+                jac[ir, ir, node_idx] -= inv_half_cell * kb_f
+        return jac
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._mechanism, name)
+
+
 class Mechanism:
     r"""Modular chemical and electrochemical reaction mechanism.
 
@@ -532,12 +602,13 @@ class Mechanism:
         DiffusionProblem
             Configured reaction-diffusion problem ready for solving.
         """
-        from softpotato.solver.base import DiffusionProblem
+        from softpotato.solver.base import DiffusionProblem, NeumannBC
 
         if boundary_conditions is not None:
             resolved_bcs = dict(boundary_conditions)
             if bc_overrides:
                 resolved_bcs.update(bc_overrides)
+            reactions_obj: Any = self
         else:
             bc_side: Literal["left", "right"] | None = None
             target_side = electrode_side if electrode_side is not None else electrodes
@@ -550,6 +621,64 @@ class Mechanism:
                 overrides=bc_overrides,
                 **bc_kwargs,
             )
+            reactions_obj = self
+
+            override_names = set(bc_overrides) if bc_overrides else set()
+            het_steps = [
+                step
+                for step in self._electrochemical_steps
+                if isinstance(step.kinetics, HeterogeneousKinetics)
+                and step.ox_name not in override_names
+                and step.red_name not in override_names
+            ]
+            if het_steps and potential is not None:
+                x_nodes = np.asarray(
+                    grid.nodes if hasattr(grid, "nodes") else grid, dtype=float
+                )
+                if x_nodes.ndim != 1 or x_nodes.size < 2:
+                    raise ValueError(
+                        "grid must be 1D with at least 2 points for heterogeneous kinetics."
+                    )
+                if callable(potential):
+                    eval_potential: Callable[[float], float] = potential
+                else:
+                    const_e = float(potential)
+
+                    def eval_potential(_t: float) -> float:
+                        return const_e
+
+                step_specs: list[tuple[str, str, HeterogeneousKinetics, int, float]] = []
+                for step in het_steps:
+                    side = bc_side if bc_side is not None else step.electrode_side
+                    if side == "left":
+                        node_idx = 0
+                        inv_half_cell = 2.0 / float(x_nodes[1] - x_nodes[0])
+                        resolved_bcs[step.ox_name] = (
+                            NeumannBC(0.0),
+                            resolved_bcs[step.ox_name][1],
+                        )
+                        resolved_bcs[step.red_name] = (
+                            NeumannBC(0.0),
+                            resolved_bcs[step.red_name][1],
+                        )
+                    else:
+                        node_idx = -1
+                        inv_half_cell = 2.0 / float(x_nodes[-1] - x_nodes[-2])
+                        resolved_bcs[step.ox_name] = (
+                            resolved_bcs[step.ox_name][0],
+                            NeumannBC(0.0),
+                        )
+                        resolved_bcs[step.red_name] = (
+                            resolved_bcs[step.red_name][0],
+                            NeumannBC(0.0),
+                        )
+                    step_specs.append(
+                        (step.ox_name, step.red_name, step.kinetics, node_idx, inv_half_cell)
+                    )
+
+                reactions_obj = _MechanismWithInterfacialKinetics(
+                    self, eval_potential, step_specs
+                )
 
         return DiffusionProblem(
             grid=grid,
@@ -558,7 +687,7 @@ class Mechanism:
             initial_conditions=(
                 dict(initial_conditions) if initial_conditions is not None else {}
             ),
-            reactions=self,
+            reactions=reactions_obj,
             species=self._species,
             geometry=geometry,
             n_electrons=n_electrons,
