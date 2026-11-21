@@ -3,11 +3,13 @@
 from .base import BaseTechnique, ControlMode
 from .chronoamperometry import Chronoamperometry
 from .chronopotentiometry import Chronopotentiometry
+from .pipeline import simulate, simulate_sweep
 from .pulse import (
     DifferentialPulseVoltammetry,
     SampledCurrentVoltammetry,
     SquareWaveVoltammetry,
 )
+from .result import TechniqueResult
 from .voltammetry import CyclicVoltammetry, LinearSweepVoltammetry
 from .waveforms import (
     CallableSegment,
@@ -33,5 +35,8 @@ __all__ = [
     "SampledCurrentVoltammetry",
     "SinusoidalSegment",
     "SquareWaveVoltammetry",
+    "TechniqueResult",
     "WaveformSegment",
+    "simulate",
+    "simulate_sweep",
 ]
