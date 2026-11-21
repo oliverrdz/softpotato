@@ -9,7 +9,14 @@ from .pulse import (
     SampledCurrentVoltammetry,
     SquareWaveVoltammetry,
 )
-from .result import TechniqueResult
+from .rde import (
+    RDEConvectionTerm,
+    RDEModel,
+    RDESweep,
+    RDESweepResult,
+    RotatingDiskElectrode,
+    simulate_rde_sweep,
+)
 from .voltammetry import CyclicVoltammetry, LinearSweepVoltammetry
 from .waveforms import (
     CallableSegment,
@@ -32,6 +39,11 @@ __all__ = [
     "DifferentialPulseVoltammetry",
     "LinearRampSegment",
     "LinearSweepVoltammetry",
+    "RDEConvectionTerm",
+    "RDEModel",
+    "RDESweep",
+    "RDESweepResult",
+    "RotatingDiskElectrode",
     "SampledCurrentVoltammetry",
     "SinusoidalSegment",
     "SquareWaveVoltammetry",
@@ -39,4 +51,5 @@ __all__ = [
     "WaveformSegment",
     "simulate",
     "simulate_sweep",
+    "simulate_rde_sweep",
 ]
