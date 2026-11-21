@@ -446,14 +446,14 @@ def plot_concentration_profile(
     t_arr = target_result.time
     if t is None:
         t_targets = [float(t_arr[-1])]
-    elif np.isscalar(t):
+    elif isinstance(t, (int, float, np.number)) and not isinstance(t, bool):
         t_targets = [_validate_finite_real(t, "t")]
-    else:
-        if isinstance(t, (str, bytes)):
-            raise TypeError("'t' must be a float or sequence of floats.")
+    elif isinstance(t, Sequence) and not isinstance(t, (str, bytes)):
         t_targets = [_validate_finite_real(val, "t") for val in t]
         if not t_targets:
             raise ValueError("'t' must not be empty.")
+    else:
+        raise TypeError("'t' must be a float or sequence of floats.")
 
     t_min = float(t_arr[0])
     t_max = float(t_arr[-1])
@@ -1214,7 +1214,11 @@ def plot_levich(
         and len(results_or_omega) > 0
         and isinstance(results_or_omega[0], TechniqueResult)
     ):
-        omega_arr, _, _ = _extract_rde_series(results_or_omega)  # type: ignore[arg-type]
+        rde_input = cast(
+            "RDESweepResult | Sequence[TechniqueResult] | Mapping[Any, TechniqueResult]",
+            results_or_omega,
+        )
+        omega_arr, _, _ = _extract_rde_series(rde_input)
     else:
         omega_arr = np.asarray(results_or_omega, dtype=float)
 
@@ -1269,9 +1273,11 @@ def plot_koutecky_levich(
         and len(results_or_omega) > 0
         and isinstance(results_or_omega[0], TechniqueResult)
     ):
-        omega_arr, _, _ = _extract_rde_series(
-            results_or_omega, potential=potential  # type: ignore[arg-type]
+        rde_input = cast(
+            "RDESweepResult | Sequence[TechniqueResult] | Mapping[Any, TechniqueResult]",
+            results_or_omega,
         )
+        omega_arr, _, _ = _extract_rde_series(rde_input, potential=potential)
     else:
         omega_arr = np.asarray(results_or_omega, dtype=float)
 
