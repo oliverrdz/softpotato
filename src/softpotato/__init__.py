@@ -207,6 +207,9 @@ from .techniques import (
     SquareWaveVoltammetry,
     TechniqueResult,
     WaveformSegment,
+    simulate,
+    simulate_rde_sweep,
+    simulate_sweep,
 )
 
 __version__ = "3.3.0"
@@ -377,6 +380,9 @@ __all__ = [
     "secm_limiting_current_infinite",
     "secm_tip_current",
     "shielding_factor",
+    "simulate",
+    "simulate_rde_sweep",
+    "simulate_sweep",
     "solver",
     "step_concentration_profile",
     "step_flux_profile",
