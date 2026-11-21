@@ -574,8 +574,8 @@ class Chronopotentiometry(BaseTechnique):
             PlotSpec(
                 kind="E_vs_t",
                 title="Chronopotentiogram",
-                x_label="Time, $t$ / s",
-                y_label="Potential, $E$ / V",
+                x_label="$t$ / s",
+                y_label="$E$ / V",
                 description="Electrode potential response E(t) under controlled current.",
             ),
         )

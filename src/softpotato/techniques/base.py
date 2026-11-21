@@ -89,22 +89,22 @@ _UNIVERSAL_PLOT_SPECS: tuple[PlotSpec, ...] = (
     PlotSpec(
         kind="i_vs_t",
         title="Current vs. Time",
-        x_label="Time, $t$ / s",
-        y_label="Current, $I$ / A",
+        x_label="$t$ / s",
+        y_label="$I$ / A",
         description="Net Faradaic current transient I(t).",
     ),
     PlotSpec(
         kind="E_vs_t",
         title="Potential vs. Time",
-        x_label="Time, $t$ / s",
-        y_label="Potential, $E$ / V",
+        x_label="$t$ / s",
+        y_label="$E$ / V",
         description="Electrode potential E(t) vs. time.",
     ),
     PlotSpec(
         kind="c_vs_x",
         title="Concentration Profile",
-        x_label="Distance, $x$ / m",
-        y_label=r"Concentration, $c$ / $\mathrm{mol\,m^{-3}}$",
+        x_label="$x$ / m",
+        y_label=r"$c$ / $\mathrm{mol\,m^{-3}}$",
         description="Spatial species concentration profile c(x, t) at a specified time.",
     ),
 )

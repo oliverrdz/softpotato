@@ -114,7 +114,7 @@ def _distance_axis_label(result: TechniqueResult, spec: PlotSpec) -> str:
     """Choose radial vs. Cartesian distance label based on electrode geometry."""
     geom_name = str(result.metadata.get("geometry", "")).lower()
     if geom_name in ("spherical", "cylindrical"):
-        return "Radial distance, $r$ / m"
+        return "$r$ / m"
     return spec.x_label
 
 
@@ -226,8 +226,8 @@ def plot_voltammogram(
         PlotSpec(
             kind="voltammogram",
             title="Voltammogram",
-            x_label="Potential, $E$ / V",
-            y_label="Current, $I$ / A",
+            x_label="$E$ / V",
+            y_label="$I$ / A",
         ),
     )
     fig, ax = _resolve_axes(ax, figsize=figsize)
@@ -522,8 +522,8 @@ def plot_charge_vs_time(
         PlotSpec(
             kind="Q_vs_t",
             title="Chronocoulogram",
-            x_label="Time, $t$ / s",
-            y_label="Charge, $Q$ / C",
+            x_label="$t$ / s",
+            y_label="$Q$ / C",
         ),
     )
     fig, ax = _resolve_axes(ax, figsize=figsize)
@@ -1011,8 +1011,8 @@ def plot_peaks(
     spec = PlotSpec(
         kind="voltammogram",
         title=resolved_title,
-        x_label="Potential, $E$ / V",
-        y_label="Current, $I$ / A",
+        x_label="$E$ / V",
+        y_label="$I$ / A",
     )
     _apply_labels(ax, spec, title=resolved_title, grid=grid)
     return fig, ax
@@ -1105,7 +1105,7 @@ def plot_randles_sevcik(
         kind="randles_sevcik",
         title="Randles–Ševčík Analysis",
         x_label=r"$\sqrt{v}$ / $\mathrm{V^{1/2}\,s^{-1/2}}$",
-        y_label=r"Peak Current, $I_p$ / A",
+        y_label=r"$I_p$ / A",
     )
     _apply_labels(ax, spec, title=title, grid=grid)
     return fig, ax
@@ -1187,7 +1187,7 @@ def plot_cottrell(
         kind="cottrell",
         title="Cottrell Analysis",
         x_label=r"$t^{-1/2}$ / $\mathrm{s^{-1/2}}$",
-        y_label="Current, $I$ / A",
+        y_label="$I$ / A",
     )
     _apply_labels(ax, spec, title=title, grid=grid)
     return fig, ax
@@ -1245,7 +1245,7 @@ def plot_levich(
         kind="levich",
         title="Levich Analysis",
         x_label=r"$\omega^{1/2}$ / $\mathrm{rad^{1/2}\,s^{-1/2}}$",
-        y_label=r"Limiting Current, $I_L$ / A",
+        y_label=r"$I_L$ / A",
     )
     _apply_labels(ax, spec, title=title, grid=grid)
     return fig, ax
@@ -1303,7 +1303,7 @@ def plot_koutecky_levich(
         kind="koutecky_levich",
         title="Koutecký–Levich Analysis",
         x_label=r"$\omega^{-1/2}$ / $\mathrm{rad^{-1/2}\,s^{1/2}}$",
-        y_label=r"Inverse Current, $|I|^{-1}$ / $\mathrm{A^{-1}}$",
+        y_label=r"$|I|^{-1}$ / $\mathrm{A^{-1}}$",
     )
     _apply_labels(ax, spec, title=title, grid=grid)
     return fig, ax
@@ -1382,7 +1382,7 @@ def plot_tafel(
         kind="tafel",
         title="Tafel Analysis",
         x_label=r"$\log_{10}(|I| / \mathrm{A})$",
-        y_label=r"Overpotential, $\eta$ / V",
+        y_label=r"$\eta$ / V",
     )
     _apply_labels(ax, spec, title=title, grid=grid)
     return fig, ax

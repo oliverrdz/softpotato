@@ -269,15 +269,15 @@ class Chronoamperometry(BaseTechnique):
             PlotSpec(
                 kind="i_vs_t",
                 title="Chronoamperogram",
-                x_label="Time, $t$ / s",
-                y_label="Current, $I$ / A",
+                x_label="$t$ / s",
+                y_label="$I$ / A",
                 description="Faradaic current transient following potential step(s).",
             ),
             PlotSpec(
                 kind="Q_vs_t",
                 title="Chronocoulogram",
-                x_label="Time, $t$ / s",
-                y_label="Charge, $Q$ / C",
+                x_label="$t$ / s",
+                y_label="$Q$ / C",
                 description="Cumulative Faradaic charge Q(t) vs. time.",
             ),
         )

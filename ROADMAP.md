@@ -17,7 +17,7 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Released | **Minor Feature Addition** |
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Released | **Minor Feature Addition** |
-| **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | In Development | **Minor Feature Addition** |
+| **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators, simulation pipelines, plotting & diagnostics | Complete | **Minor Feature Addition** |
 
 ---
 
@@ -257,26 +257,29 @@ Electrochemical systems frequently involve coupled chemical transformations (e.g
 
 ## Milestone 4 (Techniques): v3.4.0
 
-**Status**: In Development
+**Status**: Complete
 
-**Goal**: Introduce high-level electrochemical experimental techniques and waveform generators (`softpotato.techniques`), enabling turnkey simulation and diagnostic workflows.
+**Goal**: Introduce high-level electrochemical experimental techniques and waveform generators (`softpotato.techniques`), enabling turnkey simulation, declarative plotting, and diagnostic workflows.
 
 ### Rationale
-With solvers, analytical benchmark models, grids, and reaction kinetics in place, users need standard experimental protocols (voltammetry, chronoamperometry) and automated signal pipelines without manually coding potential excitation waveforms and boundary conditions.
+With solvers, analytical benchmark models, grids, and reaction kinetics in place, users need standard experimental protocols (voltammetry, chronoamperometry, pulse techniques, chronopotentiometry, RDE) and automated signal, plotting, and diagnostic pipelines without manually coding potential excitation waveforms and boundary conditions.
 
 ### Objectives & Deliverables
 - **Waveform & Signal Generators (`softpotato.techniques`)**:
-  - `Chronoamperometry`: Single- and double-potential step sequences with configurable pulse durations and resting times.
+  - `Chronoamperometry`: Single-, double-, and multi-potential step sequences with configurable pulse durations and resting times.
   - `LinearSweepVoltammetry` (LSV): Unidirectional potential sweeps with configurable start/end potentials and scan rates ($v$).
   - `CyclicVoltammetry` (CV): Multi-cycle triangular potential waveforms with customizable vertices and switching potentials.
-  - `RotatingDiskElectrode` (RDE): Hydrodynamic convective-diffusion modeling under the Levich and Nernst stagnant diffusion layer approximations.
-  - `PulseTechniques`: Differential Pulse Voltammetry (DPV), Square Wave Voltammetry (SWV), and Chronopotentiometry (CP).
-  - `CustomWaveform`: Composite excitation generator allowing arbitrary chaining of potential/current segments.
+  - `RotatingDiskElectrode` (RDE), `RDESweep`, `simulate_rde_sweep`: Hydrodynamic convective-diffusion modeling under the Levich (`levich_convection`) and Nernst stagnant diffusion layer (`nernst_layer`) approximations.
+  - `PulseTechniques` & `Chronopotentiometry`: `SampledCurrentVoltammetry` (SCV), `DifferentialPulseVoltammetry` (DPV), `SquareWaveVoltammetry` (SWV), and galvanostatic `Chronopotentiometry` (CP).
+  - `CustomWaveform`: Composite excitation generator allowing arbitrary chaining of `ConstantSegment`, `LinearRampSegment`, `SinusoidalSegment`, and `CallableSegment` segments.
 - **Simulation Pipeline Orchestrator**:
-  - High-level execution API (e.g., `simulate(technique=..., mechanism=..., solver=...)`) that coordinates grid creation, boundary condition assignment, numerical integration, and result extraction in a single call.
+  - High-level execution API (`simulate`, `simulate_sweep`) returning `TechniqueResult` and coordinating physics-informed grid creation, boundary condition assignment, event-aware piecewise integration, and Faradaic current/charge extraction.
+- **Declarative Plotting Interfaces (`softpotato.techniques.plotting`)**:
+  - Technique-aware `PlotSpec`, `PLOT_ALIASES`, `resolve_plot_kind`, `plot_result` (`result.plot()`), `plot_summary` (`result.plot_summary()`), and `plot_sweep`.
+  - Dedicated renderers (`plot_voltammogram`, `plot_current_vs_time`, `plot_potential_vs_time`, `plot_concentration_profile`, `plot_charge_vs_time`, `plot_scv`, `plot_dpv`, `plot_swv`) and diagnostic plots (`plot_peaks`, `plot_randles_sevcik`, `plot_cottrell`, `plot_levich`, `plot_koutecky_levich`, `plot_tafel`).
 - **Post-Processing & Electrochemical Diagnostics**:
-  - Automated peak detection ($E_p$, $I_p$, $\Delta E_p$).
-  - Diagnostics: Randles–Ševčík peak current regression, Nicholson kinetic parameter extraction, Levich and Koutecký–Levich slopes, and Tafel analysis leveraging the `softpotato.analytical` module.
+  - Automated peak detection (`find_peaks` returning `CVDiagnostics` / `PeakInfo`).
+  - Diagnostics: `analyze_randles_sevcik`, `analyze_nicholson`, `analyze_levich`, `analyze_koutecky_levich`, `analyze_tafel`, `analyze_cottrell`, and `analyze_sand` leveraging `softpotato.analytical`.
 - **Backwards Compatibility**:
   - Modular addition that imports and utilizes `softpotato.solver`, `softpotato.analytical`, `softpotato.grid`, and `softpotato.reactions` without breaking lower-level solver APIs.
 

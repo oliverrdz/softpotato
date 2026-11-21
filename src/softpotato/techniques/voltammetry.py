@@ -195,8 +195,8 @@ class LinearSweepVoltammetry(BaseTechnique):
             PlotSpec(
                 kind="voltammogram",
                 title="Linear Sweep Voltammogram",
-                x_label="Potential, $E$ / V",
-                y_label="Current, $I$ / A",
+                x_label="$E$ / V",
+                y_label="$I$ / A",
                 description="Faradaic current vs. applied potential during linear sweep.",
             ),
         )
@@ -503,8 +503,8 @@ class CyclicVoltammetry(BaseTechnique):
             PlotSpec(
                 kind="voltammogram",
                 title="Cyclic Voltammogram",
-                x_label="Potential, $E$ / V",
-                y_label="Current, $I$ / A",
+                x_label="$E$ / V",
+                y_label="$I$ / A",
                 description="Faradaic current vs. applied potential across voltammetric cycle(s).",
             ),
         )
