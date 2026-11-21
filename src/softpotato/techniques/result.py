@@ -2,15 +2,20 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from scipy.integrate import cumulative_trapezoid
 
 from softpotato.solver.base import SolverResult
 
-from .base import BaseTechnique
+from .base import BaseTechnique, PlotSpec
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
 from .chronopotentiometry import Chronopotentiometry
 from .pulse import (
     DifferentialPulseVoltammetry,
@@ -358,4 +363,78 @@ class TechniqueResult:
             )
         return self.technique.sample_currents(
             self.time, self.current, sample_times=sample_times
+        )
+
+    # ------------------------------------------------------------------
+    # Plotting facade
+    # ------------------------------------------------------------------
+
+    @property
+    def plot_specs(self) -> dict[str, PlotSpec]:
+        """Ordered mapping of canonical plot kind to :class:`PlotSpec`."""
+        return self.technique.plot_specs
+
+    @property
+    def available_plots(self) -> tuple[str, ...]:
+        """Ordered tuple of canonical plot kinds supported for this result."""
+        return self.technique.available_plots
+
+    @property
+    def default_plot(self) -> str:
+        """Canonical plot kind used by default when calling :meth:`plot`."""
+        return self.technique.default_plot
+
+    def plot(
+        self,
+        kind: str | None = None,
+        *,
+        ax: Axes | None = None,
+        **kwargs: Any,
+    ) -> tuple[Figure, Axes]:
+        """Plot this simulation result using the declarative plotting suite.
+
+        Delegates to :func:`~softpotato.techniques.plotting.plot_result`.
+
+        Parameters
+        ----------
+        kind : str, optional
+            Concise plot key (e.g., ``'voltammogram'``, ``'i_vs_t'``,
+            ``'E_vs_t'``, ``'c_vs_x'``) or verbose alias (e.g.,
+            ``'current_vs_time'``, ``'potential_vs_time'``,
+            ``'concentration_profile'``). Defaults to :attr:`default_plot`.
+        ax : matplotlib.axes.Axes, optional
+            Existing Axes to draw onto. A new figure and axes are created
+            when omitted.
+        **kwargs : Any
+            Additional keyword arguments forwarded to the plot renderer.
+
+        Returns
+        -------
+        tuple[matplotlib.figure.Figure, matplotlib.axes.Axes]
+            Figure and Axes containing the rendered plot.
+        """
+        from .plotting import plot_result
+
+        return plot_result(self, kind=kind, ax=ax, **kwargs)
+
+    def plot_summary(
+        self,
+        *,
+        t: float | Sequence[float] | None = None,
+        species: str | Sequence[str] | None = None,
+        figsize: tuple[float, float] | None = None,
+        **kwargs: Any,
+    ) -> tuple[Figure, np.ndarray]:
+        """Render a multi-panel overview figure for this simulation result.
+
+        Delegates to :func:`~softpotato.techniques.plotting.plot_summary`.
+        """
+        from .plotting import plot_summary as _plot_summary
+
+        return _plot_summary(
+            self,
+            t=t,
+            species=species,
+            figsize=figsize,
+            **kwargs,
         )

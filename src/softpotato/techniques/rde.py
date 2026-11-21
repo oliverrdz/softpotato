@@ -37,6 +37,7 @@ from softpotato.solver import (
 
 from .base import (
     BaseTechnique,
+    PlotSpec,
     _validate_finite_real,
     _validate_positive_finite,
     _validate_positive_int,
@@ -579,6 +580,23 @@ class RotatingDiskElectrode(BaseTechnique):
     def event_times(self) -> tuple[float, ...]:
         """Sorted interior event timestamps (delegated to :attr:`waveform`)."""
         return self._waveform.event_times
+
+    def _technique_plots(self) -> tuple[PlotSpec, ...]:
+        base_specs = self._waveform._technique_plots()
+        if not base_specs:
+            return ()
+        first = base_specs[0]
+        rde_title = (
+            first.title if first.title.startswith("RDE ") else f"RDE {first.title}"
+        )
+        updated_first = PlotSpec(
+            kind=first.kind,
+            title=rde_title,
+            x_label=first.x_label,
+            y_label=first.y_label,
+            description=first.description,
+        )
+        return (updated_first, *base_specs[1:])
 
     @overload
     def excitation(self, t: float) -> float: ...
