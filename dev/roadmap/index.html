@@ -425,6 +425,8 @@
       
         
       
+        
+      
     
     
     
@@ -865,6 +867,34 @@
     
   
     Grid Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reactions Module
   
 
     
@@ -1333,6 +1363,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1421,6 +1455,62 @@
     
   
     Cyclic Voltammetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/catalytic_ec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Catalytic EC' Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/heterogeneous_kinetics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Heterogeneous Kinetics (CV)
   
 
     
@@ -2075,7 +2165,7 @@
 <td style="text-align: left;"><strong>Milestone 3: Reactions</strong></td>
 <td style="text-align: left;"><code>v3.3.0</code></td>
 <td style="text-align: left;">Homogeneous &amp; heterogeneous chemical reaction kinetics</td>
-<td style="text-align: left;">In Development</td>
+<td style="text-align: left;">Released</td>
 <td style="text-align: left;"><strong>Minor Feature Addition</strong></td>
 </tr>
 <tr>
@@ -2289,39 +2379,46 @@ I = I_0 \left[\exp\left(\frac{(1 - \alpha) n F \eta}{R T}\right) - \exp\left(-\f
 </ul>
 <hr />
 <h2 id="milestone-3-reactions-v330">Milestone 3 (Reactions): v3.3.0<a class="headerlink" href="#milestone-3-reactions-v330" title="Permanent link">&para;</a></h2>
-<p><strong>Status</strong>: In Development</p>
+<p><strong>Status</strong>: Released</p>
 <p><strong>Goal</strong>: Introduce a comprehensive chemical and electrochemical kinetics module (<code>softpotato.reactions</code>), providing modular multi-species reaction mechanisms.</p>
 <h3 id="rationale_2">Rationale<a class="headerlink" href="#rationale_2" title="Permanent link">&para;</a></h3>
 <p>Electrochemical systems frequently involve coupled chemical transformations (e.g., EC, EC', ECE, catalytic, and disproportionation pathways) as well as non-linear interfacial charge-transfer kinetics. A dedicated reactions module decouples kinetic mechanism definitions from the spatial diffusion solvers.</p>
 <h3 id="objectives-deliverables_3">Objectives &amp; Deliverables<a class="headerlink" href="#objectives-deliverables_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Chemical Species Abstraction (<code>softpotato.reactions.species</code>)</strong>:</li>
-<li><code>Species</code>: Class encapsulating species identity, standard diffusion coefficient (<span class="arithmatex">\(D_i\)</span>), bulk concentration (<span class="arithmatex">\(c_i^*\)</span>), formal charge (<span class="arithmatex">\(z_i\)</span>), and standard redox potential (<span class="arithmatex">\(E^0\)</span>).</li>
+<li><code>Species</code>: Immutable dataclass encapsulating species identity, standard diffusion coefficient (<span class="arithmatex">\(D_i\)</span>), bulk concentration (<span class="arithmatex">\(c_i^*\)</span>), formal charge (<span class="arithmatex">\(z_i\)</span>), standard redox potential (<span class="arithmatex">\(E^{0\prime}\)</span>), and electron transfer count (<span class="arithmatex">\(n\)</span>).</li>
+<li><code>SpeciesCollection</code>: Ordered mapping container providing dict-like lookup and direct export helpers (<code>diffusivities</code>, <code>bulk_concentrations</code>, <code>n_electrons_map</code>) for <code>DiffusionProblem</code>.</li>
 <li><strong>Homogeneous Reaction Kinetics (<code>softpotato.reactions.homogeneous</code>)</strong>:</li>
 <li>
-<p>Flexible multi-reaction formulation computing reaction rate vectors <span class="arithmatex">\(\mathbf{R}(\mathbf{c}, x, t)\)</span>:</p>
+<p>Flexible multi-reaction formulation (<code>ReactionNetwork</code>) computing reaction rate vectors <span class="arithmatex">\(\mathbf{R}(\mathbf{c}, x, t)\)</span>:</p>
 <div class="arithmatex">\[
 \frac{\partial c_i}{\partial t} = D_i \nabla^2 c_i + R_i(\mathbf{c})
 \]</div>
 </li>
 <li>
-<p>Built-in reaction primitives: first-order, second-order, reversible equilibrium (<span class="arithmatex">\(A \rightleftharpoons B\)</span>), and catalytic cycles.</p>
+<p>Built-in reaction primitives: <code>FirstOrderReaction</code>, <code>ReversibleReaction</code> (<span class="arithmatex">\(A \rightleftharpoons B\)</span>), <code>SecondOrderReaction</code>, <code>DimerizationReaction</code>, <code>DisproportionationReaction</code>, <code>CatalyticReaction</code> (EC'), general <code>MassActionReaction</code>, and extensible <code>CustomReaction</code>.</p>
 </li>
-<li>Automated kinetic Jacobian matrix formulation for implicit stiff ODE integration (<code>Radau</code>, <code>BDF</code>).</li>
+<li>Automated analytical sparse kinetic Jacobian assembly for implicit stiff ODE integration (<code>Radau</code>, <code>BDF</code>).</li>
 <li><strong>Heterogeneous Charge-Transfer Kinetics (<code>softpotato.reactions.heterogeneous</code>)</strong>:</li>
 <li>
-<p>Butler–Volmer kinetics:</p>
+<p>Butler–Volmer kinetics (<code>ButlerVolmer</code>):</p>
 <div class="arithmatex">\[
-k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^0)\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^0)\right)
+k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^{0\prime})\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^{0\prime})\right)
 \]</div>
 </li>
 <li>
-<p>Marcus–Hush–Chidsey (MHC) kinetics for non-adiabatic electron transfer.</p>
+<p>High-overpotential unidirectional Tafel kinetics (<code>TafelKinetics</code> / <code>Tafel</code>).</p>
 </li>
-<li>Reversible Nernstian boundary condition helpers.</li>
-<li><strong>Integration</strong>:</li>
-<li>Plug-and-play linkage with <code>DiffusionProblem(..., reactions=...)</code>.</li>
-<li>Backwards-compatible: <code>DiffusionProblem</code> remains functional without explicit reaction definitions.</li>
+<li>Reversible Nernstian equilibrium (<code>NernstianEquilibrium</code>) and boundary condition factory (<code>create_electrochemical_bcs</code>).</li>
+<li><strong>Mechanism Abstractions &amp; Solver Integration (<code>softpotato.reactions.mechanisms</code>, <code>softpotato.solver</code>)</strong>:</li>
+<li><code>ElectrochemicalStep</code>, <code>Mechanism</code>, and <code>CustomMechanism</code> packaging species, homogeneous steps, and interfacial kinetics independently of grid and solver.</li>
+<li>Plug-and-play linkage with <code>DiffusionProblem(..., species=..., reactions=..., mechanism=...)</code> and sparse kinetic Jacobian integration in <code>ScipyIVPSolver</code>.</li>
+<li>Backwards-compatible: <code>DiffusionProblem</code> remains fully functional without explicit reaction definitions.</li>
+<li><strong>Validation &amp; Documentation</strong>:</li>
+<li>Analytical benchmark suite (<code>tests/test_reactions_benchmark.py</code>) verifying EC' catalytic limiting currents, Delahay–Stiehl transients, equilibrium relaxation, mass conservation, and Butler–Volmer CV diagnostics against Randles–Ševčík and Nicholson theory.</li>
+<li>Complete MkDocs API reference (<code>docs/api/reactions.md</code>) and interactive tutorials (<code>examples/catalytic_ec.ipynb</code>, <code>examples/heterogeneous_kinetics.ipynb</code>).</li>
+<li><strong>Release Status</strong>:</li>
+<li>Successfully implemented, benchmarked, tested, and released as <code>v3.3.0</code>.</li>
 </ul>
 <hr />
 <h2 id="milestone-4-techniques-v340">Milestone 4 (Techniques): v3.4.0<a class="headerlink" href="#milestone-4-techniques-v340" title="Permanent link">&para;</a></h2>
