@@ -587,9 +587,7 @@ class RotatingDiskElectrode(BaseTechnique):
             return ()
         first = base_specs[0]
         rde_title = (
-            first.title
-            if first.title.startswith("RDE ")
-            else f"RDE {first.title}"
+            first.title if first.title.startswith("RDE ") else f"RDE {first.title}"
         )
         updated_first = PlotSpec(
             kind=first.kind,
