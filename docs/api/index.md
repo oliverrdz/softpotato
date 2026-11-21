@@ -4,7 +4,8 @@
 <div markdown>
 Welcome to the **Soft Potato** API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
-coordinate geometries, non-uniform spatial discretization meshes, and numerical PDE solvers.
+coordinate geometries, non-uniform spatial discretization meshes, chemical and
+electrochemical reaction kinetics, and numerical PDE solvers.
 </div>
 <img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" />
 </div>
@@ -198,6 +199,31 @@ The [`softpotato.grid`][softpotato.grid] subpackage provides 1D spatial discreti
 | [`Uniform1DMesh`][softpotato.grid.Uniform1DMesh] | $x_{\min}, x_{\max}, N \text{ or } \Delta x$ | $\text{mesh}$ | Equidistant 1D spatial mesh with constant spacing $\Delta x$. | [31](#ref-31) |
 | [`GeometricExpandingMesh`][softpotato.grid.GeometricExpandingMesh] | $x_{\min}, x_{\max}, (N, \gamma, \Delta x_0)$ | $\text{mesh}$ | Non-uniform 1D mesh with geometric interval expansion $\Delta x_j = \Delta x_0 \gamma^j$. | [3](#ref-3) |
 | [`ExponentialMesh`][softpotato.grid.ExponentialMesh] | $x_{\min}, x_{\max}, N, \beta, \text{mapping}$ | $\text{mesh}$ | Non-uniform 1D mesh with exponential, $\tanh$, or $\sinh$ coordinate stretching. | [31](#ref-31) |
+
+## Reactions Module
+
+The [`softpotato.reactions`][softpotato.reactions] subpackage provides chemical species abstractions, homogeneous (solution-phase) reaction networks with automated analytical Jacobians, heterogeneous interfacial charge-transfer kinetics, and unified electrochemical mechanism containers.
+
+| Class / Function | Inputs | Output | Description | References |
+| :--- | :--- | :--- | :--- | :--- |
+| [`Species`][softpotato.reactions.Species] | $\text{name}, D_i, c_i^*, z_i, E^{0\prime}, n$ | $\text{Species}$ | Immutable physicochemical metadata container for a chemical species. |  |
+| [`SpeciesCollection`][softpotato.reactions.SpeciesCollection] | $\text{species}$ | $\text{collection}$ | Ordered mapping registry of `Species` with `DiffusionProblem` export helpers. |  |
+| [`FirstOrderReaction`][softpotato.reactions.FirstOrderReaction] | $A, B, k$ | $\text{reaction}$ | Irreversible unimolecular reaction $A \xrightarrow{k} B$ ($r = k c_A$). | [3](#ref-3) |
+| [`ReversibleReaction`][softpotato.reactions.ReversibleReaction] | $A, B, k_f, k_b$ | $\text{reaction}$ | Reversible first-order equilibrium $A \rightleftharpoons B$ ($r = k_f c_A - k_b c_B$). | [3](#ref-3) |
+| [`SecondOrderReaction`][softpotato.reactions.SecondOrderReaction] | $A, B, C, k$ | $\text{reaction}$ | Irreversible bimolecular reaction $A + B \xrightarrow{k} C$ ($r = k c_A c_B$). | [3](#ref-3) |
+| [`DimerizationReaction`][softpotato.reactions.DimerizationReaction] | $A, A_2, k$ | $\text{reaction}$ | Irreversible homodimerization $2A \xrightarrow{k} A_2$ ($r = k c_A^2$). | [3](#ref-3) |
+| [`DisproportionationReaction`][softpotato.reactions.DisproportionationReaction] | $B, A, C, k$ | $\text{reaction}$ | Irreversible disproportionation $2B \xrightarrow{k} A + C$ ($r = k c_B^2$). | [3](#ref-3) |
+| [`CatalyticReaction`][softpotato.reactions.CatalyticReaction] | $B, A, k, Z, P$ | $\text{reaction}$ | EC' catalytic regeneration step $B (+ Z) \xrightarrow{k} A (+ P)$. | [3](#ref-3) |
+| [`MassActionReaction`][softpotato.reactions.MassActionReaction] | $\text{reactants}, \text{products}, k_f, k_b$ | $\text{reaction}$ | General elementary reversible or irreversible mass-action rate law. | [3](#ref-3) |
+| [`CustomReaction`][softpotato.reactions.CustomReaction] | $\boldsymbol{\nu}, r(\mathbf{c}, x, t)$ | $\text{reaction}$ | Custom user-supplied rate law with analytical or finite-difference Jacobian. |  |
+| [`ReactionNetwork`][softpotato.reactions.ReactionNetwork] | $\text{reactions}, \text{species}$ | $\text{network}$ | Multi-reaction composer assembling vectorized rates and sparse block Jacobians. | [33](#ref-33) |
+| [`ButlerVolmer`][softpotato.reactions.ButlerVolmer] | $k^0, \alpha, E^{0\prime}, n, T$ | $\text{kinetics}$ | Reversible/quasi-reversible Butler–Volmer interfacial electron-transfer kinetics. | [3](#ref-3), [13](#ref-13), [14](#ref-14) |
+| [`TafelKinetics`][softpotato.reactions.TafelKinetics] | $k^0, \alpha, E^{0\prime}, n, \text{branch}, T$ | $\text{kinetics}$ | Unidirectional high-overpotential Tafel charge-transfer kinetics (alias `Tafel`). | [3](#ref-3), [15](#ref-15) |
+| [`NernstianEquilibrium`][softpotato.reactions.NernstianEquilibrium] | $E^{0\prime}, n, T$ | $\text{equilibrium}$ | Reversible Nernstian surface concentration ratio and Dirichlet BC helper. | [3](#ref-3), [12](#ref-12) |
+| [`create_electrochemical_bcs`][softpotato.reactions.create_electrochemical_bcs] | $\text{kinetics}, E(t), \text{Ox}, \text{Red}$ | $\text{bcs}$ | Constructs matched `(left_bc, right_bc)` boundary conditions for a redox pair. |  |
+| [`ElectrochemicalStep`][softpotato.reactions.ElectrochemicalStep] | $\text{Ox}, \text{Red}, \text{kinetics}$ | $\text{step}$ | Specification of a single interfacial electron-transfer step in a mechanism. |  |
+| [`Mechanism`][softpotato.reactions.Mechanism] | $\text{species}, \text{reactions}, \text{steps}$ | $\text{mechanism}$ | Complete grid- and solver-independent chemical/electrochemical model. |  |
+| [`CustomMechanism`][softpotato.reactions.CustomMechanism] | $\text{species}, \text{rates}, \text{jac}$ | $\text{mechanism}$ | Declarative custom mechanism supporting custom rate/Jacobian/BC callables. |  |
 
 ## Solver Module
 
