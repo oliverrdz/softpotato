@@ -17,6 +17,7 @@ site/
 .venv/
 venv/
 env/
+.venv-1/
 
 # Testing & coverage
 .pytest_cache/
