@@ -244,6 +244,33 @@ solvers and boundary condition primitives for 1D multi-species diffusion and rea
 | [`ScipyIVPSolver`][softpotato.solver.ScipyIVPSolver] | $\text{method}, \text{rtol}, \text{atol}$ | $\text{solver}$ | Method of Lines solver wrapping SciPy adaptive ODE integrators. | [33](#ref-33) |
 | [`solve`][softpotato.solver.BaseSolver.solve] | $\text{Problem}, (t_0, t_1)$ | $c_i(x, t)$ | Integrates problem across time span to compute concentration fields. |  |
 
+## Techniques Module
+
+The [`softpotato.techniques`][softpotato.techniques] subpackage provides high-level electrochemical experimental protocols, waveform generators, the turnkey simulation pipeline ([`simulate`][softpotato.techniques.simulate], [`simulate_sweep`][softpotato.techniques.simulate_sweep]), the [`TechniqueResult`][softpotato.techniques.TechniqueResult] container, a declarative Matplotlib plotting suite, and automated diagnostic analyzers.
+
+| Class / Function | Inputs | Output | Description | References |
+| :--- | :--- | :--- | :--- | :--- |
+| [`BaseTechnique`][softpotato.techniques.BaseTechnique] | $\varnothing$ | $\text{technique}$ | Abstract base class for potentiostatic and galvanostatic excitation protocols. |  |
+| [`Chronoamperometry`][softpotato.techniques.Chronoamperometry] | $E_{\text{step}}, \Delta t$ | $\text{technique}$ | Single-, double-, and multi-step potential chronoamperometry. | [2](#ref-2), [3](#ref-3) |
+| [`LinearSweepVoltammetry`][softpotato.techniques.LinearSweepVoltammetry] | $E_{\text{start}}, E_{\text{end}}, v$ | $\text{technique}$ | Unidirectional linear potential sweep voltammetry. | [3](#ref-3) |
+| [`CyclicVoltammetry`][softpotato.techniques.CyclicVoltammetry] | $E_{\text{start}}, E_{v1}, E_{v2}, v$ | $\text{technique}$ | Single- or multi-cycle triangular potential cyclic voltammetry. | [3](#ref-3), [16](#ref-16) |
+| [`SampledCurrentVoltammetry`][softpotato.techniques.SampledCurrentVoltammetry] | $\text{potentials}, t_{\max}, \tau$ | $\text{technique}$ | Family of constant-potential steps sampled at fixed $\tau$ (`sample_currents`). | [3](#ref-3) |
+| [`DifferentialPulseVoltammetry`][softpotato.techniques.DifferentialPulseVoltammetry] | $E_{\text{start}}, E_{\text{end}}, \Delta E_s, \Delta E_p$ | $\text{technique}$ | Staircase + pulse voltammetry with pre-/end-of-pulse differential sampling. | [3](#ref-3) |
+| [`SquareWaveVoltammetry`][softpotato.techniques.SquareWaveVoltammetry] | $E_{\text{start}}, E_{\text{end}}, \Delta E_s, E_{\text{sw}}, f$ | $\text{technique}$ | Staircase + square-wave voltammetry with forward/reverse/net sampling. | [3](#ref-3) |
+| [`Chronopotentiometry`][softpotato.techniques.Chronopotentiometry] | $I, \Delta t$ | $\text{technique}$ | Galvanostatic constant-current step protocol with potential recovery & $\tau$ detection. | [7](#ref-7) |
+| [`RotatingDiskElectrode`][softpotato.techniques.RotatingDiskElectrode] | $\text{waveform}, \omega/\text{rpm}, \nu$ | $\text{technique}$ | Hydrodynamic RDE wrapper (`'nernst_layer'` or `'levich_convection'`). | [9](#ref-9) |
+| [`RDESweep`][softpotato.techniques.RDESweep] / [`simulate_rde_sweep`][softpotato.techniques.simulate_rde_sweep] | $\omega/\text{rpm}, \text{waveform}$ | [`RDESweepResult`][softpotato.techniques.RDESweepResult] | Multi-rotation-rate RDE sweep builder and simulation runner. | [9](#ref-9), [10](#ref-10) |
+| [`CustomWaveform`][softpotato.techniques.CustomWaveform] | $\text{segments}, \text{mode}$ | $\text{waveform}$ | Composite excitation chaining constant, linear ramp, sinusoidal, and callable segments. |  |
+| [`simulate`][softpotato.techniques.simulate] | $\text{technique}, \text{mechanism}$ | [`TechniqueResult`][softpotato.techniques.TechniqueResult] | Turnkey event-aware simulation orchestrator returning `TechniqueResult`. |  |
+| [`simulate_sweep`][softpotato.techniques.simulate_sweep] | $\text{techniques}, \text{mechanism}$ | $\text{results}$ | Parameter sweep runner (sequence, mapping, or factory + `values`). |  |
+| [`plot_result`][softpotato.techniques.plot_result] / [`plot_summary`][softpotato.techniques.plot_summary] | `result`, `kind` | `(fig, ax)` | Technique-aware declarative plot dispatcher and multi-panel summary figure. |  |
+| [`plot_sweep`][softpotato.techniques.plot_sweep] | `results`, `kind` | `(fig, ax)` | Overlaid parameter-sweep or `RDESweepResult` plotting helper. |  |
+| [`plot_scv`][softpotato.techniques.plot_scv] / [`plot_dpv`][softpotato.techniques.plot_dpv] / [`plot_swv`][softpotato.techniques.plot_swv] | `result` | `(fig, ax)` | Dedicated SCV, DPV, and SWV voltammogram renderers. |  |
+| [`find_peaks`][softpotato.techniques.find_peaks] | `result` or `(E, I)` | [`CVDiagnostics`][softpotato.techniques.CVDiagnostics] | Sub-grid parabolic peak detection ($E_p, I_p, \Delta E_p, |I_{pa}/I_{pc}|$). |  |
+| [`analyze_randles_sevcik`][softpotato.techniques.analyze_randles_sevcik] / [`analyze_nicholson`][softpotato.techniques.analyze_nicholson] | `results` | Fit / $k^0$ | Automated voltammetric diffusivity and Nicholson $k^0$ extraction. | [16](#ref-16), [20](#ref-20) |
+| [`analyze_levich`][softpotato.techniques.analyze_levich] / [`analyze_koutecky_levich`][softpotato.techniques.analyze_koutecky_levich] | `RDESweepResult` | Fit | Automated hydrodynamic diffusivity ($D$) and kinetic ($I_k, k^0$) extraction. | [9](#ref-9), [10](#ref-10) |
+| [`analyze_tafel`][softpotato.techniques.analyze_tafel] / [`analyze_cottrell`][softpotato.techniques.analyze_cottrell] / [`analyze_sand`][softpotato.techniques.analyze_sand] | `result` | Fit / $\tau$ | Tafel kinetics, Cottrell diffusivity, and Sand transition-time diagnostics. | [2](#ref-2), [7](#ref-7), [15](#ref-15) |
+
 ## References
 
 1. <a id="ref-1"></a>Tiesinga, E.; Mohr, P. J.; Newell, D. B.; Taylor, B. N. "CODATA recommended values of the fundamental physical constants: 2018." *Reviews of Modern Physics*, **93** (2), 025010 (2021). [doi:10.1103/RevModPhys.93.025010](https://doi.org/10.1103/RevModPhys.93.025010)

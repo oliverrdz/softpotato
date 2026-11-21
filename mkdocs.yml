@@ -148,6 +148,7 @@ nav:
       - Grid Module: api/grid.md
       - Reactions Module: api/reactions.md
       - Solver Module: api/solver.md
+      - Techniques Module: api/techniques.md
   - Tutorials:
       - tutorials/index.md
       - Python:
@@ -164,5 +165,8 @@ nav:
           - Cyclic Voltammetry: tutorials/electrochemistry/cv.ipynb
           - Catalytic EC' Mechanism: examples/catalytic_ec.ipynb
           - Heterogeneous Kinetics (CV): examples/heterogeneous_kinetics.ipynb
+          - Techniques — Voltammetry & Diagnostics: examples/techniques_voltammetry.ipynb
+          - Techniques — SCV, Pulse & Chronopotentiometry: examples/techniques_pulse_cp.ipynb
+          - Techniques — RDE Hydrodynamics: examples/techniques_rde.ipynb
   - Blog:
       - blog/index.md

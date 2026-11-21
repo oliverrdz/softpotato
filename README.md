@@ -185,6 +185,41 @@ i_transient = sp.cottrell(t, n=1, D=1e-5, c_bulk=1e-3, area=1e-4)
 i_sphere = sp.cottrell_spherical(t, r=1e-5, n=1, D=1e-5, c_bulk=1e-3)
 ```
 
+## Electrochemical Techniques, Plotting & Diagnostics (`softpotato.techniques`)
+
+Soft Potato's `techniques` module provides turnkey experimental protocols (`Chronoamperometry`, `LinearSweepVoltammetry`, `CyclicVoltammetry`, `SampledCurrentVoltammetry`, `DifferentialPulseVoltammetry`, `SquareWaveVoltammetry`, `Chronopotentiometry`, `RotatingDiskElectrode`, `CustomWaveform`), an event-aware simulation pipeline (`simulate`, `simulate_sweep`), a declarative Matplotlib plotting suite (`plot_result`, `plot_summary`, `plot_sweep`, `plot_scv`, `plot_dpv`, `plot_swv`), and automated diagnostics (`find_peaks`, `analyze_randles_sevcik`, `analyze_nicholson`, `analyze_levich`, `analyze_koutecky_levich`, `analyze_tafel`, `analyze_cottrell`, `analyze_sand`):
+
+```python
+from softpotato.reactions import ButlerVolmer, Species
+from softpotato.techniques import (
+    CyclicVoltammetry,
+    analyze_nicholson,
+    find_peaks,
+    simulate,
+)
+
+ox = Species(
+    "Ox",
+    diffusivity=1e-9,
+    bulk_concentration=1.0,
+    standard_potential=0.0,
+    n_electrons=1,
+)
+red = Species(
+    "Red",
+    diffusivity=1e-9,
+    bulk_concentration=0.0,
+    standard_potential=0.0,
+    n_electrons=-1,
+)
+cv = CyclicVoltammetry(E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=0.1)
+
+result = simulate(cv, [ox, red], kinetics=ButlerVolmer(k0=1e-4, alpha=0.5, E0=0.0, n=1))
+peaks = find_peaks(result)
+nich = analyze_nicholson(result, D=1e-9)
+fig, ax = result.plot()  # Or result.plot_summary()
+```
+
 ## Interactive Tutorials & Examples
 
 Step-by-step Jupyter notebook tutorials are located in [`examples/`](examples/) and rendered in the [online documentation](https://softpotato.xyz/tutorials/):
@@ -197,6 +232,9 @@ Step-by-step Jupyter notebook tutorials are located in [`examples/`](examples/) 
 | **Non-Uniform Expanding Grids** | Geometric and exponential mesh clustering, convergence, and 5–20× solver speedups | [`examples/expanding_grids.ipynb`](examples/expanding_grids.ipynb) |
 | **Catalytic EC' Mechanism** | Coupled catalytic chronoamperometry, reaction-layer profiles, and analytical benchmarking | [`examples/catalytic_ec.ipynb`](examples/catalytic_ec.ipynb) |
 | **Heterogeneous Kinetics (Butler–Volmer CV)** | Reversible, quasi-reversible, and irreversible CV regimes and Nicholson $\Delta E_p$ analysis | [`examples/heterogeneous_kinetics.ipynb`](examples/heterogeneous_kinetics.ipynb) |
+| **Techniques: Voltammetry & Diagnostics** | Turnkey LSV/CV sweeps, declarative plotting (`plot_result`, `plot_summary`, `plot_sweep`), and Randles–Ševčík / Nicholson analysis | [`examples/techniques_voltammetry.ipynb`](examples/techniques_voltammetry.ipynb) |
+| **Techniques: SCV, Pulse & Chronopotentiometry** | Sampled-Current Voltammetry (`plot_scv`), DPV (`plot_dpv`), SWV (`plot_swv`), and CP with Sand diagnostics | [`examples/techniques_pulse_cp.ipynb`](examples/techniques_pulse_cp.ipynb) |
+| **Techniques: RDE Hydrodynamics** | Multi-rotation-rate RDE sweeps with Levich and Koutecký–Levich analysis | [`examples/techniques_rde.ipynb`](examples/techniques_rde.ipynb) |
 
 ## Development Roadmap & Milestones
 
@@ -208,7 +246,7 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Vectorized analytical models (`step`, `voltammetry`, `hydrodynamics`, `microelectrodes`, `secm`, `kinetics`), automated solver benchmarking (`benchmark`), and parameter fitting (`fitting`) | Released |
 | **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Released |
-| **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CV, CA, DPV, SWV, RDE) and high-level simulation pipelines (`techniques`) | In Development |
+| **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CA, LSV, CV, SCV, DPV, SWV, CP, RDE), high-level simulation pipelines, declarative plotting, and diagnostics (`techniques`) | Complete (Upcoming Release) |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 
