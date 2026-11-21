@@ -684,6 +684,12 @@ def test_cv_simulate_with_butler_volmer_kinetics() -> None:
     assert res_rev.current.max() == pytest.approx(i_rs, rel=2e-2)
 
     # Sluggish k0 widens peak-to-peak separation
-    dEp_rev = res_rev.potential[res_rev.current.argmax()] - res_rev.potential[res_rev.current.argmin()]
-    dEp_qrev = res_qrev.potential[res_qrev.current.argmax()] - res_qrev.potential[res_qrev.current.argmin()]
+    dEp_rev = (
+        res_rev.potential[res_rev.current.argmax()]
+        - res_rev.potential[res_rev.current.argmin()]
+    )
+    dEp_qrev = (
+        res_qrev.potential[res_qrev.current.argmax()]
+        - res_qrev.potential[res_qrev.current.argmin()]
+    )
     assert dEp_qrev > dEp_rev

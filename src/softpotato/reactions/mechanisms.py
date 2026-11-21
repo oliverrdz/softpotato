@@ -179,9 +179,7 @@ class _MechanismWithInterfacialKinetics:
         self._eval_potential = eval_potential
         self._step_specs = tuple(step_specs)
 
-    def __call__(
-        self, c: ConcentrationDict, x: Any, t: float
-    ) -> dict[str, np.ndarray]:
+    def __call__(self, c: ConcentrationDict, x: Any, t: float) -> dict[str, np.ndarray]:
         base = self._mechanism.evaluate(c, x, t)
         rates: dict[str, np.ndarray] = {
             name: np.array(arr, dtype=float, copy=True) for name, arr in base.items()
@@ -647,7 +645,9 @@ class Mechanism:
                     def eval_potential(_t: float) -> float:
                         return const_e
 
-                step_specs: list[tuple[str, str, HeterogeneousKinetics, int, float]] = []
+                step_specs: list[
+                    tuple[str, str, HeterogeneousKinetics, int, float]
+                ] = []
                 for step in het_steps:
                     side = bc_side if bc_side is not None else step.electrode_side
                     if side == "left":
@@ -673,7 +673,13 @@ class Mechanism:
                             NeumannBC(0.0),
                         )
                     step_specs.append(
-                        (step.ox_name, step.red_name, step.kinetics, node_idx, inv_half_cell)
+                        (
+                            step.ox_name,
+                            step.red_name,
+                            step.kinetics,
+                            node_idx,
+                            inv_half_cell,
+                        )
                     )
 
                 reactions_obj = _MechanismWithInterfacialKinetics(
