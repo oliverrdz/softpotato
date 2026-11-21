@@ -24,6 +24,7 @@ Soft Potato 3.3.0 delivers Milestone 3 of the strategic development roadmap, int
   - Added `HeterogeneousKinetics` abstract base class, `ButlerVolmer`, `TafelKinetics` (alias `Tafel`), `NernstianEquilibrium`, and boundary condition factory `create_electrochemical_bcs` delegating directly to validated analytical equations in `softpotato.analytical.kinetics` under IUPAC polarity conventions.
 - **Mechanism Abstractions (`softpotato.reactions.mechanisms`)**:
   - Added `ElectrochemicalStep`, `Mechanism`, and `CustomMechanism` to bundle species, homogeneous networks, and interfacial charge-transfer steps independently of spatial grid and solver, with `Mechanism.create_problem(...)` for one-step `DiffusionProblem` construction.
+  - Re-exported all `softpotato.reactions` classes and boundary condition helpers directly from top-level `softpotato`.
 - **Solver & Problem Integration (`softpotato.solver`)**:
   - Integrated `Species`, `SpeciesCollection`, `ReactionNetwork`, and `Mechanism` into `DiffusionProblem` (`species=...`, `reactions=...`, `mechanism=...`) while preserving full backwards compatibility with legacy dict-based problem definitions.
   - Integrated automated sparse diffusion + kinetic Jacobian assembly into `ScipyIVPSolver` for fast, accurate stiff integration (`Radau`, `BDF`).

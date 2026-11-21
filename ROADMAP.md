@@ -17,7 +17,7 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Released | **Minor Feature Addition** |
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Released | **Minor Feature Addition** |
-| **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | Planned | **Minor Feature Addition** |
+| **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | In Development | **Minor Feature Addition** |
 
 ---
 
@@ -256,6 +256,8 @@ Electrochemical systems frequently involve coupled chemical transformations (e.g
 ---
 
 ## Milestone 4 (Techniques): v3.4.0
+
+**Status**: In Development
 
 **Goal**: Introduce high-level electrochemical experimental techniques and waveform generators (`softpotato.techniques`), enabling turnkey simulation and diagnostic workflows.
 
