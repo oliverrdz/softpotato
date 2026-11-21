@@ -29,6 +29,10 @@
          <lastmod>2026-11-21</lastmod>
     </url>
     <url>
+         <loc>https://softpotato.xyz/dev/api/reactions/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
          <loc>https://softpotato.xyz/dev/api/solver/</loc>
          <lastmod>2026-11-21</lastmod>
     </url>
@@ -81,6 +85,10 @@
          <lastmod>2026-11-21</lastmod>
     </url>
     <url>
+         <loc>https://softpotato.xyz/dev/examples/catalytic_ec/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
          <loc>https://softpotato.xyz/dev/examples/cottrell/</loc>
          <lastmod>2026-11-21</lastmod>
     </url>
@@ -94,6 +102,10 @@
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/examples/expanding_grids/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
+         <loc>https://softpotato.xyz/dev/examples/heterogeneous_kinetics/</loc>
          <lastmod>2026-11-21</lastmod>
     </url>
     <url>

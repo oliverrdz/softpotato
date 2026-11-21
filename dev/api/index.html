@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -879,6 +881,34 @@
     
   
     Grid Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reactions Module
   
 
     
@@ -1347,6 +1377,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1435,6 +1469,62 @@
     
   
     Cyclic Voltammetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/catalytic_ec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Catalytic EC' Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/heterogeneous_kinetics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Heterogeneous Kinetics (CV)
   
 
     
@@ -1958,6 +2048,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reactions-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reactions Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#solver-module" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2004,7 +2105,8 @@
 <div>
 <p>Welcome to the <strong>Soft Potato</strong> API Reference. The toolkit is organized into modular
 subpackages and modules for physical constants, closed-form analytical electrochemistry,
-coordinate geometries, non-uniform spatial discretization meshes, and numerical PDE solvers.</p>
+coordinate geometries, non-uniform spatial discretization meshes, chemical and
+electrochemical reaction kinetics, and numerical PDE solvers.</p>
 </div>
 <p><img src="../assets/images/chip-lab.png" alt="Chip — Lab Professional" /></p>
 </div>
@@ -2882,6 +2984,172 @@ analytical benchmarks, and spatial/temporal order of convergence testing utiliti
 <td style="text-align: left;"><span class="arithmatex">\(\text{mesh}\)</span></td>
 <td style="text-align: left;">Non-uniform 1D mesh with exponential, <span class="arithmatex">\(\tanh\)</span>, or <span class="arithmatex">\(\sinh\)</span> coordinate stretching.</td>
 <td style="text-align: left;"><a href="#ref-31">31</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="reactions-module">Reactions Module<a class="headerlink" href="#reactions-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            reactions" href="reactions/#softpotato.reactions"><code>softpotato.reactions</code></a> subpackage provides chemical species abstractions, homogeneous (solution-phase) reaction networks with automated analytical Jacobians, heterogeneous interfacial charge-transfer kinetics, and unified electrochemical mechanism containers.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class / Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Species
+
+
+  
+      dataclass
+  " href="reactions/#softpotato.reactions.Species"><code>Species</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{name}, D_i, c_i^*, z_i, E^{0\prime}, n\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Species}\)</span></td>
+<td style="text-align: left;">Immutable physicochemical metadata container for a chemical species.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            SpeciesCollection" href="reactions/#softpotato.reactions.SpeciesCollection"><code>SpeciesCollection</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{species}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{collection}\)</span></td>
+<td style="text-align: left;">Ordered mapping registry of <code>Species</code> with <code>DiffusionProblem</code> export helpers.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            FirstOrderReaction" href="reactions/#softpotato.reactions.FirstOrderReaction"><code>FirstOrderReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(A, B, k\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Irreversible unimolecular reaction <span class="arithmatex">\(A \xrightarrow{k} B\)</span> (<span class="arithmatex">\(r = k c_A\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ReversibleReaction" href="reactions/#softpotato.reactions.ReversibleReaction"><code>ReversibleReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(A, B, k_f, k_b\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Reversible first-order equilibrium <span class="arithmatex">\(A \rightleftharpoons B\)</span> (<span class="arithmatex">\(r = k_f c_A - k_b c_B\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            SecondOrderReaction" href="reactions/#softpotato.reactions.SecondOrderReaction"><code>SecondOrderReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(A, B, C, k\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Irreversible bimolecular reaction <span class="arithmatex">\(A + B \xrightarrow{k} C\)</span> (<span class="arithmatex">\(r = k c_A c_B\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            DimerizationReaction" href="reactions/#softpotato.reactions.DimerizationReaction"><code>DimerizationReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(A, A_2, k\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Irreversible homodimerization <span class="arithmatex">\(2A \xrightarrow{k} A_2\)</span> (<span class="arithmatex">\(r = k c_A^2\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            DisproportionationReaction" href="reactions/#softpotato.reactions.DisproportionationReaction"><code>DisproportionationReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(B, A, C, k\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Irreversible disproportionation <span class="arithmatex">\(2B \xrightarrow{k} A + C\)</span> (<span class="arithmatex">\(r = k c_B^2\)</span>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CatalyticReaction" href="reactions/#softpotato.reactions.CatalyticReaction"><code>CatalyticReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(B, A, k, Z, P\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">EC' catalytic regeneration step <span class="arithmatex">\(B (+ Z) \xrightarrow{k} A (+ P)\)</span>.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            MassActionReaction" href="reactions/#softpotato.reactions.MassActionReaction"><code>MassActionReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reactants}, \text{products}, k_f, k_b\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">General elementary reversible or irreversible mass-action rate law.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CustomReaction" href="reactions/#softpotato.reactions.CustomReaction"><code>CustomReaction</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\boldsymbol{\nu}, r(\mathbf{c}, x, t)\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reaction}\)</span></td>
+<td style="text-align: left;">Custom user-supplied rate law with analytical or finite-difference Jacobian.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ReactionNetwork" href="reactions/#softpotato.reactions.ReactionNetwork"><code>ReactionNetwork</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{reactions}, \text{species}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{network}\)</span></td>
+<td style="text-align: left;">Multi-reaction composer assembling vectorized rates and sparse block Jacobians.</td>
+<td style="text-align: left;"><a href="#ref-33">33</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ButlerVolmer
+
+
+  
+      dataclass
+  " href="reactions/#softpotato.reactions.ButlerVolmer"><code>ButlerVolmer</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k^0, \alpha, E^{0\prime}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{kinetics}\)</span></td>
+<td style="text-align: left;">Reversible/quasi-reversible Butler–Volmer interfacial electron-transfer kinetics.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-13">13</a>, <a href="#ref-14">14</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            TafelKinetics
+
+
+  
+      dataclass
+  " href="reactions/#softpotato.reactions.TafelKinetics"><code>TafelKinetics</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(k^0, \alpha, E^{0\prime}, n, \text{branch}, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{kinetics}\)</span></td>
+<td style="text-align: left;">Unidirectional high-overpotential Tafel charge-transfer kinetics (alias <code>Tafel</code>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-15">15</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            NernstianEquilibrium
+
+
+  
+      dataclass
+  " href="reactions/#softpotato.reactions.NernstianEquilibrium"><code>NernstianEquilibrium</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E^{0\prime}, n, T\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{equilibrium}\)</span></td>
+<td style="text-align: left;">Reversible Nernstian surface concentration ratio and Dirichlet BC helper.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-12">12</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            create_electrochemical_bcs" href="reactions/#softpotato.reactions.create_electrochemical_bcs"><code>create_electrochemical_bcs</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{kinetics}, E(t), \text{Ox}, \text{Red}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{bcs}\)</span></td>
+<td style="text-align: left;">Constructs matched <code>(left_bc, right_bc)</code> boundary conditions for a redox pair.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            ElectrochemicalStep
+
+
+  
+      dataclass
+  " href="reactions/#softpotato.reactions.ElectrochemicalStep"><code>ElectrochemicalStep</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Ox}, \text{Red}, \text{kinetics}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{step}\)</span></td>
+<td style="text-align: left;">Specification of a single interfacial electron-transfer step in a mechanism.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Mechanism" href="reactions/#softpotato.reactions.Mechanism"><code>Mechanism</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{species}, \text{reactions}, \text{steps}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{mechanism}\)</span></td>
+<td style="text-align: left;">Complete grid- and solver-independent chemical/electrochemical model.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CustomMechanism" href="reactions/#softpotato.reactions.CustomMechanism"><code>CustomMechanism</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{species}, \text{rates}, \text{jac}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{mechanism}\)</span></td>
+<td style="text-align: left;">Declarative custom mechanism supporting custom rate/Jacobian/BC callables.</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
