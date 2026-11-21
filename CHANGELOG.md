@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-11-21
+
+### Milestone 3 Release: Chemical & Electrochemical Reaction Kinetics (`softpotato.reactions`)
+Soft Potato 3.3.0 delivers Milestone 3 of the strategic development roadmap, introducing the modular multi-species chemical and electrochemical kinetics subpackage (`softpotato.reactions`), automated analytical sparse kinetic Jacobians for stiff ODE integration (`Radau`, `BDF`), seamless integration with `DiffusionProblem` and `ScipyIVPSolver`, a comprehensive analytical benchmark suite, complete MkDocs API reference documentation, and interactive Jupyter tutorials for catalytic EC' mechanisms and Butler–Volmer cyclic voltammetry.
+
+### Added
+- **Chemical Species Abstraction (`softpotato.reactions.species`)**:
+  - Added `Species`: immutable dataclass encapsulating species identity, diffusivity ($D_i > 0$), bulk concentration ($c_i^* \ge 0$), formal ionic charge ($z_i$), standard formal potential ($E^{0\prime}$), and electron count ($n$).
+  - Added `SpeciesCollection`: ordered mapping registry managing groups of `Species` objects with dict-like lookup and `DiffusionProblem`-compatible export properties (`names`, `diffusivities`, `bulk_concentrations`, `n_electrons_map`).
+- **Homogeneous Reaction Kinetics & Automated Jacobians (`softpotato.reactions.homogeneous`)**:
+  - Added abstract base class `HomogeneousReaction` and general elementary `MassActionReaction`.
+  - Added built-in reaction primitives: `FirstOrderReaction` ($A \xrightarrow{k} B$), `ReversibleReaction` ($A \rightleftharpoons B$), `SecondOrderReaction` ($A + B \xrightarrow{k} C$), `DimerizationReaction` ($2A \xrightarrow{k} A_2$), `DisproportionationReaction` ($2B \xrightarrow{k} A + C$), `CatalyticReaction` (EC' regeneration), and extensible `CustomReaction` (supporting user rate callables with analytical or automatic central finite-difference derivatives).
+  - Added `ReactionNetwork`: composes multiple homogeneous reactions and assembles vectorized volumetric reaction rates $\mathbf{R}(\mathbf{c}, x, t)$ alongside exact analytical local and global sparse block Jacobians ($\partial R_i / \partial c_k$) for stiff implicit ODE solvers.
+- **Heterogeneous Charge-Transfer Kinetics (`softpotato.reactions.heterogeneous`)**:
+  - Added `HeterogeneousKinetics` abstract base class, `ButlerVolmer`, `TafelKinetics` (alias `Tafel`), `NernstianEquilibrium`, and boundary condition factory `create_electrochemical_bcs` delegating directly to validated analytical equations in `softpotato.analytical.kinetics` under IUPAC polarity conventions.
+- **Mechanism Abstractions (`softpotato.reactions.mechanisms`)**:
+  - Added `ElectrochemicalStep`, `Mechanism`, and `CustomMechanism` to bundle species, homogeneous networks, and interfacial charge-transfer steps independently of spatial grid and solver, with `Mechanism.create_problem(...)` for one-step `DiffusionProblem` construction.
+- **Solver & Problem Integration (`softpotato.solver`)**:
+  - Integrated `Species`, `SpeciesCollection`, `ReactionNetwork`, and `Mechanism` into `DiffusionProblem` (`species=...`, `reactions=...`, `mechanism=...`) while preserving full backwards compatibility with legacy dict-based problem definitions.
+  - Integrated automated sparse diffusion + kinetic Jacobian assembly into `ScipyIVPSolver` for fast, accurate stiff integration (`Radau`, `BDF`).
+- **Validation Suite & Analytical Benchmarks (`tests/test_reactions_benchmark.py`)**:
+  - Added benchmark validation for EC' catalytic limiting currents ($I_{\text{cat}} = -n F A c^* \sqrt{D k'}$ across $k' \in [0.1, 100]\,\text{s}^{-1}$), steady-state concentration profiles, and Delahay–Stiehl chronoamperometry transients.
+  - Added validation for reversible equilibrium relaxation ($A \rightleftharpoons B$), machine-precision closed-box mass conservation across uniform and expanding meshes, and Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes against Randles–Ševčík and Nicholson's $\Psi$ working curve.
+- **Documentation & Interactive Tutorials**:
+  - Added comprehensive MkDocs API reference and theoretical background in `docs/api/reactions.md`, updated `docs/api/index.md` summary tables, and added Reactions and tutorials to `mkdocs.yml` and `docs/tutorials/index.md`.
+  - Added interactive Jupyter tutorial `examples/catalytic_ec.ipynb` (and symlink `docs/examples/catalytic_ec.ipynb`) demonstrating EC' catalytic chronoamperometry, steady-state concentration profiles, and analytical benchmarking.
+  - Added interactive Jupyter tutorial `examples/heterogeneous_kinetics.ipynb` (and symlink `docs/examples/heterogeneous_kinetics.ipynb`) demonstrating Butler–Volmer cyclic voltammetry across kinetic regimes and $\Delta E_p$ vs. scan rate Nicholson analysis.
+
 ## [3.2.2] - 2026-11-11
 
 ### Added

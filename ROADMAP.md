@@ -16,7 +16,7 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | **Current State Stabilization** | `v3.0.0` | Finalize core solver module & `solve_ivp` integration | Released | **Stable Baseline** |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Released | **Minor Feature Addition** |
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
-| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | In Development | **Minor Feature Addition** |
+| **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Released | **Minor Feature Addition** |
 | **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators & simulation pipelines | Planned | **Minor Feature Addition** |
 
 ---
@@ -214,7 +214,7 @@ In electrochemical simulations, diffusion layers are typically confined to a nar
 
 ## Milestone 3 (Reactions): v3.3.0
 
-**Status**: In Development
+**Status**: Released
 
 **Goal**: Introduce a comprehensive chemical and electrochemical kinetics module (`softpotato.reactions`), providing modular multi-species reaction mechanisms.
 
@@ -223,28 +223,35 @@ Electrochemical systems frequently involve coupled chemical transformations (e.g
 
 ### Objectives & Deliverables
 - **Chemical Species Abstraction (`softpotato.reactions.species`)**:
-  - `Species`: Class encapsulating species identity, standard diffusion coefficient ($D_i$), bulk concentration ($c_i^*$), formal charge ($z_i$), and standard redox potential ($E^0$).
+  - `Species`: Immutable dataclass encapsulating species identity, standard diffusion coefficient ($D_i$), bulk concentration ($c_i^*$), formal charge ($z_i$), standard redox potential ($E^{0\prime}$), and electron transfer count ($n$).
+  - `SpeciesCollection`: Ordered mapping container providing dict-like lookup and direct export helpers (`diffusivities`, `bulk_concentrations`, `n_electrons_map`) for `DiffusionProblem`.
 - **Homogeneous Reaction Kinetics (`softpotato.reactions.homogeneous`)**:
-  - Flexible multi-reaction formulation computing reaction rate vectors $\mathbf{R}(\mathbf{c}, x, t)$:
+  - Flexible multi-reaction formulation (`ReactionNetwork`) computing reaction rate vectors $\mathbf{R}(\mathbf{c}, x, t)$:
 
     $$
     \frac{\partial c_i}{\partial t} = D_i \nabla^2 c_i + R_i(\mathbf{c})
     $$
 
-  - Built-in reaction primitives: first-order, second-order, reversible equilibrium ($A \rightleftharpoons B$), and catalytic cycles.
-  - Automated kinetic Jacobian matrix formulation for implicit stiff ODE integration (`Radau`, `BDF`).
+  - Built-in reaction primitives: `FirstOrderReaction`, `ReversibleReaction` ($A \rightleftharpoons B$), `SecondOrderReaction`, `DimerizationReaction`, `DisproportionationReaction`, `CatalyticReaction` (EC'), general `MassActionReaction`, and extensible `CustomReaction`.
+  - Automated analytical sparse kinetic Jacobian assembly for implicit stiff ODE integration (`Radau`, `BDF`).
 - **Heterogeneous Charge-Transfer Kinetics (`softpotato.reactions.heterogeneous`)**:
-  - Butler–Volmer kinetics:
+  - Butler–Volmer kinetics (`ButlerVolmer`):
 
     $$
-    k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^0)\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^0)\right)
+    k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^{0\prime})\right), \quad k_b = k^0 \exp\left(\frac{(1 - \alpha) n F}{R T}(E(t) - E^{0\prime})\right)
     $$
 
-  - Marcus–Hush–Chidsey (MHC) kinetics for non-adiabatic electron transfer.
-  - Reversible Nernstian boundary condition helpers.
-- **Integration**:
-  - Plug-and-play linkage with `DiffusionProblem(..., reactions=...)`.
-  - Backwards-compatible: `DiffusionProblem` remains functional without explicit reaction definitions.
+  - High-overpotential unidirectional Tafel kinetics (`TafelKinetics` / `Tafel`).
+  - Reversible Nernstian equilibrium (`NernstianEquilibrium`) and boundary condition factory (`create_electrochemical_bcs`).
+- **Mechanism Abstractions & Solver Integration (`softpotato.reactions.mechanisms`, `softpotato.solver`)**:
+  - `ElectrochemicalStep`, `Mechanism`, and `CustomMechanism` packaging species, homogeneous steps, and interfacial kinetics independently of grid and solver.
+  - Plug-and-play linkage with `DiffusionProblem(..., species=..., reactions=..., mechanism=...)` and sparse kinetic Jacobian integration in `ScipyIVPSolver`.
+  - Backwards-compatible: `DiffusionProblem` remains fully functional without explicit reaction definitions.
+- **Validation & Documentation**:
+  - Analytical benchmark suite (`tests/test_reactions_benchmark.py`) verifying EC' catalytic limiting currents, Delahay–Stiehl transients, equilibrium relaxation, mass conservation, and Butler–Volmer CV diagnostics against Randles–Ševčík and Nicholson theory.
+  - Complete MkDocs API reference (`docs/api/reactions.md`) and interactive tutorials (`examples/catalytic_ec.ipynb`, `examples/heterogeneous_kinetics.ipynb`).
+- **Release Status**:
+  - Successfully implemented, benchmarked, tested, and released as `v3.3.0`.
 
 ---
 
