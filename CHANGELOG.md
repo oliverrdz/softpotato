@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-11-21
+
+### Milestone 4 Release: Electrochemical Techniques, Simulation Pipelines, Plotting & Diagnostics (`softpotato.techniques`)
+Soft Potato 3.4.0 delivers Milestone 4 of the strategic development roadmap, introducing high-level electrochemical technique and waveform generators (`softpotato.techniques`), the turnkey event-aware simulation pipeline (`simulate`, `simulate_sweep`, `TechniqueResult`), a declarative Matplotlib plotting suite (`plot_result`, `plot_summary`, `plot_sweep`, `plot_scv`, `plot_dpv`, `plot_swv`, and diagnostic plotters), automated diagnostic analyzers, analytical benchmark validation, MkDocs API reference documentation, and interactive Jupyter tutorials.
+
+### Added
+- **Waveforms & Experimental Techniques (`softpotato.techniques`)**:
+  - Added `BaseTechnique`, `ControlMode`, `Chronoamperometry`, `LinearSweepVoltammetry`, `CyclicVoltammetry`, `SampledCurrentVoltammetry`, `DifferentialPulseVoltammetry`, `SquareWaveVoltammetry`, `Chronopotentiometry`, and `CustomWaveform` (`ConstantSegment`, `LinearRampSegment`, `SinusoidalSegment`, `CallableSegment`).
+  - Added `RotatingDiskElectrode`, `RDEConvectionTerm`, `RDESweep`, `RDESweepResult`, and `simulate_rde_sweep` supporting both `'nernst_layer'` and `'levich_convection'` hydrodynamic models.
+- **Simulation Pipeline & Result Container (`softpotato.techniques.pipeline`, `softpotato.techniques.result`)**:
+  - Added `simulate` and `simulate_sweep` with physics-informed automatic meshing, potentiostatic/galvanostatic BC assembly, and piecewise event-aware integration across `event_times`.
+  - Added `TechniqueResult` with dict-like species access (`result["Ox"]`), CV `cycles`, SWV (`E_step`, `i_forward`, `i_reverse`, `i_net`), DPV (`E_base`, `i_pre`, `i_pulse`, `i_diff`), SCV `sample_currents()`, CP `transition_time`, and plotting facade (`plot()`, `plot_summary()`).
+- **Declarative Plotting Interfaces (`softpotato.techniques.plotting`)**:
+  - Added `PlotSpec`, `PLOT_ALIASES`, `resolve_plot_kind`, `plot_result`, `plot_summary`, and `plot_sweep`.
+  - Added dedicated renderers (`plot_voltammogram`, `plot_current_vs_time`, `plot_potential_vs_time`, `plot_concentration_profile`, `plot_charge_vs_time`, `plot_scv`, `plot_dpv`, `plot_swv`) and diagnostic plotters (`plot_peaks`, `plot_randles_sevcik`, `plot_cottrell`, `plot_levich`, `plot_koutecky_levich`, `plot_tafel`).
+- **Diagnostics & Validation (`softpotato.techniques.diagnostics`, `tests/test_techniques_*.py`)**:
+  - Added `find_peaks`, `analyze_randles_sevcik`, `analyze_nicholson`, `analyze_levich`, `analyze_koutecky_levich`, `analyze_tafel`, `analyze_cottrell`, and `analyze_sand`.
+- **Documentation & Interactive Tutorials**:
+  - Added `docs/api/techniques.md`, updated `docs/api/index.md`, `mkdocs.yml`, `docs/tutorials/index.md`, `README.md`, and `ROADMAP.md`.
+  - Added interactive Jupyter tutorials `examples/techniques_voltammetry.ipynb`, `examples/techniques_pulse_cp.ipynb`, and `examples/techniques_rde.ipynb` (with symlinks in `docs/examples/`).
+
 ## [3.3.0] - 2026-11-21
 
 ### Milestone 3 Release: Chemical & Electrochemical Reaction Kinetics (`softpotato.reactions`)

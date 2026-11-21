@@ -40,5 +40,11 @@ Hands-on simulation workflows and benchmarks for classical electrochemical techn
 
 - [**Heterogeneous Kinetics (CV)**](../examples/heterogeneous_kinetics.ipynb) — Simulating Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes, and analyzing peak separation $\Delta E_p$ vs. scan rate against Randles–Ševčík and Nicholson theory.
 
+- [**Techniques: Voltammetry & Diagnostics**](../examples/techniques_voltammetry.ipynb) — Turnkey LSV and multi-scan-rate CV simulation using `simulate` and `simulate_sweep`, declarative plotting (`plot_result`, `plot_summary`, `plot_sweep`), Randles–Ševčík regression, and Nicholson $k^0$ extraction.
+
+- [**Techniques: SCV, Pulse & Chronopotentiometry**](../examples/techniques_pulse_cp.ipynb) — Simulating Sampled-Current Voltammetry (`SampledCurrentVoltammetry`, `plot_scv`), Differential Pulse Voltammetry (`plot_dpv`), Square Wave Voltammetry (`plot_swv`), and Chronopotentiometry with Sand transition-time diagnostics.
+
+- [**Techniques: Rotating Disk Electrode (RDE)**](../examples/techniques_rde.ipynb) — Multi-rotation-rate RDE simulation with `RDESweep` / `simulate_rde_sweep`, hydrodynamic overlays (`plot_sweep`), and Levich & Koutecký–Levich analysis.
+
 ---
 
