@@ -4,13 +4,21 @@ from __future__ import annotations
 
 import math
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
-from typing import TYPE_CHECKING, Literal, overload
+from collections.abc import Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any, Literal, overload
 
 import numpy as np
 
 if TYPE_CHECKING:
     from numpy.typing import ArrayLike
+
+    from softpotato.geometry import Geometry
+    from softpotato.grid.base import Mesh1D
+    from softpotato.reactions.mechanisms import Mechanism
+    from softpotato.reactions.species import Species, SpeciesCollection
+    from softpotato.solver.base import BaseSolver
+
+    from .result import TechniqueResult
 
 ControlMode = Literal["potentiostatic", "galvanostatic"]
 
@@ -355,3 +363,31 @@ class BaseTechnique(ABC):
             base = np.linspace(0.0, self.duration, n, dtype=float)
 
         return _merge_time_grid(base, self.duration, self._extra_grid_times())
+
+    def simulate(
+        self,
+        mechanism: Mechanism | SpeciesCollection | Sequence[Species] | Species,
+        geometry: Geometry | str = "planar",
+        grid: np.ndarray | Mesh1D | None = None,
+        solver: BaseSolver | str = "scipy_ivp",
+        t_eval: np.ndarray | Sequence[float] | None = None,
+        solver_kwargs: Mapping[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> TechniqueResult:
+        """Simulate this technique with ``mechanism`` via :func:`~softpotato.techniques.simulate`.
+
+        Convenience shorthand equivalent to
+        ``simulate(self, mechanism, geometry=geometry, grid=grid, solver=solver, t_eval=t_eval, solver_kwargs=solver_kwargs, **kwargs)``.
+        """
+        from .pipeline import simulate as _simulate
+
+        return _simulate(
+            self,
+            mechanism,
+            geometry=geometry,
+            grid=grid,
+            solver=solver,
+            t_eval=t_eval,
+            solver_kwargs=solver_kwargs,
+            **kwargs,
+        )
