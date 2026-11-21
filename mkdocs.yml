@@ -151,22 +151,21 @@ nav:
       - Techniques Module: api/techniques.md
   - Tutorials:
       - tutorials/index.md
-      - Python:
-          - Soft Potato on your browser: tutorials/python/google-colab-start.md
-          - Installing Python on your computer: tutorials/python/installing-python.md
+      - Electrochemistry:
+          - CV — Nernst (Planar): examples/CV-Nernst.ipynb
+          - CV — Nernst (Spherical Microelectrode): examples/CV-Nernst-Spherical.ipynb
+          - CV — Randles–Ševčík: examples/CV-Randles-Sevcik.ipynb
+          - CV — Butler–Volmer Kinetics: examples/CV-ButlerVolmer.ipynb
+          - CV — EC Mechanism: examples/CV-ECmech.ipynb
+          - CV — EE Mechanism: examples/CV-EEmech.ipynb
       - Soft Potato Modules:
           - Analytical Module: tutorials/modules/analytical.ipynb
           - Parameter Fitting: tutorials/modules/fitting.ipynb
           - Numerical Solver: tutorials/modules/solver.ipynb
           - Geometry Module: tutorials/modules/geometries.ipynb
           - Grid Module: tutorials/modules/grids.ipynb
-      - Electrochemistry:
-          - Chronoamperometry: tutorials/electrochemistry/ca.ipynb
-          - Cyclic Voltammetry: tutorials/electrochemistry/cv.ipynb
-          - Catalytic EC' Mechanism: examples/catalytic_ec.ipynb
-          - Heterogeneous Kinetics (CV): examples/heterogeneous_kinetics.ipynb
-          - Techniques — Voltammetry & Diagnostics: examples/techniques_voltammetry.ipynb
-          - Techniques — SCV, Pulse & Chronopotentiometry: examples/techniques_pulse_cp.ipynb
-          - Techniques — RDE Hydrodynamics: examples/techniques_rde.ipynb
+      - Python:
+          - Soft Potato on your browser: tutorials/python/google-colab-start.md
+          - Installing Python on your computer: tutorials/python/installing-python.md
   - Blog:
       - blog/index.md

@@ -24,9 +24,29 @@ Soft Potato 3.4.0 delivers Milestone 4 of the strategic development roadmap, int
   - Added dedicated renderers (`plot_voltammogram`, `plot_current_vs_time`, `plot_potential_vs_time`, `plot_concentration_profile`, `plot_charge_vs_time`, `plot_scv`, `plot_dpv`, `plot_swv`) and diagnostic plotters (`plot_peaks`, `plot_randles_sevcik`, `plot_cottrell`, `plot_levich`, `plot_koutecky_levich`, `plot_tafel`).
 - **Diagnostics & Validation (`softpotato.techniques.diagnostics`, `tests/test_techniques_*.py`)**:
   - Added `find_peaks`, `analyze_randles_sevcik`, `analyze_nicholson`, `analyze_levich`, `analyze_koutecky_levich`, `analyze_tafel`, `analyze_cottrell`, and `analyze_sand`.
+- **Interfacial Kinetics Coupling (`softpotato.reactions.mechanisms`)**:
+  - Added `_MechanismWithInterfacialKinetics` to inject state-dependent interfacial flux and its analytical local Jacobian contributions at electrode boundary nodes alongside homogeneous reaction networks.
+  - Updated `Mechanism.create_problem()` to wire heterogeneous `ElectrochemicalStep` kinetics with zero-flux `NeumannBC` boundary conditions when no explicit boundary condition overrides are provided.
 - **Documentation & Interactive Tutorials**:
   - Added `docs/api/techniques.md`, updated `docs/api/index.md`, `mkdocs.yml`, `docs/tutorials/index.md`, `README.md`, and `ROADMAP.md`.
   - Added interactive Jupyter tutorials `examples/techniques_voltammetry.ipynb`, `examples/techniques_pulse_cp.ipynb`, and `examples/techniques_rde.ipynb` (with symlinks in `docs/examples/`).
+- **Cyclic Voltammetry Example Notebooks (`examples/`, `docs/examples/`)**:
+  - Added `examples/CV-Nernst.ipynb`: Reversible cyclic voltammetry at a planar electrode using Nernstian boundary conditions.
+  - Added `examples/CV-Nernst-Spherical.ipynb`: Reversible cyclic voltammetry at a spherical microelectrode (`SphericalGeometry`) across scan rates.
+  - Added `examples/CV-Randles-Sevcik.ipynb`: Multi-scan-rate reversible CV with `fit_randles_sevcik` regression to extract the diffusion coefficient.
+  - Added `examples/CV-ButlerVolmer.ipynb`: Multi-scan-rate irreversible CV with `ButlerVolmer` kinetics and `fit_randles_sevcik` (`model="irreversible"`).
+  - Added `examples/CV-ECmech.ipynb`: Coupled electrochemical–chemical (`EC`) mechanism combining a `ButlerVolmer` `ElectrochemicalStep` and a `FirstOrderReaction` using `Mechanism`.
+  - Added `examples/CV-EEmech.ipynb`: Sequential two-step electrochemical (`EE`) mechanism with two `ButlerVolmer` `ElectrochemicalStep` reactions using `Mechanism`.
+  - Added corresponding symlinks in `docs/examples/`.
+- **Tests & Scripts**:
+  - Added `test_cv_simulate_with_butler_volmer_kinetics` in `tests/test_techniques_pipeline.py` verifying bounded surface concentrations, Randles–Ševčík peak current agreement, and wider peak-to-peak separation for sluggish $k^0$.
+  - Added `scripts/cv.py` for cyclic voltammetry simulation prototyping.
+
+### Changed
+- **Documentation Navigation & Tutorials Hub (`mkdocs.yml`, `docs/tutorials/index.md`)**:
+  - Reorganized the **Tutorials** section in `mkdocs.yml` and `docs/tutorials/index.md` to highlight the six new **Electrochemistry** CV example notebooks, followed by **Soft Potato Modules** and **Python**, replacing the prior `electrochemistry/ca.ipynb`, `electrochemistry/cv.ipynb`, `catalytic_ec.ipynb`, `heterogeneous_kinetics.ipynb`, and `techniques_*.ipynb` navigation entries.
+- **Repository Configuration (`.gitignore`)**:
+  - Added `.venv-1/` to `.gitignore`.
 
 ## [3.3.0] - 2026-11-21
 
