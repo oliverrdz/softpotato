@@ -168,7 +168,7 @@ class SampledCurrentVoltammetry(BaseTechnique):
     ... )
     >>> len(scv_win)
     5
-    >>> scv_win.potentials
+    >>> tuple(round(e, 4) for e in scv_win.potentials)
     (0.2, 0.1, 0.0, -0.1, -0.2)
     """
 

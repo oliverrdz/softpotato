@@ -17,6 +17,7 @@ from .rde import (
     RotatingDiskElectrode,
     simulate_rde_sweep,
 )
+from .result import TechniqueResult
 from .voltammetry import CyclicVoltammetry, LinearSweepVoltammetry
 from .waveforms import (
     CallableSegment,
