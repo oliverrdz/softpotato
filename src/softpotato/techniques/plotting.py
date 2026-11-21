@@ -243,9 +243,7 @@ def plot_voltammogram(
             cyc = result.cycles[cycle]
             ax.plot(cyc.potential, cyc.current, **plot_kwargs)
         else:
-            raise ValueError(
-                f"cycle must be an int, 'all', or None, got {cycle!r}."
-            )
+            raise ValueError(f"cycle must be an int, 'all', or None, got {cycle!r}.")
     else:
         ax.plot(result.potential, result.current, **plot_kwargs)
 
@@ -286,7 +284,9 @@ def plot_current_vs_time(
         if step is not None:
             kw = dict(plot_kwargs)
             if isinstance(result.technique, SampledCurrentVoltammetry):
-                kw.setdefault("label", f"$E$ = {result.technique.potentials[step]:.3g} V")
+                kw.setdefault(
+                    "label", f"$E$ = {result.technique.potentials[step]:.3g} V"
+                )
             ax.plot(result.time, result.current[step], **kw)
             if "label" in kw:
                 ax.legend()
@@ -663,7 +663,9 @@ def plot_scv(
     fig, ax = _resolve_axes(ax, figsize=figsize)
 
     sample_times_arg: float | list[float] | tuple[float, ...] | np.ndarray | None
-    if sample_times is None or isinstance(sample_times, (float, int, list, tuple, np.ndarray)):
+    if sample_times is None or isinstance(
+        sample_times, (float, int, list, tuple, np.ndarray)
+    ):
         sample_times_arg = (
             float(sample_times) if isinstance(sample_times, int) else sample_times
         )
@@ -756,9 +758,7 @@ def plot_result(
             f"result must be a TechniqueResult instance, got {type(result).__name__}."
         )
 
-    canonical = (
-        result.default_plot if kind is None else resolve_plot_kind(kind)
-    )
+    canonical = result.default_plot if kind is None else resolve_plot_kind(kind)
     _get_spec(result, canonical)
     renderer = _PLOT_RENDERERS[canonical]
     return renderer(result, ax=ax, **kwargs)
@@ -841,9 +841,7 @@ def plot_summary(
 
 
 def plot_sweep(
-    results: Sequence[TechniqueResult]
-    | Mapping[Any, TechniqueResult]
-    | RDESweepResult,
+    results: Sequence[TechniqueResult] | Mapping[Any, TechniqueResult] | RDESweepResult,
     kind: str | None = None,
     *,
     ax: Axes | None = None,
@@ -1000,7 +998,10 @@ def plot_peaks(
     resolved_title = title
     if resolved_title is None:
         base_title = "Voltammetric Peak Diagnostics"
-        if isinstance(resolved_peaks, CVDiagnostics) and resolved_peaks.delta_Ep is not None:
+        if (
+            isinstance(resolved_peaks, CVDiagnostics)
+            and resolved_peaks.delta_Ep is not None
+        ):
             resolved_title = (
                 rf"{base_title} ($\Delta E_p$ = {resolved_peaks.delta_Ep * 1e3:.1f} mV)"
             )
@@ -1018,9 +1019,7 @@ def plot_peaks(
 
 
 def plot_randles_sevcik(
-    results_or_v: Sequence[TechniqueResult]
-    | Mapping[Any, TechniqueResult]
-    | ArrayLike,
+    results_or_v: Sequence[TechniqueResult] | Mapping[Any, TechniqueResult] | ArrayLike,
     fit_result: RandlesSevcikFitResult,
     *,
     peak_currents: ArrayLike | None = None,
@@ -1270,7 +1269,8 @@ def plot_koutecky_levich(
         and isinstance(results_or_omega[0], TechniqueResult)
     ):
         omega_arr, _, _ = _extract_rde_series(
-            results_or_omega, potential=potential  # type: ignore[arg-type]
+            results_or_omega,
+            potential=potential,  # type: ignore[arg-type]
         )
     else:
         omega_arr = np.asarray(results_or_omega, dtype=float)
