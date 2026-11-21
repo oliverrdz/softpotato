@@ -56,9 +56,23 @@ from softpotato.techniques import (
 )
 
 
-def _reversible_mechanism(e0: float = 0.0, d: float = 1e-9, c_ox: float = 1.0) -> Mechanism:
-    ox = Species("Ox", diffusivity=d, bulk_concentration=c_ox, n_electrons=1, standard_potential=e0)
-    red = Species("Red", diffusivity=d, bulk_concentration=0.0, n_electrons=-1, standard_potential=e0)
+def _reversible_mechanism(
+    e0: float = 0.0, d: float = 1e-9, c_ox: float = 1.0
+) -> Mechanism:
+    ox = Species(
+        "Ox",
+        diffusivity=d,
+        bulk_concentration=c_ox,
+        n_electrons=1,
+        standard_potential=e0,
+    )
+    red = Species(
+        "Red",
+        diffusivity=d,
+        bulk_concentration=0.0,
+        n_electrons=-1,
+        standard_potential=e0,
+    )
     return Mechanism(
         species=[ox, red],
         electrochemical_steps=[
@@ -68,8 +82,20 @@ def _reversible_mechanism(e0: float = 0.0, d: float = 1e-9, c_ox: float = 1.0) -
 
 
 def _bv_mechanism(e0: float = 0.0, k0: float = 1e-4) -> Mechanism:
-    ox = Species("Ox", diffusivity=1e-9, bulk_concentration=1.0, n_electrons=1, standard_potential=e0)
-    red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, n_electrons=-1, standard_potential=e0)
+    ox = Species(
+        "Ox",
+        diffusivity=1e-9,
+        bulk_concentration=1.0,
+        n_electrons=1,
+        standard_potential=e0,
+    )
+    red = Species(
+        "Red",
+        diffusivity=1e-9,
+        bulk_concentration=0.0,
+        n_electrons=-1,
+        standard_potential=e0,
+    )
     return Mechanism(
         species=[ox, red],
         electrochemical_steps=[
@@ -91,7 +117,9 @@ def _close_figures():
 
 class TestDeclarativePlotSpecs:
     def test_cv_available_and_default_plots(self) -> None:
-        cv = CyclicVoltammetry(E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=0.5)
+        cv = CyclicVoltammetry(
+            E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=0.5
+        )
         assert cv.default_plot == "voltammogram"
         assert cv.available_plots == ("voltammogram", "i_vs_t", "E_vs_t", "c_vs_x")
         spec = cv.plot_specs["voltammogram"]
@@ -118,7 +146,12 @@ class TestDeclarativePlotSpecs:
 
     def test_pulse_techniques_available_plots(self) -> None:
         dpv = DifferentialPulseVoltammetry(
-            E_start=0.3, E_end=-0.3, step_height=0.05, pulse_amplitude=-0.05, pulse_width=0.05, pulse_period=0.2
+            E_start=0.3,
+            E_end=-0.3,
+            step_height=0.05,
+            pulse_amplitude=-0.05,
+            pulse_width=0.05,
+            pulse_period=0.2,
         )
         swv = SquareWaveVoltammetry(
             E_start=0.3, E_end=-0.3, step_height=0.05, amplitude=0.025, frequency=5.0
@@ -267,7 +300,9 @@ class TestTechniquePlotting:
     def test_spherical_geometry_radial_distance_label(self) -> None:
         ca = Chronoamperometry(E_step=-0.5, duration=0.5)
         geom = SphericalGeometry(r0=1e-4)
-        res = simulate(ca, _reversible_mechanism(), geometry=geom, mesh_kwargs={"n_points": 30})
+        res = simulate(
+            ca, _reversible_mechanism(), geometry=geom, mesh_kwargs={"n_points": 30}
+        )
         _, ax = res.plot("c_vs_x", t=0.25)
         assert "Radial distance" in ax.get_xlabel()
 
@@ -307,7 +342,9 @@ class TestSummaryAndSweepPlots:
     def test_plot_summary_layout_for_cv_and_ca(self) -> None:
         mech = _reversible_mechanism()
 
-        cv = CyclicVoltammetry(E_start=0.3, E_vertex1=-0.3, E_vertex2=0.3, scan_rate=1.0)
+        cv = CyclicVoltammetry(
+            E_start=0.3, E_vertex1=-0.3, E_vertex2=0.3, scan_rate=1.0
+        )
         res_cv = simulate(cv, mech, mesh_kwargs={"n_points": 30})
         fig_cv, axes_cv = res_cv.plot_summary(t=0.3)
         assert axes_cv.shape == (2, 2)
@@ -345,7 +382,9 @@ class TestSummaryAndSweepPlots:
 
 class TestDiagnosticPlottingHelpers:
     def test_plot_peaks_helper(self) -> None:
-        cv = CyclicVoltammetry(E_start=0.3, E_vertex1=-0.3, E_vertex2=0.3, scan_rate=1.0)
+        cv = CyclicVoltammetry(
+            E_start=0.3, E_vertex1=-0.3, E_vertex2=0.3, scan_rate=1.0
+        )
         res = simulate(cv, _reversible_mechanism(), mesh_kwargs={"n_points": 35})
         diag = find_peaks(res)
         _, ax = plot_peaks(res, diag)
