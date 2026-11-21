@@ -37,6 +37,10 @@
          <lastmod>2026-11-21</lastmod>
     </url>
     <url>
+         <loc>https://softpotato.xyz/dev/api/techniques/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
          <loc>https://softpotato.xyz/dev/api/analytical/</loc>
          <lastmod>2026-11-21</lastmod>
     </url>
@@ -106,6 +110,18 @@
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/examples/heterogeneous_kinetics/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
+         <loc>https://softpotato.xyz/dev/examples/techniques_pulse_cp/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
+         <loc>https://softpotato.xyz/dev/examples/techniques_rde/</loc>
+         <lastmod>2026-11-21</lastmod>
+    </url>
+    <url>
+         <loc>https://softpotato.xyz/dev/examples/techniques_voltammetry/</loc>
          <lastmod>2026-11-21</lastmod>
     </url>
     <url>

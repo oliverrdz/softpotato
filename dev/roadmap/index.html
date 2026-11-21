@@ -427,6 +427,8 @@
       
         
       
+        
+      
     
     
     
@@ -936,6 +938,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/techniques/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1367,6 +1397,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1511,6 +1547,90 @@
     
   
     Heterogeneous Kinetics (CV)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_voltammetry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — Voltammetry & Diagnostics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_pulse_cp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — SCV, Pulse & Chronopotentiometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_rde/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — RDE Hydrodynamics
   
 
     
@@ -2171,8 +2291,8 @@
 <tr>
 <td style="text-align: left;"><strong>Milestone 4: Techniques</strong></td>
 <td style="text-align: left;"><code>v3.4.0</code></td>
-<td style="text-align: left;">Electrochemical waveform generators &amp; simulation pipelines</td>
-<td style="text-align: left;">In Development</td>
+<td style="text-align: left;">Electrochemical waveform generators, simulation pipelines, plotting &amp; diagnostics</td>
+<td style="text-align: left;">Complete</td>
 <td style="text-align: left;"><strong>Minor Feature Addition</strong></td>
 </tr>
 </tbody>
@@ -2422,24 +2542,27 @@ k_f = k^0 \exp\left(-\frac{\alpha n F}{R T}(E(t) - E^{0\prime})\right), \quad k_
 </ul>
 <hr />
 <h2 id="milestone-4-techniques-v340">Milestone 4 (Techniques): v3.4.0<a class="headerlink" href="#milestone-4-techniques-v340" title="Permanent link">&para;</a></h2>
-<p><strong>Status</strong>: In Development</p>
-<p><strong>Goal</strong>: Introduce high-level electrochemical experimental techniques and waveform generators (<code>softpotato.techniques</code>), enabling turnkey simulation and diagnostic workflows.</p>
+<p><strong>Status</strong>: Complete</p>
+<p><strong>Goal</strong>: Introduce high-level electrochemical experimental techniques and waveform generators (<code>softpotato.techniques</code>), enabling turnkey simulation, declarative plotting, and diagnostic workflows.</p>
 <h3 id="rationale_3">Rationale<a class="headerlink" href="#rationale_3" title="Permanent link">&para;</a></h3>
-<p>With solvers, analytical benchmark models, grids, and reaction kinetics in place, users need standard experimental protocols (voltammetry, chronoamperometry) and automated signal pipelines without manually coding potential excitation waveforms and boundary conditions.</p>
+<p>With solvers, analytical benchmark models, grids, and reaction kinetics in place, users need standard experimental protocols (voltammetry, chronoamperometry, pulse techniques, chronopotentiometry, RDE) and automated signal, plotting, and diagnostic pipelines without manually coding potential excitation waveforms and boundary conditions.</p>
 <h3 id="objectives-deliverables_4">Objectives &amp; Deliverables<a class="headerlink" href="#objectives-deliverables_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Waveform &amp; Signal Generators (<code>softpotato.techniques</code>)</strong>:</li>
-<li><code>Chronoamperometry</code>: Single- and double-potential step sequences with configurable pulse durations and resting times.</li>
+<li><code>Chronoamperometry</code>: Single-, double-, and multi-potential step sequences with configurable pulse durations and resting times.</li>
 <li><code>LinearSweepVoltammetry</code> (LSV): Unidirectional potential sweeps with configurable start/end potentials and scan rates (<span class="arithmatex">\(v\)</span>).</li>
 <li><code>CyclicVoltammetry</code> (CV): Multi-cycle triangular potential waveforms with customizable vertices and switching potentials.</li>
-<li><code>RotatingDiskElectrode</code> (RDE): Hydrodynamic convective-diffusion modeling under the Levich and Nernst stagnant diffusion layer approximations.</li>
-<li><code>PulseTechniques</code>: Differential Pulse Voltammetry (DPV), Square Wave Voltammetry (SWV), and Chronopotentiometry (CP).</li>
-<li><code>CustomWaveform</code>: Composite excitation generator allowing arbitrary chaining of potential/current segments.</li>
+<li><code>RotatingDiskElectrode</code> (RDE), <code>RDESweep</code>, <code>simulate_rde_sweep</code>: Hydrodynamic convective-diffusion modeling under the Levich (<code>levich_convection</code>) and Nernst stagnant diffusion layer (<code>nernst_layer</code>) approximations.</li>
+<li><code>PulseTechniques</code> &amp; <code>Chronopotentiometry</code>: <code>SampledCurrentVoltammetry</code> (SCV), <code>DifferentialPulseVoltammetry</code> (DPV), <code>SquareWaveVoltammetry</code> (SWV), and galvanostatic <code>Chronopotentiometry</code> (CP).</li>
+<li><code>CustomWaveform</code>: Composite excitation generator allowing arbitrary chaining of <code>ConstantSegment</code>, <code>LinearRampSegment</code>, <code>SinusoidalSegment</code>, and <code>CallableSegment</code> segments.</li>
 <li><strong>Simulation Pipeline Orchestrator</strong>:</li>
-<li>High-level execution API (e.g., <code>simulate(technique=..., mechanism=..., solver=...)</code>) that coordinates grid creation, boundary condition assignment, numerical integration, and result extraction in a single call.</li>
+<li>High-level execution API (<code>simulate</code>, <code>simulate_sweep</code>) returning <code>TechniqueResult</code> and coordinating physics-informed grid creation, boundary condition assignment, event-aware piecewise integration, and Faradaic current/charge extraction.</li>
+<li><strong>Declarative Plotting Interfaces (<code>softpotato.techniques.plotting</code>)</strong>:</li>
+<li>Technique-aware <code>PlotSpec</code>, <code>PLOT_ALIASES</code>, <code>resolve_plot_kind</code>, <code>plot_result</code> (<code>result.plot()</code>), <code>plot_summary</code> (<code>result.plot_summary()</code>), and <code>plot_sweep</code>.</li>
+<li>Dedicated renderers (<code>plot_voltammogram</code>, <code>plot_current_vs_time</code>, <code>plot_potential_vs_time</code>, <code>plot_concentration_profile</code>, <code>plot_charge_vs_time</code>, <code>plot_scv</code>, <code>plot_dpv</code>, <code>plot_swv</code>) and diagnostic plots (<code>plot_peaks</code>, <code>plot_randles_sevcik</code>, <code>plot_cottrell</code>, <code>plot_levich</code>, <code>plot_koutecky_levich</code>, <code>plot_tafel</code>).</li>
 <li><strong>Post-Processing &amp; Electrochemical Diagnostics</strong>:</li>
-<li>Automated peak detection (<span class="arithmatex">\(E_p\)</span>, <span class="arithmatex">\(I_p\)</span>, <span class="arithmatex">\(\Delta E_p\)</span>).</li>
-<li>Diagnostics: Randles–Ševčík peak current regression, Nicholson kinetic parameter extraction, Levich and Koutecký–Levich slopes, and Tafel analysis leveraging the <code>softpotato.analytical</code> module.</li>
+<li>Automated peak detection (<code>find_peaks</code> returning <code>CVDiagnostics</code> / <code>PeakInfo</code>).</li>
+<li>Diagnostics: <code>analyze_randles_sevcik</code>, <code>analyze_nicholson</code>, <code>analyze_levich</code>, <code>analyze_koutecky_levich</code>, <code>analyze_tafel</code>, <code>analyze_cottrell</code>, and <code>analyze_sand</code> leveraging <code>softpotato.analytical</code>.</li>
 <li><strong>Backwards Compatibility</strong>:</li>
 <li>Modular addition that imports and utilizes <code>softpotato.solver</code>, <code>softpotato.analytical</code>, <code>softpotato.grid</code>, and <code>softpotato.reactions</code> without breaking lower-level solver APIs.</li>
 </ul>

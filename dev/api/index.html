@@ -435,6 +435,8 @@
       
         
       
+        
+      
     
     
     
@@ -950,6 +952,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="techniques/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1381,6 +1411,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1525,6 +1561,90 @@
     
   
     Heterogeneous Kinetics (CV)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_voltammetry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — Voltammetry & Diagnostics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_pulse_cp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — SCV, Pulse & Chronopotentiometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/techniques_rde/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Techniques — RDE Hydrodynamics
   
 
     
@@ -2063,6 +2183,17 @@
     <span class="md-ellipsis">
       
         Solver Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#techniques-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Techniques Module
       
     </span>
   </a>
@@ -3248,6 +3379,181 @@ solvers and boundary condition primitives for 1D multi-species diffusion and rea
 <td style="text-align: left;"><span class="arithmatex">\(c_i(x, t)\)</span></td>
 <td style="text-align: left;">Integrates problem across time span to compute concentration fields.</td>
 <td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="techniques-module">Techniques Module<a class="headerlink" href="#techniques-module" title="Permanent link">&para;</a></h2>
+<p>The <a class="autorefs autorefs-internal" title="            techniques" href="techniques/#softpotato.techniques"><code>softpotato.techniques</code></a> subpackage provides high-level electrochemical experimental protocols, waveform generators, the turnkey simulation pipeline (<a class="autorefs autorefs-internal" title="            simulate" href="techniques/#softpotato.techniques.simulate"><code>simulate</code></a>, <a class="autorefs autorefs-internal" title="            simulate_sweep" href="techniques/#softpotato.techniques.simulate_sweep"><code>simulate_sweep</code></a>), the <a class="autorefs autorefs-internal" title="            TechniqueResult
+
+
+  
+      dataclass
+  " href="techniques/#softpotato.techniques.TechniqueResult"><code>TechniqueResult</code></a> container, a declarative Matplotlib plotting suite, and automated diagnostic analyzers.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class / Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">References</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            BaseTechnique" href="techniques/#softpotato.techniques.BaseTechnique"><code>BaseTechnique</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\varnothing\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Abstract base class for potentiostatic and galvanostatic excitation protocols.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Chronoamperometry" href="techniques/#softpotato.techniques.Chronoamperometry"><code>Chronoamperometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{step}}, \Delta t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Single-, double-, and multi-step potential chronoamperometry.</td>
+<td style="text-align: left;"><a href="#ref-2">2</a>, <a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            LinearSweepVoltammetry" href="techniques/#softpotato.techniques.LinearSweepVoltammetry"><code>LinearSweepVoltammetry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{start}}, E_{\text{end}}, v\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Unidirectional linear potential sweep voltammetry.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CyclicVoltammetry" href="techniques/#softpotato.techniques.CyclicVoltammetry"><code>CyclicVoltammetry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{start}}, E_{v1}, E_{v2}, v\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Single- or multi-cycle triangular potential cyclic voltammetry.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a>, <a href="#ref-16">16</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            SampledCurrentVoltammetry" href="techniques/#softpotato.techniques.SampledCurrentVoltammetry"><code>SampledCurrentVoltammetry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{potentials}, t_{\max}, \tau\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Family of constant-potential steps sampled at fixed <span class="arithmatex">\(\tau\)</span> (<code>sample_currents</code>).</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            DifferentialPulseVoltammetry" href="techniques/#softpotato.techniques.DifferentialPulseVoltammetry"><code>DifferentialPulseVoltammetry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{start}}, E_{\text{end}}, \Delta E_s, \Delta E_p\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Staircase + pulse voltammetry with pre-/end-of-pulse differential sampling.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            SquareWaveVoltammetry" href="techniques/#softpotato.techniques.SquareWaveVoltammetry"><code>SquareWaveVoltammetry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(E_{\text{start}}, E_{\text{end}}, \Delta E_s, E_{\text{sw}}, f\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Staircase + square-wave voltammetry with forward/reverse/net sampling.</td>
+<td style="text-align: left;"><a href="#ref-3">3</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            Chronopotentiometry" href="techniques/#softpotato.techniques.Chronopotentiometry"><code>Chronopotentiometry</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(I, \Delta t\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Galvanostatic constant-current step protocol with potential recovery &amp; <span class="arithmatex">\(\tau\)</span> detection.</td>
+<td style="text-align: left;"><a href="#ref-7">7</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            RotatingDiskElectrode" href="techniques/#softpotato.techniques.RotatingDiskElectrode"><code>RotatingDiskElectrode</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{waveform}, \omega/\text{rpm}, \nu\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}\)</span></td>
+<td style="text-align: left;">Hydrodynamic RDE wrapper (<code>'nernst_layer'</code> or <code>'levich_convection'</code>).</td>
+<td style="text-align: left;"><a href="#ref-9">9</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            RDESweep" href="techniques/#softpotato.techniques.RDESweep"><code>RDESweep</code></a> / <a class="autorefs autorefs-internal" title="            simulate_rde_sweep" href="techniques/#softpotato.techniques.simulate_rde_sweep"><code>simulate_rde_sweep</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\omega/\text{rpm}, \text{waveform}\)</span></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            RDESweepResult
+
+
+  
+      dataclass
+  " href="techniques/#softpotato.techniques.RDESweepResult"><code>RDESweepResult</code></a></td>
+<td style="text-align: left;">Multi-rotation-rate RDE sweep builder and simulation runner.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a>, <a href="#ref-10">10</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CustomWaveform" href="techniques/#softpotato.techniques.CustomWaveform"><code>CustomWaveform</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{segments}, \text{mode}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{waveform}\)</span></td>
+<td style="text-align: left;">Composite excitation chaining constant, linear ramp, sinusoidal, and callable segments.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            simulate" href="techniques/#softpotato.techniques.simulate"><code>simulate</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{technique}, \text{mechanism}\)</span></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            TechniqueResult
+
+
+  
+      dataclass
+  " href="techniques/#softpotato.techniques.TechniqueResult"><code>TechniqueResult</code></a></td>
+<td style="text-align: left;">Turnkey event-aware simulation orchestrator returning <code>TechniqueResult</code>.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            simulate_sweep" href="techniques/#softpotato.techniques.simulate_sweep"><code>simulate_sweep</code></a></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{techniques}, \text{mechanism}\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{results}\)</span></td>
+<td style="text-align: left;">Parameter sweep runner (sequence, mapping, or factory + <code>values</code>).</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            plot_result" href="techniques/#softpotato.techniques.plot_result"><code>plot_result</code></a> / <a class="autorefs autorefs-internal" title="            plot_summary" href="techniques/#softpotato.techniques.plot_summary"><code>plot_summary</code></a></td>
+<td style="text-align: left;"><code>result</code>, <code>kind</code></td>
+<td style="text-align: left;"><code>(fig, ax)</code></td>
+<td style="text-align: left;">Technique-aware declarative plot dispatcher and multi-panel summary figure.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            plot_sweep" href="techniques/#softpotato.techniques.plot_sweep"><code>plot_sweep</code></a></td>
+<td style="text-align: left;"><code>results</code>, <code>kind</code></td>
+<td style="text-align: left;"><code>(fig, ax)</code></td>
+<td style="text-align: left;">Overlaid parameter-sweep or <code>RDESweepResult</code> plotting helper.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            plot_scv" href="techniques/#softpotato.techniques.plot_scv"><code>plot_scv</code></a> / <a class="autorefs autorefs-internal" title="            plot_dpv" href="techniques/#softpotato.techniques.plot_dpv"><code>plot_dpv</code></a> / <a class="autorefs autorefs-internal" title="            plot_swv" href="techniques/#softpotato.techniques.plot_swv"><code>plot_swv</code></a></td>
+<td style="text-align: left;"><code>result</code></td>
+<td style="text-align: left;"><code>(fig, ax)</code></td>
+<td style="text-align: left;">Dedicated SCV, DPV, and SWV voltammogram renderers.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            find_peaks" href="techniques/#softpotato.techniques.find_peaks"><code>find_peaks</code></a></td>
+<td style="text-align: left;"><code>result</code> or <code>(E, I)</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            CVDiagnostics
+
+
+  
+      dataclass
+  " href="techniques/#softpotato.techniques.CVDiagnostics"><code>CVDiagnostics</code></a></td>
+<td style="text-align: left;">Sub-grid parabolic peak detection ($E_p, I_p, \Delta E_p,</td>
+<td style="text-align: left;">I_{pa}/I_{pc}</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            analyze_randles_sevcik" href="techniques/#softpotato.techniques.analyze_randles_sevcik"><code>analyze_randles_sevcik</code></a> / <a class="autorefs autorefs-internal" title="            analyze_nicholson" href="techniques/#softpotato.techniques.analyze_nicholson"><code>analyze_nicholson</code></a></td>
+<td style="text-align: left;"><code>results</code></td>
+<td style="text-align: left;">Fit / <span class="arithmatex">\(k^0\)</span></td>
+<td style="text-align: left;">Automated voltammetric diffusivity and Nicholson <span class="arithmatex">\(k^0\)</span> extraction.</td>
+<td style="text-align: left;"><a href="#ref-16">16</a>, <a href="#ref-20">20</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            analyze_levich" href="techniques/#softpotato.techniques.analyze_levich"><code>analyze_levich</code></a> / <a class="autorefs autorefs-internal" title="            analyze_koutecky_levich" href="techniques/#softpotato.techniques.analyze_koutecky_levich"><code>analyze_koutecky_levich</code></a></td>
+<td style="text-align: left;"><code>RDESweepResult</code></td>
+<td style="text-align: left;">Fit</td>
+<td style="text-align: left;">Automated hydrodynamic diffusivity (<span class="arithmatex">\(D\)</span>) and kinetic (<span class="arithmatex">\(I_k, k^0\)</span>) extraction.</td>
+<td style="text-align: left;"><a href="#ref-9">9</a>, <a href="#ref-10">10</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" title="            analyze_tafel" href="techniques/#softpotato.techniques.analyze_tafel"><code>analyze_tafel</code></a> / <a class="autorefs autorefs-internal" title="            analyze_cottrell" href="techniques/#softpotato.techniques.analyze_cottrell"><code>analyze_cottrell</code></a> / <a class="autorefs autorefs-internal" title="            analyze_sand" href="techniques/#softpotato.techniques.analyze_sand"><code>analyze_sand</code></a></td>
+<td style="text-align: left;"><code>result</code></td>
+<td style="text-align: left;">Fit / <span class="arithmatex">\(\tau\)</span></td>
+<td style="text-align: left;">Tafel kinetics, Cottrell diffusivity, and Sand transition-time diagnostics.</td>
+<td style="text-align: left;"><a href="#ref-2">2</a>, <a href="#ref-7">7</a>, <a href="#ref-15">15</a></td>
 </tr>
 </tbody>
 </table>
