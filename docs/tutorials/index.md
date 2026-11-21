@@ -9,12 +9,21 @@ Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering
 
 ---
 
-## Python
+## Electrochemistry
 
-Foundational scientific programming tutorials designed for researchers and engineers:
+Hands-on simulation workflows and benchmarks for classical electrochemical techniques:
 
-- [**Soft Potato on your browser**](python/google-colab-start.md) — Run Soft Potato in Google Colab. No Python installation needed!
-- [**Installing Python on your computer**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
+- [**CV: Nernst (Planar)**](../examples/CV-Nernst.ipynb) — Reversible cyclic voltammetry at a planar electrode using Nernstian boundary conditions, plotting the voltammogram and final concentration profiles.
+
+- [**CV: Nernst (Spherical Microelectrode)**](../examples/CV-Nernst-Spherical.ipynb) — Reversible cyclic voltammetry at a spherical microelectrode (`SphericalGeometry`), comparing radial steady-state sigmoidal and transient responses across scan rates.
+
+- [**CV: Randles–Ševčík Analysis**](../examples/CV-Randles-Sevcik.ipynb) — Multi-scan-rate reversible cyclic voltammetry and `fit_randles_sevcik` regression to extract the diffusion coefficient from peak currents.
+
+- [**CV: Butler–Volmer Kinetics**](../examples/CV-ButlerVolmer.ipynb) — Multi-scan-rate irreversible cyclic voltammetry with `ButlerVolmer` kinetics and `fit_randles_sevcik` (`model="irreversible"`) analysis.
+
+- [**CV: EC Mechanism**](../examples/CV-ECmech.ipynb) — Coupled electrochemical–chemical (`EC`) mechanism combining a `ButlerVolmer` `ElectrochemicalStep` with a `FirstOrderReaction` using `Mechanism`.
+
+- [**CV: EE Mechanism**](../examples/CV-EEmech.ipynb) — Sequential two-step electrochemical (`EE`) mechanism with two `ButlerVolmer` `ElectrochemicalStep` reactions in `Mechanism`.
 
 
 ## Soft Potato Modules
@@ -27,24 +36,12 @@ Hands-on guides exploring specific modules in the Soft Potato toolkit:
 - [**Geometry Module**](modules/geometries.ipynb) — Setting up spatial coordinate systems with `softpotato.geometry` (planar, cylindrical, and spherical), running spherical diffusion simulations, and visualizing 1D radial profiles, 2D Cartesian cross-sections, and Faradaic currents.
 - [**Grid Module**](modules/grids.ipynb) — Constructing non-uniform spatial discretization meshes with `ExponentialMesh` in `softpotato.grid`, coupling with `DiffusionProblem()`, and comparing near-electrode concentration profiles and Faradaic current transients against `Uniform1DMesh` for the same number of nodes.
 
+## Python
 
-## Electrochemistry
+Foundational scientific programming tutorials designed for researchers and engineers:
 
-Hands-on simulation workflows and benchmarks for classical electrochemical techniques:
-
-- [**Chronoamperometry**](electrochemistry/ca.ipynb) — How to perform a chronoamperometry simulation and compare it with the `cottrell` function from the analytical module to demonstrate the full modeling workflow with Soft Potato.
-
-- [**Cyclic Voltammetry**](electrochemistry/cv.ipynb) — How to perform a cyclic voltammetry simulation of a reversible couple and use the Randles-Sevcik equation from the analytical module to estimate the error.
-
-- [**Catalytic EC' Mechanism**](../examples/catalytic_ec.ipynb) — Step-by-step simulation of an EC' catalytic regeneration mechanism using `softpotato.reactions`, visualizing steady-state concentration profiles and benchmarking transient and limiting currents against analytical theory.
-
-- [**Heterogeneous Kinetics (CV)**](../examples/heterogeneous_kinetics.ipynb) — Simulating Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes, and analyzing peak separation $\Delta E_p$ vs. scan rate against Randles–Ševčík and Nicholson theory.
-
-- [**Techniques: Voltammetry & Diagnostics**](../examples/techniques_voltammetry.ipynb) — Turnkey LSV and multi-scan-rate CV simulation using `simulate` and `simulate_sweep`, declarative plotting (`plot_result`, `plot_summary`, `plot_sweep`), Randles–Ševčík regression, and Nicholson $k^0$ extraction.
-
-- [**Techniques: SCV, Pulse & Chronopotentiometry**](../examples/techniques_pulse_cp.ipynb) — Simulating Sampled-Current Voltammetry (`SampledCurrentVoltammetry`, `plot_scv`), Differential Pulse Voltammetry (`plot_dpv`), Square Wave Voltammetry (`plot_swv`), and Chronopotentiometry with Sand transition-time diagnostics.
-
-- [**Techniques: Rotating Disk Electrode (RDE)**](../examples/techniques_rde.ipynb) — Multi-rotation-rate RDE simulation with `RDESweep` / `simulate_rde_sweep`, hydrodynamic overlays (`plot_sweep`), and Levich & Koutecký–Levich analysis.
+- [**Soft Potato on your browser**](python/google-colab-start.md) — Run Soft Potato in Google Colab. No Python installation needed!
+- [**Installing Python on your computer**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
 
 ---
 
