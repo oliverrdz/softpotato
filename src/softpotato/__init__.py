@@ -202,7 +202,10 @@ from .techniques import (
     SampledCurrentVoltammetry,
     SinusoidalSegment,
     SquareWaveVoltammetry,
+    TechniqueResult,
     WaveformSegment,
+    simulate,
+    simulate_sweep,
 )
 
 __version__ = "3.3.0"
@@ -282,6 +285,7 @@ __all__ = [
     "TafelFitResult",
     "TafelKinetics",
     "TafelResult",
+    "TechniqueResult",
     "Uniform1DMesh",
     "UnknownGeometryError",
     "WaveformSegment",
@@ -369,6 +373,8 @@ __all__ = [
     "secm_limiting_current_infinite",
     "secm_tip_current",
     "shielding_factor",
+    "simulate",
+    "simulate_sweep",
     "solver",
     "step_concentration_profile",
     "step_flux_profile",
