@@ -118,19 +118,33 @@ from softpotato.techniques import (
     simulate_sweep,
 )
 
-ox = Species("Ox", diffusivity=1e-9, bulk_concentration=1.0, standard_potential=0.0, n_electrons=1)
-red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, standard_potential=0.0, n_electrons=-1)
+ox = Species(
+    "Ox",
+    diffusivity=1e-9,
+    bulk_concentration=1.0,
+    standard_potential=0.0,
+    n_electrons=1,
+)
+red = Species(
+    "Red",
+    diffusivity=1e-9,
+    bulk_concentration=0.0,
+    standard_potential=0.0,
+    n_electrons=-1,
+)
 kinetics = ButlerVolmer(k0=1e-4, alpha=0.5, E0=0.0, n=1)
 
 # Single CV simulation + declarative plotting
 cv = CyclicVoltammetry(E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=0.1)
 res = simulate(cv, [ox, red], kinetics=kinetics)
-fig, ax = res.plot()               # Default plot ('voltammogram')
-fig_sum, axes = res.plot_summary() # 2x2 summary (voltammogram, i_vs_t, E_vs_t, c_vs_x)
+fig, ax = res.plot()  # Default plot ('voltammogram')
+fig_sum, axes = res.plot_summary()  # 2x2 summary (voltammogram, i_vs_t, E_vs_t, c_vs_x)
 
 # Multi-scan-rate sweep & diagnostics
 results = simulate_sweep(
-    lambda v: CyclicVoltammetry(E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=v),
+    lambda v: CyclicVoltammetry(
+        E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=v
+    ),
     [ox, red],
     values=[0.05, 0.1, 0.2, 0.5],
     kinetics=kinetics,
@@ -147,8 +161,20 @@ nich = analyze_nicholson(res, D=1e-9)
 from softpotato.reactions import NernstianEquilibrium, Species
 from softpotato.techniques import SampledCurrentVoltammetry, plot_scv, simulate
 
-ox = Species("Ox", diffusivity=1e-9, bulk_concentration=1.0, standard_potential=0.0, n_electrons=1)
-red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, standard_potential=0.0, n_electrons=-1)
+ox = Species(
+    "Ox",
+    diffusivity=1e-9,
+    bulk_concentration=1.0,
+    standard_potential=0.0,
+    n_electrons=1,
+)
+red = Species(
+    "Red",
+    diffusivity=1e-9,
+    bulk_concentration=0.0,
+    standard_potential=0.0,
+    n_electrons=-1,
+)
 
 scv = SampledCurrentVoltammetry(
     E_start=0.3,
