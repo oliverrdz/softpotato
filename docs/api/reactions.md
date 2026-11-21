@@ -113,10 +113,10 @@ from softpotato.grid import GeometricExpandingMesh
 from softpotato.reactions import CatalyticReaction, ReactionNetwork, Species
 from softpotato.solver import DiffusionProblem, DirichletBC, ScipyIVPSolver
 
-D = 1e-9       # m^2/s
-c_bulk = 1.0   # mol/m^3 (1 mM)
-area = 1e-4    # m^2 (1 cm^2)
-k_prime = 10.0 # s^-1 (pseudo-first-order catalytic rate constant)
+D = 1e-9  # m^2/s
+c_bulk = 1.0  # mol/m^3 (1 mM)
+area = 1e-4  # m^2 (1 cm^2)
+k_prime = 10.0  # s^-1 (pseudo-first-order catalytic rate constant)
 
 # Reaction layer thickness mu = sqrt(D / k'); span 10 * mu with an expanding mesh
 mu = math.sqrt(D / k_prime)
@@ -180,7 +180,9 @@ ec_mech = Mechanism(
     name="EC_Mechanism",
 )
 
-mesh = create_diffusion_mesh(D=1e-9, t_max=1.0, kind="geometric", n_points=60, gamma=1.08)
+mesh = create_diffusion_mesh(
+    D=1e-9, t_max=1.0, kind="geometric", n_points=60, gamma=1.08
+)
 problem = ec_mech.create_problem(mesh, potential=-0.3)
 result = ScipyIVPSolver(method="Radau").solve(problem, t_span=(0.0, 1.0))
 ```
