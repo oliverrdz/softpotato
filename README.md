@@ -154,7 +154,9 @@ red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, n_electrons=1)
 species = SpeciesCollection([ox, red])
 reactions = ReactionNetwork([CatalyticReaction(reactant=red, regenerated=ox, k=5.0)])
 
-mesh = create_diffusion_mesh(D=1e-9, t_max=2.0, kind="geometric", n_points=80, gamma=1.06)
+mesh = create_diffusion_mesh(
+    D=1e-9, t_max=2.0, kind="geometric", n_points=80, gamma=1.06
+)
 problem = DiffusionProblem(
     grid=mesh,
     species=species,
