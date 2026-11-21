@@ -50,6 +50,6 @@ __all__ = [
     "TechniqueResult",
     "WaveformSegment",
     "simulate",
-    "simulate_sweep",
     "simulate_rde_sweep",
+    "simulate_sweep",
 ]
