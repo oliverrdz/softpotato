@@ -146,6 +146,7 @@ nav:
           - Simulation Benchmarking: api/analytical/benchmark.md
       - Geometry Module: api/geometry.md
       - Grid Module: api/grid.md
+      - Reactions Module: api/reactions.md
       - Solver Module: api/solver.md
   - Tutorials:
       - tutorials/index.md
@@ -161,5 +162,7 @@ nav:
       - Electrochemistry:
           - Chronoamperometry: tutorials/electrochemistry/ca.ipynb
           - Cyclic Voltammetry: tutorials/electrochemistry/cv.ipynb
+          - Catalytic EC' Mechanism: examples/catalytic_ec.ipynb
+          - Heterogeneous Kinetics (CV): examples/heterogeneous_kinetics.ipynb
   - Blog:
       - blog/index.md
