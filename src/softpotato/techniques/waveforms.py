@@ -383,14 +383,9 @@ class CallableSegment(WaveformSegment):
 
         try:
             raw = self._func(tau_arr)
-            if np.isscalar(raw):
-                result = np.full(tau_arr.shape, float(raw), dtype=float)
-            else:
-                result = np.asarray(raw, dtype=float)
-                if result.shape != tau_arr.shape:
-                    result = np.broadcast_to(result, tau_arr.shape).astype(
-                        float, copy=True
-                    )
+            result = np.asarray(raw, dtype=float)
+            if result.shape != tau_arr.shape:
+                result = np.broadcast_to(result, tau_arr.shape).astype(float, copy=True)
         except (TypeError, ValueError):
             flat = [float(self._func(float(ti))) for ti in tau_arr.ravel()]
             result = np.asarray(flat, dtype=float).reshape(tau_arr.shape)
