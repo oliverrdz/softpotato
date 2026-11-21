@@ -198,8 +198,20 @@ from softpotato.techniques import (
     simulate,
 )
 
-ox = Species("Ox", diffusivity=1e-9, bulk_concentration=1.0, standard_potential=0.0, n_electrons=1)
-red = Species("Red", diffusivity=1e-9, bulk_concentration=0.0, standard_potential=0.0, n_electrons=-1)
+ox = Species(
+    "Ox",
+    diffusivity=1e-9,
+    bulk_concentration=1.0,
+    standard_potential=0.0,
+    n_electrons=1,
+)
+red = Species(
+    "Red",
+    diffusivity=1e-9,
+    bulk_concentration=0.0,
+    standard_potential=0.0,
+    n_electrons=-1,
+)
 cv = CyclicVoltammetry(E_start=0.4, E_vertex1=-0.4, E_vertex2=0.4, scan_rate=0.1)
 
 result = simulate(cv, [ox, red], kinetics=ButlerVolmer(k0=1e-4, alpha=0.5, E0=0.0, n=1))
