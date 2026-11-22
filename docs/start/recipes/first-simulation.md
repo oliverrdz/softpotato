@@ -7,7 +7,7 @@ Edit only the physical parameters (`E0`, `D`, `c_bulk`, `k0`, `alpha`, `area`) a
 ## Full Runnable Script
 
 ```python
---8<-- "docs/scripts/recipe_first_cv.py"
+--8 < --"docs/scripts/recipe_first_cv.py"
 ```
 
 !!! note "Species Ordering (`[ox, red]`)"
