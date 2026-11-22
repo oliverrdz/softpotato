@@ -22,18 +22,22 @@ alpha = 0.5            # Transfer coefficient [-]
 area = 7.07e-6         # Electrode area [m^2] (= 0.0707 cm^2, 3 mm disk)
 
 # Cyclic voltammetry waveform
-E_start = 0.4          # Initial potential [V]
-E_vertex1 = -0.4       # First switching potential [V]
-E_vertex2 = 0.4        # Second switching potential [V]
-v = 0.1                # Scan rate [V/s]
+E_start = 0.4  # Initial potential [V]
+E_vertex1 = -0.4  # First switching potential [V]
+E_vertex2 = 0.4  # Second switching potential [V]
+v = 0.1  # Scan rate [V/s]
 
 # ==============================================================================
 # Run Simulation & Plot
 # ==============================================================================
-ox = Species("Ox", diffusivity=D, bulk_concentration=c_bulk, standard_potential=E0, n_electrons=1)
+ox = Species(
+    "Ox", diffusivity=D, bulk_concentration=c_bulk, standard_potential=E0, n_electrons=1
+)
 red = Species("Red", diffusivity=D, bulk_concentration=0.0)
 
-cv = CyclicVoltammetry(E_start=E_start, E_vertex1=E_vertex1, E_vertex2=E_vertex2, scan_rate=v)
+cv = CyclicVoltammetry(
+    E_start=E_start, E_vertex1=E_vertex1, E_vertex2=E_vertex2, scan_rate=v
+)
 kinetics = ButlerVolmer(k0=k0, alpha=alpha, E0=E0, n=1)
 geometry = PlanarGeometry(area)
 
