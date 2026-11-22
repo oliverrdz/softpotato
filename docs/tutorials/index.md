@@ -47,6 +47,21 @@ Focused studies on electrode geometry, interfacial kinetics, and coupled homogen
 
 ---
 
+## By Module (Modeller)
+
+Low-level tutorials for computational electrochemists working directly with `DiffusionProblem`, custom meshes, geometries, reaction networks, and analytical benchmarking:
+
+| Notebook | Focus | Key APIs |
+| :--- | :--- | :--- |
+| [Analytical Models & Parameter Sweeps](modules/analytical.ipynb) | Vectorized parameter sweeps across transient, RDE, UME, and kinetic models | `cottrell()`, `randles_sevcik()`, `levich()`, `koutecky_levich()`, `butler_volmer()` |
+| [Curve Fitting & Custom Parameter Estimation](modules/fitting.ipynb) | Specialized domain fitters and arbitrary nonlinear models | `fit_cottrell()`, `fit_koutecky_levich()`, `fit_butler_volmer()`, `fit_curve()` |
+| [PDE Solvers & Custom Boundary Conditions](modules/solver.ipynb) | Benchmarking all 4 solvers and time-dependent Dirichlet/Neumann BCs | `DiffusionProblem`, `DirichletBC`, `NeumannBC`, `get_solver()` |
+| [Electrode Geometries & Concentration Profiles](modules/geometries.ipynb) | Planar, cylindrical, and spherical diffusion with 2D $c(r, t)$ visualization | `PlanarGeometry`, `CylindricalGeometry`, `SphericalGeometry` |
+| [Spatial Meshes & Grid-Convergence Studies](modules/grids.ipynb) | Uniform vs. stretched meshes and $L_2$ flux convergence | `Uniform1DMesh`, `ExponentialMesh`, `GeometricExpandingMesh`, `run_grid_efficiency_benchmark()` |
+| [Species, Kinetics & Reaction Mechanisms](modules/reactions.ipynb) | Custom `Species`, first- and second-order reactions, and `CustomMechanism` | `Species`, `ElectrochemicalStep`, `FirstOrderReaction`, `SecondOrderReaction`, `CustomMechanism` |
+
+---
+
 ## Related Documentation
 
 - **[User Guide](../user-guide/index.md)**: Task-oriented guides for `simulate()`, diagnostics, plotting, and curve fitting.

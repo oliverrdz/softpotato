@@ -182,6 +182,13 @@ nav:
           - EC Mechanism: tutorials/mechanisms/cv_ec.ipynb
           - EE Mechanism: tutorials/mechanisms/cv_ee.ipynb
           - Catalytic EC' Mechanism: tutorials/mechanisms/catalytic_ec.ipynb
+      - By Module (Modeller):
+          - Analytical Models & Sweeps: tutorials/modules/analytical.ipynb
+          - Curve Fitting & Custom Models: tutorials/modules/fitting.ipynb
+          - PDE Solvers & Custom BCs: tutorials/modules/solver.ipynb
+          - Electrode Geometries: tutorials/modules/geometries.ipynb
+          - Spatial Meshes & Convergence: tutorials/modules/grids.ipynb
+          - Species, Kinetics & Mechanisms: tutorials/modules/reactions.ipynb
   - API Reference:
       - api/index.md
   - Blog & Releases:
