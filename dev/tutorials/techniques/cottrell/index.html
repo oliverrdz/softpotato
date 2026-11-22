@@ -4656,7 +4656,7 @@ geometry = PlanarGeometry(area)</div>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">i_sim</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Simulated (PDE)"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">i_cottrell</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Analytical Cottrell"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.8</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time $t$ [s]"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Current $I$ [$\mu$A]"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Current $I$ [$\mu$A]"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Planar Chronoamperometry vs. Cottrell Equation"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
@@ -4674,7 +4674,7 @@ fig, ax = plt.subplots(figsize=(7, 4.2))
 ax.plot(t, i_sim * 1e6, label="Simulated (PDE)", lw=2)
 ax.plot(t, i_cottrell * 1e6, "--", label="Analytical Cottrell", lw=1.8)
 ax.set_xlabel("Time $t$ [s]")
-ax.set_ylabel("Current $I$ [$\mu$A]")
+ax.set_ylabel(r"Current $I$ [$\mu$A]")
 ax.set_title("Planar Chronoamperometry vs. Cottrell Equation")
 ax.legend()
 ax.grid(alpha=0.3)
@@ -4688,16 +4688,6 @@ plt.show()</div>
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>&lt;&gt;:12: SyntaxWarning: invalid escape sequence '\m'
-&lt;&gt;:12: SyntaxWarning: invalid escape sequence '\m'
-/tmp/ipykernel_47133/4160632648.py:12: SyntaxWarning: invalid escape sequence '\m'
-  ax.set_ylabel("Current $I$ [$\mu$A]")
-</pre>
-</div>
-</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">

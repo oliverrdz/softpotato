@@ -4691,7 +4691,7 @@ for r0 in radii:
 <span class="n">r_micro</span> <span class="o">=</span> <span class="mf">1.0e-5</span>
 <span class="n">res_micro</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">r_micro</span><span class="p">]</span>
 <span class="n">i_ss</span> <span class="o">=</span> <span class="o">-</span><span class="n">spa</span><span class="o">.</span><span class="n">microsphere_limiting_current</span><span class="p">(</span><span class="n">r_micro</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">c_bulk</span><span class="o">=</span><span class="n">c_bulk</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_micro</span><span class="o">.</span><span class="n">potential</span><span class="p">,</span> <span class="n">res_micro</span><span class="o">.</span><span class="n">current</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Simulated ($r_0 = 10\,\mu$m)"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_micro</span><span class="o">.</span><span class="n">potential</span><span class="p">,</span> <span class="n">res_micro</span><span class="o">.</span><span class="n">current</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"Simulated ($r_0 = 10\,\mu$m)"</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">i_ss</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"C3"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Steady-state limit (</span><span class="si">{</span><span class="n">i_ss</span><span class="o">*</span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nA)"</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Potential $E$ [V]"</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Current $I$ [nA]"</span><span class="p">)</span>
@@ -4717,7 +4717,7 @@ axes[0].grid(alpha=0.3)
 r_micro = 1.0e-5
 res_micro = results[r_micro]
 i_ss = -spa.microsphere_limiting_current(r_micro, n=1, D=D, c_bulk=c_bulk)
-axes[1].plot(res_micro.potential, res_micro.current * 1e9, lw=2, label="Simulated ($r_0 = 10\,\mu$m)")
+axes[1].plot(res_micro.potential, res_micro.current * 1e9, lw=2, label=r"Simulated ($r_0 = 10\,\mu$m)")
 axes[1].axhline(i_ss * 1e9, color="C3", ls="--", lw=1.8, label=f"Steady-state limit ({i_ss*1e9:.2f} nA)")
 axes[1].set_xlabel("Potential $E$ [V]")
 axes[1].set_ylabel("Current $I$ [nA]")
@@ -4735,16 +4735,6 @@ plt.show()</div>
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>&lt;&gt;:16: SyntaxWarning: invalid escape sequence '\,'
-&lt;&gt;:16: SyntaxWarning: invalid escape sequence '\,'
-/tmp/ipykernel_45972/3037377153.py:16: SyntaxWarning: invalid escape sequence '\,'
-  axes[1].plot(res_micro.potential, res_micro.current * 1e9, lw=2, label="Simulated ($r_0 = 10\,\mu$m)")
-</pre>
-</div>
-</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
