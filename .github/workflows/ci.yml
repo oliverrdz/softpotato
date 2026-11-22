@@ -98,9 +98,9 @@ jobs:
         run: |
           pytest -v --doctest-modules src tests/ --cov=softpotato --cov-report=term-missing
 
-      - name: Execute notebook examples
+      - name: Execute tutorial notebooks
         run: |
-          pytest -v --nbmake examples/
+          pytest -v --nbmake docs/tutorials/
 
   package-check:
     name: Packaging & Distribution Check
