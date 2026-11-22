@@ -158,6 +158,14 @@ nav:
           - Curve Fitting & Regression: user-guide/analytical/fitting.md
   - Concepts:
       - concepts/index.md
+      - Electrochemistry:
+          - Electrode Kinetics: concepts/electrochemistry/kinetics.md
+          - Mass Transport: concepts/electrochemistry/transport.md
+          - Reaction Mechanisms: concepts/electrochemistry/mechanisms.md
+      - Numerical Modelling:
+          - Spatial Grids & Meshes: concepts/numerics/grids.md
+          - Time-Stepping & Solvers: concepts/numerics/solvers.md
+          - Benchmarking & Validation: concepts/numerics/benchmarking.md
   - Tutorials:
       - tutorials/index.md
   - API Reference:
