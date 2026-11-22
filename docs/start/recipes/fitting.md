@@ -9,7 +9,7 @@ Extract physical and geometric parameters—with **$R^2$** and **95% confidence 
 ## Full Runnable Script
 
 ```python
---8<-- "docs/scripts/recipe_fitting.py"
+--8 < --"docs/scripts/recipe_fitting.py"
 ```
 
 ## Using Your Own Lab Data
