@@ -131,41 +131,15 @@ extra:
 
 nav:
   - Home: index.md
-  - API Reference:
-      - api/index.md
-      - Constants Module: api/constants.md
-      - Analytical Module:
-          - api/analytical/index.md
-          - Transient Step Techniques: api/analytical/step.md
-          - Hydrodynamics & Convection: api/analytical/hydrodynamics.md
-          - Thermodynamics & Kinetics: api/analytical/kinetics.md
-          - Voltammetry & Diagnostics: api/analytical/voltammetry.md
-          - Microelectrode Geometries: api/analytical/microelectrodes.md
-          - SECM Approach Curves: api/analytical/secm.md
-          - Parameter Fitting: api/analytical/fitting.md
-          - Simulation Benchmarking: api/analytical/benchmark.md
-      - Geometry Module: api/geometry.md
-      - Grid Module: api/grid.md
-      - Reactions Module: api/reactions.md
-      - Solver Module: api/solver.md
-      - Techniques Module: api/techniques.md
+  - Start Here:
+      - start-here/index.md
+  - User Guide:
+      - user-guide/index.md
+  - Concepts:
+      - concepts/index.md
   - Tutorials:
       - tutorials/index.md
-      - Electrochemistry:
-          - CV — Nernst (Planar): examples/CV-Nernst.ipynb
-          - CV — Nernst (Spherical Microelectrode): examples/CV-Nernst-Spherical.ipynb
-          - CV — Randles–Ševčík: examples/CV-Randles-Sevcik.ipynb
-          - CV — Butler–Volmer Kinetics: examples/CV-ButlerVolmer.ipynb
-          - CV — EC Mechanism: examples/CV-ECmech.ipynb
-          - CV — EE Mechanism: examples/CV-EEmech.ipynb
-      - Soft Potato Modules:
-          - Analytical Module: tutorials/modules/analytical.ipynb
-          - Parameter Fitting: tutorials/modules/fitting.ipynb
-          - Numerical Solver: tutorials/modules/solver.ipynb
-          - Geometry Module: tutorials/modules/geometries.ipynb
-          - Grid Module: tutorials/modules/grids.ipynb
-      - Python:
-          - Soft Potato on your browser: tutorials/python/google-colab-start.md
-          - Installing Python on your computer: tutorials/python/installing-python.md
-  - Blog:
+  - API Reference:
+      - api/index.md
+  - Blog & Releases:
       - blog/index.md

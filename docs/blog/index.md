@@ -1,3 +1,3 @@
-# Soft Potato Blog
+# Blog & Releases
 
-News, release announcements, electrochemistry simulation notes, and programming tips from the Soft Potato project.
+Release notes, changelog, and articles on electrochemical simulation.
