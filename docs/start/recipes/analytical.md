@@ -7,7 +7,7 @@ Edit only the physical parameters (`n`, `D`, `c_bulk`, `area`, `nu`, `T`, `RG`, 
 ## Full Runnable Script
 
 ```python
---8 < --"docs/scripts/recipe_analytical.py"
+--8<-- "docs/scripts/recipe_analytical.py"
 ```
 
 ## Run Locally
