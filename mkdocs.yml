@@ -150,6 +150,12 @@ nav:
           - Pulse & Sampled-Current: user-guide/techniques/pulse.md
           - Rotating Disk Electrode (RDE): user-guide/techniques/rde.md
           - Custom Waveforms: user-guide/techniques/waveforms.md
+      - Post-Processing:
+          - Diagnostics & Analysis: user-guide/postprocessing/diagnostics.md
+          - Plotting Suite: user-guide/postprocessing/plotting.md
+      - Analytical & Fitting:
+          - Analytical Models: user-guide/analytical/models.md
+          - Curve Fitting & Regression: user-guide/analytical/fitting.md
   - Concepts:
       - concepts/index.md
   - Tutorials:
