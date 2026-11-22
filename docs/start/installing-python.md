@@ -78,7 +78,7 @@ Run this one-liner in your activated terminal:
 python -c "import softpotato as sp; print(sp.__version__)"
 ```
 
-You should see the installed version number (e.g. `3.4.0`).
+You should see the installed version number (e.g. `3.4.1`).
 
 ---
 

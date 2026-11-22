@@ -18,9 +18,9 @@
 Run Soft Potato directly in your browser with no local Python setup required:
 - [**Launch Soft Potato v3 Starter in Google Colab**](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link)
 
-### Stable Release (v3.4.0)
+### Stable Release (v3.4.1)
 
-Soft Potato v3.4.0 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.4.1 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato
@@ -53,7 +53,7 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Released |
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CA, LSV, CV, SCV, DPV, SWV, CP, RDE), high-level simulation pipelines, declarative plotting, and diagnostics (`techniques`) | Released |
-| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate [softpotato.xyz](https://softpotato.xyz/) restructure organized by expertise level (Experimentalist, Python User, Modeller) — [Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6) | In progress |
+| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate [softpotato.xyz](https://softpotato.xyz/) restructure organized by expertise level (Experimentalist, Python User, Modeller) — [Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6) | Released |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 

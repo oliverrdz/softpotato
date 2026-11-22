@@ -7,9 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.1] - 2026-11-22
+
+### Milestone 5 Release: Documentation Overhaul & Techniques Fixes
+Soft Potato 3.4.1 completes Milestone 5 of the strategic development roadmap with a clean-slate rebuild of the `softpotato.xyz` documentation organized by user expertise level (Experimentalist, Python User, Computational Modeller), alongside bug fixes and enhancements for multi-step interfacial current extraction and Rotating Disk Electrode (RDE) heterogeneous kinetics.
+
 ### Added
-- **Documentation Overhaul Planning (`scripts/create_docs_issues.py`)**:
-  - Added `scripts/create_docs_issues.py` to automate GitHub issue creation for **Milestone 5: Documentation Overhaul** (`#104`–`#112`), structuring the clean-slate `softpotato.xyz` rebuild by expertise level (Experimentalist, Python User, Modeller).
+- **Clean-Slate Documentation Overhaul (`#104`–`#112`, `mkdocs.yml`, `docs/`)**:
+  - **Home & Navigation (`#104`, `#105`, `docs/index.md`, `docs/start-here/index.md`)**: Reorganized `mkdocs.yml` around user-intent tabs (`Start Here`, `User Guide`, `Concepts`, `Tutorials`, `API Reference`, `Blog & Releases`), rebuilt the landing page with a 3-persona router, and added a decision guide in `docs/start-here/index.md`.
+  - **Level 1 — Experimentalist (`#106`, `docs/start/`, `docs/tutorials/start/`)**: Added zero-install Google Colab quickstart (`docs/start/google-colab.md`), local Python setup guide (`docs/start/installing-python.md`), 5-minute copy-paste recipes (`docs/start/recipes/analytical.md`, `first-simulation.md`, `fitting.md` backed by `docs/scripts/recipe_*.py`), and starter notebooks (`docs/tutorials/start/ca_quickstart.ipynb`, `cv_quickstart.ipynb`).
+  - **Level 2 — Python User (`#107`, `#108`, `#109`, `docs/user-guide/`, `docs/concepts/`)**: Added task-oriented User Guide (`docs/user-guide/techniques/`, `postprocessing/`, `analytical/`) with standalone Python scripts (`docs/scripts/guide_*.py`) and pure-Markdown Concepts reference covering electrochemical theory (`kinetics.md`, `mechanisms.md`, `transport.md`) and numerical modelling (`grids.md`, `solvers.md`, `benchmarking.md`).
+  - **Level 3 — Modeller & Interactive Notebooks (`#110`, `#111`, `docs/tutorials/`)**: Reorganized and expanded curated Jupyter notebooks into `docs/tutorials/techniques/` (`cottrell.ipynb`, `cottrell_geometries.ipynb`, `cyclic_voltammetry.ipynb`, `pulse_and_cp.ipynb`, `rde.ipynb`), `docs/tutorials/mechanisms/` (`catalytic_ec.ipynb`, `cv_butler_volmer.ipynb`, `cv_ec.ipynb`, `cv_ee.ipynb`, `cv_nernst_planar.ipynb`, `cv_nernst_spherical.ipynb`, `cv_randles_sevcik.ipynb`), and `docs/tutorials/modules/` (`analytical.ipynb`, `fitting.ipynb`, `geometries.ipynb`, `grids.ipynb`, `reactions.ipynb`, `solver.ipynb`), plus `docs/scripts/modeller_benchmark.py`.
+  - **API Reference & Tooling (`#112`, `docs/api/`, `scripts/create_docs_issues.py`)**: Updated `docs/api/reactions.md`, `docs/api/techniques.md`, and documentation cross-references; added `scripts/create_docs_issues.py` to automate Milestone 5 GitHub issue creation.
+- **RDE Heterogeneous Kinetics Tests (`tests/test_techniques_rde.py`)**:
+  - Added tests verifying `RotatingDiskElectrode` coupled with `HeterogeneousKinetics` (`ButlerVolmer`) and `simulate_rde_sweep`.
+
+### Changed
+- **Multi-Step Interfacial Current Extraction (`src/softpotato/techniques/pipeline.py`)**:
+  - Enhanced `_extract_net_faradaic_current` to solve the stoichiometric flux system ($J_i = \sum_k \nu_{i,k} r_k$) per electrode side via pseudoinverse when multiple `ElectrochemicalStep` reactions are present (e.g., `EE` mechanisms `A -> B -> C`), preventing shared intermediates from being cancelled or double-counted.
+- **RDE Kinetics & `n_electrons` Handling (`src/softpotato/techniques/rde.py`)**:
+  - Wired `RotatingDiskElectrode.create_problem()` with `Mechanism` and `ElectrochemicalStep` when `HeterogeneousKinetics` is provided without explicit boundary conditions, composing interfacial kinetics with optional user homogeneous reactions and convective terms.
+  - Refactored `n_electrons` mapping handling and updated `simulate_rde_sweep` references in guides and tests.
+- **CI & Tooling (`.github/workflows/ci.yml`, `pyproject.toml`)**:
+  - Updated CI tutorial notebook execution path from `examples/` to `docs/tutorials/` and updated Ruff exclusions in `pyproject.toml`.
+
+### Removed
+- **Legacy Documentation & Examples**:
+  - Removed legacy `examples/` notebooks, `docs/examples/` symlinks, obsolete `docs/tutorials/electrochemistry/` and `docs/tutorials/python/` pages, and the top-level `tutorials` symlink following the transition to `docs/tutorials/`.
 
 ## [3.4.0] - 2026-11-21
 
