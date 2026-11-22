@@ -88,7 +88,11 @@ def main() -> int:
         uniform_points_list=(60, 200, 400),
     )
     for entry in grid_cmp.entries:
-        rel_l2 = entry.current_metrics.l2_error if entry.current_metrics is not None else float("nan")
+        rel_l2 = (
+            entry.current_metrics.l2_error
+            if entry.current_metrics is not None
+            else float("nan")
+        )
         print(
             f"  {entry.label:<24s} | N={entry.n_points:4d} "
             f"| dx_min={entry.dx_min:.2e} | L2_current={rel_l2:.3e} "
