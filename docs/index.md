@@ -19,12 +19,12 @@ hide:
       <a class="md-button md-button--primary" href="start-here/">
         Start Here
       </a>
-      <a class="md-button" href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+      <a class="md-button" href="https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link" target="_blank" rel="noopener">
         Try Live in Google Colab
       </a>
     </div>
     <div class="sp-hero__badges">
-      <a href="https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2" target="_blank" rel="noopener">
+      <a href="https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link" target="_blank" rel="noopener">
         <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
       </a>
       <a href="https://pypi.org/project/softpotato/" target="_blank" rel="noopener">

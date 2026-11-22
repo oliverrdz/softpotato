@@ -29,7 +29,7 @@ Soft Potato is organized in layers—from one-line closed-form equations up to c
 
     Run Soft Potato directly in your browser with nothing to install on your computer:
 
-    [:octicons-play-24: Launch Soft Potato v3 Starter in Google Colab](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2){ .md-button .md-button--primary target="_blank" rel="noopener" }
+    [:octicons-play-24: Launch Soft Potato v3 Starter in Google Colab](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link){ .md-button .md-button--primary target="_blank" rel="noopener" }
     [:octicons-book-24: Google Colab Guide](../start/google-colab.md){ .md-button }
 
 === "Local Install (`pip`)"

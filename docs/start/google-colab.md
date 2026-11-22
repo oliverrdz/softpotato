@@ -11,7 +11,7 @@
 
 Click the button below to open the official **Soft Potato v3 Starter** notebook in Google Colab:
 
-[:octicons-play-24: Open Soft Potato v3 Starter in Google Colab](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2){ .md-button .md-button--primary target="_blank" rel="noopener" }
+[:octicons-play-24: Open Soft Potato v3 Starter in Google Colab](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link){ .md-button .md-button--primary target="_blank" rel="noopener" }
 
 ---
 
