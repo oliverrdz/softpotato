@@ -13,15 +13,16 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 
 | Milestone | Target Version | Focus Area | Status | Release Type |
 | :--- | :--- | :--- | :--- | :--- |
-| **Current State Stabilization** | `v3.0.0` | Finalize core solver module & `solve_ivp` integration | Released | **Stable Baseline** |
+| **State Stabilization** | `v3.0.0` | Finalize core solver module & `solve_ivp` integration | Released | **Stable Baseline** |
 | **Milestone 1: Analytical Equations** | `v3.1.0` | Analytical & empirical equations, simulation benchmarks & parameter fitting | Released | **Minor Feature Addition** |
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Released | **Minor Feature Addition** |
 | **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators, simulation pipelines, plotting & diagnostics | Released | **Minor Feature Addition** |
+| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate MkDocs restructure by expertise level (Experimentalist, Python User, Modeller) | In progress | **Documentation & Patch** |
 
 ---
 
-## Current State Stabilization: v3.0.0
+## State Stabilization: v3.0.0
 
 **Goal**: Finalize the current solver module (including the `solve_ivp` integration) and release it as the new stable baseline for the Soft Potato 3.x series.
 
@@ -285,6 +286,28 @@ With solvers, analytical benchmark models, grids, and reaction kinetics in place
 
 ---
 
+## Milestone 5 (Documentation Overhaul): v3.4.1
+
+**Status**: In progress ([GitHub Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6), Issues `#104`–`#112`)
+
+**Goal**: Rebuild `softpotato.xyz` from a clean slate so users of any background—experimental electrochemists with no programming experience, Python users new to modelling, and computational modellers—can immediately locate what they need.
+
+### Objectives & Deliverables
+- **Clean-Slate MkDocs Restructure (`#104`, `#105`)**:
+  - Remove legacy, fragmented documentation and reorganize `mkdocs.yml` around user-intent tabs (`Start Here`, `User Guide`, `Concepts`, `Tutorials`, `API Reference`, `Blog & Releases`).
+  - Add a 3-persona router on the home page and a decision table in `Start Here`.
+- **Level 1 — Experimentalist (`#106`)**:
+  - Zero-install Google Colab quickstart, local Python setup, "Run All" starter notebooks, and 5-minute copy-paste `.py` recipes (`analytical`, `fitting`, `techniques.simulate()`).
+- **Level 2 — Python User (`#107`, `#108`, `#109`)**:
+  - Task-oriented `User Guide` covering all `softpotato.techniques`, `diagnostics`, `plotting`, and `analytical`/`fitting` workflows with standalone `.py` scripts.
+  - Pure-Markdown `Concepts` section bridging electrochemical theory (kinetics, transport, mechanisms) and numerical modelling (grids, solvers, benchmarking).
+- **Level 3 — Modeller & Interactive Notebooks (`#110`, `#111`)**:
+  - Curated Jupyter notebooks grouped by technique (`CA`, `CV`, `Pulse`, `RDE`), mechanism/geometry (`Nernst`, `Randles–Ševčík`, `Butler–Volmer`, `EC`, `EE`, `Catalytic`), and low-level module (`analytical`, `fitting`, `solver`, `geometry`, `grid`, `reactions`).
+- **API Reference & Strict Validation (`#112`)**:
+  - Complete `mkdocstrings` API reference for all `softpotato` modules and `mkdocs build --strict` CI verification.
+
+---
+
 ## Summary of Semantic Versioning Strategy
 
 ```text
@@ -301,7 +324,8 @@ v3.0.0 (Stable Baseline)
       │    └── Homogeneous & heterogeneous chemical reactions (softpotato.reactions)
       │
       └── v3.4.0 (Minor Bump: Non-breaking feature)
-           └── Electroanalytical techniques & waveforms (softpotato.techniques)
+           ├── Electroanalytical techniques & waveforms (softpotato.techniques)
+           └── v3.4.1 (Patch: Documentation overhaul — Milestone 5)
 ```
 
 Each minor release maintains strict backwards compatibility with previous releases, ensuring scripts written against `v3.0.0` continue to run unmodified throughout the entire `3.x` lifecycle.

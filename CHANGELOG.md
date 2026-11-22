@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Documentation Overhaul Planning (`scripts/create_docs_issues.py`)**:
+  - Added `scripts/create_docs_issues.py` to automate GitHub issue creation for **Milestone 5: Documentation Overhaul** (`#104`–`#112`), structuring the clean-slate `softpotato.xyz` rebuild by expertise level (Experimentalist, Python User, Modeller).
+
 ## [3.4.0] - 2026-11-21
 
 ### Milestone 4 Release: Electrochemical Techniques, Simulation Pipelines, Plotting & Diagnostics (`softpotato.techniques`)

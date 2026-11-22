@@ -53,6 +53,7 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Released |
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CA, LSV, CV, SCV, DPV, SWV, CP, RDE), high-level simulation pipelines, declarative plotting, and diagnostics (`techniques`) | Released |
+| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate [softpotato.xyz](https://softpotato.xyz/) restructure organized by expertise level (Experimentalist, Python User, Modeller) — [Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6) | In progress |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 
