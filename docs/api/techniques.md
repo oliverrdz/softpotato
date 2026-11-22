@@ -194,9 +194,9 @@ fig, ax = plot_scv(res_scv)
 
 For complete, runnable notebooks with plots and analytical validation, see:
 
-- **Voltammetry & Diagnostics**: [`examples/techniques_voltammetry.ipynb`](../examples/techniques_voltammetry.ipynb) — LSV, multi-scan-rate CV sweeps, `plot_result`/`plot_summary`/`plot_sweep`, Randles–Ševčík, and Nicholson $k^0$ extraction.
-- **Sampled-Current, Pulse Voltammetry & Chronopotentiometry**: [`examples/techniques_pulse_cp.ipynb`](../examples/techniques_pulse_cp.ipynb) — SCV (`plot_scv`), DPV (`plot_dpv`), SWV (`plot_swv`), and CP with Sand transition-time diagnostics.
-- **Rotating Disk Electrode (RDE)**: [`examples/techniques_rde.ipynb`](../examples/techniques_rde.ipynb) — multi-rotation-rate RDE sweeps with Levich and Koutecký–Levich analysis.
+- **Voltammetry & Diagnostics**: [`tutorials/techniques/cyclic_voltammetry.ipynb`](../tutorials/techniques/cyclic_voltammetry.ipynb) — LSV, multi-scan-rate CV sweeps, `plot_result`/`plot_summary`/`plot_sweep`, Randles–Ševčík, and Nicholson $k^0$ extraction.
+- **Sampled-Current, Pulse Voltammetry & Chronopotentiometry**: [`tutorials/techniques/pulse_and_cp.ipynb`](../tutorials/techniques/pulse_and_cp.ipynb) — SCV (`plot_scv`), DPV (`plot_dpv`), SWV (`plot_swv`), and CP with Sand transition-time diagnostics.
+- **Rotating Disk Electrode (RDE)**: [`tutorials/techniques/rde.ipynb`](../tutorials/techniques/rde.ipynb) — multi-rotation-rate RDE sweeps with Levich and Koutecký–Levich analysis.
 
 ---
 

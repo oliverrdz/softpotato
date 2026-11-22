@@ -191,8 +191,8 @@ result = ScipyIVPSolver(method="Radau").solve(problem, t_span=(0.0, 1.0))
 
 For full worked examples with plots and analytical benchmarks, explore the interactive Jupyter notebooks:
 
-- **Catalytic EC' Mechanism**: [`examples/catalytic_ec.ipynb`](../examples/catalytic_ec.ipynb) — chronoamperometry of an EC' catalytic cycle, steady-state concentration profiles, and validation against the Delahay–Stiehl and catalytic limiting current equations.
-- **Heterogeneous Kinetics & Cyclic Voltammetry**: [`examples/heterogeneous_kinetics.ipynb`](../examples/heterogeneous_kinetics.ipynb) — Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes, with $\Delta E_p$ vs. scan rate analysis against Randles–Ševčík and Nicholson theory.
+- **Catalytic EC' Mechanism**: [`tutorials/mechanisms/catalytic_ec.ipynb`](../tutorials/mechanisms/catalytic_ec.ipynb) — chronoamperometry of an EC' catalytic cycle, steady-state concentration profiles, and validation against the Delahay–Stiehl and catalytic limiting current equations.
+- **Heterogeneous Kinetics & Cyclic Voltammetry**: [`tutorials/mechanisms/cv_butler_volmer.ipynb`](../tutorials/mechanisms/cv_butler_volmer.ipynb) — Butler–Volmer cyclic voltammetry across reversible, quasi-reversible, and irreversible regimes, with $\Delta E_p$ vs. scan rate analysis against Randles–Ševčík and Nicholson theory.
 
 ---
 

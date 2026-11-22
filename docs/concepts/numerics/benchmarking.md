@@ -49,3 +49,4 @@ Soft Potato automates this check via `estimate_convergence_order`, `verify_spati
 - **User Guide**: [Analytical Models](../../user-guide/analytical/models.md) · [Curve Fitting & Regression](../../user-guide/analytical/fitting.md) · [Diagnostics & Post-Processing](../../user-guide/postprocessing/diagnostics.md)
 - **Tutorials**: [Chronoamperometry Quickstart](../../tutorials/start/ca_quickstart.ipynb)
 - **Numerics**: [Spatial Grids & Meshes](grids.md) · [Time-Stepping & Solvers](solvers.md)
+- **Benchmark Script**: [`modeller_benchmark.py`](../../scripts/modeller_benchmark.py)

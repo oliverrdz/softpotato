@@ -191,5 +191,23 @@ nav:
           - Species, Kinetics & Mechanisms: tutorials/modules/reactions.ipynb
   - API Reference:
       - api/index.md
+      - Constants Module: api/constants.md
+      - Analytical Module:
+          - api/analytical/index.md
+          - Transient Step Techniques: api/analytical/step.md
+          - Hydrodynamics & Convection: api/analytical/hydrodynamics.md
+          - Thermodynamics & Kinetics: api/analytical/kinetics.md
+          - Voltammetry & Diagnostics: api/analytical/voltammetry.md
+          - Microelectrode Geometries: api/analytical/microelectrodes.md
+          - SECM Approach Curves: api/analytical/secm.md
+          - Parameter Fitting: api/analytical/fitting.md
+          - Simulation Benchmarking: api/analytical/benchmark.md
+      - Geometry Module: api/geometry.md
+      - Grid Module: api/grid.md
+      - Reactions Module: api/reactions.md
+      - Solver Module: api/solver.md
+      - Techniques Module: api/techniques.md
   - Blog & Releases:
       - blog/index.md
+      - Changelog: changelog.md
+      - Roadmap: roadmap.md
