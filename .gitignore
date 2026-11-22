@@ -38,3 +38,4 @@ htmlcov/
 .env
 scripts/create_milestone3_issues.py
 scripts/create_milestone4_issues.py
+scripts/create_docs_issues.py
