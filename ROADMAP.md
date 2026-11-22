@@ -18,7 +18,7 @@ Soft Potato adheres to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/)
 | **Milestone 2: Grids** | `v3.2.0` | Spatial discretization & non-uniform/expanding meshes | Released | **Minor Feature Addition** |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous & heterogeneous chemical reaction kinetics | Released | **Minor Feature Addition** |
 | **Milestone 4: Techniques** | `v3.4.0` | Electrochemical waveform generators, simulation pipelines, plotting & diagnostics | Released | **Minor Feature Addition** |
-| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate MkDocs restructure by expertise level (Experimentalist, Python User, Modeller) | In progress | **Documentation & Patch** |
+| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate MkDocs restructure by expertise level (Experimentalist, Python User, Modeller) | Released | **Documentation & Patch** |
 
 ---
 
@@ -288,7 +288,7 @@ With solvers, analytical benchmark models, grids, and reaction kinetics in place
 
 ## Milestone 5 (Documentation Overhaul): v3.4.1
 
-**Status**: In progress ([GitHub Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6), Issues `#104`–`#112`)
+**Status**: Released ([GitHub Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6), Issues `#104`–`#112`)
 
 **Goal**: Rebuild `softpotato.xyz` from a clean slate so users of any background—experimental electrochemists with no programming experience, Python users new to modelling, and computational modellers—can immediately locate what they need.
 
