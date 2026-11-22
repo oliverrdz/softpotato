@@ -477,9 +477,7 @@ def _extract_net_faradaic_current(
                 st
                 for st in steps
                 if (
-                    electrodes
-                    if electrodes in ("left", "right")
-                    else st.electrode_side
+                    electrodes if electrodes in ("left", "right") else st.electrode_side
                 )
                 == side_val
             ]
@@ -492,9 +490,13 @@ def _extract_net_faradaic_current(
                 stoich[sp_idx[st.ox_name], k] -= 1.0
                 stoich[sp_idx[st.red_name], k] += 1.0
             flux_src = (
-                solver_result.fluxes if side_val == "left" else solver_result.right_fluxes
+                solver_result.fluxes
+                if side_val == "left"
+                else solver_result.right_fluxes
             )
-            flux_mat = np.vstack([np.asarray(flux_src[s], dtype=float) for s in sp_list])
+            flux_mat = np.vstack(
+                [np.asarray(flux_src[s], dtype=float) for s in sp_list]
+            )
             rates = np.linalg.pinv(stoich) @ flux_mat
             for k, st in enumerate(side_steps):
                 total += _step_current(-rates[k], float(st.kinetics.n), side_val)
