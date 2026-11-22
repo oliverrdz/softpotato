@@ -144,6 +144,12 @@ nav:
           - Cyclic Voltammetry Quickstart: tutorials/start/cv_quickstart.ipynb
   - User Guide:
       - user-guide/index.md
+      - Techniques & Waveforms:
+          - Voltammetry (LSV & CV): user-guide/techniques/voltammetry.md
+          - Step Techniques (CA & CP): user-guide/techniques/step.md
+          - Pulse & Sampled-Current: user-guide/techniques/pulse.md
+          - Rotating Disk Electrode (RDE): user-guide/techniques/rde.md
+          - Custom Waveforms: user-guide/techniques/waveforms.md
   - Concepts:
       - concepts/index.md
   - Tutorials:

@@ -869,6 +869,78 @@ class RotatingDiskElectrode(BaseTechnique):
             domain_factor=domain_factor,
         )
 
+        if boundary_conditions is None and isinstance(kinetics, HeterogeneousKinetics):
+            from softpotato.reactions.mechanisms import ElectrochemicalStep, Mechanism
+            from softpotato.reactions.species import Species
+
+            d_ox = diff_map.get(species_name, d_ref)
+            d_red = diff_map.get(red_species_name, d_ref)
+            diff_map.setdefault(species_name, d_ox)
+            diff_map.setdefault(red_species_name, d_red)
+
+            ox_sp = Species(
+                species_name,
+                diffusivity=d_ox,
+                bulk_concentration=c_bulk,
+                n_electrons=int(kinetics.n),
+            )
+            red_sp = Species(
+                red_species_name,
+                diffusivity=d_red,
+                bulk_concentration=c_red_bulk,
+            )
+            mech = Mechanism(
+                species=[ox_sp, red_sp],
+                electrochemical_steps=[ElectrochemicalStep(ox_sp, red_sp, kinetics)],
+            )
+            mech_problem = mech.create_problem(
+                mesh,
+                potential=self,
+                geometry=PlanarGeometry(area=area_val),
+                diffusivity=diff_map,
+                initial_conditions=initial_conditions,
+                n_electrons=n_electrons,
+                electrodes="left",
+                bulk_bc="dirichlet",
+            )
+            bcs = mech_problem.boundary_conditions
+            ics = mech_problem.initial_conditions
+            interfacial_rxn = mech_problem.reactions
+            if reactions is not None:
+                # Compose user homogeneous reactions with interfacial kinetics
+                user_rxn = reactions
+
+                def _composed_rxn(
+                    c_dict: Mapping[str, np.ndarray],
+                    x_arr: np.ndarray,
+                    t_val: float,
+                ) -> dict[str, np.ndarray]:
+                    out_i = interfacial_rxn(c_dict, x_arr, t_val)
+                    out_u = user_rxn(c_dict, x_arr, t_val)
+                    return {sp: out_i[sp] + out_u[sp] for sp in out_i}
+
+                base_rxn: Any = _composed_rxn
+            else:
+                base_rxn = interfacial_rxn
+
+            effective_reactions = (
+                self.convection_term(diff_map, reactions=base_rxn)
+                if self._model == "convective_diffusion"
+                else base_rxn
+            )
+
+            return DiffusionProblem(
+                grid=mesh,
+                diffusivity=diff_map,
+                boundary_conditions=bcs,
+                initial_conditions=ics,
+                reactions=effective_reactions,
+                species=mech.species,
+                geometry=PlanarGeometry(area=area_val),
+                n_electrons=n_electrons,
+                mechanism=mech,
+            )
+
         if boundary_conditions is not None:
             bcs = dict(boundary_conditions)
         elif kinetics is not None:
