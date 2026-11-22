@@ -63,8 +63,7 @@ cv = CyclicVoltammetry(
 )
 cv_result = simulate(cv, [ox, red], geometry=geometry, kinetics=kinetics)
 print(
-    f"CV (2 cycles): duration = {cv.duration:.2f} s, "
-    f"switching times = {cv.event_times}"
+    f"CV (2 cycles): duration = {cv.duration:.2f} s, switching times = {cv.event_times}"
 )
 
 fig_cv, ax_cv = plot_result(cv_result)

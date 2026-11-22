@@ -66,7 +66,11 @@ ax_ca.set_title("Double-Step Chronoamperometry (with Quiet Hold)")
 cp_single = Chronopotentiometry(current=-1.5e-5, duration=4.0)
 res_cp = simulate(cp_single, [ox, red], geometry=geometry, kinetics=kinetics)
 tau = res_cp.metadata.get("transition_time")
-print(f"Single-step CP: Sand transition time tau = {tau:.3f} s" if tau else "No transition")
+print(
+    f"Single-step CP: Sand transition time tau = {tau:.3f} s"
+    if tau
+    else "No transition"
+)
 
 fig_cp, ax_cp = plot_result(res_cp)
 ax_cp.set_title("Constant-Current Chronopotentiometry")
