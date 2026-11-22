@@ -30,6 +30,7 @@ Soft Potato is organized in layers—from one-line closed-form equations up to c
     Run Soft Potato directly in your browser with nothing to install on your computer:
 
     [:octicons-play-24: Launch Soft Potato v3 Starter in Google Colab](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2){ .md-button .md-button--primary target="_blank" rel="noopener" }
+    [:octicons-book-24: Google Colab Guide](../start/google-colab.md){ .md-button }
 
 === "Local Install (`pip`)"
 
@@ -46,6 +47,17 @@ Soft Potato is organized in layers—from one-line closed-form equations up to c
 
     print(sp.__version__)
     ```
+
+    [:octicons-desktop-download-24: Full Python Installation Guide](../start/installing-python.md)
+
+---
+
+## 5-Minute Copy-Paste Recipes & Starter Notebooks
+
+Ready to run something right away? Edit only the physical parameters (`E0`, `D`, `k0`, `v`, `A`) in these standalone recipes or open a "Run All" starter notebook:
+
+- **Recipes (`.py`):** [First Simulation (CV)](../start/recipes/first-simulation.md) · [Analytical Baselines](../start/recipes/analytical.md) · [Fitting Experimental Data](../start/recipes/fitting.md)
+- **Starter Notebooks (`.ipynb`):** [Chronoamperometry Quickstart](../tutorials/start/ca_quickstart.ipynb) · [Cyclic Voltammetry Quickstart](../tutorials/start/cv_quickstart.ipynb)
 
 ---
 
