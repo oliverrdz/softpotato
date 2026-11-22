@@ -519,3 +519,40 @@ class TestRDESweep:
         # 4x omega => 2x limiting current
         ratio = abs(res.limiting_currents[1]) / abs(res.limiting_currents[0])
         assert ratio == pytest.approx(2.0, rel=1e-2)
+
+    @pytest.mark.parametrize("model", ["nernst_layer", "convective_diffusion"])
+    def test_simulate_rde_sweep_butler_volmer(self, model: str) -> None:
+        from softpotato.reactions import ButlerVolmer
+
+        D = 1e-9
+        nu = 1e-6
+        c_bulk = 1.0
+        area = 1.9635e-5
+        rpms = [400.0, 1600.0]
+        kin = ButlerVolmer(k0=1e-3, alpha=0.5, E0=0.0, n=1)
+
+        sweep_res = simulate_rde_sweep(
+            E_start=0.4,
+            E_end=-0.4,
+            scan_rate=0.05,
+            rpms=rpms,
+            kinematic_viscosity=nu,
+            model=model,  # type: ignore[arg-type]
+            D=D,
+            c_bulk=c_bulk,
+            kinetics=kin,
+            area=area,
+            solver_kwargs={"rtol": 1e-6, "atol": 1e-9},
+        )
+
+        assert all(r.success for r in sweep_res.results)
+        for res in sweep_res.results:
+            i_ox = res.currents["Ox"]
+            assert abs(i_ox[0]) < 1e-8
+            assert np.all(res.concentrations["Ox"] >= -1e-9)
+
+        i_num = np.abs(sweep_res.limiting_currents)
+        i_lev = np.asarray(
+            levich(rpm=rpms, n=1, D=D, c_bulk=c_bulk, area=area, nu=nu), dtype=float
+        )
+        np.testing.assert_allclose(i_num, i_lev, rtol=1e-2)

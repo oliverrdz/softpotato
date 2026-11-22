@@ -16,7 +16,7 @@ from softpotato.techniques import (
     plot_result,
     plot_sweep,
     simulate,
-    simulate_sweep,
+    simulate_rde_sweep,
 )
 
 # ==============================================================================
@@ -60,39 +60,31 @@ fig_rde, ax_rde = plot_result(res_rde)
 ax_rde.set_title("RDE Linear Sweep Voltammogram (1600 rpm)")
 
 # ==============================================================================
-# 3. Multi-Rotation-Rate Sweep with simulate_sweep() & Butler-Volmer Kinetics
+# 3. Multi-Rotation-Rate Sweep with simulate_rde_sweep() & Butler-Volmer
 # ==============================================================================
 rpms = [400, 900, 1600, 2500]
-sweep_res = simulate_sweep(
-    lambda rpm: RotatingDiskElectrode(
-        E_start=0.4,
-        E_end=-0.4,
-        scan_rate=0.05,
-        rpm=rpm,
-        kinematic_viscosity=nu,
-        model="convective_diffusion",
-    ),
-    [ox, red],
-    values=rpms,
-    geometry=geometry,
+sweep_res = simulate_rde_sweep(
+    E_start=0.4,
+    E_end=-0.4,
+    scan_rate=0.05,
+    rpms=rpms,
+    kinematic_viscosity=nu,
+    model="convective_diffusion",
+    D=D,
+    c_bulk=c_bulk,
     kinetics=kinetics,
+    area=area,
     solver_kwargs={"rtol": 1e-6, "atol": 1e-9},
 )
 
-for rpm, res in sweep_res.items():
-    omega = res.technique.omega
-    i_lim_sim = abs(res.current[-1])
+for rpm, omega, i_lim_sim in zip(rpms, sweep_res.omegas, sweep_res.limiting_currents):
     i_lim_levich = levich(omega=omega, n=1, D=D, c_bulk=c_bulk, area=area, nu=nu)
     print(
-        f"  {rpm:>4d} rpm: |I_lim(sim)| = {i_lim_sim * 1e6:>7.2f} uA, "
+        f"  {rpm:>4d} rpm: |I_lim(sim)| = {abs(i_lim_sim) * 1e6:>7.2f} uA, "
         f"Levich = {i_lim_levich * 1e6:>7.2f} uA"
     )
 
-fig_sweep, ax_sweep = plot_sweep(
-    sweep_res,
-    labels=[f"{rpm} rpm" for rpm in rpms],
-    legend_title="Rotation Rate",
-)
+fig_sweep, ax_sweep = plot_sweep(sweep_res, legend_title="Rotation Rate")
 ax_sweep.set_title("RDE Rotation-Rate Series (Convective-Diffusion, Butler-Volmer)")
 
 plt.show()
