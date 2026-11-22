@@ -440,7 +440,26 @@ def _extract_net_faradaic_current(
     n_times = solver_result.t.size
     if mechanism.electrochemical_steps:
         total = np.zeros(n_times, dtype=float)
-        for step in mechanism.electrochemical_steps:
+        steps = mechanism.electrochemical_steps
+
+        def _step_current(
+            step_flux: np.ndarray, n_val: float, side: Literal["left", "right"]
+        ) -> np.ndarray:
+            if n_val.is_integer():
+                return np.asarray(
+                    geometry.current(
+                        step_flux,
+                        n_electrons=round(n_val),
+                        side=side,
+                        grid=solver_result.x,
+                    ),
+                    dtype=float,
+                )
+            area = _electrode_area_for_side(geometry, side, solver_result.x)
+            return n_val * FARADAY * area * np.asarray(step_flux, dtype=float)
+
+        if len(steps) == 1:
+            step = steps[0]
             side: Literal["left", "right"] = (
                 electrodes if electrodes in ("left", "right") else step.electrode_side
             )
@@ -449,21 +468,36 @@ def _extract_net_faradaic_current(
                 if side == "left"
                 else solver_result.right_fluxes[step.ox_name]
             )
-            n_val = float(step.kinetics.n)
-            if n_val.is_integer():
-                step_i = np.asarray(
-                    geometry.current(
-                        flux_ox,
-                        n_electrons=round(n_val),
-                        side=side,
-                        grid=solver_result.x,
-                    ),
-                    dtype=float,
+            return _step_current(flux_ox, float(step.kinetics.n), side)
+
+        # Multiple steps (e.g. EE: A -> B -> C): solve J_i = sum_k nu_{i,k} r_k per side
+        # so shared intermediates are not cancelled or double-counted.
+        for side_val in ("left", "right"):
+            side_steps = [
+                st
+                for st in steps
+                if (
+                    electrodes
+                    if electrodes in ("left", "right")
+                    else st.electrode_side
                 )
-            else:
-                area = _electrode_area_for_side(geometry, side, solver_result.x)
-                step_i = n_val * FARADAY * area * np.asarray(flux_ox, dtype=float)
-            total += step_i
+                == side_val
+            ]
+            if not side_steps:
+                continue
+            sp_list = list(mechanism.species_names)
+            sp_idx = {name: i for i, name in enumerate(sp_list)}
+            stoich = np.zeros((len(sp_list), len(side_steps)), dtype=float)
+            for k, st in enumerate(side_steps):
+                stoich[sp_idx[st.ox_name], k] -= 1.0
+                stoich[sp_idx[st.red_name], k] += 1.0
+            flux_src = (
+                solver_result.fluxes if side_val == "left" else solver_result.right_fluxes
+            )
+            flux_mat = np.vstack([np.asarray(flux_src[s], dtype=float) for s in sp_list])
+            rates = np.linalg.pinv(stoich) @ flux_mat
+            for k, st in enumerate(side_steps):
+                total += _step_current(-rates[k], float(st.kinetics.n), side_val)
         return total
 
     if not solver_result.currents:
