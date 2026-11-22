@@ -843,6 +843,9 @@ class RotatingDiskElectrode(BaseTechnique):
             raise ValueError("Specify either 'D' or 'diffusivity', not both.")
 
         area_val = _validate_positive_finite(area, "area")
+        n_electrons_arg: int | dict[str, int] = (
+            dict(n_electrons) if isinstance(n_electrons, Mapping) else n_electrons
+        )
 
         if diffusivity is not None:
             diff_map = {
@@ -869,6 +872,81 @@ class RotatingDiskElectrode(BaseTechnique):
             domain_factor=domain_factor,
         )
 
+        if boundary_conditions is None and isinstance(kinetics, HeterogeneousKinetics):
+            from softpotato.reactions.mechanisms import ElectrochemicalStep, Mechanism
+            from softpotato.reactions.species import Species
+
+            d_ox = diff_map.get(species_name, d_ref)
+            d_red = diff_map.get(red_species_name, d_ref)
+            diff_map.setdefault(species_name, d_ox)
+            diff_map.setdefault(red_species_name, d_red)
+
+            ox_sp = Species(
+                species_name,
+                diffusivity=d_ox,
+                bulk_concentration=c_bulk,
+                n_electrons=int(kinetics.n),
+            )
+            red_sp = Species(
+                red_species_name,
+                diffusivity=d_red,
+                bulk_concentration=c_red_bulk,
+            )
+            mech = Mechanism(
+                species=[ox_sp, red_sp],
+                electrochemical_steps=[ElectrochemicalStep(ox_sp, red_sp, kinetics)],
+            )
+            mech_problem = mech.create_problem(
+                mesh,
+                potential=self,
+                geometry=PlanarGeometry(area=area_val),
+                diffusivity=diff_map,
+                initial_conditions=initial_conditions,
+                n_electrons=n_electrons_arg,
+                electrodes="left",
+                bulk_bc="dirichlet",
+            )
+            bcs = mech_problem.boundary_conditions
+            ics = mech_problem.initial_conditions
+            interfacial_rxn = mech_problem.reactions
+            if reactions is not None and interfacial_rxn is not None:
+                # Compose user homogeneous reactions with interfacial kinetics
+                user_rxn = reactions
+                mech_rxn = interfacial_rxn
+
+                def _composed_rxn(
+                    c_dict: dict[str, np.ndarray],
+                    x_arr: np.ndarray,
+                    t_val: float,
+                ) -> dict[str, np.ndarray]:
+                    out_i = mech_rxn(c_dict, x_arr, t_val)
+                    out_u = user_rxn(c_dict, x_arr, t_val)
+                    return {sp: out_i[sp] + out_u[sp] for sp in out_i}
+
+                base_rxn: Any = _composed_rxn
+            elif reactions is not None:
+                base_rxn = reactions
+            else:
+                base_rxn = interfacial_rxn
+
+            effective_reactions = (
+                self.convection_term(diff_map, reactions=base_rxn)
+                if self._model == "convective_diffusion"
+                else base_rxn
+            )
+
+            return DiffusionProblem(
+                grid=mesh,
+                diffusivity=diff_map,
+                boundary_conditions=bcs,
+                initial_conditions=ics,
+                reactions=effective_reactions,
+                species=mech.species,
+                geometry=PlanarGeometry(area=area_val),
+                n_electrons=n_electrons_arg,
+                mechanism=mech,
+            )
+
         if boundary_conditions is not None:
             bcs = dict(boundary_conditions)
         elif kinetics is not None:
@@ -893,7 +971,7 @@ class RotatingDiskElectrode(BaseTechnique):
             bcs = {sp: (DirichletBC(0.0), DirichletBC(c_bulk)) for sp in diff_map}
 
         if initial_conditions is not None:
-            ics: dict[str, Any] = dict(initial_conditions)
+            ics = dict(initial_conditions)
         elif kinetics is not None and boundary_conditions is None:
             ics = {species_name: c_bulk, red_species_name: c_red_bulk}
         else:
@@ -912,7 +990,7 @@ class RotatingDiskElectrode(BaseTechnique):
             initial_conditions=ics,
             reactions=effective_reactions,
             geometry=PlanarGeometry(area=area_val),
-            n_electrons=n_electrons,
+            n_electrons=n_electrons_arg,
         )
 
     def __repr__(self) -> str:

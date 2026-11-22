@@ -81,6 +81,7 @@ warn_unused_configs = true
 
 [tool.ruff]
 extend-exclude = [
+    "*.md",
     "docs/examples",
     "docs/tutorials",
     "docs/_build",

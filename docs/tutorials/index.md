@@ -1,47 +1,69 @@
-# Tutorials & Learning Guides
+# Tutorials
 
-<div class="sp-section-banner" markdown>
-<div markdown>
-Welcome to the **Soft Potato Learning Hub**! Explore hands-on tutorials covering **electrochemistry**, **Soft Potato modules**, and scientific **Python programming**, for students, researchers, and computational scientists. This section is in active development and will be updated continuously.
-</div>
-<img src="../assets/images/chip-coding.png" alt="Chip — Code & Mesh Analyst" />
-</div>
+Interactive, end-to-end Jupyter notebooks with saved outputs—each following a consistent **Goal → Physical Setup → Simulation → Diagnostics & Plots → Key Takeaways** workflow.
+
+Every notebook can be run locally or opened in Google Colab (uncomment `# !pip install -q softpotato` in the first code cell).
 
 ---
 
-## Electrochemistry
+## Starter Notebooks
 
-Hands-on simulation workflows and benchmarks for classical electrochemical techniques:
+New to Soft Potato? Start with these 5-minute quickstart notebooks:
 
-- [**CV: Nernst (Planar)**](../examples/CV-Nernst.ipynb) — Reversible cyclic voltammetry at a planar electrode using Nernstian boundary conditions, plotting the voltammogram and final concentration profiles.
-
-- [**CV: Nernst (Spherical Microelectrode)**](../examples/CV-Nernst-Spherical.ipynb) — Reversible cyclic voltammetry at a spherical microelectrode (`SphericalGeometry`), comparing radial steady-state sigmoidal and transient responses across scan rates.
-
-- [**CV: Randles–Ševčík Analysis**](../examples/CV-Randles-Sevcik.ipynb) — Multi-scan-rate reversible cyclic voltammetry and `fit_randles_sevcik` regression to extract the diffusion coefficient from peak currents.
-
-- [**CV: Butler–Volmer Kinetics**](../examples/CV-ButlerVolmer.ipynb) — Multi-scan-rate irreversible cyclic voltammetry with `ButlerVolmer` kinetics and `fit_randles_sevcik` (`model="irreversible"`) analysis.
-
-- [**CV: EC Mechanism**](../examples/CV-ECmech.ipynb) — Coupled electrochemical–chemical (`EC`) mechanism combining a `ButlerVolmer` `ElectrochemicalStep` with a `FirstOrderReaction` using `Mechanism`.
-
-- [**CV: EE Mechanism**](../examples/CV-EEmech.ipynb) — Sequential two-step electrochemical (`EE`) mechanism with two `ButlerVolmer` `ElectrochemicalStep` reactions in `Mechanism`.
-
-
-## Soft Potato Modules
-
-Hands-on guides exploring specific modules in the Soft Potato toolkit:
-
-- [**Analytical Module**](modules/analytical.ipynb) — How to call closed-form electrochemical equations (`cottrell`, `levich`, `butler_volmer`, and `secm_approach_curve`) across analytical submodules and visualize results.
-- [**Parameter Fitting**](modules/fitting.ipynb) — How to use `softpotato.analytical.fitting` (`fit_cottrell`, `fit_randles_sevcik`, `fit_secm_approach`, and `fit_curve`) to extract physical parameters from experimental data with statistical confidence.
-- [**Numerical Solver**](modules/solver.ipynb) — Simulating multi-species reaction-diffusion problems with `DiffusionProblem()`, configuring Dirichlet and Neumann boundary conditions, and extracting concentration profiles and Faradaic currents with `SolverResult`.
-- [**Geometry Module**](modules/geometries.ipynb) — Setting up spatial coordinate systems with `softpotato.geometry` (planar, cylindrical, and spherical), running spherical diffusion simulations, and visualizing 1D radial profiles, 2D Cartesian cross-sections, and Faradaic currents.
-- [**Grid Module**](modules/grids.ipynb) — Constructing non-uniform spatial discretization meshes with `ExponentialMesh` in `softpotato.grid`, coupling with `DiffusionProblem()`, and comparing near-electrode concentration profiles and Faradaic current transients against `Uniform1DMesh` for the same number of nodes.
-
-## Python
-
-Foundational scientific programming tutorials designed for researchers and engineers:
-
-- [**Soft Potato on your browser**](python/google-colab-start.md) — Run Soft Potato in Google Colab. No Python installation needed!
-- [**Installing Python on your computer**](python/installing-python.md) — Installing official Python across operating systems, setting up an isolated virtual environment, and running an analytical chronoamperometry test in IDLE to verify your setup.
+| Notebook | Topic | Key APIs |
+| :--- | :--- | :--- |
+| [Chronoamperometry (CA) Quickstart](start/ca_quickstart.ipynb) | Potential-step simulation vs. Cottrell equation & $D$ fitting | `Chronoamperometry`, `spa.cottrell()`, `spa.fit_cottrell()` |
+| [Cyclic Voltammetry (CV) Quickstart](start/cv_quickstart.ipynb) | Single CV, Randles–Ševčík check, and $k^0$ reversibility | `CyclicVoltammetry`, `ButlerVolmer`, `spa.randles_sevcik()` |
 
 ---
 
+## By Technique
+
+Step-by-step walkthroughs of Soft Potato's experimental technique generators and diagnostic pipelines:
+
+| Notebook | Focus | Key APIs |
+| :--- | :--- | :--- |
+| [Chronoamperometry & the Cottrell Equation](techniques/cottrell.ipynb) | Planar potential step, $t^{-1/2}$ decay, and $D$ extraction | `Chronoamperometry`, `analyze_cottrell()`, `plot_cottrell()`, `fit_cottrell()` |
+| [Chronoamperometry Across Geometries](techniques/cottrell_geometries.ipynb) | Planar vs. spherical vs. cylindrical potential-step transients | `PlanarGeometry`, `SphericalGeometry`, `CylindricalGeometry`, `cottrell_spherical()`, `cottrell_cylinder()` |
+| [Cyclic Voltammetry & Multi-Scan-Rate Sweeps](techniques/cyclic_voltammetry.ipynb) | Multi-cycle CV, peak detection, summary panels, and scan-rate sweeps | `CyclicVoltammetry`, `simulate_sweep()`, `find_peaks()`, `plot_peaks()`, `plot_summary()` |
+| [Pulse Voltammetry & Chronopotentiometry](techniques/pulse_and_cp.ipynb) | SCV, DPV, SWV, and constant-current CP with Sand transition time | `SampledCurrentVoltammetry`, `DifferentialPulseVoltammetry`, `SquareWaveVoltammetry`, `Chronopotentiometry`, `analyze_sand()` |
+| [Rotating Disk Electrode (RDE)](techniques/rde.ipynb) | Rotation-rate sweeps, Levich, and Koutecký–Levich analysis | `simulate_rde_sweep()`, `analyze_levich()`, `plot_levich()`, `analyze_koutecky_levich()`, `plot_koutecky_levich()` |
+
+---
+
+## By Mechanism & Geometry
+
+Focused studies on electrode geometry, interfacial kinetics, and coupled homogeneous reaction mechanisms:
+
+| Notebook | Focus | Key APIs |
+| :--- | :--- | :--- |
+| [Reversible Planar CV (`NernstianEquilibrium`)](mechanisms/cv_nernst_planar.ipynb) | Nernstian CV signatures ($\Delta E_p$ approx 57 $\text{mV}$) and concentration profiles | `NernstianEquilibrium`, `find_peaks()`, `plot_concentration_profile()` |
+| [Reversible Spherical CV](mechanisms/cv_nernst_spherical.ipynb) | Macro-to-microelectrode transition from peak-shaped to sigmoidal waves | `SphericalGeometry`, `microsphere_limiting_current()` |
+| [Randles–Ševčík Analysis](mechanisms/cv_randles_sevcik.ipynb) | Multi-scan-rate $I_p$ vs. $v^{1/2}$ regression and $D$ confidence intervals | `simulate_sweep()`, `analyze_randles_sevcik()`, `plot_randles_sevcik()`, `fit_randles_sevcik()` |
+| [Butler–Volmer Kinetics, Nicholson & Tafel](mechanisms/cv_butler_volmer.ipynb) | Reversibility regimes across $k^0$, Nicholson $\Psi$, and Tafel extraction | `ButlerVolmer`, `analyze_nicholson()`, `analyze_tafel()`, `plot_tafel()` |
+| [The `EC` Mechanism](mechanisms/cv_ec.ipynb) | Coupled follow-up first-order reaction ($\text{Red} \xrightarrow{k_c} \text{P}$) | `Mechanism`, `ElectrochemicalStep`, `FirstOrderReaction` |
+| [The `EE` Mechanism](mechanisms/cv_ee.ipynb) | Sequential two-electron transfer ($\text{A} \rightleftharpoons \text{B} \rightleftharpoons \text{C}$) and wave merging | `Mechanism`, `ElectrochemicalStep` |
+| [The Catalytic `EC'` Mechanism](mechanisms/catalytic_ec.ipynb) | Homogeneous catalyst regeneration ($\text{Red} \xrightarrow{k_{\text{cat}}} \text{Ox}$) and plateau scaling | `Mechanism`, `ElectrochemicalStep`, `CatalyticReaction` |
+
+---
+
+## By Module (Modeller)
+
+Low-level tutorials for computational electrochemists working directly with `DiffusionProblem`, custom meshes, geometries, reaction networks, and analytical benchmarking:
+
+| Notebook | Focus | Key APIs |
+| :--- | :--- | :--- |
+| [Analytical Models & Parameter Sweeps](modules/analytical.ipynb) | Vectorized parameter sweeps across transient, RDE, UME, and kinetic models | `cottrell()`, `randles_sevcik()`, `levich()`, `koutecky_levich()`, `butler_volmer()` |
+| [Curve Fitting & Custom Parameter Estimation](modules/fitting.ipynb) | Specialized domain fitters and arbitrary nonlinear models | `fit_cottrell()`, `fit_koutecky_levich()`, `fit_butler_volmer()`, `fit_curve()` |
+| [PDE Solvers & Custom Boundary Conditions](modules/solver.ipynb) | Benchmarking all 4 solvers and time-dependent Dirichlet/Neumann BCs | `DiffusionProblem`, `DirichletBC`, `NeumannBC`, `get_solver()` |
+| [Electrode Geometries & Concentration Profiles](modules/geometries.ipynb) | Planar, cylindrical, and spherical diffusion with 2D $c(r, t)$ visualization | `PlanarGeometry`, `CylindricalGeometry`, `SphericalGeometry` |
+| [Spatial Meshes & Grid-Convergence Studies](modules/grids.ipynb) | Uniform vs. stretched meshes and $L_2$ flux convergence | `Uniform1DMesh`, `ExponentialMesh`, `GeometricExpandingMesh`, `run_grid_efficiency_benchmark()` |
+| [Species, Kinetics & Reaction Mechanisms](modules/reactions.ipynb) | Custom `Species`, first- and second-order reactions, and `CustomMechanism` | `Species`, `ElectrochemicalStep`, `FirstOrderReaction`, `SecondOrderReaction`, `CustomMechanism` |
+
+---
+
+## Related Documentation
+
+- **[User Guide](../user-guide/index.md)**: Task-oriented guides for `simulate()`, diagnostics, plotting, and curve fitting.
+- **[Concepts](../concepts/index.md)**: Theoretical and numerical foundations behind electrode kinetics, mass transport, and reaction mechanisms.
+- **[API Reference](../api/index.md)**: Complete class and function signatures.

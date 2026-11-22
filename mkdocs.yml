@@ -131,6 +131,64 @@ extra:
 
 nav:
   - Home: index.md
+  - Start Here:
+      - start-here/index.md
+      - Google Colab Quickstart: start/google-colab.md
+      - Installing Python: start/installing-python.md
+      - 5-Minute Recipes:
+          - Analytical Baselines: start/recipes/analytical.md
+          - Fitting Experimental Data: start/recipes/fitting.md
+          - First Simulation (CV): start/recipes/first-simulation.md
+      - Starter Notebooks:
+          - Chronoamperometry Quickstart: tutorials/start/ca_quickstart.ipynb
+          - Cyclic Voltammetry Quickstart: tutorials/start/cv_quickstart.ipynb
+  - User Guide:
+      - user-guide/index.md
+      - Techniques & Waveforms:
+          - Voltammetry (LSV & CV): user-guide/techniques/voltammetry.md
+          - Step Techniques (CA & CP): user-guide/techniques/step.md
+          - Pulse & Sampled-Current: user-guide/techniques/pulse.md
+          - Rotating Disk Electrode (RDE): user-guide/techniques/rde.md
+          - Custom Waveforms: user-guide/techniques/waveforms.md
+      - Post-Processing:
+          - Diagnostics & Analysis: user-guide/postprocessing/diagnostics.md
+          - Plotting Suite: user-guide/postprocessing/plotting.md
+      - Analytical & Fitting:
+          - Analytical Models: user-guide/analytical/models.md
+          - Curve Fitting & Regression: user-guide/analytical/fitting.md
+  - Concepts:
+      - concepts/index.md
+      - Electrochemistry:
+          - Electrode Kinetics: concepts/electrochemistry/kinetics.md
+          - Mass Transport: concepts/electrochemistry/transport.md
+          - Reaction Mechanisms: concepts/electrochemistry/mechanisms.md
+      - Numerical Modelling:
+          - Spatial Grids & Meshes: concepts/numerics/grids.md
+          - Time-Stepping & Solvers: concepts/numerics/solvers.md
+          - Benchmarking & Validation: concepts/numerics/benchmarking.md
+  - Tutorials:
+      - tutorials/index.md
+      - By Technique:
+          - Chronoamperometry & Cottrell: tutorials/techniques/cottrell.ipynb
+          - Cottrell Across Geometries: tutorials/techniques/cottrell_geometries.ipynb
+          - Cyclic Voltammetry & Sweeps: tutorials/techniques/cyclic_voltammetry.ipynb
+          - Pulse Voltammetry & CP: tutorials/techniques/pulse_and_cp.ipynb
+          - Rotating Disk Electrode (RDE): tutorials/techniques/rde.ipynb
+      - By Mechanism & Geometry:
+          - Reversible Planar CV: tutorials/mechanisms/cv_nernst_planar.ipynb
+          - Reversible Spherical CV: tutorials/mechanisms/cv_nernst_spherical.ipynb
+          - Randles–Ševčík Analysis: tutorials/mechanisms/cv_randles_sevcik.ipynb
+          - Butler–Volmer, Nicholson & Tafel: tutorials/mechanisms/cv_butler_volmer.ipynb
+          - EC Mechanism: tutorials/mechanisms/cv_ec.ipynb
+          - EE Mechanism: tutorials/mechanisms/cv_ee.ipynb
+          - Catalytic EC' Mechanism: tutorials/mechanisms/catalytic_ec.ipynb
+      - By Module (Modeller):
+          - Analytical Models & Sweeps: tutorials/modules/analytical.ipynb
+          - Curve Fitting & Custom Models: tutorials/modules/fitting.ipynb
+          - PDE Solvers & Custom BCs: tutorials/modules/solver.ipynb
+          - Electrode Geometries: tutorials/modules/geometries.ipynb
+          - Spatial Meshes & Convergence: tutorials/modules/grids.ipynb
+          - Species, Kinetics & Mechanisms: tutorials/modules/reactions.ipynb
   - API Reference:
       - api/index.md
       - Constants Module: api/constants.md
@@ -149,23 +207,7 @@ nav:
       - Reactions Module: api/reactions.md
       - Solver Module: api/solver.md
       - Techniques Module: api/techniques.md
-  - Tutorials:
-      - tutorials/index.md
-      - Electrochemistry:
-          - CV — Nernst (Planar): examples/CV-Nernst.ipynb
-          - CV — Nernst (Spherical Microelectrode): examples/CV-Nernst-Spherical.ipynb
-          - CV — Randles–Ševčík: examples/CV-Randles-Sevcik.ipynb
-          - CV — Butler–Volmer Kinetics: examples/CV-ButlerVolmer.ipynb
-          - CV — EC Mechanism: examples/CV-ECmech.ipynb
-          - CV — EE Mechanism: examples/CV-EEmech.ipynb
-      - Soft Potato Modules:
-          - Analytical Module: tutorials/modules/analytical.ipynb
-          - Parameter Fitting: tutorials/modules/fitting.ipynb
-          - Numerical Solver: tutorials/modules/solver.ipynb
-          - Geometry Module: tutorials/modules/geometries.ipynb
-          - Grid Module: tutorials/modules/grids.ipynb
-      - Python:
-          - Soft Potato on your browser: tutorials/python/google-colab-start.md
-          - Installing Python on your computer: tutorials/python/installing-python.md
-  - Blog:
+  - Blog & Releases:
       - blog/index.md
+      - Changelog: changelog.md
+      - Roadmap: roadmap.md

@@ -1,7 +1,7 @@
 # Soft Potato
 
 [![PyPI](https://img.shields.io/pypi/v/softpotato.svg)](https://pypi.org/project/softpotato/)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link)
 [![CI](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverrdz/softpotato/actions/workflows/ci.yml)
 [![DOI](https://img.shields.io/badge/DOI-10.26434%2Fchemrxiv--2022--4bs3w-orange.svg)](https://doi.org/10.26434/chemrxiv-2022-4bs3w)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
@@ -9,14 +9,14 @@
 
 **Soft Potato** is an open-source electrochemical simulation and analysis toolkit in Python.
 
-**Full documentation**: [https://softpotato.xyz/](https://softpotato.xyz/) | **Try Live**: [Google Colab Starter](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+**Full documentation**: [https://softpotato.xyz/](https://softpotato.xyz/) | **Try Live**: [Google Colab Starter](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link) | **Roadmap**: [ROADMAP.md](ROADMAP.md) | **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ## Installation
 
 ### Zero-Install Browser Trial (Google Colab)
 
 Run Soft Potato directly in your browser with no local Python setup required:
-- [**Launch Soft Potato v3 Starter in Google Colab**](https://colab.research.google.com/drive/1w9NfLV2j8ZZjjcVhAiPcogVnKb65wqE2)
+- [**Launch Soft Potato v3 Starter in Google Colab**](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link)
 
 ### Stable Release (v3.4.0)
 
@@ -53,6 +53,7 @@ Soft Potato follows a staged milestone development roadmap for the 3.x series, m
 | **Milestone 2: Grids** | `v3.2.0` | Non-uniform, geometric, and exponentially expanding spatial discretization meshes (`grid`) and planar/spherical/cylindrical coordinate geometries (`geometry`) | Released |
 | **Milestone 3: Reactions** | `v3.3.0` | Homogeneous chemical mechanisms (EC, EC', catalytic) and heterogeneous charge-transfer kinetics (`reactions`) | Released |
 | **Milestone 4: Techniques** | `v3.4.0` | Standard electrochemical experimental waveform generators (CA, LSV, CV, SCV, DPV, SWV, CP, RDE), high-level simulation pipelines, declarative plotting, and diagnostics (`techniques`) | Released |
+| **Milestone 5: Documentation Overhaul** | `v3.4.1` | Clean-slate [softpotato.xyz](https://softpotato.xyz/) restructure organized by expertise level (Experimentalist, Python User, Modeller) — [Milestone #6](https://github.com/oliverrdz/softpotato/milestone/6) | In progress |
 
 For detailed architectural plans and deliverable specifications, see the full [Roadmap](ROADMAP.md).
 
