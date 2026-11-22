@@ -46,3 +46,12 @@ Overlay the resulting traces with `plot_sweep(results)`.
 | [Pulse & Sampled-Current Voltammetry](techniques/pulse.md) | `SampledCurrentVoltammetry`, `DifferentialPulseVoltammetry`, `SquareWaveVoltammetry` | [`guide_pulse.py`](../scripts/guide_pulse.py) |
 | [Rotating Disk Electrode (RDE)](techniques/rde.md) | `RotatingDiskElectrode`, `simulate_rde_sweep`, `RDESweep` | [`guide_rde.py`](../scripts/guide_rde.py) |
 | [Custom Waveforms & Segments](techniques/waveforms.md) | `CustomWaveform`, `ConstantSegment`, `LinearRampSegment`, `SinusoidalSegment`, `CallableSegment` | [`guide_custom_waveform.py`](../scripts/guide_custom_waveform.py) |
+
+## Post-Processing & Analytical Guides
+
+| Guide | Covered Functions & Submodules | Script |
+| :--- | :--- | :--- |
+| [Diagnostics & Post-Processing](postprocessing/diagnostics.md) | `find_peaks`, `analyze_randles_sevcik`, `analyze_nicholson`, `analyze_cottrell`, `analyze_levich`, `analyze_koutecky_levich`, `analyze_sand`, `analyze_tafel` | [`guide_diagnostics.py`](../scripts/guide_diagnostics.py) |
+| [Plotting Suite](postprocessing/plotting.md) | `plot_result`, `plot_voltammogram`, `plot_peaks`, `plot_summary`, `plot_sweep`, `plot_randles_sevcik`, `plot_tafel`, `plot_levich`, `plot_koutecky_levich`, `plot_dpv`, `plot_swv`, `plot_scv` | [`guide_plotting.py`](../scripts/guide_plotting.py) |
+| [Analytical Models](analytical/models.md) | `step`, `hydrodynamics`, `kinetics`, `voltammetry`, `microelectrodes`, `secm` | [`guide_analytical_models.py`](../scripts/guide_analytical_models.py) |
+| [Curve Fitting & Regression](analytical/fitting.md) | `fit_cottrell`, `fit_randles_sevcik`, `fit_secm_approach`, `fit_curve` | [`guide_analytical_fitting.py`](../scripts/guide_analytical_fitting.py) |
