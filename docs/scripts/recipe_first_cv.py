@@ -14,12 +14,12 @@ from softpotato.techniques import CyclicVoltammetry, plot_result, simulate
 # CONFIGURATION — Edit physical & waveform parameters here
 # ==============================================================================
 # Redox couple & electrode parameters (SI units: m^2/s, mol/m^3 = mM, m^2)
-E0 = 0.0               # Formal potential [V]
-D = 1.0e-9             # Diffusion coefficient [m^2/s] (= 1.0e-5 cm^2/s)
-c_bulk = 1.0           # Bulk concentration of Ox [mol/m^3] (= 1.0 mM)
-k0 = 1.0e-3            # Heterogeneous rate constant [m/s] (= 0.1 cm/s)
-alpha = 0.5            # Transfer coefficient [-]
-area = 7.07e-6         # Electrode area [m^2] (= 0.0707 cm^2, 3 mm disk)
+E0 = 0.0  # Formal potential [V]
+D = 1.0e-9  # Diffusion coefficient [m^2/s] (= 1.0e-5 cm^2/s)
+c_bulk = 1.0  # Bulk concentration of Ox [mol/m^3] (= 1.0 mM)
+k0 = 1.0e-3  # Heterogeneous rate constant [m/s] (= 0.1 cm/s)
+alpha = 0.5  # Transfer coefficient [-]
+area = 7.07e-6  # Electrode area [m^2] (= 0.0707 cm^2, 3 mm disk)
 
 # Cyclic voltammetry waveform
 E_start = 0.4  # Initial potential [V]
