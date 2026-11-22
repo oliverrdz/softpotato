@@ -133,6 +133,15 @@ nav:
   - Home: index.md
   - Start Here:
       - start-here/index.md
+      - Google Colab Quickstart: start/google-colab.md
+      - Installing Python: start/installing-python.md
+      - 5-Minute Recipes:
+          - Analytical Baselines: start/recipes/analytical.md
+          - Fitting Experimental Data: start/recipes/fitting.md
+          - First Simulation (CV): start/recipes/first-simulation.md
+      - Starter Notebooks:
+          - Chronoamperometry Quickstart: tutorials/start/ca_quickstart.ipynb
+          - Cyclic Voltammetry Quickstart: tutorials/start/cv_quickstart.ipynb
   - User Guide:
       - user-guide/index.md
   - Concepts:
