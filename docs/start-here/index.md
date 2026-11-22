@@ -43,6 +43,7 @@ Soft Potato is organized in layers—from one-line closed-form equations up to c
 
     ```python
     import softpotato as sp
+
     print(sp.__version__)
     ```
 
