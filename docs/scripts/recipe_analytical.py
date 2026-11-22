@@ -12,16 +12,16 @@ from softpotato import analytical as spa
 # ==============================================================================
 # CONFIGURATION — Edit physical parameters here
 # ==============================================================================
-n = 1                  # Number of electrons transferred
-D = 6.7e-6             # Diffusion coefficient [cm^2/s] (e.g. ferrocyanide in water)
-c_bulk = 1.0e-6        # Bulk concentration [mol/cm^3] (1.0e-6 mol/cm^3 = 1.0 mM)
-area = 0.0707          # Electrode area [cm^2] (3 mm diameter disk)
-nu = 0.01              # Kinematic viscosity [cm^2/s] (aqueous ~ 0.01 cm^2/s)
-T = 298.15             # Temperature [K]
+n = 1  # Number of electrons transferred
+D = 6.7e-6  # Diffusion coefficient [cm^2/s] (e.g. ferrocyanide in water)
+c_bulk = 1.0e-6  # Bulk concentration [mol/cm^3] (1.0e-6 mol/cm^3 = 1.0 mM)
+area = 0.0707  # Electrode area [cm^2] (3 mm diameter disk)
+nu = 0.01  # Kinematic viscosity [cm^2/s] (aqueous ~ 0.01 cm^2/s)
+T = 298.15  # Temperature [K]
 
 # SECM tip geometry & kinetics
-RG = 5.0               # Insulator-to-electrode radius ratio (r_g / a)
-kappa = 2.0            # Dimensionless substrate rate constant (k * a / D)
+RG = 5.0  # Insulator-to-electrode radius ratio (r_g / a)
+kappa = 2.0  # Dimensionless substrate rate constant (k * a / D)
 
 # ==============================================================================
 # 1. Cottrell Equation (Chronoamperometry)
@@ -52,10 +52,18 @@ i_kin = spa.secm_approach_curve(L, RG=RG, kappa=kappa)
 # ==============================================================================
 # Print Summary & Plot
 # ==============================================================================
-print(f"Cottrell current at t = 1.0 s:    {spa.cottrell(1.0, n=n, D=D, c_bulk=c_bulk, area=area) * 1e6:.2f} uA")
-print(f"Levich current at 1600 rpm:       {spa.levich(rpm=1600, n=n, D=D, c_bulk=c_bulk, area=area, nu=nu) * 1e6:.2f} uA")
-print(f"Randles-Sevcik peak at 0.1 V/s:   {spa.randles_sevcik(0.1, c_bulk=c_bulk, D=D, area=area, n=n, T=T) * 1e6:.2f} uA")
-print(f"SECM finite-kinetics at L = 0.5:  {spa.secm_approach_curve(0.5, RG=RG, kappa=kappa):.3f} (normalized)")
+print(
+    f"Cottrell current at t = 1.0 s:    {spa.cottrell(1.0, n=n, D=D, c_bulk=c_bulk, area=area) * 1e6:.2f} uA"
+)
+print(
+    f"Levich current at 1600 rpm:       {spa.levich(rpm=1600, n=n, D=D, c_bulk=c_bulk, area=area, nu=nu) * 1e6:.2f} uA"
+)
+print(
+    f"Randles-Sevcik peak at 0.1 V/s:   {spa.randles_sevcik(0.1, c_bulk=c_bulk, D=D, area=area, n=n, T=T) * 1e6:.2f} uA"
+)
+print(
+    f"SECM finite-kinetics at L = 0.5:  {spa.secm_approach_curve(0.5, RG=RG, kappa=kappa):.3f} (normalized)"
+)
 
 fig, axes = plt.subplots(2, 2, figsize=(10, 7.5))
 
@@ -64,17 +72,29 @@ axes[0, 0].set(title="Cottrell Transient", xlabel="Time / s", ylabel="Current / 
 axes[0, 0].grid(alpha=0.3)
 
 axes[0, 1].plot(rpm, i_levich * 1e6)
-axes[0, 1].set(title="Levich Limiting Current", xlabel="Rotation Rate / rpm", ylabel="Limiting Current / uA")
+axes[0, 1].set(
+    title="Levich Limiting Current",
+    xlabel="Rotation Rate / rpm",
+    ylabel="Limiting Current / uA",
+)
 axes[0, 1].grid(alpha=0.3)
 
 axes[1, 0].plot(np.sqrt(v), i_peak * 1e6)
-axes[1, 0].set(title="Randles-Sevcik Peak Current", xlabel=r"$v^{1/2}$ / $(V/s)^{1/2}$", ylabel="Peak Current / uA")
+axes[1, 0].set(
+    title="Randles-Sevcik Peak Current",
+    xlabel=r"$v^{1/2}$ / $(V/s)^{1/2}$",
+    ylabel="Peak Current / uA",
+)
 axes[1, 0].grid(alpha=0.3)
 
 axes[1, 1].plot(L, i_cond, label="Conducting (pos. feedback)")
 axes[1, 1].plot(L, i_kin, label=f"Kinetic (kappa={kappa})")
 axes[1, 1].plot(L, i_ins, label="Insulating (neg. feedback)")
-axes[1, 1].set(title=f"SECM Approach Curves (RG={RG})", xlabel="Normalized Distance L = d/a", ylabel="Normalized Current $I_T$")
+axes[1, 1].set(
+    title=f"SECM Approach Curves (RG={RG})",
+    xlabel="Normalized Distance L = d/a",
+    ylabel="Normalized Current $I_T$",
+)
 axes[1, 1].legend()
 axes[1, 1].grid(alpha=0.3)
 

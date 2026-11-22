@@ -15,11 +15,11 @@ rng = np.random.default_rng(42)
 # ==============================================================================
 # KNOWN EXPERIMENTAL CONSTANTS — Edit to match your cell
 # ==============================================================================
-n = 1                  # Electrons transferred
-c_bulk = 1.0e-6        # Bulk concentration [mol/cm^3] (1.0 mM)
-area = 0.0707          # Macroelectrode area [cm^2]
-T = 298.15             # Temperature [K]
-a_ume = 12.5e-6        # SECM UME radius [m] (25 um diameter)
+n = 1  # Electrons transferred
+c_bulk = 1.0e-6  # Bulk concentration [mol/cm^3] (1.0 mM)
+area = 0.0707  # Macroelectrode area [cm^2]
+T = 298.15  # Temperature [K]
+a_ume = 12.5e-6  # SECM UME radius [m] (25 um diameter)
 
 # ==============================================================================
 # 1. Fit Cottrell Chronoamperometry -> Extract D
@@ -38,7 +38,9 @@ ca_fit = spa.fit_cottrell(
 )
 ci_d_ca = ca_fit.confidence_intervals["D"]
 print("=== Cottrell Fit ===")
-print(f"  D      = {ca_fit.d:.3e} cm^2/s  (95% CI: [{ci_d_ca[0]:.3e}, {ci_d_ca[1]:.3e}])")
+print(
+    f"  D      = {ca_fit.d:.3e} cm^2/s  (95% CI: [{ci_d_ca[0]:.3e}, {ci_d_ca[1]:.3e}])"
+)
 print(f"  R^2    = {ca_fit.r_squared:.5f}")
 
 # ==============================================================================
@@ -59,7 +61,9 @@ rs_fit = spa.fit_randles_sevcik(
 )
 ci_d_rs = rs_fit.confidence_intervals["D"]
 print("\n=== Randles-Sevcik Fit ===")
-print(f"  D      = {rs_fit.d:.3e} cm^2/s  (95% CI: [{ci_d_rs[0]:.3e}, {ci_d_rs[1]:.3e}])")
+print(
+    f"  D      = {rs_fit.d:.3e} cm^2/s  (95% CI: [{ci_d_rs[0]:.3e}, {ci_d_rs[1]:.3e}])"
+)
 print(f"  R^2    = {rs_fit.r_squared:.5f}")
 
 # ==============================================================================
@@ -81,7 +85,9 @@ ci_rg = secm_fit.confidence_intervals["rg"]
 ci_d0 = secm_fit.confidence_intervals["d_offset"]
 print("\n=== SECM Approach Fit ===")
 print(f"  RG       = {secm_fit.rg:.2f}  (95% CI: [{ci_rg[0]:.2f}, {ci_rg[1]:.2f}])")
-print(f"  d_offset = {secm_fit.d_offset * 1e6:.2f} um  (95% CI: [{ci_d0[0] * 1e6:.2f}, {ci_d0[1] * 1e6:.2f}] um)")
+print(
+    f"  d_offset = {secm_fit.d_offset * 1e6:.2f} um  (95% CI: [{ci_d0[0] * 1e6:.2f}, {ci_d0[1] * 1e6:.2f}] um)"
+)
 print(f"  R^2      = {secm_fit.r_squared:.5f}")
 
 # ==============================================================================
@@ -90,20 +96,46 @@ print(f"  R^2      = {secm_fit.r_squared:.5f}")
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
 
 axes[0].scatter(t_exp, i_exp_ca * 1e6, s=16, alpha=0.7, label="Data")
-axes[0].plot(t_exp, ca_fit.y_fit * 1e6, color="C1", lw=2, label=f"Fit ($R^2={ca_fit.r_squared:.4f}$)")
+axes[0].plot(
+    t_exp,
+    ca_fit.y_fit * 1e6,
+    color="C1",
+    lw=2,
+    label=f"Fit ($R^2={ca_fit.r_squared:.4f}$)",
+)
 axes[0].set(title="Cottrell Fit", xlabel="Time / s", ylabel="Current / uA")
 axes[0].legend()
 axes[0].grid(alpha=0.3)
 
 axes[1].scatter(np.sqrt(v_exp), ip_exp * 1e6, s=28, alpha=0.8, label="Data")
-axes[1].plot(np.sqrt(v_exp), rs_fit.y_fit * 1e6, color="C1", lw=2, label=f"Fit ($R^2={rs_fit.r_squared:.4f}$)")
-axes[1].set(title="Randles-Sevcik Fit", xlabel=r"$v^{1/2}$ / $(V/s)^{1/2}$", ylabel="Peak Current / uA")
+axes[1].plot(
+    np.sqrt(v_exp),
+    rs_fit.y_fit * 1e6,
+    color="C1",
+    lw=2,
+    label=f"Fit ($R^2={rs_fit.r_squared:.4f}$)",
+)
+axes[1].set(
+    title="Randles-Sevcik Fit",
+    xlabel=r"$v^{1/2}$ / $(V/s)^{1/2}$",
+    ylabel="Peak Current / uA",
+)
 axes[1].legend()
 axes[1].grid(alpha=0.3)
 
 axes[2].scatter(d_exp * 1e6, it_exp, s=16, alpha=0.7, label="Data")
-axes[2].plot(d_exp * 1e6, secm_fit.y_fit, color="C1", lw=2, label=f"Fit ($R^2={secm_fit.r_squared:.4f}$)")
-axes[2].set(title="SECM Approach Fit", xlabel="Stage Position d / um", ylabel="Normalized Current $I_T$")
+axes[2].plot(
+    d_exp * 1e6,
+    secm_fit.y_fit,
+    color="C1",
+    lw=2,
+    label=f"Fit ($R^2={secm_fit.r_squared:.4f}$)",
+)
+axes[2].set(
+    title="SECM Approach Fit",
+    xlabel="Stage Position d / um",
+    ylabel="Normalized Current $I_T$",
+)
 axes[2].legend()
 axes[2].grid(alpha=0.3)
 

@@ -13,25 +13,29 @@ from softpotato.techniques import CyclicVoltammetry, plot_result, simulate
 # CONFIGURATION — Edit physical & waveform parameters here
 # ==============================================================================
 # Redox couple parameters (SI units: m^2/s, mol/m^3 = mM)
-E0 = 0.0               # Formal potential [V]
-D = 1.0e-9             # Diffusion coefficient [m^2/s] (= 1.0e-5 cm^2/s)
-c_bulk = 1.0           # Bulk concentration of Ox [mol/m^3] (= 1.0 mM)
-k0 = 1.0e-3            # Heterogeneous rate constant [m/s] (= 0.1 cm/s)
-alpha = 0.5            # Transfer coefficient [-]
+E0 = 0.0  # Formal potential [V]
+D = 1.0e-9  # Diffusion coefficient [m^2/s] (= 1.0e-5 cm^2/s)
+c_bulk = 1.0  # Bulk concentration of Ox [mol/m^3] (= 1.0 mM)
+k0 = 1.0e-3  # Heterogeneous rate constant [m/s] (= 0.1 cm/s)
+alpha = 0.5  # Transfer coefficient [-]
 
 # Cyclic voltammetry waveform
-E_start = 0.4          # Initial potential [V]
-E_vertex1 = -0.4       # First switching potential [V]
-E_vertex2 = 0.4        # Second switching potential [V]
-v = 0.1                # Scan rate [V/s]
+E_start = 0.4  # Initial potential [V]
+E_vertex1 = -0.4  # First switching potential [V]
+E_vertex2 = 0.4  # Second switching potential [V]
+v = 0.1  # Scan rate [V/s]
 
 # ==============================================================================
 # Run Simulation & Plot
 # ==============================================================================
-ox = Species("Ox", diffusivity=D, bulk_concentration=c_bulk, standard_potential=E0, n_electrons=1)
+ox = Species(
+    "Ox", diffusivity=D, bulk_concentration=c_bulk, standard_potential=E0, n_electrons=1
+)
 red = Species("Red", diffusivity=D, bulk_concentration=0.0)
 
-cv = CyclicVoltammetry(E_start=E_start, E_vertex1=E_vertex1, E_vertex2=E_vertex2, scan_rate=v)
+cv = CyclicVoltammetry(
+    E_start=E_start, E_vertex1=E_vertex1, E_vertex2=E_vertex2, scan_rate=v
+)
 kinetics = ButlerVolmer(k0=k0, alpha=alpha, E0=E0, n=1)
 
 result = simulate(cv, [ox, red], kinetics=kinetics)

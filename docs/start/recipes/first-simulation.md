@@ -7,7 +7,7 @@ Edit only the physical parameters (`E0`, `D`, `c_bulk`, `k0`, `alpha`) and wavef
 ## Full Runnable Script
 
 ```python
---8<-- "docs/scripts/recipe_first_cv.py"
+--8 < --"docs/scripts/recipe_first_cv.py"
 ```
 
 ## What `simulate()` Returns
