@@ -168,6 +168,20 @@ nav:
           - Benchmarking & Validation: concepts/numerics/benchmarking.md
   - Tutorials:
       - tutorials/index.md
+      - By Technique:
+          - Chronoamperometry & Cottrell: tutorials/techniques/cottrell.ipynb
+          - Cottrell Across Geometries: tutorials/techniques/cottrell_geometries.ipynb
+          - Cyclic Voltammetry & Sweeps: tutorials/techniques/cyclic_voltammetry.ipynb
+          - Pulse Voltammetry & CP: tutorials/techniques/pulse_and_cp.ipynb
+          - Rotating Disk Electrode (RDE): tutorials/techniques/rde.ipynb
+      - By Mechanism & Geometry:
+          - Reversible Planar CV: tutorials/mechanisms/cv_nernst_planar.ipynb
+          - Reversible Spherical CV: tutorials/mechanisms/cv_nernst_spherical.ipynb
+          - Randles–Ševčík Analysis: tutorials/mechanisms/cv_randles_sevcik.ipynb
+          - Butler–Volmer, Nicholson & Tafel: tutorials/mechanisms/cv_butler_volmer.ipynb
+          - EC Mechanism: tutorials/mechanisms/cv_ec.ipynb
+          - EE Mechanism: tutorials/mechanisms/cv_ee.ipynb
+          - Catalytic EC' Mechanism: tutorials/mechanisms/catalytic_ec.ipynb
   - API Reference:
       - api/index.md
   - Blog & Releases:
