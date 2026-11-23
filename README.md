@@ -18,9 +18,9 @@
 Run Soft Potato directly in your browser with no local Python setup required:
 - [**Launch Soft Potato v3 Starter in Google Colab**](https://drive.google.com/drive/folders/1aHJVZaPPRcIK2uy6OgobL8FOKzcMjjLx?usp=drive_link)
 
-### Stable Release (v3.4.1)
+### Stable Release (v3.4.2)
 
-Soft Potato v3.4.1 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
+Soft Potato v3.4.2 is available on [PyPI](https://pypi.org/project/softpotato/) and can be installed via pip:
 
 ```bash
 pip install softpotato

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.2] - 2026-11-23
+
+### Added
+- **Website Launch Blog Post (`docs/blog/posts/softpotato-v3-4-website-launch.md`, `docs/assets/images/blog/`)**:
+  - Added announcement blog post highlighting the redesigned `softpotato.xyz` documentation, the three-persona structure (Experimentalist, Python User, Computational Modeller), v3.x capabilities, and tutorial figures (`planar-to-microelectrode.png`, `pulse-and-cp.jpg`, `rde-levich.png`, `ee-mechanism.png`).
+
+### Changed
+- **Docs Deployment Workflow (`.github/workflows/deploy-docs.yml`)**:
+  - Added automatic syncing of `docs/blog/` and `docs/assets/` from `main` to the deployed `stable` version when blog posts change on `main`, plus a `sync_blog` manual dispatch input.
+
 ## [3.4.1] - 2026-11-22
 
 ### Milestone 5 Release: Documentation Overhaul & Techniques Fixes

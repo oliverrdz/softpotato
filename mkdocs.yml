@@ -44,6 +44,7 @@ exclude_docs: |
 
 hooks:
   - docs/_hooks/math_hook.py
+  - docs/_hooks/notebook_links.py
 
 plugins:
   - search
