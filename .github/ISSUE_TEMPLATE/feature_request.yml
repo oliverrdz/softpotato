@@ -1,0 +1,49 @@
+name: Feature or Electrochemical Mechanism Request
+description: Propose a new electrochemical technique, mechanism, solver, or architectural improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Per our [Contributing Guidelines](https://github.com/oliverrdz/softpotato/blob/main/CONTRIBUTING.md), please open an issue to discuss major features, new mechanisms, or architectural refactors before submitting a pull request.
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Electrochemical and Mathematical Motivation
+      description: Describe the physical system, governing equations, boundary conditions, or literature reference motivating this feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_api
+    attributes:
+      label: Proposed API and Usage Example
+      description: Show how you envision users interacting with this feature while keeping physics decoupled from numerical solvers.
+      value: |
+        ```python
+        import softpotato as sp
+
+        # Example of desired API
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation_plan
+    attributes:
+      label: Analytical Benchmark or Validation Plan
+      description: How can the numerical results be validated (for example, limiting cases, Cottrell/Randles-Ševčík limits, or published literature values)?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution_intent
+    attributes:
+      label: Contribution Plan
+      options:
+        - label: I would like to implement this feature myself in a focused pull request after design approval.
+          required: false
+        - label: I plan to use generative AI tools (such as Antigravity) to assist with implementation and will follow the AI verification rules in CONTRIBUTING.md.
+          required: false

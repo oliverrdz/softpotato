@@ -1,0 +1,78 @@
+name: Bug Report
+description: Report a numerical discrepancy, unexpected error, or bug in Soft Potato
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue in **Soft Potato**. Please review our [Contributing Guidelines](https://github.com/oliverrdz/softpotato/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/oliverrdz/softpotato/blob/main/CODE_OF_CONDUCT.md) before submitting.
+
+  - type: input
+    id: version
+    attributes:
+      label: Soft Potato Version
+      description: Run `python -c "import softpotato as sp; print(sp.__version__)"` in your environment.
+      placeholder: "e.g., 3.4.1"
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Operating system and Python / NumPy / SciPy versions.
+      placeholder: "e.g., Debian 12, Python 3.12, NumPy 2.1, SciPy 1.14"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what went wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal Reproducible Example
+      description: Provide a self-contained Python script that reproduces the issue.
+      value: |
+        ```python
+        import softpotato as sp
+
+        # Paste minimal code here
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior vs. Actual Behavior
+      description: Explain what you expected (for example, agreement with an analytical solution in `softpotato.analytical`) and what actually happened (include full tracebacks if applicable).
+    validations:
+      required: true
+
+  - type: input
+    id: ai_disclosure
+    attributes:
+      label: Generative AI Disclosure (Optional)
+      description: If you used generative AI (such as Antigravity, Copilot, or an LLM) to help diagnose this bug or write the reproduction script, note the tool used.
+      placeholder: "e.g., None, or Assisted-by: Antigravity"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Verification Checklist
+      options:
+        - label: I have checked existing issues and the documentation at https://softpotato.xyz to ensure this is not a duplicate or expected behavior.
+          required: true
+        - label: I have verified the physical units, sign conventions, and input parameters in my script.
+          required: true
+        - label: I have read and personally verified all text and code in this issue (even if drafted with AI assistance).
+          required: true
