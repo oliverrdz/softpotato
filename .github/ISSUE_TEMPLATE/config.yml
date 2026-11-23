@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Soft Potato Documentation & Tutorials
+    url: https://softpotato.xyz
+    about: Read guides, theoretical background, and API documentation before opening an issue.
+  - name: Contributing & Generative AI Policy
+    url: https://github.com/oliverrdz/softpotato/blob/main/CONTRIBUTING.md
+    about: Review architectural standards, testing requirements, and AI contribution rules.
