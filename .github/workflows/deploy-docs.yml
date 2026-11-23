@@ -18,6 +18,11 @@ on:
         required: false
         default: false
         type: boolean
+      sync_blog:
+        description: "Also sync blog posts from main to the current 'stable' version"
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: deploy-docs
@@ -116,6 +121,41 @@ jobs:
             mike deploy --push dev --title "dev (unreleased)"
             if ! mike list | grep -q "stable"; then
               mike set-default --push dev
+            fi
+
+            BLOG_CHANGED=false
+            if [[ "${{ inputs.sync_blog }}" == "true" ]]; then
+              BLOG_CHANGED=true
+            elif [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" == "refs/heads/main" ]]; then
+              BEFORE_SHA="${{ github.event.before }}"
+              if [[ -n "${BEFORE_SHA}" && "${BEFORE_SHA}" != "0000000000000000000000000000000000000000" ]]; then
+                if [[ -n "$(git diff --name-only "${BEFORE_SHA}" "${GITHUB_SHA}" -- docs/blog/)" ]]; then
+                  BLOG_CHANGED=true
+                fi
+              fi
+            fi
+
+            if [[ "${BLOG_CHANGED}" == "true" ]]; then
+              STABLE_VERSION=$(git show gh-pages:versions.json 2>/dev/null | python -c '
+          import json, sys
+          for entry in json.load(sys.stdin):
+              if "stable" in entry.get("aliases", []):
+                  print(entry["version"])
+                  break
+          ' || true)
+
+              if [[ -n "${STABLE_VERSION}" ]] && git rev-parse "v${STABLE_VERSION}" >/dev/null 2>&1; then
+                echo "Blog updated on main; syncing docs/blog/ to stable version ${STABLE_VERSION}"
+                git worktree add --detach /tmp/stable-docs "v${STABLE_VERSION}"
+                rm -rf /tmp/stable-docs/docs/blog
+                cp -r docs/blog /tmp/stable-docs/docs/blog
+                if [ -d docs/assets ]; then
+                  rm -rf /tmp/stable-docs/docs/assets
+                  cp -r docs/assets /tmp/stable-docs/docs/assets
+                fi
+                (cd /tmp/stable-docs && mike deploy --push --update-aliases "${STABLE_VERSION}" stable --title "${STABLE_VERSION}")
+                git worktree remove --force /tmp/stable-docs
+              fi
             fi
           fi
 

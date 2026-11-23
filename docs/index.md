@@ -11,7 +11,7 @@ hide:
       Open-source electrochemical simulation and analysis toolkit in Python. Predict voltammetric, chronoamperometric, pulse, hydrodynamic, and SECM responses—or extract transport and kinetic parameters from experimental data—without fighting boilerplate PDE code.
     </p>
     <div class="sp-hero__metrics">
-      <span class="sp-metric-pill"><strong>v3.4.1</strong> Techniques &amp; Diagnostics</span>
+      <span class="sp-metric-pill"><strong>v3.4.2</strong> Techniques &amp; Diagnostics</span>
       <span class="sp-metric-pill"><strong>Analytical</strong> + Numerical PDEs</span>
       <span class="sp-metric-pill"><strong>Zero-Install</strong> Google Colab</span>
     </div>
