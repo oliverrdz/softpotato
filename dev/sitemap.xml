@@ -85,6 +85,10 @@
          <lastmod>2026-11-23</lastmod>
     </url>
     <url>
+         <loc>https://softpotato.xyz/dev/blog/2026/11/23/introducing-the-redesigned-softpotatoxyz-and-soft-potato-v342/</loc>
+         <lastmod>2026-11-23</lastmod>
+    </url>
+    <url>
          <loc>https://softpotato.xyz/dev/blog/2026/10/18/welcome-to-the-new-softpotatoxyz/</loc>
          <lastmod>2026-11-23</lastmod>
     </url>
@@ -269,15 +273,15 @@
          <lastmod>2026-11-23</lastmod>
     </url>
     <url>
-         <loc>https://softpotato.xyz/dev/blog/category/concepts/</loc>
-         <lastmod>2026-11-23</lastmod>
-    </url>
-    <url>
          <loc>https://softpotato.xyz/dev/blog/category/announcements/</loc>
          <lastmod>2026-11-23</lastmod>
     </url>
     <url>
          <loc>https://softpotato.xyz/dev/blog/category/releases/</loc>
+         <lastmod>2026-11-23</lastmod>
+    </url>
+    <url>
+         <loc>https://softpotato.xyz/dev/blog/category/concepts/</loc>
          <lastmod>2026-11-23</lastmod>
     </url>
 </urlset>
